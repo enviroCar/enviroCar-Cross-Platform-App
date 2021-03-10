@@ -1,16 +1,26 @@
-# envirocar_app_main
+# enviroCar Cross-Platform App
 
-A new Flutter project.
+## Introduction
+This project contains code for a platform independent app that connects to enviroCar server and authenticates the user.
+It is still under progress and will be developed further this summer.
 
-## Getting Started
+## Key Features (More to be added soon)
+1. Login with enviroCar username and password
+2. Sign up with username, email and password
 
-This project is a starting point for a Flutter application.
+## How To Use
 
-A few resources to get you started if this is your first Flutter project:
+To clone and run this application, you'll need [Git](https://git-scm.com) and [Flutter](https://flutter.dev/docs/get-started/install) installed on your computer. From your command line:
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+```bash
+# Clone this repository
+$ git clone https://github.com/D-Ajay-Kumar/enviroCar-Cross-Platform-App.git
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# Go into the repository
+
+# Install dependencies
+$ flutter packages get
+
+# Run the app
+$ flutter run
+```
