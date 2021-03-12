@@ -6,6 +6,7 @@ import '../providers/authProvider.dart';
 import '../constants.dart' as constants;
 import '../services/authenticationServices.dart';
 import '../models/user.dart';
+import '../utils/validator.dart';
 
 class RegisterScreen extends StatefulWidget {
   @override
@@ -22,6 +23,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _acceptedTerms = false;
   bool _acceptedPrivacy = false;
   bool _showError = false;
+
+  final Validator validator = Validator();
 
   void _showDialogbox(String message) async {
     await showDialog(
@@ -70,10 +73,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Email',
                       ),
                       validator: (value) {
-                        if (value.trim().isEmpty) {
-                          return 'Required';
-                        }
-                        return null;
+                        return validator.validateEmail(value);
                       },
                       onChanged: (value) {
                         _email = value;
@@ -90,10 +90,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Username',
                       ),
                       validator: (value) {
-                        if (value.trim().isEmpty) {
-                          return 'Required';
-                        }
-                        return null;
+                        return validator.validateUsername(value);
                       },
                       onChanged: (value) {
                         _username = value;
@@ -112,10 +109,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         labelText: 'Password',
                       ),
                       validator: (value) {
-                        if (value.trim().isEmpty) {
-                          return 'Required';
-                        }
-                        return null;
+                        return validator.validatePassword(value);
                       },
                       onChanged: (value) {
                         _password = value;

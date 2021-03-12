@@ -8,6 +8,7 @@ import '../services/authenticationServices.dart';
 import './registerScreen.dart';
 import '../models/user.dart';
 import './homeScreen.dart';
+import '../utils/validator.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -20,6 +21,8 @@ class _LoginScreenState extends State<LoginScreen> {
   String _username;
   String _password;
   bool _wrongCredentials = false;
+
+  final Validator validator = Validator();
 
   _showDialogbox(String message) async {
     await showDialog(
@@ -68,10 +71,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Username',
                       ),
                       validator: (value) {
-                        if (value.trim().isEmpty) {
-                          return 'Required';
-                        }
-                        return null;
+                        return validator.validateUsername(value);
                       },
                       onChanged: (value) {
                         _username = value;
@@ -90,10 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelText: 'Password',
                       ),
                       validator: (value) {
-                        if (value.trim().isEmpty) {
-                          return 'Required';
-                        }
-                        return null;
+                        return validator.validatePassword(value);
                       },
                       onChanged: (value) {
                         _password = value;
