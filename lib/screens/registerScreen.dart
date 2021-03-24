@@ -72,9 +72,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: constants.inputDecoration.copyWith(
                         labelText: 'Email',
                       ),
-                      validator: (value) {
-                        return validator.validateEmail(value);
-                      },
+                      // validator: (value) {
+                      //   return validator.validateEmail(value);
+                      // },
                       onChanged: (value) {
                         _email = value;
                       },
@@ -89,9 +89,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: constants.inputDecoration.copyWith(
                         labelText: 'Username',
                       ),
-                      validator: (value) {
-                        return validator.validateUsername(value);
-                      },
+                      // validator: (value) {
+                      //   return validator.validateUsername(value);
+                      // },
                       onChanged: (value) {
                         _username = value;
                       },
@@ -108,9 +108,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       decoration: constants.inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
-                      validator: (value) {
-                        return validator.validatePassword(value);
-                      },
+                      // validator: (value) {
+                      //   return validator.validatePassword(value);
+                      // },
                       onChanged: (value) {
                         _password = value;
                       },

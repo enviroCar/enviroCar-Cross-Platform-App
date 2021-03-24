@@ -70,9 +70,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: constants.inputDecoration.copyWith(
                         labelText: 'Username',
                       ),
-                      validator: (value) {
-                        return validator.validateUsername(value);
-                      },
+                      // validator: (value) {
+                      //   return validator.validateUsername(value);
+                      // },
                       onChanged: (value) {
                         _username = value;
                       },
@@ -89,9 +89,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       decoration: constants.inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
-                      validator: (value) {
-                        return validator.validatePassword(value);
-                      },
+                      // validator: (value) {
+                      //   return validator.validatePassword(value);
+                      // },
                       onChanged: (value) {
                         _password = value;
                       },
@@ -122,37 +122,36 @@ class _LoginScreenState extends State<LoginScreen> {
                           },
                         );
 
-                        if (_formKey.currentState.validate()) {
-                          User _user = new User(
-                            username: _username,
-                            password: _password,
-                          );
+                        // if (_formKey.currentState.validate()) {
+                        User _user = new User(
+                          username: _username,
+                          password: _password,
+                        );
 
-                          String _status =
-                              await AuthenticationServices().loginUser(
-                            authProvider: _authProvider,
-                            user: _user,
-                          );
+                        String _status =
+                            await AuthenticationServices().loginUser(
+                          authProvider: _authProvider,
+                          user: _user,
+                        );
 
-                          if (_status == 'Logged In') {
-                            Navigator.of(context).pushReplacement(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) {
-                                  return HomeScreen();
-                                },
-                              ),
-                            );
-                          } else if (_status ==
-                              'invalid username or password') {
-                            setState(
-                              () {
-                                _wrongCredentials = true;
+                        if (_status == 'Logged In') {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return HomeScreen();
                               },
-                            );
-                          } else if (_status == 'mail not confirmed') {
-                            _showDialogbox('mail not confirmed');
-                          }
+                            ),
+                          );
+                        } else if (_status == 'invalid username or password') {
+                          setState(
+                            () {
+                              _wrongCredentials = true;
+                            },
+                          );
+                        } else if (_status == 'mail not confirmed') {
+                          _showDialogbox('mail not confirmed');
                         }
+                        // }
                       },
                       child: Text(
                         'Login',

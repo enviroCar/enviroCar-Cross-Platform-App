@@ -27,6 +27,7 @@ dependencies:
   provider:
   http:
   flutter_secure_storage:
+  flutter_blue:
   
 
 
