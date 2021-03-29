@@ -59,10 +59,19 @@ class _LoginScreenState extends State<LoginScreen> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(top: height * 0.03),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: height * 0.3,
+                      height: height * 0.1,
+                    ),
+
+                    Image.asset(
+                      'assets/images/img_envirocar_logo.png',
+                      scale: 5,
+                    ),
+
+                    SizedBox(
+                      height: height * 0.1,
                     ),
 
                     // Username
@@ -114,8 +123,26 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.03,
                     ),
 
-                    ElevatedButton(
-                      onPressed: () async {
+                    GestureDetector(
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 0, 223, 165),
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () async {
                         setState(
                           () {
                             _wrongCredentials = false;
@@ -153,9 +180,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         // }
                       },
-                      child: Text(
-                        'Login',
-                      ),
                     ),
 
                     SizedBox(
@@ -174,6 +198,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       },
                       child: Text(
                         'New to enviroCar?\nRegister here',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 23, 33, 43),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],

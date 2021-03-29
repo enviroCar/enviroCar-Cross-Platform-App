@@ -21,6 +21,9 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        theme: ThemeData(
+          accentColor: Color.fromARGB(255, 0, 223, 165),
+        ),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
       ),

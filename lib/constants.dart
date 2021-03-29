@@ -14,7 +14,8 @@ const InputDecoration inputDecoration = InputDecoration(
     borderRadius: const BorderRadius.all(const Radius.circular(5.0)),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: const BorderSide(color: const Color(0xff000000), width: 1.5),
+    borderSide: const BorderSide(
+        color: const Color.fromARGB(255, 23, 33, 43), width: 1.5),
     borderRadius: const BorderRadius.all(const Radius.circular(5.0)),
   ),
 );
