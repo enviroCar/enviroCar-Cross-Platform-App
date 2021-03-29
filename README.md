@@ -4,9 +4,22 @@
 This project contains code for a platform independent app that connects to enviroCar server and authenticates the user.
 It is still under progress and will be developed further this summer.
 
+<br>
+
+## Design and Demo
+<img src="https://github.com/D-Ajay-Kumar/enviroCar-Cross-Platform-App/blob/master/design/app_video.gif" width="300" height="570" />
+
+|Login Screen|Register Screen|Home Screen|
+|---------------------------------------------------------|------------------------------------------------------------|--------------------------------------------------------|
+| <img width="300em" src="./design/login.png"> | <img width="300em" src="./design/register.png"> | <img width="300em" src="./design/home.png"> | 
+
+<br>
+
 ## Key Features (More to be added soon)
 1. Login with enviroCar username and password
 2. Sign up with username, email and password
+
+<br>
 
 ## How To Use
 
