@@ -65,8 +65,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(top: _height * 0.03),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    Image.asset(
+                      'assets/images/img_envirocar_logo.png',
+                      scale: 5,
+                    ),
+
+                    SizedBox(
+                      height: _height * 0.05,
+                    ),
+
                     // Email
                     TextFormField(
                       decoration: constants.inputDecoration.copyWith(
@@ -200,8 +209,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     // Register button
-                    ElevatedButton(
-                      onPressed: () async {
+                    GestureDetector(
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 0, 223, 165),
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: Center(
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
+                      onTap: () async {
                         if (_acceptedTerms && _acceptedPrivacy) {
                           setState(() {
                             _showError = false;
@@ -237,9 +264,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           }
                         }
                       },
-                      child: Text(
-                        'Register',
-                      ),
+                    ),
+
+                    SizedBox(
+                      height: _height * 0.03,
                     ),
 
                     // Go to Login Screen button
@@ -249,6 +277,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                       child: Text(
                         'Already have an account?\nLogin here',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Color.fromARGB(255, 23, 33, 43),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w500,
+                        ),
                       ),
                     ),
                   ],
