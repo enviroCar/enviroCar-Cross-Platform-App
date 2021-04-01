@@ -18,6 +18,8 @@ It is still under progress and will be developed further this summer.
 ## Key Features (More to be added soon)
 1. Login with enviroCar username and password
 2. Sign up with username, email and password
+3. Turn Bluetooth On and Off from within the app
+4. See a list of all the active Bluetooth Devices around
 
 <br>
 
