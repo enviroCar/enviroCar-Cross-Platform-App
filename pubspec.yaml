@@ -24,10 +24,11 @@ dependencies:
   flutter:
     sdk: flutter
 
-  provider:
-  http:
-  flutter_secure_storage:
-  flutter_blue:
+  provider: ^5.0.0
+  http: ^0.13.1
+  flutter_secure_storage: ^4.1.0
+  flutter_blue: ^0.8.0
+  system_shortcuts: ^1.0.0
   
 
 

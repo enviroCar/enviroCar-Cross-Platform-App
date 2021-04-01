@@ -10,6 +10,8 @@ import '../models/user.dart';
 import './homeScreen.dart';
 import '../utils/validator.dart';
 
+// TODO: Add validators
+
 class LoginScreen extends StatefulWidget {
   @override
   _LoginScreenState createState() => _LoginScreenState();
@@ -65,6 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.1,
                     ),
 
+                    // enviroCar Logo
                     Image.asset(
                       'assets/images/img_envirocar_logo.png',
                       scale: 5,
@@ -110,6 +113,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.03,
                     ),
 
+                    // Error for wrong credentials
                     _wrongCredentials
                         ? Text(
                             'Wrong Credentials',
@@ -123,6 +127,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.03,
                     ),
 
+                    // Login Button
                     GestureDetector(
                       child: Container(
                         width: double.infinity,
@@ -186,6 +191,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: height * 0.03,
                     ),
 
+                    // Register screen button
                     TextButton(
                       onPressed: () {
                         Navigator.of(context).push(

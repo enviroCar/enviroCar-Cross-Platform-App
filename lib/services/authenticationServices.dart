@@ -10,6 +10,7 @@ import './secureStorageServices.dart';
 class AuthenticationServices {
   final baseUri = 'https://envirocar.org/api/stable/users';
 
+  // Creates a new User
   Future<String> registerUser({
     @required AuthProvider authProvider,
     @required User user,
@@ -32,6 +33,7 @@ class AuthenticationServices {
     }
   }
 
+  // Logs in existing user
   Future<String> loginUser({
     @required AuthProvider authProvider,
     @required User user,
@@ -71,6 +73,21 @@ class AuthenticationServices {
       authProvider.setAuthStatus = false;
       return 'no data in secure storage';
     }
+  }
+
+  // Logs in user if they didn't logout the last time they opened the app
+  Future<bool> loginExistingUser({@required AuthProvider authProvider}) async {
+    final User _user = await SecureStorageServices().getUserFromSecureStorage();
+
+    String message =
+        await this.loginUser(authProvider: authProvider, user: _user);
+
+    // if user deletes account from website and opens app again
+    // then send to login screen and remove data from secure storage
+    if (message == 'invalid username or password') {
+      this.logoutUser(authProvider: authProvider);
+    }
+    return authProvider.getAuthStatus;
   }
 
   void logoutUser({@required AuthProvider authProvider}) {
