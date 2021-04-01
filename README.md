@@ -9,9 +9,9 @@ It is still under progress and will be developed further this summer.
 ## Design and Demo
 <img src="https://github.com/D-Ajay-Kumar/enviroCar-Cross-Platform-App/blob/master/design/app_video.gif" width="300" height="570" />
 
-|Login Screen|Register Screen|Home Screen|
+|Login Screen|Home Screen|Bluetooth Screen|
 |---------------------------------------------------------|------------------------------------------------------------|--------------------------------------------------------|
-| <img width="300em" src="./design/login.png"> | <img width="300em" src="./design/register.png"> | <img width="300em" src="./design/home.png"> | 
+| <img width="300em" src="./design/login.png"> | <img width="300em" src="./design/register.png"> | <img width="300em" src="./design/bluetooth_screen.png"> | 
 
 <br>
 
