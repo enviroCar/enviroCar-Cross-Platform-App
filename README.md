@@ -11,7 +11,7 @@ It is still under progress and will be developed further this summer.
 
 |Login Screen|Home Screen|Bluetooth Screen|
 |---------------------------------------------------------|------------------------------------------------------------|--------------------------------------------------------|
-| <img width="300em" src="./design/login.png"> | <img width="300em" src="./design/register.png"> | <img width="300em" src="./design/bluetooth_screen.png"> | 
+| <img width="300em" src="./design/login.png"> | <img width="300em" src="./design/home.png"> | <img width="300em" src="./design/bluetooth_screen.png"> | 
 
 <br>
 
