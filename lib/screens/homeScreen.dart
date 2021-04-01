@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../providers/authProvider.dart';
 import '../services/authenticationServices.dart';
 import './loginScreen.dart';
+import './bluetoothDevicesScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -20,27 +21,47 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 23, 33, 43),
         elevation: 0,
-        // actions: [
-        //   IconButton(
-        //     icon: Icon(Icons.logout),
-        //     onPressed: () {
-        //       AuthenticationServices().logoutUser(authProvider: _authProvider);
-        //       Navigator.of(context).pushReplacement(
-        //         MaterialPageRoute(
-        //           builder: (BuildContext context) {
-        //             return LoginScreen();
-        //           },
-        //         ),
-        //       );
-        //     },
-        //   )
-        // ],
-        title: Center(
-          child: Image.asset(
-            'assets/images/img_envirocar_logo_white.png',
-            scale: 10,
+        actions: [
+          // Bluetooth screen button
+          IconButton(
+            icon: Icon(
+              Icons.bluetooth,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return BluetoothDevicesScreen();
+                  },
+                ),
+              );
+            },
           ),
+
+          // Logout button
+          // TODO: Shift this to Profile screen
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () {
+              AuthenticationServices().logoutUser(authProvider: _authProvider);
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (BuildContext context) {
+                    return LoginScreen();
+                  },
+                ),
+              );
+            },
+          )
+        ],
+
+        // enviroCar logo
+        title: Image.asset(
+          'assets/images/img_envirocar_logo_white.png',
+          scale: 10,
         ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -58,6 +79,7 @@ class HomeScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // TODO: Replace dummy data with actual data
                     Container(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -165,6 +187,7 @@ class HomeScreen extends StatelessWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
+            // TODO: Create screens and map to the bottom bar
             GestureDetector(
               child: Icon(
                 Icons.home,

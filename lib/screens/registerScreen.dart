@@ -8,6 +8,8 @@ import '../services/authenticationServices.dart';
 import '../models/user.dart';
 import '../utils/validator.dart';
 
+// TODO: Add validators
+
 class RegisterScreen extends StatefulWidget {
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
@@ -67,6 +69,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    // enviroCar logo
                     Image.asset(
                       'assets/images/img_envirocar_logo.png',
                       scale: 5,
@@ -195,6 +198,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ],
                     ),
 
+                    // Error if both boxes aren't checked
                     _showError
                         ? Text(
                             'Please check both boxes',

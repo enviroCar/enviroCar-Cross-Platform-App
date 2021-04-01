@@ -16,6 +16,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        // Provides user data to different widgets on the tree
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
         )

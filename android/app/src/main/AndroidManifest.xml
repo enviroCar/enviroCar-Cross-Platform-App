@@ -2,13 +2,15 @@
     package="com.example.envirocar_app_main">
  
    <!-- Added for flutter blue --> 
+   
+   <uses-permission android:name="android.permission.BLUETOOTH_PRIVILEGED" />
    <uses-permission android:name="android.permission.BLUETOOTH" />  
 	 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />  
 	 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/> 
    <!-- till here -->
 
    <application
-        android:label="envirocar_app_main"
+        android:label="enviroCar Cross-Platform"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
