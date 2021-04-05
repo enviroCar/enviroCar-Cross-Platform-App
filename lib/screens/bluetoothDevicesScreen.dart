@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:flutter_blue/flutter_blue.dart' as blue;
 
-import '../widgets/ble_dialog.dart';
+import '../widgets/bleDialog.dart';
 
 // TODO: Add button to connect to devices after searching them
 

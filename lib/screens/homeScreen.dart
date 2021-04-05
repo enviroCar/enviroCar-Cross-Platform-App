@@ -6,6 +6,7 @@ import '../providers/authProvider.dart';
 import '../services/authenticationServices.dart';
 import './loginScreen.dart';
 import './bluetoothDevicesScreen.dart';
+import './mapScreen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -22,6 +23,23 @@ class HomeScreen extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 23, 33, 43),
         elevation: 0,
         actions: [
+          // Map screen button
+          IconButton(
+            icon: Icon(
+              Icons.gps_fixed_sharp,
+              color: Colors.white,
+            ),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) {
+                    return MapScreen();
+                  },
+                ),
+              );
+            },
+          ),
+
           // Bluetooth screen button
           IconButton(
             icon: Icon(
@@ -38,22 +56,6 @@ class HomeScreen extends StatelessWidget {
               );
             },
           ),
-
-          // Logout button
-          // TODO: Shift this to Profile screen
-          IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: () {
-              AuthenticationServices().logoutUser(authProvider: _authProvider);
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (BuildContext context) {
-                    return LoginScreen();
-                  },
-                ),
-              );
-            },
-          )
         ],
 
         // enviroCar logo
@@ -197,7 +199,7 @@ class HomeScreen extends StatelessWidget {
             ),
             GestureDetector(
               child: Icon(
-                Icons.my_location_sharp,
+                Icons.settings,
                 size: 30,
                 color: Colors.grey[300],
               ),
