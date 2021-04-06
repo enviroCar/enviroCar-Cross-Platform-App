@@ -22,6 +22,13 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+
+    blue.FlutterBlue.instance.stopScan();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +43,13 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               state = snapshot.data;
               return Switch(
                 value: state == blue.BluetoothState.on ? true : false,
-                onChanged: (value) {
+                onChanged: (value) async {
+                  if (isScanning) {
+                    blue.FlutterBlue.instance.stopScan();
+                    setState(() {
+                      isScanning = false;
+                    });
+                  }
                   toggleBluetooth();
                 },
               );
@@ -64,17 +77,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               setState(() {
                 isScanning = true;
               });
-              blue.FlutterBlue.instance.startScan(
-                timeout: Duration(seconds: 4),
-              );
-              Future.delayed(
-                Duration(seconds: 4),
-                () {
-                  setState(() {
-                    isScanning = false;
-                  });
-                },
-              );
+              blue.FlutterBlue.instance.startScan();
             } else {
               showDialog(
                 context: context,
@@ -103,15 +106,15 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               builder: (c, snapshot) {
                 return Column(
                   children: snapshot.data.map((d) {
-                    return ListTile(
-                      leading: Icon(
-                        Icons.phone_android_sharp,
-                      ),
-                      title: Text(d.device.name.isEmpty
-                          ? 'Unknown Device'
-                          : d.device.name),
-                      subtitle: Text(d.device.id.toString()),
-                    );
+                    return d.device.name.isEmpty
+                        ? Container()
+                        : ListTile(
+                            leading: Icon(
+                              Icons.bluetooth,
+                            ),
+                            title: Text(d.device.name),
+                            subtitle: Text(d.device.id.toString()),
+                          );
                   }).toList(),
                 );
               },
