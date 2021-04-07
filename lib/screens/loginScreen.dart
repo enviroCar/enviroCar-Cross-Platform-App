@@ -7,7 +7,7 @@ import '../constants.dart' as constants;
 import '../services/authenticationServices.dart';
 import './registerScreen.dart';
 import '../models/user.dart';
-import './homeScreen.dart';
+import 'index.dart';
 import '../utils/validator.dart';
 
 // TODO: Add validators

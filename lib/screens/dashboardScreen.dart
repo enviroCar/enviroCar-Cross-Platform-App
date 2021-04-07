@@ -1,71 +1,19 @@
-import 'package:flutter/material.dart';
+import 'Package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
+class DashboardScreen extends StatefulWidget {
+  @override
+  _DashboardScreenState createState() => _DashboardScreenState();
+}
 
-import '../providers/authProvider.dart';
-import '../services/authenticationServices.dart';
-import './loginScreen.dart';
-import './bluetoothDevicesScreen.dart';
-import './mapScreen.dart';
-
-class HomeScreen extends StatelessWidget {
+class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
-    final AuthProvider _authProvider =
-        Provider.of<AuthProvider>(context, listen: false);
-
     MediaQueryData _mediaQuery = MediaQuery.of(context);
     double height = _mediaQuery.size.height;
     double width = _mediaQuery.size.width;
 
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 23, 33, 43),
-        elevation: 0,
-        actions: [
-          // Map screen button
-          IconButton(
-            icon: Icon(
-              Icons.gps_fixed_sharp,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return MapScreen();
-                  },
-                ),
-              );
-            },
-          ),
-
-          // Bluetooth screen button
-          IconButton(
-            icon: Icon(
-              Icons.bluetooth,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return BluetoothDevicesScreen();
-                  },
-                ),
-              );
-            },
-          ),
-        ],
-
-        // enviroCar logo
-        title: Image.asset(
-          'assets/images/img_envirocar_logo_white.png',
-          scale: 10,
-        ),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
+    return Container(
+      child: SingleChildScrollView(
         child: Column(
           children: [
             Container(
@@ -177,49 +125,6 @@ class HomeScreen extends StatelessWidget {
                     ),
                   ],
                 ),
-              ),
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: Container(
-        width: double.infinity,
-        height: 55,
-        color: Color.fromARGB(255, 23, 33, 43),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceAround,
-          children: [
-            // TODO: Create screens and map to the bottom bar
-            GestureDetector(
-              child: Icon(
-                Icons.home,
-                size: 30,
-                color: Color.fromARGB(255, 0, 223, 165),
-              ),
-            ),
-            GestureDetector(
-              child: Icon(
-                Icons.settings,
-                size: 30,
-                color: Colors.grey[300],
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                AuthenticationServices()
-                    .logoutUser(authProvider: _authProvider);
-                Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(
-                    builder: (BuildContext context) {
-                      return LoginScreen();
-                    },
-                  ),
-                );
-              },
-              child: Icon(
-                Icons.logout,
-                size: 30,
-                color: Colors.grey[300],
               ),
             ),
           ],
