@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/authProvider.dart';
-import '../constants.dart' as constants;
+import '../constants.dart';
 import '../services/authenticationServices.dart';
 import '../models/user.dart';
 import '../utils/validator.dart';
@@ -11,6 +11,8 @@ import '../utils/validator.dart';
 // TODO: Add validators
 
 class RegisterScreen extends StatefulWidget {
+  static const routeName = '/registerScreen';
+
   @override
   _RegisterScreenState createState() => _RegisterScreenState();
 }
@@ -25,8 +27,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _acceptedTerms = false;
   bool _acceptedPrivacy = false;
   bool _showError = false;
-
-  final Validator validator = Validator();
 
   void _showDialogbox(String message) async {
     await showDialog(
@@ -81,7 +81,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     // Email
                     TextFormField(
-                      decoration: constants.inputDecoration.copyWith(
+                      decoration: inputDecoration.copyWith(
                         labelText: 'Email',
                       ),
                       // validator: (value) {
@@ -98,7 +98,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     // Username
                     TextFormField(
-                      decoration: constants.inputDecoration.copyWith(
+                      decoration: inputDecoration.copyWith(
                         labelText: 'Username',
                       ),
                       // validator: (value) {
@@ -117,7 +117,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextFormField(
                       obscureText: true,
                       autofocus: false,
-                      decoration: constants.inputDecoration.copyWith(
+                      decoration: inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
                       // validator: (value) {
@@ -136,7 +136,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextFormField(
                       obscureText: true,
                       autofocus: false,
-                      decoration: constants.inputDecoration.copyWith(
+                      decoration: inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
                       validator: (value) {
@@ -218,7 +218,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         width: double.infinity,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kSpringColor,
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                         child: Center(
@@ -283,7 +283,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Already have an account?\nLogin here',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 23, 33, 43),
+                          color: kGreyColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

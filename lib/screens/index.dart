@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
 
-import 'bluetoothDevicesScreen.dart';
-import 'mapScreen.dart';
-import 'dashboardScreen.dart';
-import 'tracksScreen.dart';
-import 'settingsScreen.dart';
-import 'profileScreen.dart';
+import './bluetoothDevicesScreen.dart';
+import './mapScreen.dart';
+import './dashboardScreen.dart';
+import './tracksScreen.dart';
+import './settingsScreen.dart';
+import './profileScreen.dart';
+import '../constants.dart';
 
-class HomeScreen extends StatefulWidget {
+class Index extends StatefulWidget {
+  static const routeName = '/index';
   @override
-  _HomeScreenState createState() => _HomeScreenState();
+  _IndexState createState() => _IndexState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _IndexState extends State<Index> {
   int _currentIndex = 0;
 
-  List<Widget> screensList;
+  List<Widget> _screensList;
 
   @override
   void initState() {
     super.initState();
 
-    screensList = [
+    _screensList = [
       DashboardScreen(),
       TracksScreen(),
       SettingsScreen(),
@@ -39,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 23, 33, 43),
+        backgroundColor: kGreyColor,
         elevation: 0,
         actions: [
           // Map screen button
@@ -49,12 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return MapScreen();
-                  },
-                ),
+              Navigator.of(context).pushNamed(
+                MapScreen.routeName,
               );
             },
           ),
@@ -66,12 +64,8 @@ class _HomeScreenState extends State<HomeScreen> {
               color: Colors.white,
             ),
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) {
-                    return BluetoothDevicesScreen();
-                  },
-                ),
+              Navigator.of(context).pushNamed(
+                BluetoothDevicesScreen.routeName,
               );
             },
           ),
@@ -84,11 +78,14 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
         centerTitle: true,
       ),
-      body: screensList[_currentIndex],
+      body: IndexedStack(
+        index: _currentIndex,
+        children: _screensList,
+      ),
       bottomNavigationBar: Container(
         width: double.infinity,
         height: 55,
-        color: Color.fromARGB(255, 23, 33, 43),
+        color: kGreyColor,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
@@ -99,9 +96,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Icon(
                 Icons.home,
                 size: 30,
-                color: _currentIndex == 0
-                    ? Color.fromARGB(255, 0, 223, 165)
-                    : Colors.grey[300],
+                color: _currentIndex == 0 ? kSpringColor : Colors.grey[300],
               ),
             ),
             GestureDetector(
@@ -111,9 +106,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Icon(
                 Icons.trending_up_sharp,
                 size: 30,
-                color: _currentIndex == 1
-                    ? Color.fromARGB(255, 0, 223, 165)
-                    : Colors.grey[300],
+                color: _currentIndex == 1 ? kSpringColor : Colors.grey[300],
               ),
             ),
             GestureDetector(
@@ -123,9 +116,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Icon(
                 Icons.settings,
                 size: 30,
-                color: _currentIndex == 2
-                    ? Color.fromARGB(255, 0, 223, 165)
-                    : Colors.grey[300],
+                color: _currentIndex == 2 ? kSpringColor : Colors.grey[300],
               ),
             ),
             GestureDetector(
@@ -135,9 +126,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Icon(
                 Icons.person,
                 size: 30,
-                color: _currentIndex == 3
-                    ? Color.fromARGB(255, 0, 223, 165)
-                    : Colors.grey[300],
+                color: _currentIndex == 3 ? kSpringColor : Colors.grey[300],
               ),
             ),
           ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 
+import '../constants.dart';
+
 class BLEDialog extends StatelessWidget {
   final Function toggleBluetooth;
 
-  BLEDialog({this.toggleBluetooth});
+  BLEDialog({@required this.toggleBluetooth});
 
   @override
   Widget build(BuildContext context) {
@@ -18,7 +20,7 @@ class BLEDialog extends StatelessWidget {
           child: Text(
             'Cancel',
             style: TextStyle(
-              color: const Color.fromARGB(255, 0, 223, 165),
+              color: kSpringColor,
             ),
           ),
         ),
@@ -32,7 +34,7 @@ class BLEDialog extends StatelessWidget {
           child: Text(
             'Yes',
             style: TextStyle(
-              color: const Color.fromARGB(255, 0, 223, 165),
+              color: kSpringColor,
             ),
           ),
         ),
