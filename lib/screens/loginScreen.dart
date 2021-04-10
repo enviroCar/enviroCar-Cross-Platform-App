@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/authProvider.dart';
-import '../constants.dart' as constants;
+import '../constants.dart';
 import '../services/authenticationServices.dart';
 import './registerScreen.dart';
 import '../models/user.dart';
-import 'index.dart';
+import './index.dart';
 import '../utils/validator.dart';
 
 // TODO: Add validators
 
 class LoginScreen extends StatefulWidget {
+  static const routeName = '/loginScreen';
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
@@ -23,8 +25,6 @@ class _LoginScreenState extends State<LoginScreen> {
   String _username;
   String _password;
   bool _wrongCredentials = false;
-
-  final Validator validator = Validator();
 
   _showDialogbox(String message) async {
     await showDialog(
@@ -79,7 +79,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Username
                     TextFormField(
-                      decoration: constants.inputDecoration.copyWith(
+                      decoration: inputDecoration.copyWith(
                         labelText: 'Username',
                       ),
                       // validator: (value) {
@@ -98,7 +98,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       obscureText: true,
                       autofocus: false,
-                      decoration: constants.inputDecoration.copyWith(
+                      decoration: inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
                       // validator: (value) {
@@ -133,7 +133,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: double.infinity,
                         height: 50,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kSpringColor,
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                         child: Center(
@@ -167,12 +167,8 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
 
                         if (_status == 'Logged In') {
-                          Navigator.of(context).pushReplacement(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) {
-                                return HomeScreen();
-                              },
-                            ),
+                          Navigator.of(context).pushReplacementNamed(
+                            Index.routeName,
                           );
                         } else if (_status == 'invalid username or password') {
                           setState(
@@ -194,19 +190,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Register screen button
                     TextButton(
                       onPressed: () {
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return RegisterScreen();
-                            },
-                          ),
+                        Navigator.of(context).pushNamed(
+                          RegisterScreen.routeName,
                         );
                       },
                       child: Text(
                         'New to enviroCar?\nRegister here',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: Color.fromARGB(255, 23, 33, 43),
+                          color: kGreyColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 
 import '../services/mapServices.dart';
 import '../widgets/mapWidget.dart';
+import '../constants.dart';
 
 class MapScreen extends StatefulWidget {
+  static const routeName = '/mapScreen';
+
   @override
   _MapScreenState createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
-  bool locationServiceEnabled = false;
-  Future startLocationService;
+  bool _locationServiceEnabled = false;
+  Future _startLocationService;
 
   // checks if location service in enabled
   // promts permission dialogbox if service is disabled
@@ -18,31 +21,31 @@ class _MapScreenState extends State<MapScreen> {
     bool permissionStatus = await MapServices().initializeLocationService();
 
     setState(() {
-      locationServiceEnabled = permissionStatus;
+      _locationServiceEnabled = permissionStatus;
     });
   }
 
   @override
   void initState() {
     super.initState();
-    startLocationService = initializeLocation();
+    _startLocationService = initializeLocation();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 23, 33, 43),
+        backgroundColor: kGreyColor,
         elevation: 0,
         centerTitle: true,
         title: Text('Location'),
       ),
       body: FutureBuilder(
-        future: startLocationService,
+        future: _startLocationService,
         builder: (_, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             // when location service is disabled by clicking 'No Thanks' on dialogbox
-            if (!locationServiceEnabled) {
+            if (!_locationServiceEnabled) {
               return Container(
                 width: double.infinity,
                 child: Column(
@@ -64,7 +67,7 @@ class _MapScreenState extends State<MapScreen> {
                         height: 40,
                         width: 100,
                         decoration: BoxDecoration(
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kSpringColor,
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
                         child: Center(

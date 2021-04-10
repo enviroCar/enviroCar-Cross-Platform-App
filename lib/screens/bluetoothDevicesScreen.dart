@@ -4,19 +4,24 @@ import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:flutter_blue/flutter_blue.dart' as blue;
 
 import '../widgets/bleDialog.dart';
+import '../constants.dart';
 
 // TODO: Add button to connect to devices after searching them
 
 class BluetoothDevicesScreen extends StatefulWidget {
+  static const routeName = '/bluetoothDeviceScreen';
+
   @override
   _BluetoothDevicesScreenState createState() => _BluetoothDevicesScreenState();
 }
 
 class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
-  blue.BluetoothState state;
-  bool isScanning = false;
+  blue.BluetoothState _state;
+  bool _isScanning = false;
 
   // Toggles bluetooth on and off
+  // Works only on Android
+  // iOS doesn't give permission to toggle Bluetooth from inside the app
   Future<void> toggleBluetooth() async {
     await SystemShortcuts.bluetooth();
   }
@@ -25,6 +30,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   void dispose() {
     super.dispose();
 
+    // Stops any running scan before closing the screen
     blue.FlutterBlue.instance.stopScan();
   }
 
@@ -32,7 +38,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 23, 33, 43),
+        backgroundColor: kGreyColor,
         elevation: 0,
         actions: [
           // Switch to turn Bluetooth on and off
@@ -40,14 +46,14 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
             stream: blue.FlutterBlue.instance.state,
             initialData: blue.BluetoothState.unknown,
             builder: (context, snapshot) {
-              state = snapshot.data;
+              _state = snapshot.data;
               return Switch(
-                value: state == blue.BluetoothState.on ? true : false,
+                value: _state == blue.BluetoothState.on ? true : false,
                 onChanged: (value) async {
-                  if (isScanning) {
+                  if (_isScanning) {
                     blue.FlutterBlue.instance.stopScan();
                     setState(() {
-                      isScanning = false;
+                      _isScanning = false;
                     });
                   }
                   toggleBluetooth();
@@ -58,11 +64,10 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
         ],
       ),
 
-      // Starts scan and scans for 4 seconds for now
+      // Button to start and stop scanning
       floatingActionButton: FloatingActionButton(
-        backgroundColor:
-            isScanning ? Colors.red : Color.fromARGB(255, 0, 223, 165),
-        child: isScanning
+        backgroundColor: _isScanning ? Colors.red : kSpringColor,
+        child: _isScanning
             ? Icon(
                 Icons.stop,
                 color: Colors.white,
@@ -72,10 +77,10 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                 color: Colors.white,
               ),
         onPressed: () {
-          if (!isScanning) {
-            if (state == blue.BluetoothState.on) {
+          if (!_isScanning) {
+            if (_state == blue.BluetoothState.on) {
               setState(() {
-                isScanning = true;
+                _isScanning = true;
               });
               blue.FlutterBlue.instance.startScan();
             } else {
@@ -91,7 +96,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
           } else {
             blue.FlutterBlue.instance.stopScan();
             setState(() {
-              isScanning = false;
+              _isScanning = false;
             });
           }
         },
@@ -103,7 +108,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
             StreamBuilder<List<blue.ScanResult>>(
               stream: blue.FlutterBlue.instance.scanResults,
               initialData: [],
-              builder: (c, snapshot) {
+              builder: (_, snapshot) {
                 return Column(
                   children: snapshot.data.map((d) {
                     return d.device.name.isEmpty

@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import '../providers/authProvider.dart';
 import './loginScreen.dart';
 import '../services/authenticationServices.dart';
+import '../constants.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -40,7 +41,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Icon(
                           Icons.menu_book_rounded,
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kGreyColor,
                           size: 35,
                         ),
                         SizedBox(
@@ -49,7 +50,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           'Log Book',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 0, 223, 165),
+                            color: kGreyColor,
                             fontSize: 18,
                             fontWeight: FontWeight.normal,
                           ),
@@ -63,7 +64,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Icon(
                           Icons.help_outline,
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kGreyColor,
                           size: 35,
                         ),
                         SizedBox(
@@ -72,7 +73,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           'Help',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 0, 223, 165),
+                            color: kGreyColor,
                             fontSize: 18,
                             fontWeight: FontWeight.normal,
                           ),
@@ -86,7 +87,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Icon(
                           Icons.bug_report_rounded,
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kGreyColor,
                           size: 35,
                         ),
                         SizedBox(
@@ -95,7 +96,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           'Bug Report',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 0, 223, 165),
+                            color: kGreyColor,
                             fontSize: 18,
                             fontWeight: FontWeight.normal,
                           ),
@@ -109,7 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       children: [
                         Icon(
                           Icons.star,
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kGreyColor,
                           size: 35,
                         ),
                         SizedBox(
@@ -118,7 +119,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           'Rate Us',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 0, 223, 165),
+                            color: kGreyColor,
                             fontSize: 18,
                             fontWeight: FontWeight.normal,
                           ),
@@ -130,19 +131,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     onPressed: () {
                       AuthenticationServices()
                           .logoutUser(authProvider: _authProvider);
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) {
-                            return LoginScreen();
-                          },
-                        ),
+                      Navigator.of(context).pushReplacementNamed(
+                        LoginScreen.routeName,
                       );
                     },
                     child: Row(
                       children: [
                         Icon(
                           Icons.logout,
-                          color: Color.fromARGB(255, 0, 223, 165),
+                          color: kGreyColor,
                           size: 35,
                         ),
                         SizedBox(
@@ -151,7 +148,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         Text(
                           'Logout',
                           style: TextStyle(
-                            color: Color.fromARGB(255, 0, 223, 165),
+                            color: kGreyColor,
                             fontSize: 18,
                             fontWeight: FontWeight.normal,
                           ),

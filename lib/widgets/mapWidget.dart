@@ -7,7 +7,7 @@ import 'package:latlong/latlong.dart';
 class MapWidget extends StatefulWidget {
   final Function initializeLocation;
 
-  MapWidget({this.initializeLocation});
+  MapWidget({@required this.initializeLocation});
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
