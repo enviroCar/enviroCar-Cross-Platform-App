@@ -7,7 +7,9 @@ It is still under progress and will be developed further this summer.
 <br>
 
 ## Design and Demo
-<img src="https://github.com/D-Ajay-Kumar/enviroCar-Cross-Platform-App/blob/master/design/app_video.gif" width="300" height="570" />
+|Login and Register Screens|Dashboard, Tracks, Map and Bluetooth|
+|---------------------------------------------------------|------------------------------------------------------------|
+<img src="https://github.com/D-Ajay-Kumar/enviroCar-Cross-Platform-App/blob/master/design/app_video.gif" width="300" height="570" /> | <img src="https://github.com/D-Ajay-Kumar/enviroCar-Cross-Platform-App/blob/master/design/features_gif.gif" width="300" height="570" />
 
 |Login Screen|Register Screen|Dashboard Screen|
 |---------------------------------------------------------|------------------------------------------------------------|--------------------------------------------------------|
@@ -25,6 +27,7 @@ It is still under progress and will be developed further this summer.
 3. Turn Bluetooth On and Off from within the app
 4. See a list of all the active Bluetooth Devices around
 5. A demo screen that fetches user's location and shows on the map using MapBox
+6. Tracks Screen that fetches open tracks data from enviroCar server and shows it's Duration, Distance, Time and Date
 
 <br>
 
