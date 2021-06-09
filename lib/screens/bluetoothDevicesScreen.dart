@@ -18,8 +18,11 @@ class BluetoothDevicesScreen extends StatefulWidget {
 class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   blue.BluetoothState _state;
   bool _isScanning = false;
+  final blue.FlutterBlue _flutterBlue = blue.FlutterBlue.instance;
+  final List<blue.BluetoothDevice> detectedBluetoothDevices = [];
+  int selected;
 
-  // Toggles bluetooth on and off
+  /// Toggles bluetooth on and off
   // Works only on Android
   // iOS doesn't give permission to toggle Bluetooth from inside the app
   Future<void> toggleBluetooth() async {
@@ -27,11 +30,71 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   }
 
   @override
+  void initState() {
+    selected = -1;
+    determineBluetoothStatus();
+    super.initState();
+  }
+
+  /// determining the status of bluetooth to initialize [_state] of bluetooth
+  void determineBluetoothStatus() async {
+    var state = await _flutterBlue.isOn;
+    setState(() {
+      _state = state ? blue.BluetoothState.on : blue.BluetoothState.off;
+    });
+  }
+
+  /// function to start the scan and population of [detectedBluetoothDevices] list if [_state] bluetooth is ON
+  void startScan() async {
+    if (_state == blue.BluetoothState.on) {
+      scanAndPopulateList();
+    }
+  }
+
+  /// function to scan and populate list by listening to connectedDevices and scanResults stream
+  void scanAndPopulateList() {
+    _flutterBlue.connectedDevices
+        .asStream()
+        .listen(addConnectedDevices);
+
+    _flutterBlue.scanResults
+        .listen(addScannedDevices);
+
+    _flutterBlue.startScan();
+
+  }
+
+  /// callback function to add the [connectedDevices] to [detectedBluetoothDevices] list
+  void addConnectedDevices(List<blue.BluetoothDevice> devices) {
+    for (blue.BluetoothDevice bluetoothDevice in devices) {
+      addDeviceToList(bluetoothDevice);
+      print(bluetoothDevice.toString());
+    }
+  }
+
+  /// callback function to add the [scannedDevices] to [detectedBluetoothDevices] list
+  void addScannedDevices(List<blue.ScanResult> stream) {
+    for (blue.ScanResult scanResult in stream) {
+      addDeviceToList(scanResult.device);
+      print(scanResult.device.toString());
+    }
+  }
+
+  /// function to populate the [detectedBluetoothDevices] list
+  void addDeviceToList(blue.BluetoothDevice bluetoothDevice) {
+    if (!detectedBluetoothDevices.contains(bluetoothDevice)) {
+      setState(() {
+        detectedBluetoothDevices.add(bluetoothDevice);
+      });
+    }
+  }
+
+  @override
   void dispose() {
     super.dispose();
 
     // Stops any running scan before closing the screen
-    blue.FlutterBlue.instance.stopScan();
+    _flutterBlue.stopScan();
   }
 
   @override
@@ -51,7 +114,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                 value: _state == blue.BluetoothState.on ? true : false,
                 onChanged: (value) async {
                   if (_isScanning) {
-                    blue.FlutterBlue.instance.stopScan();
+                    _flutterBlue.stopScan();
                     setState(() {
                       _isScanning = false;
                     });
@@ -82,7 +145,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               setState(() {
                 _isScanning = true;
               });
-              blue.FlutterBlue.instance.startScan();
+              startScan();
             } else {
               showDialog(
                 context: context,
@@ -94,37 +157,39 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               );
             }
           } else {
-            blue.FlutterBlue.instance.stopScan();
+            _flutterBlue.stopScan();
             setState(() {
               _isScanning = false;
             });
           }
         },
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            // Shows available Bluetooth devices
-            StreamBuilder<List<blue.ScanResult>>(
-              stream: blue.FlutterBlue.instance.scanResults,
-              initialData: [],
-              builder: (_, snapshot) {
-                return Column(
-                  children: snapshot.data.map((d) {
-                    return d.device.name.isEmpty
-                        ? Container()
-                        : ListTile(
-                            leading: Icon(
-                              Icons.bluetooth,
-                            ),
-                            title: Text(d.device.name),
-                            subtitle: Text(d.device.id.toString()),
-                          );
-                  }).toList(),
-                );
-              },
-            ),
-          ],
+      body: Container(
+        child: ListView.builder(
+          itemBuilder: (BuildContext context, index) {
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 5),
+              child: ListTile(
+                title: Text(
+                  (detectedBluetoothDevices[index].name == null || detectedBluetoothDevices[index].name.trim().length == 0) ? 'Unknown Device' : detectedBluetoothDevices[index].name,
+                ),
+                subtitle: Text(
+                  detectedBluetoothDevices[index].id.toString()
+                ),
+                trailing: Radio(
+                  activeColor: kSpringColor,
+                  value: index,
+                  groupValue: selected,
+                  onChanged: (value) {
+                    setState(() {
+                      selected = value;
+                    });
+                  },
+                ),
+              ),
+            );
+          },
+          itemCount: detectedBluetoothDevices.length,
         ),
       ),
     );
