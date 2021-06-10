@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
+import 'package:device_preview/device_preview.dart';
 
 import './providers/authProvider.dart';
 import './screens/splashScreen.dart';
@@ -20,7 +21,10 @@ void main() {
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   runApp(
-    MyApp(),
+    DevicePreview(
+      enabled: true,
+      builder: (context) => MyApp(),
+    ),
   );
 }
 
@@ -34,6 +38,8 @@ class MyApp extends StatelessWidget {
         )
       ],
       child: MaterialApp(
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         theme: ThemeData(
           accentColor: kSpringColor,
         ),

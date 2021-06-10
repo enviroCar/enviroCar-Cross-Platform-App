@@ -5,6 +5,7 @@ import './tracksScreen.dart';
 import './settingsScreen.dart';
 import './profileScreen.dart';
 import '../constants.dart';
+import '../widgets/OBDhelpDialog.dart';
 
 class Index extends StatefulWidget {
   static const routeName = '/index';
@@ -35,13 +36,30 @@ class _IndexState extends State<Index> {
     });
   }
 
+  void showHelpDialog() {
+    showDialog(
+      context: context,
+      builder: (_) {
+        return OBDHelpDialog();
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kGreyColor,
         elevation: 0,
-
+        leading: IconButton(
+          icon: Icon(
+            Icons.help,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            showHelpDialog();
+          },
+        ),
         // enviroCar logo
         title: Image.asset(
           'assets/images/img_envirocar_logo_white.png',

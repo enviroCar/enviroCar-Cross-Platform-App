@@ -3,11 +3,15 @@ import 'package:flutter/material.dart';
 import '../../constants.dart';
 
 class DashboardCard extends StatelessWidget {
+  final double width;
+  final double height;
   final IconData iconData;
   final String title;
   final String subtitle;
 
   const DashboardCard({
+    @required this.height,
+    @required this.width,
     @required this.iconData,
     @required this.title,
     @required this.subtitle,
@@ -65,8 +69,8 @@ class DashboardCard extends StatelessWidget {
               ),
             ],
           ),
-          height: 70,
-          width: 288,
+          height: height * 0.12,
+          width: width * 0.9,
           decoration: BoxDecoration(
             color: Colors.white,
             boxShadow: [

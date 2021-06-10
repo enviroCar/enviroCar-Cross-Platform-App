@@ -73,11 +73,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ],
             ),
             DashboardCard(
+              height: _height,
+              width: _width,
               iconData: Icons.bluetooth,
-              title: 'OBD Link MX+ 509',
-              subtitle: '00:04:3E',
+              title: 'No OBD-II adapter selected',
+              subtitle: 'Click here to select one',
             ),
             DashboardCard(
+              height: _height,
+              width: _width,
               iconData: Icons.car_repair,
               title: 'ALPHA ROMEO 509',
               subtitle: '2000, 1600cm',
@@ -94,6 +98,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       'Start Track',
                       style: TextStyle(
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
