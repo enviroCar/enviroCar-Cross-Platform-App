@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import './bluetoothDevicesScreen.dart';
-import './mapScreen.dart';
 import './dashboardScreen.dart';
 import './tracksScreen.dart';
 import './settingsScreen.dart';
@@ -43,33 +41,6 @@ class _IndexState extends State<Index> {
       appBar: AppBar(
         backgroundColor: kGreyColor,
         elevation: 0,
-        actions: [
-          // Map screen button
-          IconButton(
-            icon: Icon(
-              Icons.gps_fixed_sharp,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                MapScreen.routeName,
-              );
-            },
-          ),
-
-          // Bluetooth screen button
-          IconButton(
-            icon: Icon(
-              Icons.bluetooth,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              Navigator.of(context).pushNamed(
-                BluetoothDevicesScreen.routeName,
-              );
-            },
-          ),
-        ],
 
         // enviroCar logo
         title: Image.asset(
