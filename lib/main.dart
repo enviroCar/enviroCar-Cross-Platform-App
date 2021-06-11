@@ -12,6 +12,7 @@ import './screens/loginScreen.dart';
 import './screens/mapScreen.dart';
 import './screens/registerScreen.dart';
 import './constants.dart';
+import './providers/userStatsProvider.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,7 +23,7 @@ void main() {
 
   runApp(
     DevicePreview(
-      enabled: true,
+      enabled: false,
       builder: (context) => MyApp(),
     ),
   );
@@ -35,6 +36,11 @@ class MyApp extends StatelessWidget {
         // Provides user data to different widgets on the tree
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
+        ),
+
+        // Provides user stats data to different widgets on the tree
+        ChangeNotifierProvider(
+          create: (context) => UserStatsProvider(),
         )
       ],
       child: MaterialApp(
