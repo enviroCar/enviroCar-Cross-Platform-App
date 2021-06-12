@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './providers/authProvider.dart';
 import './screens/splashScreen.dart';
@@ -13,9 +14,12 @@ import './screens/mapScreen.dart';
 import './screens/registerScreen.dart';
 import './constants.dart';
 import './providers/userStatsProvider.dart';
+import './globals.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  preferences = await SharedPreferences.getInstance();
 
   // Restricts rotation of screen
   SystemChrome.setPreferredOrientations(

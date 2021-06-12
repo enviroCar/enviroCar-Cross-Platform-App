@@ -7,6 +7,8 @@ import './loginScreen.dart';
 import '../providers/authProvider.dart';
 import '../services/authenticationServices.dart';
 import '../providers/userStatsProvider.dart';
+import '../globals.dart';
+import './onboardingScreen.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/splashScreen';
@@ -16,6 +18,15 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Widget navigate() {
+    if (preferences.getBool('displayIntroduction') != null) {
+      preferences.setBool('displayIntroduction', false);
+      return OnboardingScreen();
+    } else {
+      return LoginScreen();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final AuthProvider _authProvider =
@@ -30,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
       ),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return snapshot.data ? Index() : LoginScreen();
+          return snapshot.data ? Index() : navigate();
         } else {
           return Scaffold(
             body: Center(
