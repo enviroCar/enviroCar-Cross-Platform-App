@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 import 'package:system_shortcuts/system_shortcuts.dart';
-import 'package:flutter_blue/flutter_blue.dart' as blue;
 
 import '../widgets/bleDialog.dart';
 import '../constants.dart';
@@ -22,6 +21,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   FlutterReactiveBle flutterReactiveBlue = FlutterReactiveBle();
   final List<DiscoveredDevice> detectedBluetoothDevices = [];
   int selected = -1;
+  String selectedDeviceId = '';
 
   /// Toggles bluetooth on and off
   // Works only on Android
@@ -87,6 +87,21 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   /// function to stop scanning by deinitializing [flutterReactiveBlue]
   void stopScan() {
     flutterReactiveBlue.deinitialize();
+  }
+
+  void connectToDevice() {
+    flutterReactiveBlue.connectToDevice(
+      id: selectedDeviceId,
+      connectionTimeout: Duration(seconds: 10),
+      // servicesWithCharacteristicsToDiscover: // TODO: specify characteristics for OBD-II for faster connection
+    ).listen(sendConnectionStatusUpdates).onError(handleError);
+  }
+
+  void sendConnectionStatusUpdates(ConnectionStateUpdate connectionStateUpdate) {
+    print('connected to ${detectedBluetoothDevices[selected].name}');
+    print(connectionStateUpdate.connectionState.toString());
+    print(connectionStateUpdate.deviceId);
+    print(connectionStateUpdate.failure.toString());
   }
 
   @override
@@ -181,7 +196,9 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                   onChanged: (value) {
                     setState(() {
                       selected = value;
+                      selectedDeviceId = detectedBluetoothDevices[index].id;
                     });
+                    connectToDevice();
                   },
                 ),
               ),
