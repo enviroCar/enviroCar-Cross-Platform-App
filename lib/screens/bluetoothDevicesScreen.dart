@@ -89,6 +89,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     flutterReactiveBlue.deinitialize();
   }
 
+  /// function to connect to selected device
   void connectToDevice() {
     flutterReactiveBlue.connectToDevice(
       id: selectedDeviceId,
@@ -97,11 +98,12 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     ).listen(sendConnectionStatusUpdates).onError(handleError);
   }
 
+  /// callback function to send connection status updates
   void sendConnectionStatusUpdates(ConnectionStateUpdate connectionStateUpdate) {
     print('connected to ${detectedBluetoothDevices[selected].name}');
-    print(connectionStateUpdate.connectionState.toString());
-    print(connectionStateUpdate.deviceId);
-    print(connectionStateUpdate.failure.toString());
+    print('connection state ${connectionStateUpdate.connectionState.toString()}');
+    print('device id ${connectionStateUpdate.deviceId}');
+    print('failure ${connectionStateUpdate.failure.toString()}');
   }
 
   @override
