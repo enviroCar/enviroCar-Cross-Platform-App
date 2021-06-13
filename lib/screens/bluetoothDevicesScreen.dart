@@ -21,6 +21,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   final blue.FlutterBlue _flutterBlue = blue.FlutterBlue.instance;
   final List<blue.BluetoothDevice> detectedBluetoothDevices = [];
   int selected;
+  blue.BluetoothDevice selectedBluetoothDevice;
 
   /// Toggles bluetooth on and off
   // Works only on Android
@@ -51,7 +52,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     }
   }
 
-  /// function to scan and populate list by listening to connectedDevices and scanResults stream
+  /// function to scan and populate list by listening to [connectedDevices] and [scanResults] stream
   void scanAndPopulateList() {
     _flutterBlue.connectedDevices
         .asStream()
@@ -87,6 +88,23 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
         detectedBluetoothDevices.add(bluetoothDevice);
       });
     }
+  }
+
+  /// function to connect to [selectedBluetoothDevice]
+  void connectToDevice() async {
+    await selectedBluetoothDevice.connect(
+      timeout: Duration(seconds: 20),
+      autoConnect: true, // TODO:
+    ).whenComplete(() => {
+      print('connected')
+    }).onError((error, stackTrace) => {
+      print(error.toString())
+    });
+  }
+
+  /// function to disconnect [selectedBluetoothDevice]
+  void disconnectDevice() {
+    selectedBluetoothDevice.disconnect();
   }
 
   @override
@@ -183,7 +201,9 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                   onChanged: (value) {
                     setState(() {
                       selected = value;
+                      selectedBluetoothDevice = detectedBluetoothDevices[value];
                     });
+                    connectToDevice();
                   },
                 ),
               ),
