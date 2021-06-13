@@ -56,34 +56,34 @@ class _DashboardScreenState extends State<DashboardScreen> {
               children: [
                 DashboardIconButton(
                   routeName: BluetoothDevicesScreen.routeName,
-                  iconDate: Icons.bluetooth,
+                  assetName: 'assets/icons/bluetooth.svg',
                 ),
                 DashboardIconButton(
                   routeName: BluetoothDevicesScreen.routeName,
-                  iconDate: Icons.phone_android_sharp,
+                  assetName: 'assets/icons/smartphone.svg',
                 ),
                 DashboardIconButton(
                   routeName: BluetoothDevicesScreen.routeName,
-                  iconDate: Icons.car_repair,
+                  assetName: 'assets/icons/car.svg',
                 ),
                 DashboardIconButton(
                   routeName: MapScreen.routeName,
-                  iconDate: Icons.gps_fixed,
+                  assetName: 'assets/icons/gps.svg',
                 ),
               ],
             ),
             DashboardCard(
               height: _height,
               width: _width,
-              iconData: Icons.bluetooth,
-              title: 'No OBD-II adapter selected',
-              subtitle: 'Click here to select one',
+              assetName: 'assets/icons/bluetooth.svg',
+              title: 'OBD-II V9',
+              subtitle: 'ELM327',
             ),
             DashboardCard(
               height: _height,
               width: _width,
-              iconData: Icons.car_repair,
-              title: 'ALPHA ROMEO 509',
+              assetName: 'assets/icons/car.svg',
+              title: 'ALPHA ROMEO',
               subtitle: '2000, 1600cm',
             ),
             Padding(

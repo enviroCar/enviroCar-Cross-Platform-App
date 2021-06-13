@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
+
 import './dashboardScreen.dart';
 import './tracksScreen.dart';
 import './settingsScreen.dart';
@@ -82,9 +84,9 @@ class _IndexState extends State<Index> {
               onTap: () {
                 changeScreen(0);
               },
-              child: Icon(
-                Icons.home,
-                size: 30,
+              child: SvgPicture.asset(
+                'assets/icons/speedometer.svg',
+                height: 30,
                 color: _currentIndex == 0 ? kSpringColor : Colors.grey[300],
               ),
             ),
@@ -92,9 +94,9 @@ class _IndexState extends State<Index> {
               onTap: () {
                 changeScreen(1);
               },
-              child: Icon(
-                Icons.trending_up_sharp,
-                size: 30,
+              child: SvgPicture.asset(
+                'assets/icons/track.svg',
+                height: 30,
                 color: _currentIndex == 1 ? kSpringColor : Colors.grey[300],
               ),
             ),

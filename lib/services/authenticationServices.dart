@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../providers/authProvider.dart';
 import '../models/user.dart';
 import './secureStorageServices.dart';
-import '../services/userStatsServices.dart';
+import './statsServices.dart';
 import '../providers/userStatsProvider.dart';
 
 class AuthenticationServices {
@@ -66,7 +66,7 @@ class AuthenticationServices {
         authProvider.setUser = user;
         authProvider.setAuthStatus = true;
 
-        UserStatsServices().getUserStats(
+        StatsServices().getUserStats(
           authProvider: authProvider,
           userStatsProvider: userStatsProvider,
         );

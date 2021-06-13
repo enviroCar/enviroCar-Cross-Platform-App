@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../constants.dart';
 
 class DashboardCard extends StatelessWidget {
   final double width;
   final double height;
-  final IconData iconData;
+  final String assetName;
   final String title;
   final String subtitle;
 
   const DashboardCard({
     @required this.height,
     @required this.width,
-    @required this.iconData,
+    @required this.assetName,
     @required this.title,
     @required this.subtitle,
   });
@@ -38,10 +40,12 @@ class DashboardCard extends StatelessWidget {
                       shape: BoxShape.circle,
                       color: kSpringColor,
                     ),
-                    child: Icon(
-                      iconData,
-                      color: Colors.white,
-                      size: 30,
+                    child: Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: SvgPicture.asset(
+                        assetName,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                   SizedBox(

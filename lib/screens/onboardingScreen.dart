@@ -3,6 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 
 import './loginScreen.dart';
+import '../services/statsServices.dart';
+import '../models/envirocarStats.dart';
+import '../constants.dart';
 
 class OnboardingScreen extends StatelessWidget {
   @override
@@ -11,22 +14,90 @@ class OnboardingScreen extends StatelessWidget {
       key: GlobalKey<IntroductionScreenState>(),
       pages: [
         PageViewModel(
-          title: "First Introduction Screen",
-          body:
-              "Instead of having to buy an entire share, invest any amount you want.",
+          decoration: PageDecoration(
+            descriptionPadding: EdgeInsets.all(10),
+            titlePadding: EdgeInsets.all(10),
+          ),
+          titleWidget: Image.asset(
+            'assets/images/img_envirocar_logo.png',
+          ),
+          bodyWidget: Image.asset(
+            'assets/images/enviroCar-en.png',
+          ),
         ),
         PageViewModel(
-          title: "Second Introduction Screen",
-          body:
-              "Download the Stockpile app and master the market with our mini-lesson.",
-        ),
-        PageViewModel(
-          title: "Third Introduction Screen",
-          bodyWidget: Column(
+          titleWidget: Column(
             children: [
-              Text('Let\s get going'),
-              Image.asset('assets/images/img_envirocar_logo.png'),
+              Text(
+                'enviroCar',
+                style: TextStyle(
+                  fontSize: 50,
+                ),
+              ),
+              Text(
+                'Stats',
+                style: TextStyle(
+                  fontSize: 50,
+                ),
+              ),
             ],
+          ),
+          bodyWidget: FutureBuilder(
+            future: StatsServices().getEnvirocarStats(),
+            builder:
+                (BuildContext context, AsyncSnapshot<EnvirocarStats> snapshot) {
+              if (snapshot.hasData) {
+                EnvirocarStats envirocarStats = snapshot.data;
+                return Column(
+                  children: [
+                    Text(
+                      envirocarStats.users.toString(),
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      'Users',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      envirocarStats.tracks.toString(),
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      'Tracks',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      envirocarStats.measurements.toString(),
+                      style: TextStyle(
+                        fontSize: 30,
+                      ),
+                    ),
+                    Text(
+                      'Measurements',
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                  ],
+                );
+              } else {
+                return Container();
+              }
+            },
           ),
         ),
       ],

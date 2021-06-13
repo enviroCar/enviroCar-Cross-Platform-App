@@ -19,7 +19,7 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   Widget navigate() {
-    if (preferences.getBool('displayIntroduction') != null) {
+    if (preferences.getBool('displayIntroduction') == null) {
       preferences.setBool('displayIntroduction', false);
       return OnboardingScreen();
     } else {

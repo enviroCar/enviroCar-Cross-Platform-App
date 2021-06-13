@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter_svg/flutter_svg.dart';
+
 import '../../constants.dart';
 
 class DashboardIconButton extends StatelessWidget {
   final String routeName;
-  final IconData iconDate;
+  final String assetName;
   const DashboardIconButton({
     @required this.routeName,
-    @required this.iconDate,
+    @required this.assetName,
   });
 
   @override
@@ -27,9 +29,12 @@ class DashboardIconButton extends StatelessWidget {
             color: kSpringColor,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Icon(
-            iconDate,
-            color: Colors.white,
+          child: Padding(
+            padding: const EdgeInsets.all(15.0),
+            child: SvgPicture.asset(
+              assetName,
+              color: Colors.white,
+            ),
           ),
         ),
       ),

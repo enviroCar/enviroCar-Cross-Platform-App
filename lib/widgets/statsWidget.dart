@@ -43,7 +43,7 @@ class StatsWidget extends StatelessWidget {
                             : userStats.trackCount.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
@@ -76,7 +76,7 @@ class StatsWidget extends StatelessWidget {
                             : userStats.distance.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
@@ -109,7 +109,7 @@ class StatsWidget extends StatelessWidget {
                             : userStats.duration.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 25,
+                          fontSize: 20,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
