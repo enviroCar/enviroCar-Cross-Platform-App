@@ -6,6 +6,7 @@ import '../providers/authProvider.dart';
 import './loginScreen.dart';
 import '../services/authenticationServices.dart';
 import '../constants.dart';
+import '../providers/userStatsProvider.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -17,6 +18,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
+    final UserStatsProvider _userStatsProvider =
+        Provider.of<UserStatsProvider>(context, listen: false);
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -129,8 +132,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   TextButton(
                     onPressed: () {
-                      AuthenticationServices()
-                          .logoutUser(authProvider: _authProvider);
+                      AuthenticationServices().logoutUser(
+                        authProvider: _authProvider,
+                        userStatsProvider: _userStatsProvider,
+                      );
                       Navigator.of(context).pushReplacementNamed(
                         LoginScreen.routeName,
                       );
