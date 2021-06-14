@@ -29,6 +29,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    deviceHeight = MediaQuery.of(context).size.height;
+    deviceWidth = MediaQuery.of(context).size.width;
+
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
     final UserStatsProvider _userStatsProvider =

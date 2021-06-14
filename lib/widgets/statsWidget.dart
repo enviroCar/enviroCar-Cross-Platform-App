@@ -5,20 +5,13 @@ import 'package:provider/provider.dart';
 import '../constants.dart';
 import '../models/userStats.dart';
 import '../providers/userStatsProvider.dart';
+import '../globals.dart';
 
 class StatsWidget extends StatelessWidget {
-  final double height;
-  final double width;
-
-  StatsWidget({
-    @required this.height,
-    @required this.width,
-  });
-
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: height * 0.20,
+      height: deviceHeight * 0.20,
       width: double.infinity,
       color: kGreyColor,
       child: Padding(
@@ -43,24 +36,24 @@ class StatsWidget extends StatelessWidget {
                             : userStats.trackCount.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: deviceHeight * 0.035,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.02,
+                        height: deviceHeight * 0.01,
                       ),
                       Text(
                         'Total Tracks',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: deviceHeight * 0.02,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
-                  width: width * 0.3,
+                  width: deviceWidth * 0.3,
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 65, 80, 100),
                     borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -76,24 +69,24 @@ class StatsWidget extends StatelessWidget {
                             : userStats.distance.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: deviceHeight * 0.035,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.02,
+                        height: deviceHeight * 0.01,
                       ),
                       Text(
                         'Total Distance',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: deviceHeight * 0.02,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
-                  width: width * 0.3,
+                  width: deviceWidth * 0.3,
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 65, 80, 100),
                     borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -109,24 +102,24 @@ class StatsWidget extends StatelessWidget {
                             : userStats.duration.toString(),
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 20,
+                          fontSize: deviceHeight * 0.035,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
                       SizedBox(
-                        height: height * 0.02,
+                        height: deviceHeight * 0.01,
                       ),
                       Text(
                         'Total Time',
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: 15,
+                          fontSize: deviceHeight * 0.02,
                           fontWeight: FontWeight.normal,
                         ),
                       ),
                     ],
                   ),
-                  width: width * 0.3,
+                  width: deviceWidth * 0.3,
                   decoration: BoxDecoration(
                     color: Color.fromARGB(255, 65, 80, 100),
                     borderRadius: BorderRadius.all(Radius.circular(5)),

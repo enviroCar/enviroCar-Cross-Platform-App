@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../../constants.dart';
+import '../../globals.dart';
 
 class DashboardIconButton extends StatelessWidget {
   final String routeName;
@@ -15,7 +16,7 @@ class DashboardIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 5.0),
       child: GestureDetector(
         onTap: () {
           Navigator.of(context).pushNamed(
@@ -23,17 +24,19 @@ class DashboardIconButton extends StatelessWidget {
           );
         },
         child: Container(
-          height: 60,
-          width: 60,
+          height: deviceHeight * 0.09,
+          width: deviceHeight * 0.09,
           decoration: BoxDecoration(
             color: kSpringColor,
             borderRadius: BorderRadius.circular(20),
           ),
-          child: Padding(
-            padding: const EdgeInsets.all(15.0),
-            child: SvgPicture.asset(
+          child: IconButton(
+            onPressed: () {},
+            icon: SvgPicture.asset(
               assetName,
               color: Colors.white,
+              width: deviceHeight * 0.04,
+              height: deviceHeight * 0.04,
             ),
           ),
         ),
