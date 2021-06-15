@@ -7,6 +7,7 @@ import '../widgets/dashboardWidgets/dashboardCard.dart';
 import '../constants.dart';
 import './mapScreen.dart';
 import '../globals.dart';
+import './carScreen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -74,6 +75,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               assetName: 'assets/icons/bluetooth.svg',
               title: 'OBD-II V9',
               subtitle: 'ELM327',
+              routeName: BluetoothDevicesScreen.routeName,
             ),
             SizedBox(
               height: deviceHeight * 0.02,
@@ -82,6 +84,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               assetName: 'assets/icons/car.svg',
               title: 'ALPHA ROMEO',
               subtitle: '2000, 1600cm',
+              routeName: CarScreen.routeName,
             ),
             SizedBox(
               height: deviceHeight * 0.02,
