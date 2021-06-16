@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import '../widgets/statsWidget.dart';
 import './bluetoothDevicesScreen.dart';
 import '../widgets/dashboardWidgets/dashboardIconButton.dart';
@@ -8,6 +10,8 @@ import '../constants.dart';
 import './mapScreen.dart';
 import '../globals.dart';
 import './carScreen.dart';
+import '../providers/carsProvider.dart';
+import '../models/car.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -80,11 +84,20 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SizedBox(
               height: deviceHeight * 0.02,
             ),
-            DashboardCard(
-              assetName: 'assets/icons/car.svg',
-              title: 'ALPHA ROMEO',
-              subtitle: '2000, 1600cm',
-              routeName: CarScreen.routeName,
+            Consumer<CarsProvider>(
+              builder: (_, carsProvider, child) {
+                Car selectedCar = carsProvider.getSelectedCar;
+                return DashboardCard(
+                  assetName: 'assets/icons/car.svg',
+                  title: selectedCar == null
+                      ? 'No car selected'
+                      : '${selectedCar.manufacturer}, ${selectedCar.model}',
+                  subtitle: selectedCar == null
+                      ? 'Select a car'
+                      : '${selectedCar.constructionYear}, ${selectedCar.engineDisplacement}, ${selectedCar.fuelType}',
+                  routeName: CarScreen.routeName,
+                );
+              },
             ),
             SizedBox(
               height: deviceHeight * 0.02,

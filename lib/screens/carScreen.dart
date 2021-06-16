@@ -21,6 +21,17 @@ class _CarScreenState extends State<CarScreen> {
       appBar: AppBar(
         backgroundColor: kGreyColor,
         elevation: 0,
+        actions: [
+          GestureDetector(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: Icon(Icons.add),
+            ),
+            onTap: () {
+              Navigator.of(context).pushNamed(CreateCarScreen.routeName);
+            },
+          ),
+        ],
 
         // enviroCar logo
         title: Image.asset(
@@ -29,42 +40,40 @@ class _CarScreenState extends State<CarScreen> {
         ),
         centerTitle: true,
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
-        onPressed: () {
-          Navigator.of(context).pushNamed(CreateCarScreen.routeName);
-        },
-      ),
       body: Container(
         child: Consumer<CarsProvider>(
           builder: (_, carsProvider, child) {
             List<Car> carsList = carsProvider.getCarsList;
-            print(carsList.length);
+            Car selectedCar = carsProvider.getSelectedCar;
             if (carsList.isNotEmpty) {
               return ListView.builder(
                 padding: EdgeInsets.only(bottom: 20),
-                itemCount: carsProvider.getCarsList.length,
+                itemCount: carsList.length,
                 itemBuilder: (_, index) {
-                  return ListTile(
-                    leading: Icon(Icons.drive_eta_sharp),
-                    title: Text(carsProvider.getCarsList[index].manufacturer +
-                        ' - ' +
-                        carsProvider.getCarsList[index].model),
-                    subtitle: Text(carsProvider
-                            .getCarsList[index].constructionYear
-                            .toString() +
-                        ', ' +
-                        carsProvider.getCarsList[index].engineDisplacement
-                            .toString() +
-                        ', ' +
-                        carsProvider.getCarsList[index].fuelType),
-                    trailing: Radio(
-                      onChanged: (bool value) {},
-                      groupValue: true,
-                      value: carsProvider.getCarsList[index].isSelected,
+                  return GestureDetector(
+                    onTap: () {
+                      carsProvider.setSelectedCar = carsList[index];
+                    },
+                    child: ListTile(
+                      leading: Icon(Icons.drive_eta_sharp),
+                      title: Text(carsList[index].manufacturer +
+                          ' - ' +
+                          carsList[index].model),
+                      subtitle: Text(
+                          carsList[index].constructionYear.toString() +
+                              ', ' +
+                              carsList[index].engineDisplacement.toString() +
+                              ', ' +
+                              carsList[index].fuelType),
+                      trailing: Radio(
+                        onChanged: (bool value) {},
+                        groupValue: true,
+                        value: selectedCar == null
+                            ? false
+                            : (carsList[index].id == selectedCar.id
+                                ? true
+                                : false),
+                      ),
                     ),
                   );
                 },
@@ -78,34 +87,6 @@ class _CarScreenState extends State<CarScreen> {
           },
         ),
       ),
-      // Column(
-      //   crossAxisAlignment: CrossAxisAlignment.start,
-      //   children: [
-      // Expanded(
-      //   flex: 1,
-      //   // width: double.infinity,
-      //   child: Container(
-      //     padding: EdgeInsets.only(left: 15),
-      //     width: double.infinity,
-      //     child: Align(
-      //       alignment: Alignment.centerLeft,
-      //       child: Text(
-      //         'My Cars',
-      //         style: TextStyle(
-      //           color: Color.fromARGB(255, 23, 33, 43),
-      //           fontSize: 20,
-      //         ),
-      //       ),
-      //     ),
-      //   ),
-      // ),
-      // Expanded(
-      //   flex: 10,
-      //   child:
-
-      // ),
-      //   ],
-      // ),
     );
   }
 }

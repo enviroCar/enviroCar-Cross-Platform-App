@@ -5,7 +5,6 @@ class Car {
   int constructionYear;
   String fuelType;
   int engineDisplacement;
-  bool isSelected;
 
   Car({
     this.id,
@@ -14,6 +13,5 @@ class Car {
     this.constructionYear,
     this.fuelType,
     this.engineDisplacement,
-    this.isSelected,
   });
 }
