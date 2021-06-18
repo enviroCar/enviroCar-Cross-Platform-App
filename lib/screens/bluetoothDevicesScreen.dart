@@ -92,14 +92,32 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
 
   /// function to connect to [selectedBluetoothDevice]
   void connectToDevice() async {
+    _flutterBlue.stopScan();
+    Future<bool> returnValue;
     await selectedBluetoothDevice.connect(
-      timeout: Duration(seconds: 20),
-      autoConnect: true, // TODO:
-    ).whenComplete(() => {
-      print('connected')
-    }).onError((error, stackTrace) => {
-      print(error.toString())
+      autoConnect: false,
+    ).timeout(
+      Duration(seconds: 60), onTimeout: () {
+       print('timeout occurred');
+       returnValue = Future.value(false);
+       disconnectDevice();
+    }).then((value) {
+      if (returnValue == null) {
+        print('connection successful');
+      }
     });
+    // try {
+    //   await selectedBluetoothDevice.connect(
+    //     autoConnect: false,
+    //   ).whenComplete(() => {
+    //     print('connected to ${selectedBluetoothDevice.state}')
+    //   });
+    // } catch (e) {
+    //   throw e;
+    // } finally {
+    //   var services = await selectedBluetoothDevice.services.toList();
+    //   print('services ${services.toString()}');
+    // }
   }
 
   /// function to disconnect [selectedBluetoothDevice]
