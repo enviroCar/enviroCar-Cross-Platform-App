@@ -104,6 +104,18 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     print('connection state ${connectionStateUpdate.connectionState.toString()}');
     print('device id ${connectionStateUpdate.deviceId}');
     print('failure ${connectionStateUpdate.failure.toString()}');
+
+    if (connectionStateUpdate.connectionState == DeviceConnectionState.connected)
+      readCharacteristics();
+  }
+
+  void readCharacteristics() async {
+    Uuid serviceUuid = detectedBluetoothDevices[selected].serviceUuids.first;
+    print('service uuid $serviceUuid');
+    // Uuid characteristicUuid = discoveredService.characteristicIds.first;
+    // final characteristic = QualifiedCharacteristic(characteristicId: characteristicUuid, serviceId: serviceUuid, deviceId: selectedDeviceId);
+    // final response = await flutterReactiveBlue.readCharacteristic(characteristic);
+    // print('response ${response.toString()}');
   }
 
   @override

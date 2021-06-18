@@ -8,7 +8,7 @@ import '../services/authenticationServices.dart';
 import './registerScreen.dart';
 import '../models/user.dart';
 import './index.dart';
-import '../utils/validator.dart';
+import '../providers/userStatsProvider.dart';
 
 // TODO: Add validators
 
@@ -44,6 +44,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
+    final UserStatsProvider _userStatsProvider =
+        Provider.of<UserStatsProvider>(context, listen: false);
 
     return Scaffold(
       body: SafeArea(
@@ -164,6 +166,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             await AuthenticationServices().loginUser(
                           authProvider: _authProvider,
                           user: _user,
+                          userStatsProvider: _userStatsProvider,
                         );
 
                         if (_status == 'Logged In') {

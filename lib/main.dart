@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:provider/provider.dart';
+import 'package:device_preview/device_preview.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import './providers/authProvider.dart';
 import './screens/splashScreen.dart';
@@ -11,16 +13,23 @@ import './screens/loginScreen.dart';
 import './screens/mapScreen.dart';
 import './screens/registerScreen.dart';
 import './constants.dart';
+import './providers/userStatsProvider.dart';
+import './globals.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  preferences = await SharedPreferences.getInstance();
 
   // Restricts rotation of screen
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   runApp(
-    MyApp(),
+    DevicePreview(
+      enabled: true,
+      builder: (context) => MyApp(),
+    ),
   );
 }
 
@@ -31,9 +40,16 @@ class MyApp extends StatelessWidget {
         // Provides user data to different widgets on the tree
         ChangeNotifierProvider(
           create: (context) => AuthProvider(),
+        ),
+
+        // Provides user stats data to different widgets on the tree
+        ChangeNotifierProvider(
+          create: (context) => UserStatsProvider(),
         )
       ],
       child: MaterialApp(
+        locale: DevicePreview.locale(context),
+        builder: DevicePreview.appBuilder,
         theme: ThemeData(
           accentColor: kSpringColor,
         ),

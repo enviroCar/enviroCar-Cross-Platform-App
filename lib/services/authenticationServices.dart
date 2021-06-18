@@ -6,6 +6,8 @@ import 'package:http/http.dart' as http;
 import '../providers/authProvider.dart';
 import '../models/user.dart';
 import './secureStorageServices.dart';
+import './statsServices.dart';
+import '../providers/userStatsProvider.dart';
 
 class AuthenticationServices {
   final baseUri = 'https://envirocar.org/api/stable/users';
@@ -37,6 +39,7 @@ class AuthenticationServices {
   Future<String> loginUser({
     @required AuthProvider authProvider,
     @required User user,
+    @required UserStatsProvider userStatsProvider,
   }) async {
     if (user.getUsername != null && user.getPassword != null) {
       final Uri uri = Uri.parse(baseUri + '/' + user.getUsername);
@@ -62,6 +65,12 @@ class AuthenticationServices {
 
         authProvider.setUser = user;
         authProvider.setAuthStatus = true;
+
+        StatsServices().getUserStats(
+          authProvider: authProvider,
+          userStatsProvider: userStatsProvider,
+        );
+
         return 'Logged In';
       } else {
         authProvider.setAuthStatus = false;
@@ -76,22 +85,35 @@ class AuthenticationServices {
   }
 
   // Logs in user if they didn't logout the last time they opened the app
-  Future<bool> loginExistingUser({@required AuthProvider authProvider}) async {
+  Future<bool> loginExistingUser({
+    @required AuthProvider authProvider,
+    @required UserStatsProvider userStatsProvider,
+  }) async {
     final User _user = await SecureStorageServices().getUserFromSecureStorage();
 
-    String message =
-        await this.loginUser(authProvider: authProvider, user: _user);
+    String message = await this.loginUser(
+      authProvider: authProvider,
+      user: _user,
+      userStatsProvider: userStatsProvider,
+    );
 
     // if user deletes account from website and opens app again
     // then send to login screen and remove data from secure storage
     if (message == 'invalid username or password') {
-      this.logoutUser(authProvider: authProvider);
+      this.logoutUser(
+        authProvider: authProvider,
+        userStatsProvider: userStatsProvider,
+      );
     }
     return authProvider.getAuthStatus;
   }
 
-  void logoutUser({@required AuthProvider authProvider}) {
+  void logoutUser({
+    @required AuthProvider authProvider,
+    @required UserStatsProvider userStatsProvider,
+  }) {
     SecureStorageServices().deleteUserFromSecureStorage();
+    userStatsProvider.removeStats();
     authProvider.removeUser();
   }
 }
