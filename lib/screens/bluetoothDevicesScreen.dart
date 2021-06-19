@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:flutter_blue/flutter_blue.dart' as blue;
@@ -22,6 +23,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   final List<blue.BluetoothDevice> detectedBluetoothDevices = [];
   int selected;
   blue.BluetoothDevice selectedBluetoothDevice;
+  List<blue.BluetoothService> services;
 
   /// Toggles bluetooth on and off
   // Works only on Android
@@ -33,6 +35,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   @override
   void initState() {
     selected = -1;
+    services = [];
     determineBluetoothStatus();
     super.initState();
   }
@@ -92,37 +95,49 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
 
   /// function to connect to [selectedBluetoothDevice]
   void connectToDevice() async {
-    _flutterBlue.stopScan();
+    stopScan();
     Future<bool> returnValue;
-    await selectedBluetoothDevice.connect(
-      autoConnect: false,
-    ).timeout(
-      Duration(seconds: 60), onTimeout: () {
-       print('timeout occurred');
-       returnValue = Future.value(false);
-       disconnectDevice();
-    }).then((value) {
-      if (returnValue == null) {
-        print('connection successful');
-      }
-    });
-    // try {
-    //   await selectedBluetoothDevice.connect(
-    //     autoConnect: false,
-    //   ).whenComplete(() => {
-    //     print('connected to ${selectedBluetoothDevice.state}')
-    //   });
-    // } catch (e) {
-    //   throw e;
-    // } finally {
-    //   var services = await selectedBluetoothDevice.services.toList();
-    //   print('services ${services.toString()}');
-    // }
+    try {
+      await selectedBluetoothDevice.connect(
+        autoConnect: false,
+      ).timeout(
+          Duration(seconds: 60), onTimeout: () {
+        debugPrint('timeout occurred');
+        returnValue = Future.value(false);
+        disconnectDevice();
+      }).then((value) {
+        if (returnValue == null) {
+          debugPrint('connection successful');
+          discoverServices();
+        }
+      });
+    } on PlatformException catch (e) {
+      if (e.code == 'already_connected')
+        debugPrint('already connected to $selectedBluetoothDevice');
+      throw e;
+    } catch (e) {
+      debugPrint(e.toString());
+      throw e;
+    }
+  }
+
+  /// function to discover services
+  void discoverServices() async {
+    debugPrint('inside discover services');
+    services = await selectedBluetoothDevice.services.first;
+    print('services ${services.toString()}');
   }
 
   /// function to disconnect [selectedBluetoothDevice]
   void disconnectDevice() {
+    // clearing the list services before disconnecting from selected bluetooth device
+    services.clear();
     selectedBluetoothDevice.disconnect();
+  }
+
+  /// function to stop the scan in progress
+  void stopScan() {
+    _flutterBlue.stopScan();
   }
 
   @override
@@ -130,7 +145,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     super.dispose();
 
     // Stops any running scan before closing the screen
-    _flutterBlue.stopScan();
+    stopScan();
   }
 
   @override
@@ -150,7 +165,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                 value: _state == blue.BluetoothState.on ? true : false,
                 onChanged: (value) async {
                   if (_isScanning) {
-                    _flutterBlue.stopScan();
+                    stopScan();
                     setState(() {
                       _isScanning = false;
                     });
@@ -193,7 +208,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               );
             }
           } else {
-            _flutterBlue.stopScan();
+            stopScan();
             setState(() {
               _isScanning = false;
             });
@@ -218,6 +233,9 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                   groupValue: selected,
                   onChanged: (value) {
                     setState(() {
+                      // disconnecting the previously connected device before connecting to new bluetooth device
+                      if (selected != -1)
+                        disconnectDevice();
                       selected = value;
                       selectedBluetoothDevice = detectedBluetoothDevices[value];
                     });
