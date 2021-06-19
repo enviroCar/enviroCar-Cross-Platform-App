@@ -6,7 +6,6 @@ import '../providers/authProvider.dart';
 import '../constants.dart';
 import '../services/authenticationServices.dart';
 import '../models/user.dart';
-import '../utils/validator.dart';
 
 // TODO: Add validators
 

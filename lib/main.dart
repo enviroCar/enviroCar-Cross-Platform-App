@@ -15,6 +15,9 @@ import './screens/registerScreen.dart';
 import './constants.dart';
 import './providers/userStatsProvider.dart';
 import './globals.dart';
+import './screens/carScreen.dart';
+import './providers/carsProvider.dart';
+import './screens/createCarScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,7 +30,8 @@ void main() async {
 
   runApp(
     DevicePreview(
-      enabled: true,
+      // to check the UI on different devices make enabled true
+      enabled: false,
       builder: (context) => MyApp(),
     ),
   );
@@ -45,7 +49,12 @@ class MyApp extends StatelessWidget {
         // Provides user stats data to different widgets on the tree
         ChangeNotifierProvider(
           create: (context) => UserStatsProvider(),
-        )
+        ),
+
+        // Provides car data to different widget
+        ChangeNotifierProvider(
+          create: (context) => CarsProvider(),
+        ),
       ],
       child: MaterialApp(
         locale: DevicePreview.locale(context),
@@ -63,6 +72,8 @@ class MyApp extends StatelessWidget {
           BluetoothDevicesScreen.routeName: (context) =>
               BluetoothDevicesScreen(),
           MapScreen.routeName: (context) => MapScreen(),
+          CarScreen.routeName: (context) => CarScreen(),
+          CreateCarScreen.routeName: (context) => CreateCarScreen(),
         },
       ),
     );

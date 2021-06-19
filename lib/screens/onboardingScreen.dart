@@ -5,7 +5,6 @@ import 'package:introduction_screen/introduction_screen.dart';
 import './loginScreen.dart';
 import '../services/statsServices.dart';
 import '../models/envirocarStats.dart';
-import '../constants.dart';
 
 class OnboardingScreen extends StatelessWidget {
   @override
