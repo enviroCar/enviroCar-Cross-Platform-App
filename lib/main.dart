@@ -6,6 +6,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './providers/authProvider.dart';
+import './providers/tracksProvider.dart';
 import './screens/splashScreen.dart';
 import './screens/bluetoothDevicesScreen.dart';
 import './screens/index.dart';
@@ -55,6 +56,11 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => CarsProvider(),
         ),
+
+        // Provides uploaded tracks to different widgets
+        ChangeNotifierProvider(
+          create: (context) => TracksProvider(),
+        )
       ],
       child: MaterialApp(
         locale: DevicePreview.locale(context),

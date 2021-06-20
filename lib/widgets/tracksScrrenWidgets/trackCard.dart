@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../models/track.dart';
-import '../constants.dart';
+import '../../globals.dart';
+import '../../models/track.dart';
+import '../../constants.dart';
 
 class TrackCard extends StatelessWidget {
   final Track track;
@@ -10,10 +11,6 @@ class TrackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData _mediaQuery = MediaQuery.of(context);
-    double height = _mediaQuery.size.height;
-    double width = _mediaQuery.size.width;
-
     return Container(
       padding: EdgeInsets.symmetric(
         vertical: 20,
@@ -33,7 +30,7 @@ class TrackCard extends StatelessWidget {
                 ),
               ),
               SizedBox(
-                height: height * 0.1,
+                height: deviceHeight * 0.1,
               ),
               Text(
                 track.begin.toUtc().toString().replaceFirst('.000Z', ''),
@@ -61,7 +58,7 @@ class TrackCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.02,
+                    height: deviceHeight * 0.02,
                   ),
                   Text(
                     'Duration',
@@ -84,7 +81,7 @@ class TrackCard extends StatelessWidget {
                     ),
                   ),
                   SizedBox(
-                    height: height * 0.02,
+                    height: deviceHeight * 0.02,
                   ),
                   Text(
                     'Distance',
@@ -99,7 +96,6 @@ class TrackCard extends StatelessWidget {
           ),
         ],
       ),
-      width: width * 0.3,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(

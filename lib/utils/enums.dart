@@ -1,0 +1,4 @@
+enum SelectedTab {
+  Local,
+  Uploaded,
+}

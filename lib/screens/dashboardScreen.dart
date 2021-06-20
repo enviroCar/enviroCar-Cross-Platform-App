@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
-import '../widgets/statsWidget.dart';
+import '../widgets/dashboardWidgets/statsWidget.dart';
 import './bluetoothDevicesScreen.dart';
 import '../widgets/dashboardWidgets/dashboardIconButton.dart';
 import '../widgets/dashboardWidgets/dashboardCard.dart';
@@ -25,7 +25,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: SingleChildScrollView(
         child: Column(
           children: [
+            // Widget that shows the stats of user
             StatsWidget(),
+
+            // Record Settings Button
             Padding(
               padding: const EdgeInsets.only(
                 top: 15.0,
@@ -51,6 +54,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
               ),
             ),
+
+            // Bluetooth, OBD, GPS and Car buttons
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -75,6 +80,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SizedBox(
               height: deviceHeight * 0.02,
             ),
+
+            // Bluetooth Card
             DashboardCard(
               assetName: 'assets/icons/bluetooth.svg',
               title: 'OBD-II V9',
@@ -84,6 +91,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SizedBox(
               height: deviceHeight * 0.02,
             ),
+
+            // Car Card
             Consumer<CarsProvider>(
               builder: (_, carsProvider, child) {
                 Car selectedCar = carsProvider.getSelectedCar;
@@ -102,6 +111,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
             SizedBox(
               height: deviceHeight * 0.02,
             ),
+
+            // Start Tracks Button
             GestureDetector(
               child: Container(
                 child: Center(
