@@ -19,6 +19,7 @@ import './globals.dart';
 import './screens/carScreen.dart';
 import './providers/carsProvider.dart';
 import './screens/createCarScreen.dart';
+import './screens/trackDetailsScreen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -70,6 +71,23 @@ class MyApp extends StatelessWidget {
         ),
         debugShowCheckedModeBanner: false,
         home: SplashScreen(),
+
+        // For navigating to screens which accept arguments
+        onGenerateRoute: (settings) {
+          switch (settings.name) {
+            case TrackDetailsScreen.routeName:
+              return MaterialPageRoute(
+                builder: (_) {
+                  return TrackDetailsScreen(track: settings.arguments);
+                },
+              );
+
+            default:
+              return null;
+          }
+        },
+
+        // Helps in navigating to different screens via route name
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
           RegisterScreen.routeName: (context) => RegisterScreen(),
