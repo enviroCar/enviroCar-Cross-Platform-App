@@ -7,6 +7,7 @@ import './loginScreen.dart';
 import '../services/authenticationServices.dart';
 import '../constants.dart';
 import '../providers/userStatsProvider.dart';
+import '../providers/tracksProvider.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -16,10 +17,17 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
+    // Provides user data
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
+
+    // Provides user stats data
     final UserStatsProvider _userStatsProvider =
         Provider.of<UserStatsProvider>(context, listen: false);
+
+    // provides tracks data
+    final TracksProvider _tracksProvider =
+        Provider.of<TracksProvider>(context, listen: false);
 
     return Container(
       padding: EdgeInsets.symmetric(
@@ -135,6 +143,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       AuthenticationServices().logoutUser(
                         authProvider: _authProvider,
                         userStatsProvider: _userStatsProvider,
+                        tracksProvider: _tracksProvider,
                       );
                       Navigator.of(context).pushReplacementNamed(
                         LoginScreen.routeName,

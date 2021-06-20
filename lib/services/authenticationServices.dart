@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/providers/tracksProvider.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
@@ -35,7 +36,7 @@ class AuthenticationServices {
     }
   }
 
-  // Logs in existing user
+  // Logs in user
   Future<String> loginUser({
     @required AuthProvider authProvider,
     @required User user,
@@ -88,6 +89,7 @@ class AuthenticationServices {
   Future<bool> loginExistingUser({
     @required AuthProvider authProvider,
     @required UserStatsProvider userStatsProvider,
+    @required TracksProvider tracksProvider,
   }) async {
     final User _user = await SecureStorageServices().getUserFromSecureStorage();
 
@@ -103,6 +105,7 @@ class AuthenticationServices {
       this.logoutUser(
         authProvider: authProvider,
         userStatsProvider: userStatsProvider,
+        tracksProvider: tracksProvider,
       );
     }
     return authProvider.getAuthStatus;
@@ -111,9 +114,11 @@ class AuthenticationServices {
   void logoutUser({
     @required AuthProvider authProvider,
     @required UserStatsProvider userStatsProvider,
+    @required TracksProvider tracksProvider,
   }) {
     SecureStorageServices().deleteUserFromSecureStorage();
     userStatsProvider.removeStats();
+    tracksProvider.removeTracks();
     authProvider.removeUser();
   }
 }
