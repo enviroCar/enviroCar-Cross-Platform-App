@@ -3,11 +3,10 @@ import 'package:flutter/services.dart';
 
 import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:flutter_blue/flutter_blue.dart' as blue;
+import 'package:toast/toast.dart';
 
 import '../widgets/bleDialog.dart';
 import '../constants.dart';
-
-// TODO: Add button to connect to devices after searching them
 
 class BluetoothDevicesScreen extends StatefulWidget {
   static const routeName = '/bluetoothDeviceScreen';
@@ -108,22 +107,43 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
       }).then((value) {
         if (returnValue == null) {
           debugPrint('connection successful');
+          Toast.show(
+            'Connected to ${selectedBluetoothDevice.name}',
+            context,
+            gravity: Toast.BOTTOM,
+            duration: Toast.LENGTH_LONG,
+            backgroundColor: Colors.black87
+          );
           discoverServices();
         }
       });
     } on PlatformException catch (e) {
-      if (e.code == 'already_connected')
+      if (e.code == 'already_connected') {
         debugPrint('already connected to $selectedBluetoothDevice');
+        Toast.show(
+          'Already connected to ${selectedBluetoothDevice.name}',
+          context,
+          gravity: Toast.BOTTOM,
+          duration: Toast.LENGTH_LONG,
+          backgroundColor: Colors.black87
+        );
+      }
       throw e;
     } catch (e) {
       debugPrint(e.toString());
+      Toast.show(
+        'Cannot connected to ${selectedBluetoothDevice.name}',
+        context,
+        gravity: Toast.BOTTOM,
+        duration: Toast.LENGTH_LONG,
+        backgroundColor: Colors.black87
+      );
       throw e;
     }
   }
 
   /// function to discover services
   void discoverServices() async {
-    debugPrint('inside discover services');
     services = await selectedBluetoothDevice.services.first;
     print('services ${services.toString()}');
   }
