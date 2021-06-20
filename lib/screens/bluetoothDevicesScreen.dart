@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
 import 'package:system_shortcuts/system_shortcuts.dart';
+import 'package:toast/toast.dart';
 
 import '../widgets/bleDialog.dart';
 import '../constants.dart';
-
-// TODO: Add button to connect to devices after searching them
 
 class BluetoothDevicesScreen extends StatefulWidget {
   static const routeName = '/bluetoothDeviceScreen';
@@ -59,13 +58,20 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
       return;
     }
 
-    for (DiscoveredDevice device in detectedBluetoothDevices) {
-      if (device.id != discoveredDevice.id) {
-        print(discoveredDevice.toString());
-        setState(() {
-          detectedBluetoothDevices.add(discoveredDevice);
-        });
+    bool addDeviceToList = true;
+    List<DiscoveredDevice> copyOfDetectedDevice = detectedBluetoothDevices;
+    for (DiscoveredDevice device in copyOfDetectedDevice) {
+      if (device.id == discoveredDevice.id) {
+        addDeviceToList = false;
+        break;
       }
+    }
+
+    if (addDeviceToList) {
+      print(discoveredDevice.toString());
+      setState(() {
+        detectedBluetoothDevices.add(discoveredDevice);
+      });
     }
   }
 
@@ -105,11 +111,27 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     print('device id ${connectionStateUpdate.deviceId}');
     print('failure ${connectionStateUpdate.failure.toString()}');
 
-    if (connectionStateUpdate.failure != null)
-      debugPrint('connection unsuccessful'); // TODO: display message using toast or snack bar
+    if (connectionStateUpdate.failure != null) {
+      debugPrint('connection unsuccessful');
+      Toast.show(
+        'Cannot connect to ${detectedBluetoothDevices[selected].name}',
+        context,
+        duration: Toast.LENGTH_LONG,
+        gravity: Toast.BOTTOM,
+        backgroundColor: Colors.black87
+      );
+    }
 
-    if (connectionStateUpdate.connectionState == DeviceConnectionState.connected)
+    if (connectionStateUpdate.connectionState == DeviceConnectionState.connected) {
+      Toast.show(
+          'Connected to ${detectedBluetoothDevices[selected].name}',
+          context,
+          duration: Toast.LENGTH_LONG,
+          gravity: Toast.BOTTOM,
+          backgroundColor: Colors.black87
+      );
       listServices();
+    }
   }
 
   void listServices() async {
@@ -209,7 +231,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                   onChanged: (value) {
                     setState(() {
                       selected = value;
-                      selectedDeviceId = detectedBluetoothDevices[index].id;
+                      selectedDeviceId = detectedBluetoothDevices[value].id;
                     });
                     connectToDevice();
                   },
