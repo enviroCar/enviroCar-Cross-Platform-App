@@ -9,16 +9,21 @@ class DashboardCard extends StatelessWidget {
   final String assetName;
   final String title;
   final String subtitle;
+  final String routeName;
 
   const DashboardCard({
     @required this.assetName,
     @required this.title,
     @required this.subtitle,
+    @required this.routeName,
   });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
+      onTap: () {
+        Navigator.of(context).pushNamed(routeName);
+      },
       child: Container(
         height: deviceHeight * 0.12,
         width: deviceWidth * 0.9,
