@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/providers/tracksProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -18,6 +19,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  // Navigates user to either Onboarding Screens or Login Screen
+  // depending on whether the app has been opened the very first time
   Widget navigate() {
     if (preferences.getBool('displayIntroduction') == null) {
       preferences.setBool('displayIntroduction', false);
@@ -29,6 +32,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Initializes device height and width to be used throuhout the app
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
 
@@ -36,11 +40,15 @@ class _SplashScreenState extends State<SplashScreen> {
         Provider.of<AuthProvider>(context, listen: false);
     final UserStatsProvider _userStatsProvider =
         Provider.of<UserStatsProvider>(context, listen: false);
+    final TracksProvider _tracksProvider =
+        Provider.of<TracksProvider>(context, listen: false);
 
     return FutureBuilder(
+      // tries to login user if they didn't logout last time
       future: AuthenticationServices().loginExistingUser(
         authProvider: _authProvider,
         userStatsProvider: _userStatsProvider,
+        tracksProvider: _tracksProvider,
       ),
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
