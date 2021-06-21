@@ -36,6 +36,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   void initState() {
     selected = -1;
     _services = [];
+    _servicesCharacteristics = {};
     determineBluetoothStatus();
     super.initState();
   }
@@ -95,7 +96,6 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
 
   /// function to connect to [selectedBluetoothDevice]
   void connectToDevice() async {
-    stopScan();
     Future<bool> returnValue;
     try {
       await selectedBluetoothDevice.connect(
@@ -109,7 +109,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
         if (returnValue == null) {
           debugPrint('connection successful');
           Toast.show(
-            'Connected to ${selectedBluetoothDevice.name}',
+            'Connected to ${selectedBluetoothDevice.name.isNotEmpty ? selectedBluetoothDevice.name : selectedBluetoothDevice.id}',
             context,
             gravity: Toast.BOTTOM,
             duration: Toast.LENGTH_LONG,
@@ -199,8 +199,12 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   /// function to disconnect [selectedBluetoothDevice]
   void disconnectDevice() {
     // clearing the list and map related to services before disconnecting from selected bluetooth device
-    _services.clear();
-    _servicesCharacteristics.clear();
+    if (_services.isNotEmpty) {
+      _services.clear();
+    }
+    if (_servicesCharacteristics.isNotEmpty) {
+      _servicesCharacteristics.clear();
+    }
     selectedBluetoothDevice.disconnect();
   }
 

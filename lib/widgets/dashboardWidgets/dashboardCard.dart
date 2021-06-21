@@ -10,12 +10,14 @@ class DashboardCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final String routeName;
+  final Color iconBackgroundColor;
 
   const DashboardCard({
     @required this.assetName,
     @required this.title,
     @required this.subtitle,
     @required this.routeName,
+    this.iconBackgroundColor: kSpringColor
   });
 
   @override
@@ -40,7 +42,7 @@ class DashboardCard extends StatelessWidget {
                   width: deviceWidth * 0.15,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: kSpringColor,
+                    color: iconBackgroundColor,
                   ),
                   child: IconButton(
                     onPressed: () {},

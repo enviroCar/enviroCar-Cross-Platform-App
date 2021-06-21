@@ -1,7 +1,7 @@
 import 'Package:flutter/material.dart';
 
-import '../../widgets/tracksScrrenWidgets/localTracksList.dart';
-import '../../widgets/tracksScrrenWidgets/uploadedTracksList.dart';
+import '../widgets/tracksScrrenWidgets/localTracksList.dart';
+import '../widgets/tracksScrrenWidgets/uploadedTracksList.dart';
 import '../widgets/tracksScrrenWidgets/tabButtons.dart';
 import '../utils/enums.dart';
 

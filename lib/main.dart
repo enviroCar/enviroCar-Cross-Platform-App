@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/providers/locationStatusProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -7,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './providers/authProvider.dart';
 import './providers/tracksProvider.dart';
+import './providers/bluetoothStatusProvider.dart';
 import './screens/splashScreen.dart';
 import './screens/bluetoothDevicesScreen.dart';
 import './screens/index.dart';
@@ -61,6 +63,16 @@ class MyApp extends StatelessWidget {
         // Provides uploaded tracks to different widgets
         ChangeNotifierProvider(
           create: (context) => TracksProvider(),
+        ),
+
+        // Provides bluetooth status update to the different widgets on the tree
+        ChangeNotifierProvider(
+          create: (context) => BluetoothStatusProvider()
+        ),
+
+        // Provides location status update to the different widgets on the tree
+        ChangeNotifierProvider(
+          create: (context) => LocationStatusProvider(),
         )
       ],
       child: MaterialApp(

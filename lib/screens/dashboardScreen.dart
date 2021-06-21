@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
 import '../widgets/dashboardWidgets/statsWidget.dart';
@@ -12,6 +11,10 @@ import '../globals.dart';
 import './carScreen.dart';
 import '../providers/carsProvider.dart';
 import '../models/car.dart';
+import '../models/enums/bluetoothConnectionStatus.dart';
+import '../models/enums/locationStatus.dart';
+import '../providers/bluetoothStatusProvider.dart';
+import '../providers/locationStatusProvider.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -59,21 +62,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                DashboardIconButton(
-                  routeName: BluetoothDevicesScreen.routeName,
-                  assetName: 'assets/icons/bluetooth.svg',
+                Consumer<BluetoothStatusProvider>(
+                  builder: (context, provider, child) {
+                    return DashboardIconButton(
+                      routeName: BluetoothDevicesScreen.routeName,
+                      assetName: 'assets/icons/bluetooth.svg',
+                      buttonColor: provider.bluetoothState == BluetoothConnectionStatus.ON ? kSpringColor : kErrorColor,
+                    );
+                  }
                 ),
                 DashboardIconButton(
                   routeName: BluetoothDevicesScreen.routeName,
                   assetName: 'assets/icons/smartphone.svg',
                 ),
-                DashboardIconButton(
-                  routeName: BluetoothDevicesScreen.routeName,
-                  assetName: 'assets/icons/car.svg',
+                Consumer<CarsProvider>(
+                  builder: (context, provider, child) {
+                    return DashboardIconButton(
+                      routeName: BluetoothDevicesScreen.routeName,
+                      assetName: 'assets/icons/car.svg',
+                      buttonColor: provider.getSelectedCar != null ? kSpringColor : kErrorColor,
+                    );
+                  },
                 ),
-                DashboardIconButton(
-                  routeName: MapScreen.routeName,
-                  assetName: 'assets/icons/gps.svg',
+                Consumer<LocationStatusProvider>(
+                  builder: (context, provider, child) {
+                    return DashboardIconButton(
+                      routeName: MapScreen.routeName,
+                      assetName: 'assets/icons/gps.svg',
+                      buttonColor: provider.locationState == LocationStatus.enabled ? kSpringColor : kErrorColor,
+                    );
+                  },
                 ),
               ],
             ),
@@ -105,6 +123,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       ? 'Select a car'
                       : '${selectedCar.constructionYear}, ${selectedCar.engineDisplacement}, ${selectedCar.fuelType}',
                   routeName: CarScreen.routeName,
+                  iconBackgroundColor: carsProvider.getSelectedCar != null ? kSpringColor : kErrorColor,
                 );
               },
             ),
