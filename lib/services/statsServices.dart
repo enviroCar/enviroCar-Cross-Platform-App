@@ -11,6 +11,7 @@ import '../models/envirocarStats.dart';
 class StatsServices {
   final baseUri = 'https://envirocar.org/api/stable';
 
+  // Fetches user stats
   Future<void> getUserStats({
     @required AuthProvider authProvider,
     @required UserStatsProvider userStatsProvider,
@@ -33,16 +34,12 @@ class StatsServices {
         UserStats.fromJson(jsonDecode(response.body));
   }
 
+  // Fetches general enviroCar stats
   Future<EnvirocarStats> getEnvirocarStats() async {
-    final baseUri = 'https://envirocar.org/api/stable';
-    final Uri urri = Uri.parse(baseUri);
+    final Uri uri = Uri.parse(baseUri);
 
     http.Response response = await http.get(
-      urri,
-      headers: {
-        'X-User': 'dajayk12',
-        'X-Token': 'Christmascarol@123',
-      },
+      uri,
     );
 
     dynamic responseBody = jsonDecode(response.body)['counts'];
