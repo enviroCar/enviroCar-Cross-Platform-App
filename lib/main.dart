@@ -20,6 +20,8 @@ import './screens/carScreen.dart';
 import './providers/carsProvider.dart';
 import './screens/createCarScreen.dart';
 import './screens/trackDetailsScreen.dart';
+import './providers/bluetoothStatusProvider.dart';
+import './providers/locationStatusProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -61,6 +63,16 @@ class MyApp extends StatelessWidget {
         // Provides uploaded tracks to different widgets
         ChangeNotifierProvider(
           create: (context) => TracksProvider(),
+        ),
+
+        // Provides bluetooth status update to the different widgets on the tree
+        ChangeNotifierProvider(
+            create: (context) => BluetoothStatusProvider()
+        ),
+
+        // Provides location status update to the different widgets on the tree
+        ChangeNotifierProvider(
+          create: (context) => LocationStatusProvider(),
         )
       ],
       child: MaterialApp(
