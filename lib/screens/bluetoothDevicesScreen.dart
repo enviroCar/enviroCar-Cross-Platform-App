@@ -22,7 +22,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   final List<blue.BluetoothDevice> detectedBluetoothDevices = [];
   int selected;
   blue.BluetoothDevice selectedBluetoothDevice;
-  List<blue.BluetoothService> services;
+  List<blue.BluetoothService> _services;
+  Map<blue.Guid, List<blue.Guid>> _servicesCharacteristics;
 
   /// Toggles bluetooth on and off
   // Works only on Android
@@ -34,7 +35,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   @override
   void initState() {
     selected = -1;
-    services = [];
+    _services = [];
     determineBluetoothStatus();
     super.initState();
   }
@@ -114,6 +115,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
             duration: Toast.LENGTH_LONG,
             backgroundColor: Colors.black87
           );
+          // discovering the services upon connecting to the device
           discoverServices();
         }
       });
@@ -127,6 +129,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
           duration: Toast.LENGTH_LONG,
           backgroundColor: Colors.black87
         );
+        discoverServices();
       }
       throw e;
     } catch (e) {
@@ -144,14 +147,60 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
 
   /// function to discover services
   void discoverServices() async {
-    services = await selectedBluetoothDevice.services.first;
-    print('services ${services.toString()}');
+    _services = await selectedBluetoothDevice.discoverServices();
+    debugPrint('services ${_services.toString()}');
+  }
+
+  /// function to retrieve the service uuid and characteristic uuid from [_services]
+  void logCharacteristicsForServices() async {
+    for (blue.BluetoothService service in _services) {
+      List<blue.Guid> characteristicsId;
+      for (blue.BluetoothCharacteristic characteristic in service.characteristics) {
+        characteristicsId.add(characteristic.uuid);
+        debugPrint('characteristic id: ${characteristic.uuid.toString()} properties: ${characteristic.properties.toString()}');
+        // if the characteristic can be read, reading the value it returns
+        if (characteristic.properties.read)
+          readCharacteristics(characteristic);
+
+        // if the characteristic have the property to write to it
+        if (characteristic.properties.write)
+          writeCharacteristics(characteristic);
+
+        // if the characteristic have the property to notify changes in its value
+        if (characteristic.properties.notify)
+          notify(characteristic);
+      }
+      _servicesCharacteristics[service.uuid] = characteristicsId;
+    }
+  }
+
+  /// function to read data of a particular [characteristic]
+  void readCharacteristics(blue.BluetoothCharacteristic characteristic) async {
+    List<int> readValue = await characteristic.read();
+    debugPrint('read characteristic ${characteristic.uuid.toString()} its first value is ${readValue.first.toString()}');
+  }
+
+  /// function to write data to a [characteristic]
+  void writeCharacteristics(blue.BluetoothCharacteristic characteristic) async {
+    // write characteristics is a way to send data to the bluetooth device
+    String response = await characteristic.write([0x12, 0x34]);
+    print('response after writing the characteristics ${characteristic.uuid.toString()} is $response');
+  }
+
+  /// notify is simply a callback executed every time the characteristic’s value handling the notifications is updated
+  void notify(blue.BluetoothCharacteristic characteristic) async {
+    // set notify value property of characteristics and listen to any changes
+    await characteristic.setNotifyValue(true);
+    characteristic.value.listen((value) {
+      debugPrint('characteristics value updated its first value is ${value.first}');
+    });
   }
 
   /// function to disconnect [selectedBluetoothDevice]
   void disconnectDevice() {
-    // clearing the list services before disconnecting from selected bluetooth device
-    services.clear();
+    // clearing the list and map related to services before disconnecting from selected bluetooth device
+    _services.clear();
+    _servicesCharacteristics.clear();
     selectedBluetoothDevice.disconnect();
   }
 
