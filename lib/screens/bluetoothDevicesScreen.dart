@@ -21,6 +21,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   final List<DiscoveredDevice> detectedBluetoothDevices = [];
   int selected = -1;
   String selectedDeviceId = '';
+  List<DiscoveredService> _services;
+  Map<Uuid, List<Uuid>> _servicesCharacteristics;
 
   /// Toggles bluetooth on and off
   // Works only on Android
@@ -32,6 +34,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   @override
   void initState() {
     determineBluetoothStatus();
+    _services = [];
+    _servicesCharacteristics = {};
     super.initState();
   }
 
@@ -59,8 +63,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     }
 
     bool addDeviceToList = true;
-    List<DiscoveredDevice> copyOfDetectedDevice = detectedBluetoothDevices;
-    for (DiscoveredDevice device in copyOfDetectedDevice) {
+    for (DiscoveredDevice device in detectedBluetoothDevices) {
       if (device.id == discoveredDevice.id) {
         addDeviceToList = false;
         break;
@@ -114,7 +117,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     if (connectionStateUpdate.failure != null) {
       debugPrint('connection unsuccessful');
       Toast.show(
-        'Cannot connect to ${detectedBluetoothDevices[selected].name}',
+        'Cannot connect to ${detectedBluetoothDevices[selected].name.isNotEmpty ? detectedBluetoothDevices[selected].name : selectedDeviceId}',
         context,
         duration: Toast.LENGTH_LONG,
         gravity: Toast.BOTTOM,
@@ -124,19 +127,56 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
 
     if (connectionStateUpdate.connectionState == DeviceConnectionState.connected) {
       Toast.show(
-          'Connected to ${detectedBluetoothDevices[selected].name}',
+          'Connected to ${detectedBluetoothDevices[selected].name.isNotEmpty ? detectedBluetoothDevices[selected].name : selectedDeviceId}',
           context,
           duration: Toast.LENGTH_LONG,
           gravity: Toast.BOTTOM,
           backgroundColor: Colors.black87
       );
-      listServices();
+      discoverServices();
     }
   }
 
-  void listServices() async {
-    var serviceData = detectedBluetoothDevices[selected].serviceData;
-    print('service uuid ${serviceData.toString()}');
+  /// function to discover services
+  void discoverServices() async {
+    _services = await flutterReactiveBlue.discoverServices(selectedDeviceId);
+    debugPrint('${_services.toString()}');
+  }
+
+  /// function to add the [serviceId] and [characteristicIds] to [_servicesCharacteristics]
+  void logCharacteristicsForServices() async {
+    for (DiscoveredService service in _services) {
+      _servicesCharacteristics[service.serviceId] = service.characteristicIds;
+      debugPrint('service id ${service.serviceId.toString()} characteristics Id ${service.characteristicIds.toString()}');
+    }
+  }
+
+  /// function to read characteristic
+  void readCharacteristic(Uuid serviceId, Uuid characteristicId) async {
+    QualifiedCharacteristic qualifiedCharacteristic = QualifiedCharacteristic(characteristicId: characteristicId, serviceId: serviceId, deviceId: selectedDeviceId);
+
+    final List<int> response = await flutterReactiveBlue.readCharacteristic(qualifiedCharacteristic)
+        .catchError((e) {
+          debugPrint('error is ${e.toString()}');
+    });
+
+    debugPrint('read characteristics response ${response.toString()}');
+  }
+
+  /// function to write characteristic value
+  void writeCharacteristic(Uuid serviceId, Uuid characteristicId, List<int> byteArray) async {
+    QualifiedCharacteristic qualifiedCharacteristic = QualifiedCharacteristic(characteristicId: characteristicId, serviceId: serviceId, deviceId: selectedDeviceId);
+
+    await flutterReactiveBlue.writeCharacteristicWithResponse(qualifiedCharacteristic, value: byteArray);
+  }
+
+  /// function to subscribe to a characteristic and listen to the updates in the value of [characteristic]
+  void subscribeCharacteristic(Uuid serviceId, Uuid characteristicId) async {
+    QualifiedCharacteristic qualifiedCharacteristic = QualifiedCharacteristic(characteristicId: characteristicId, serviceId: serviceId, deviceId: selectedDeviceId);
+
+    flutterReactiveBlue.subscribeToCharacteristic(qualifiedCharacteristic).listen((value) {
+      debugPrint('the value of characteristic is ${value.toString()}');
+    });
   }
 
   @override
