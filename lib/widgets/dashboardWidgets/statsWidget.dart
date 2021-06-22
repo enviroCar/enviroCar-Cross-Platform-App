@@ -66,7 +66,7 @@ class StatsWidget extends StatelessWidget {
                       Text(
                         userStats == null
                             ? '...'
-                            : userStats.distance.toString(),
+                            : userStats.distance.toStringAsFixed(1),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: deviceHeight * 0.035,
@@ -99,7 +99,7 @@ class StatsWidget extends StatelessWidget {
                       Text(
                         userStats == null
                             ? '...'
-                            : userStats.duration.toString(),
+                            : userStats.duration.toStringAsFixed(1),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: deviceHeight * 0.035,
