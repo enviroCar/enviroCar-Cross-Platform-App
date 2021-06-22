@@ -19,6 +19,8 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  Future buildScreen;
+
   // Navigates user to either Onboarding Screens or Login Screen
   // depending on whether the app has been opened the very first time
   Widget navigate() {
@@ -31,10 +33,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    // Initializes device height and width to be used throuhout the app
-    deviceHeight = MediaQuery.of(context).size.height;
-    deviceWidth = MediaQuery.of(context).size.width;
+  void initState() {
+    super.initState();
 
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
@@ -43,13 +43,22 @@ class _SplashScreenState extends State<SplashScreen> {
     final TracksProvider _tracksProvider =
         Provider.of<TracksProvider>(context, listen: false);
 
+    buildScreen = AuthenticationServices().loginExistingUser(
+      authProvider: _authProvider,
+      userStatsProvider: _userStatsProvider,
+      tracksProvider: _tracksProvider,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Initializes device height and width to be used throuhout the app
+    deviceHeight = MediaQuery.of(context).size.height;
+    deviceWidth = MediaQuery.of(context).size.width;
+
     return FutureBuilder(
       // tries to login user if they didn't logout last time
-      future: AuthenticationServices().loginExistingUser(
-        authProvider: _authProvider,
-        userStatsProvider: _userStatsProvider,
-        tracksProvider: _tracksProvider,
-      ),
+      future: buildScreen,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           return snapshot.data ? Index() : navigate();
