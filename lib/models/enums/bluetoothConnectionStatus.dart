@@ -1,4 +1,0 @@
-enum BluetoothConnectionStatus {
-  ON,
-  OFF
-}

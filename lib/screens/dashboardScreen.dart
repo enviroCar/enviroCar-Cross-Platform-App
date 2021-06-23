@@ -11,8 +11,7 @@ import '../globals.dart';
 import './carScreen.dart';
 import '../providers/carsProvider.dart';
 import '../models/car.dart';
-import '../models/enums/bluetoothConnectionStatus.dart';
-import '../models/enums/locationStatus.dart';
+import '../utils/enums.dart';
 import '../providers/bluetoothStatusProvider.dart';
 import '../providers/locationStatusProvider.dart';
 

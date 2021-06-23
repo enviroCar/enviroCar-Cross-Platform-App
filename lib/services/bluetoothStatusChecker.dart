@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_blue/flutter_blue.dart';
 
-import '../models/enums/bluetoothConnectionStatus.dart';
+import '../utils/enums.dart';
 
 class BluetoothStatusChecker {
   static const Duration DEFAULT_INTERVAL = Duration(seconds: 2);

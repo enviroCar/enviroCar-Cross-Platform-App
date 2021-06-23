@@ -1,4 +1,0 @@
-enum LocationStatus {
-  enabled,
-  disabled
-}

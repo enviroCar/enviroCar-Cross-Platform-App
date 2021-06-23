@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
-
-import '../providers/authProvider.dart';
 import '../constants.dart';
 import '../services/authenticationServices.dart';
 import '../models/user.dart';
+import '../globals.dart';
 
 // TODO: Add validators
 
@@ -43,19 +41,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData _mediaQuery = MediaQuery.of(context);
-    double _height = _mediaQuery.size.height;
-    double _width = _mediaQuery.size.width;
-
-    final AuthProvider _authProvider =
-        Provider.of<AuthProvider>(context, listen: false);
-
     return Scaffold(
       body: SafeArea(
         child: Container(
-          height: _height,
-          width: _width,
-          padding: EdgeInsets.fromLTRB(_width * 0.05, 0, _width * 0.05, 0),
+          height: deviceHeight,
+          width: deviceWidth,
+          padding:
+              EdgeInsets.fromLTRB(deviceWidth * 0.05, 0, deviceWidth * 0.05, 0),
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (OverscrollIndicatorNotification overscroll) {
               overscroll.disallowGlow();
@@ -64,7 +56,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: EdgeInsets.only(top: _height * 0.03),
+                padding: EdgeInsets.only(top: deviceHeight * 0.03),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -75,7 +67,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     SizedBox(
-                      height: _height * 0.05,
+                      height: deviceHeight * 0.05,
                     ),
 
                     // Email
@@ -92,7 +84,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     SizedBox(
-                      height: _height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Username
@@ -109,7 +101,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     SizedBox(
-                      height: _height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Password
@@ -128,7 +120,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     SizedBox(
-                      height: _height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Confirm Password
@@ -150,7 +142,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     SizedBox(
-                      height: _height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Terms and Conditions
@@ -174,7 +166,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     SizedBox(
-                      height: _height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Privacy Statements
@@ -208,7 +200,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         : Container(),
 
                     SizedBox(
-                      height: _height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Register button
@@ -253,7 +245,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                           String _status =
                               await AuthenticationServices().registerUser(
-                            authProvider: _authProvider,
                             user: _newUser,
                           );
 
@@ -270,7 +261,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     SizedBox(
-                      height: _height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Go to Login Screen button

@@ -9,6 +9,7 @@ import './registerScreen.dart';
 import '../models/user.dart';
 import './index.dart';
 import '../providers/userStatsProvider.dart';
+import '../globals.dart';
 
 // TODO: Add validators
 
@@ -20,7 +21,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  static final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
 
   String _username;
   String _password;
@@ -38,10 +39,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MediaQueryData _mediaQuery = MediaQuery.of(context);
-    double height = _mediaQuery.size.height;
-    double width = _mediaQuery.size.width;
-
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
     final UserStatsProvider _userStatsProvider =
@@ -50,9 +47,10 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          height: height,
-          width: width,
-          padding: EdgeInsets.fromLTRB(width * 0.05, 0, width * 0.05, 0),
+          height: deviceHeight,
+          width: deviceWidth,
+          padding:
+              EdgeInsets.fromLTRB(deviceWidth * 0.05, 0, deviceWidth * 0.05, 0),
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (OverscrollIndicatorNotification overscroll) {
               overscroll.disallowGlow();
@@ -61,12 +59,12 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Form(
               key: _formKey,
               child: SingleChildScrollView(
-                padding: EdgeInsets.only(top: height * 0.03),
+                padding: EdgeInsets.only(top: deviceHeight * 0.03),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
-                      height: height * 0.1,
+                      height: deviceHeight * 0.1,
                     ),
 
                     // enviroCar Logo
@@ -76,7 +74,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     SizedBox(
-                      height: height * 0.1,
+                      height: deviceHeight * 0.1,
                     ),
 
                     // Username
@@ -93,7 +91,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     SizedBox(
-                      height: height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Password
@@ -112,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     SizedBox(
-                      height: height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Error for wrong credentials
@@ -126,7 +124,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         : Container(),
 
                     SizedBox(
-                      height: height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Login Button
@@ -187,7 +185,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     SizedBox(
-                      height: height * 0.03,
+                      height: deviceHeight * 0.03,
                     ),
 
                     // Register screen button

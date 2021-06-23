@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
 
-import '../models/enums/locationStatus.dart';
+import '../utils/enums.dart';
 
 class LocationStatusChecker {
   static const Duration DEFAULT_INTERVAL = Duration(seconds: 2);
