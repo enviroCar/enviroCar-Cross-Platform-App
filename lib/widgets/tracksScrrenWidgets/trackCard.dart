@@ -21,87 +21,119 @@ class TrackCard extends StatelessWidget {
       },
       child: Container(
         width: deviceWidth * 0.9,
-        padding: EdgeInsets.symmetric(
-          vertical: 20,
-          horizontal: 20,
-        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Track ',
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
+            Container(
+              decoration: BoxDecoration(
+                color: kSpringColor,
+                borderRadius: BorderRadius.only(topLeft: Radius.circular(deviceWidth * 0.018), topRight: Radius.circular(deviceWidth * 0.018)),
+              ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 20,
+                    ),
+                    child: RichText(
+                      text: TextSpan(
+                        text: 'Track ',
+                        style: TextStyle(
+                          fontWeight: FontWeight.w800,
+                          color: kWhiteColor,
+                        ),
+                        children: [
+                          TextSpan(
+                            text: track.begin.toUtc().toString().replaceFirst('.000Z', ''),
+                          ),
+                        ],
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
-                ),
-                SizedBox(
-                  height: deviceHeight * 0.1,
-                ),
-                Text(
-                  track.begin.toUtc().toString().replaceFirst('.000Z', ''),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w800,
+                  Container(
+                    padding: EdgeInsets.all(15),
+                    child: Icon(
+                      Icons.more_vert_outlined,
+                      color: kWhiteColor,
+                      // TODO: add onTap functionality to the more_vertical icon
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      track.end
-                          .difference(track.begin)
-                          .toString()
-                          .replaceFirst('.000000', ''),
-                      style: TextStyle(
-                        color: kSpringColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w800,
+            // TODO: replace the placeholder map image with map widget
+            Container(
+              child: Image.asset(
+                'assets/images/map_placeholder.png',
+                fit: BoxFit.cover,
+                height: deviceHeight * 0.2,
+                width: double.infinity,
+              ),
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(
+                vertical: 20,
+                horizontal: 20,
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        track.end
+                            .difference(track.begin)
+                            .toString()
+                            .replaceFirst('.000000', ''),
+                        style: TextStyle(
+                          color: kSpringColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: deviceHeight * 0.02,
-                    ),
-                    Text(
-                      'Duration',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
+                      // SizedBox(
+                      //   height: deviceHeight * 0.02,
+                      // ),
+                      Text(
+                        'Duration',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      track.length.toStringAsFixed(2) + 'km',
-                      style: TextStyle(
-                        color: kSpringColor,
-                        fontSize: 25,
-                        fontWeight: FontWeight.w800,
+                    ],
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        track.length.toStringAsFixed(2) + 'km',
+                        style: TextStyle(
+                          color: kSpringColor,
+                          fontSize: 25,
+                          fontWeight: FontWeight.w800,
+                        ),
                       ),
-                    ),
-                    SizedBox(
-                      height: deviceHeight * 0.02,
-                    ),
-                    Text(
-                      'Distance',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.normal,
+                      // SizedBox(
+                      //   height: deviceHeight * 0.02,
+                      // ),
+                      Text(
+                        'Distance',
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.normal,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-              ],
+                    ],
+                  ),
+                ],
+              ),
             ),
           ],
         ),

@@ -1,7 +1,7 @@
-import 'package:envirocar_app_main/services/locationStatusChecker.dart';
 import 'package:flutter/foundation.dart';
 
-import '../models/enums/locationStatus.dart';
+import '../utils/enums.dart';
+import '../services/locationStatusChecker.dart';
 
 class LocationStatusProvider extends ChangeNotifier {
   LocationStatus locationStatus;

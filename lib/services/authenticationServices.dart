@@ -15,7 +15,6 @@ class AuthenticationServices {
 
   // Creates a new User
   Future<String> registerUser({
-    @required AuthProvider authProvider,
     @required User user,
   }) async {
     final Uri uri = Uri.parse(baseUri);

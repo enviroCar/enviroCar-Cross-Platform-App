@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 
-import '../models/enums/bluetoothConnectionStatus.dart';
+import '../utils/enums.dart';
 
 class BluetoothStatusChecker {
   static const DEFAULT_INTERVAL = Duration(seconds: 2);

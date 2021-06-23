@@ -1,13 +1,11 @@
-import 'package:envirocar_app_main/models/enums/bluetoothConnectionStatus.dart';
-import 'package:envirocar_app_main/models/enums/locationStatus.dart';
-import 'package:envirocar_app_main/providers/bluetoothStatusProvider.dart';
-import 'package:envirocar_app_main/providers/locationStatusProvider.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
-
 import '../widgets/dashboardWidgets/statsWidget.dart';
+
 import './bluetoothDevicesScreen.dart';
+
+import '../providers/bluetoothStatusProvider.dart';
+import '../providers/locationStatusProvider.dart';
 import '../widgets/dashboardWidgets/dashboardIconButton.dart';
 import '../widgets/dashboardWidgets/dashboardCard.dart';
 import '../constants.dart';
@@ -16,6 +14,7 @@ import '../globals.dart';
 import './carScreen.dart';
 import '../providers/carsProvider.dart';
 import '../models/car.dart';
+import '../utils/enums.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
