@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/widgets/tracksScrrenWidgets/trackDetailsCard.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
@@ -35,13 +36,11 @@ class TrackDetailsScreen extends StatelessWidget {
             SizedBox(
               height: 20,
             ),
-            TrackCard(track: track),
-            SizedBox(
-              height: 20,
+            TrackDetailsCard(
+              track: track,
             ),
-            CarDetailsCard(),
             SizedBox(
-              height: 40,
+              height: 100,
             ),
           ],
         ),

@@ -82,9 +82,11 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   void determineBluetoothStatus() {
     flutterReactiveBlue.statusStream.listen((status) {
       // code for handling status updates
-      setState(() {
-        _state = status;
-      });
+      if (mounted) {
+        setState(() {
+          _state = status;
+        });
+      }
     });
   }
 
