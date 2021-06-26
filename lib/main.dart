@@ -20,10 +20,15 @@ import './screens/carScreen.dart';
 import './providers/carsProvider.dart';
 import './screens/createCarScreen.dart';
 import './screens/trackDetailsScreen.dart';
+import './providers/fuelingsProvider.dart';
+import './screens/createFuelingScreen.dart';
+import './screens/logBookScreen.dart';
 
 void main() async {
+  // Ensures all the future functions of main() finish before launching the app
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
 
   // Restricts rotation of screen
@@ -61,7 +66,12 @@ class MyApp extends StatelessWidget {
         // Provides uploaded tracks to different widgets
         ChangeNotifierProvider(
           create: (context) => TracksProvider(),
-        )
+        ),
+
+        // Provides Fueling data to different widgets
+        ChangeNotifierProvider(
+          create: (context) => FuelingsProvider(),
+        ),
       ],
       child: MaterialApp(
         locale: DevicePreview.locale(context),
@@ -98,6 +108,8 @@ class MyApp extends StatelessWidget {
           MapScreen.routeName: (context) => MapScreen(),
           CarScreen.routeName: (context) => CarScreen(),
           CreateCarScreen.routeName: (context) => CreateCarScreen(),
+          CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
+          LogBookScreen.routeName: (context) => LogBookScreen(),
         },
       ),
     );
