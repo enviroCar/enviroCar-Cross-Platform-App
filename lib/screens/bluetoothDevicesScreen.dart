@@ -23,7 +23,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   int selected;
   blue.BluetoothDevice selectedBluetoothDevice;
   List<blue.BluetoothService> _services;
-  Map<blue.Guid, List<blue.Guid>> _servicesCharacteristics;
+  Map<blue.Guid, List<blue.BluetoothCharacteristic>> _servicesCharacteristics;
 
   /// Toggles bluetooth on and off
   // Works only on Android
@@ -149,15 +149,17 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   void discoverServices() async {
     _services = await selectedBluetoothDevice.discoverServices();
     debugPrint('services ${_services.toString()}');
+    logCharacteristicsForServices();
   }
 
   /// function to retrieve the service uuid and characteristic uuid from [_services]
   void logCharacteristicsForServices() async {
     for (blue.BluetoothService service in _services) {
-      List<blue.Guid> characteristicsId;
+      List<blue.BluetoothCharacteristic> characteristics = [];
       for (blue.BluetoothCharacteristic characteristic in service.characteristics) {
-        characteristicsId.add(characteristic.uuid);
-        debugPrint('characteristic id: ${characteristic.uuid.toString()} properties: ${characteristic.properties.toString()}');
+        if (characteristic.uuid != null) {
+          characteristics.add(characteristic);
+        }
         // if the characteristic can be read, reading the value it returns
         if (characteristic.properties.read)
           readCharacteristics(characteristic);
@@ -170,14 +172,14 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
         if (characteristic.properties.notify)
           notify(characteristic);
       }
-      _servicesCharacteristics[service.uuid] = characteristicsId;
+      _servicesCharacteristics[service.uuid] = characteristics;
     }
   }
 
   /// function to read data of a particular [characteristic]
   void readCharacteristics(blue.BluetoothCharacteristic characteristic) async {
     List<int> readValue = await characteristic.read();
-    debugPrint('read characteristic ${characteristic.uuid.toString()} its first value is ${readValue.first.toString()}');
+    debugPrint('read characteristic ${characteristic.uuid.toString()} its value is ${readValue.toString()}');
   }
 
   /// function to write data to a [characteristic]
@@ -192,7 +194,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     // set notify value property of characteristics and listen to any changes
     await characteristic.setNotifyValue(true);
     characteristic.value.listen((value) {
-      debugPrint('characteristics value updated its first value is ${value.first}');
+      debugPrint('characteristics value updated its first value is ${value.toString()}');
     });
   }
 
