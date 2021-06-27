@@ -1,11 +1,9 @@
-import 'package:envirocar_app_main/widgets/tracksScrrenWidgets/trackDetailsCard.dart';
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
 import '../models/track.dart';
-import '../widgets/trackDetailsWidgets/carDetailsCard.dart';
 import '../widgets/trackDetailsWidgets/stackedMapButton.dart';
-import '../widgets/tracksScrrenWidgets/trackCard.dart';
+import '../widgets/tracksScrrenWidgets/trackDetailsCard.dart';
 
 class TrackDetailsScreen extends StatelessWidget {
   static const routeName = '/trackDetailsScreen';

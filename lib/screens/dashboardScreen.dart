@@ -100,16 +100,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
 
             // Bluetooth Card
-            Consumer<BluetoothStatusProvider>(
-              builder: (context, provider, child) {
-                return DashboardCard(
-                  assetName: 'assets/icons/bluetooth.svg',
-                  title: 'OBD-II V9',
-                  subtitle: 'ELM327',
-                  routeName: BluetoothDevicesScreen.routeName,
-                  iconBackgroundColor: provider.bluetoothState == BluetoothConnectionStatus.ON ? kSpringColor : kErrorColor,
-                );
-              },
+            DashboardCard(
+              assetName: 'assets/icons/bluetooth.svg',
+              title: 'OBD-II V9',
+              subtitle: 'ELM327',
+              routeName: BluetoothDevicesScreen.routeName,
             ),
             SizedBox(
               height: deviceHeight * 0.02,

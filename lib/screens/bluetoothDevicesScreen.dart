@@ -143,6 +143,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   void discoverServices() async {
     _services = await flutterReactiveBlue.discoverServices(selectedDeviceId);
     debugPrint('${_services.toString()}');
+    logCharacteristicsForServices();
   }
 
   /// function to add the [serviceId] and [characteristicIds] to [_servicesCharacteristics]
@@ -150,6 +151,9 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     for (DiscoveredService service in _services) {
       _servicesCharacteristics[service.serviceId] = service.characteristicIds;
       debugPrint('service id ${service.serviceId.toString()} characteristics Id ${service.characteristicIds.toString()}');
+      for (Uuid ch in service.characteristicIds) {
+        subscribeCharacteristic(service.serviceId, ch);
+      }
     }
   }
 
@@ -169,7 +173,11 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   void writeCharacteristic(Uuid serviceId, Uuid characteristicId, List<int> byteArray) async {
     QualifiedCharacteristic qualifiedCharacteristic = QualifiedCharacteristic(characteristicId: characteristicId, serviceId: serviceId, deviceId: selectedDeviceId);
 
-    await flutterReactiveBlue.writeCharacteristicWithResponse(qualifiedCharacteristic, value: byteArray);
+    await flutterReactiveBlue.writeCharacteristicWithResponse(qualifiedCharacteristic, value: byteArray).whenComplete(() {
+      debugPrint('write operation completed');
+    }).catchError((e) {
+      debugPrint('error is ${e.toString()}');
+    });
   }
 
   /// function to subscribe to a characteristic and listen to the updates in the value of [characteristic]
@@ -178,6 +186,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
 
     flutterReactiveBlue.subscribeToCharacteristic(qualifiedCharacteristic).listen((value) {
       debugPrint('the value of characteristic is ${value.toString()}');
+    }).onError((e) {
+      debugPrint('error is ${e.toString()}');
     });
   }
 
