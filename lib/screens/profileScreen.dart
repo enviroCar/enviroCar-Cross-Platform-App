@@ -5,7 +5,8 @@ import 'package:provider/provider.dart';
 import '../providers/authProvider.dart';
 import './loginScreen.dart';
 import '../services/authenticationServices.dart';
-import '../constants.dart';
+import './reportIssueScreen.dart';
+import '../widgets/dividerLine.dart';
 import '../providers/userStatsProvider.dart';
 import '../providers/tracksProvider.dart';
 import './logBookScreen.dart';
@@ -16,6 +17,41 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  Widget buildIconButton(
+      {@required String title,
+      @required IconData iconData,
+      @required Function onTap,
+      @required Color color}) {
+    return Column(
+      children: [
+        GestureDetector(
+          onTap: onTap,
+          child: Row(
+            children: [
+              Icon(
+                iconData,
+                color: color,
+                size: 35,
+              ),
+              SizedBox(
+                width: 10,
+              ),
+              Text(
+                title,
+                style: TextStyle(
+                  color: color,
+                  fontSize: 18,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
+        ),
+        DividerLine(),
+      ],
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // Provides user data
@@ -31,184 +67,71 @@ class _ProfileScreenState extends State<ProfileScreen> {
         Provider.of<TracksProvider>(context, listen: false);
 
     return Container(
-      padding: EdgeInsets.symmetric(
-        vertical: 20,
-      ),
       width: double.infinity,
       child: SingleChildScrollView(
+        padding: EdgeInsets.all(15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Container(
-              padding: EdgeInsets.symmetric(
-                horizontal: 20,
-              ),
-              width: double.infinity,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // Button to navigate to Log book screen
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed(LogBookScreen.routeName);
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.menu_book_rounded,
-                          color: kGreyColor,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Log Book',
-                          style: TextStyle(
-                            color: kGreyColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            // Log book button
+            buildIconButton(
+              title: 'Log Book',
+              iconData: Icons.menu_book,
+              color: Colors.black,
+              onTap: () {
+                Navigator.of(context).pushNamed(LogBookScreen.routeName);
+              },
+            ),
 
-                  // Button to navigate to help screen
-                  TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.help_outline,
-                          color: kGreyColor,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Help',
-                          style: TextStyle(
-                            color: kGreyColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            // Help button
+            buildIconButton(
+              title: 'Help',
+              iconData: Icons.help_outline,
+              color: Colors.black,
+              onTap: () {},
+            ),
 
-                  // Button to navigate to Bug report screen
-                  TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.bug_report_rounded,
-                          color: kGreyColor,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Bug Report',
-                          style: TextStyle(
-                            color: kGreyColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            // Report Issue button
+            buildIconButton(
+              title: 'Report Issue',
+              iconData: Icons.bug_report,
+              color: Colors.black,
+              onTap: () {
+                Navigator.of(context).pushNamed(ReportIssueScreen.routeName);
+              },
+            ),
 
-                  // Button to navigate to playstore for rating the app
-                  TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.star,
-                          color: kGreyColor,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Rate Us',
-                          style: TextStyle(
-                            color: kGreyColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            // Rate us button
+            buildIconButton(
+              title: 'Rate Us',
+              iconData: Icons.star,
+              color: Colors.black,
+              onTap: () {},
+            ),
 
-                  // Button to navigate to log out
-                  TextButton(
-                    onPressed: () {
-                      AuthenticationServices().logoutUser(
-                        authProvider: _authProvider,
-                        userStatsProvider: _userStatsProvider,
-                        tracksProvider: _tracksProvider,
-                      );
-                      Navigator.of(context).pushReplacementNamed(
-                        LoginScreen.routeName,
-                      );
-                    },
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.logout,
-                          color: kGreyColor,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Logout',
-                          style: TextStyle(
-                            color: kGreyColor,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+            // Logout button
+            buildIconButton(
+              title: 'Logout',
+              iconData: Icons.logout,
+              color: Colors.black,
+              onTap: () {
+                AuthenticationServices().logoutUser(
+                  authProvider: _authProvider,
+                  userStatsProvider: _userStatsProvider,
+                  tracksProvider: _tracksProvider,
+                );
+                Navigator.of(context).pushReplacementNamed(
+                  LoginScreen.routeName,
+                );
+              },
+            ),
 
-                  // Button to navigate to close the app
-                  TextButton(
-                    onPressed: () {},
-                    child: Row(
-                      children: [
-                        Icon(
-                          Icons.highlight_off_rounded,
-                          color: Colors.red,
-                          size: 35,
-                        ),
-                        SizedBox(
-                          width: 10,
-                        ),
-                        Text(
-                          'Close enviroCar',
-                          style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 18,
-                            fontWeight: FontWeight.normal,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+            // Button to navigate to close the app
+            buildIconButton(
+              title: 'Close enviroCar',
+              iconData: Icons.highlight_off_rounded,
+              color: Colors.red,
+              onTap: () {},
             ),
           ],
         ),

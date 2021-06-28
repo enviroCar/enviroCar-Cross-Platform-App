@@ -6,6 +6,8 @@ import 'package:uuid/uuid.dart';
 import '../constants.dart' as constants;
 import '../models/car.dart';
 import '../providers/carsProvider.dart';
+import '../globals.dart';
+import '../widgets/button.dart';
 
 class CreateCarScreen extends StatefulWidget {
   static const routeName = '/createCarScreen';
@@ -17,12 +19,23 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Car newCar = Car();
 
+  void createCar() {
+    if (_formKey.currentState.validate()) {
+      Uuid uuid = Uuid();
+      newCar.id = uuid.v1();
+
+      print(newCar.id);
+
+      CarsProvider carsProvider =
+          Provider.of<CarsProvider>(context, listen: false);
+
+      carsProvider.addCar(newCar);
+      Navigator.pop(context);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    MediaQueryData _mediaQuery = MediaQuery.of(context);
-    double height = _mediaQuery.size.height;
-    double width = _mediaQuery.size.width;
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(255, 23, 33, 43),
@@ -37,11 +50,12 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
       ),
       body: SafeArea(
         child: Container(
-          height: height,
-          width: width,
-          padding: EdgeInsets.fromLTRB(width * 0.05, 0, width * 0.05, 0),
+          height: deviceHeight,
+          width: deviceWidth,
+          padding:
+              EdgeInsets.fromLTRB(deviceWidth * 0.05, 0, deviceWidth * 0.05, 0),
           child: SingleChildScrollView(
-            padding: EdgeInsets.only(top: height * 0.03),
+            padding: EdgeInsets.only(top: deviceHeight * 0.03),
             child: Form(
               key: _formKey,
               child: Column(
@@ -55,7 +69,7 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.03,
+                    height: deviceHeight * 0.03,
                   ),
 
                   // Manufacturer
@@ -75,7 +89,7 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.03,
+                    height: deviceHeight * 0.03,
                   ),
 
                   // Model
@@ -95,7 +109,7 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.03,
+                    height: deviceHeight * 0.03,
                   ),
 
                   // Construction year
@@ -116,7 +130,7 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.03,
+                    height: deviceHeight * 0.03,
                   ),
 
                   // Fuel Type
@@ -136,7 +150,7 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.03,
+                    height: deviceHeight * 0.03,
                   ),
 
                   // Engine Displacement
@@ -157,47 +171,18 @@ class _CreateCarScreenState extends State<CreateCarScreen> {
                   ),
 
                   SizedBox(
-                    height: height * 0.03,
+                    height: deviceHeight * 0.03,
                   ),
 
                   // Login Button
-                  GestureDetector(
-                    child: Container(
-                      width: double.infinity,
-                      height: 50,
-                      decoration: BoxDecoration(
-                        color: constants.kSpringColor,
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                      child: Center(
-                        child: Text(
-                          'Create Car',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ),
-                    ),
-                    onTap: () {
-                      if (_formKey.currentState.validate()) {
-                        Uuid uuid = Uuid();
-                        newCar.id = uuid.v1();
-
-                        print(newCar.id);
-
-                        CarsProvider carsProvider =
-                            Provider.of<CarsProvider>(context, listen: false);
-
-                        carsProvider.addCar(newCar);
-                        Navigator.pop(context);
-                      }
-                    },
+                  Button(
+                    title: 'Create Car',
+                    color: constants.kSpringColor,
+                    onTap: createCar,
                   ),
 
                   SizedBox(
-                    height: height * 0.03,
+                    height: deviceHeight * 0.03,
                   ),
                 ],
               ),

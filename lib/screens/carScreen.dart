@@ -41,13 +41,14 @@ class _CarScreenState extends State<CarScreen> {
         centerTitle: true,
       ),
       body: Container(
+        padding: EdgeInsets.all(15),
         child: Consumer<CarsProvider>(
           builder: (_, carsProvider, child) {
             List<Car> carsList = carsProvider.getCarsList;
             Car selectedCar = carsProvider.getSelectedCar;
             if (carsList.isNotEmpty) {
               return ListView.builder(
-                padding: EdgeInsets.only(bottom: 20),
+                padding: EdgeInsets.all(0),
                 itemCount: carsList.length,
                 itemBuilder: (_, index) {
                   return GestureDetector(
@@ -55,6 +56,7 @@ class _CarScreenState extends State<CarScreen> {
                       carsProvider.setSelectedCar = carsList[index];
                     },
                     child: ListTile(
+                      contentPadding: EdgeInsets.all(0),
                       leading: Icon(Icons.drive_eta_sharp),
                       title: Text(carsList[index].manufacturer +
                           ' - ' +

@@ -2,7 +2,7 @@ import 'Package:flutter/material.dart';
 
 import '../widgets/dividerLine.dart';
 import '../widgets/titleWidget.dart';
-import '../utils/values.dart';
+import '../values/settingsValues.dart';
 import '../widgets/settingsScreenWidgets/settingsListWidget.dart';
 
 class SettingsScreen extends StatefulWidget {

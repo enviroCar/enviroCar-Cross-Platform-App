@@ -12,6 +12,7 @@ import '../globals.dart';
 import './carScreen.dart';
 import '../providers/carsProvider.dart';
 import '../models/car.dart';
+import '../widgets/button.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -109,28 +110,16 @@ class _DashboardScreenState extends State<DashboardScreen> {
               },
             ),
             SizedBox(
-              height: deviceHeight * 0.02,
+              height: deviceHeight * 0.03,
             ),
 
             // Start Tracks Button
-            GestureDetector(
-              child: Container(
-                child: Center(
-                  child: Text(
-                    'Start Track',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: deviceHeight * 0.02,
-                    ),
-                  ),
-                ),
-                height: deviceHeight * 0.065,
-                width: deviceWidth * 0.4,
-                decoration: BoxDecoration(
-                  color: kSpringColor,
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15),
+              child: Button(
+                title: 'Start Track',
+                color: kSpringColor,
+                onTap: () {},
               ),
             ),
             SizedBox(

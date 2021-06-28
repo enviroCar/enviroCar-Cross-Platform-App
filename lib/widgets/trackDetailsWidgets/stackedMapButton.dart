@@ -4,10 +4,12 @@ import '../../constants.dart';
 import '../../globals.dart';
 
 class StackedMapButton extends StatelessWidget {
+  final double buttonDiameter = 55;
+
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: (deviceHeight * 0.3) + (deviceHeight * 0.06) / 2,
+      height: (deviceHeight * 0.3) + (buttonDiameter) / 2,
       width: double.infinity,
       child: Stack(
         children: [
@@ -20,8 +22,8 @@ class StackedMapButton extends StatelessWidget {
             ),
           ),
           Positioned(
-            top: (deviceHeight * 0.3) - (deviceHeight * 0.06) / 2,
-            right: (deviceHeight * 0.06) / 2,
+            top: (deviceHeight * 0.3) - (buttonDiameter) / 2,
+            right: (30) / 2,
             child: GestureDetector(
               onTap: () {},
               child: Container(
@@ -29,8 +31,8 @@ class StackedMapButton extends StatelessWidget {
                   color: kSpringColor,
                   shape: BoxShape.circle,
                 ),
-                height: deviceHeight * 0.06,
-                width: deviceHeight * 0.06,
+                height: buttonDiameter,
+                width: buttonDiameter,
                 child: Icon(
                   Icons.map,
                   color: Colors.white,

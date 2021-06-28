@@ -6,7 +6,7 @@ import '../models/car.dart';
 import '../models/fueling.dart';
 import '../providers/carsProvider.dart';
 import '../providers/fuelingsProvider.dart';
-import '../widgets/addFuelingWidgets/singleRowForm.dart';
+import '../widgets/singleRowForm.dart';
 import '../widgets/button.dart';
 import '../widgets/dividerLine.dart';
 import '../widgets/titleWidget.dart';
@@ -94,8 +94,8 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(
-          horizontal: 15,
+        padding: EdgeInsets.all(
+          15,
         ),
         child: Form(
           key: _formKey,
@@ -222,17 +222,25 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
               Row(
                 children: [
                   // Cancel button
-                  Button(
-                    title: 'Cancel',
-                    onTap: cancelFueling,
-                    color: Colors.red,
+                  Expanded(
+                    child: Button(
+                      title: 'Cancel',
+                      onTap: cancelFueling,
+                      color: Colors.red,
+                    ),
+                  ),
+
+                  SizedBox(
+                    width: 10,
                   ),
 
                   // Add button
-                  Button(
-                    title: 'Add',
-                    onTap: addFueling,
-                    color: kSpringColor,
+                  Expanded(
+                    child: Button(
+                      title: 'Add',
+                      onTap: addFueling,
+                      color: kSpringColor,
+                    ),
                   ),
                 ],
               ),
