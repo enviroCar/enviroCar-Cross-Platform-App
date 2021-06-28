@@ -32,3 +32,7 @@ const Color kGreyColor = Color.fromARGB(255, 23, 33, 43);
 const Color kSpringColor = Color.fromARGB(255, 0, 223, 165);
 const Color kPrimaryColor = Color(0xff000000);
 const Color kSecondaryColor = Color(0xffD8D8D8);
+
+// PlayStore URL for 'Rate Us' feature
+const String playstoreUrl =
+    'https://play.google.com/store/apps/details?id=org.envirocar.app';
