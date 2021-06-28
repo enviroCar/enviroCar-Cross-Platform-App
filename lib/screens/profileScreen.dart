@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -143,7 +144,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: 'Close enviroCar',
               iconData: Icons.highlight_off_rounded,
               color: Colors.red,
-              onTap: () {},
+              onTap: () {
+                // Closes the app programatically
+                // Apple may SUSPEND THE APP as it is again Apple's Human Interface Guidelines
+                exit(0);
+              },
             ),
           ],
         ),
