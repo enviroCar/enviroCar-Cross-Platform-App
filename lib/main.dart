@@ -1,4 +1,3 @@
-import 'package:envirocar_app_main/providers/locationStatusProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -22,6 +21,8 @@ import './screens/carScreen.dart';
 import './providers/carsProvider.dart';
 import './screens/createCarScreen.dart';
 import './screens/trackDetailsScreen.dart';
+import './providers/locationStatusProvider.dart';
+import './providers/bluetoothProvider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -73,6 +74,11 @@ class MyApp extends StatelessWidget {
         // Provides location status update to the different widgets on the tree
         ChangeNotifierProvider(
           create: (context) => LocationStatusProvider(),
+        ),
+
+        // Provides bluetooth functionality to the different widgets on the tree
+        ChangeNotifierProvider(
+          create: (context) => BluetoothProvider(),
         )
       ],
       child: MaterialApp(

@@ -155,6 +155,9 @@ class TrackDetailsCard extends StatelessWidget {
               iconData: Icons.bus_alert,
             ),
           ),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
       decoration: BoxDecoration(

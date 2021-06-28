@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/dashboardWidgets/statsWidget.dart';
@@ -14,6 +15,7 @@ import '../models/car.dart';
 import '../utils/enums.dart';
 import '../providers/bluetoothStatusProvider.dart';
 import '../providers/locationStatusProvider.dart';
+import '../providers/bluetoothProvider.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -99,14 +101,19 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
 
             // Bluetooth Card
-            Consumer<BluetoothStatusProvider>(
-              builder: (context, provider, child) {
+            Consumer<BluetoothProvider>(
+              builder: (context, bluetoothProvider, child) {
+                bool isConnected = bluetoothProvider.isConnected();
+                BluetoothDevice connectedDevice;
+                if (isConnected)
+                  connectedDevice = bluetoothProvider.getConnectedDevice;
+
                 return DashboardCard(
                   assetName: 'assets/icons/bluetooth.svg',
-                  title: 'OBD-II V9',
-                  subtitle: 'ELM327',
+                  title: isConnected ? (connectedDevice.name.isNotEmpty ? connectedDevice.name : 'Unknown Device') : 'No OBD-II adapter selected',
+                  subtitle: isConnected ? connectedDevice.id.toString() : 'Click here to select one',
                   routeName: BluetoothDevicesScreen.routeName,
-                  iconBackgroundColor: provider.bluetoothState == BluetoothConnectionStatus.ON ? kSpringColor : kErrorColor,
+                  iconBackgroundColor: isConnected ? kSpringColor : kErrorColor,
                 );
               },
             ),
