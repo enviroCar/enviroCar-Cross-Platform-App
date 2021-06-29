@@ -1,4 +1,6 @@
+import 'package:envirocar_app_main/providers/bluetoothProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_reactive_ble/flutter_reactive_ble.dart';
 import 'package:provider/provider.dart';
 import '../widgets/dashboardWidgets/statsWidget.dart';
 
@@ -100,12 +102,23 @@ class _DashboardScreenState extends State<DashboardScreen> {
             ),
 
             // Bluetooth Card
-            DashboardCard(
-              assetName: 'assets/icons/bluetooth.svg',
-              title: 'OBD-II V9',
-              subtitle: 'ELM327',
-              routeName: BluetoothDevicesScreen.routeName,
+            Consumer<BluetoothProvider>(
+              builder: (context, bluetoothProvider, child) {
+                bool isConnected = bluetoothProvider.isConnected();
+                DiscoveredDevice connectedDevice;
+                if (isConnected)
+                  connectedDevice = bluetoothProvider.getConnectedDevice;
+                
+                return DashboardCard(
+                  assetName: 'assets/icons/bluetooth.svg',
+                  title: isConnected ? (connectedDevice.name.trim().isNotEmpty ? connectedDevice.name : 'Unknown Device') : 'No OBD-II adapter selected',
+                  subtitle: isConnected ? connectedDevice.id : 'Click here to select one',
+                  routeName: BluetoothDevicesScreen.routeName,
+                  iconBackgroundColor: isConnected ? kSpringColor : kErrorColor,
+                );
+              }
             ),
+            
             SizedBox(
               height: deviceHeight * 0.02,
             ),

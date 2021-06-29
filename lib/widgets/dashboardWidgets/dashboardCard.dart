@@ -65,13 +65,16 @@ class DashboardCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: deviceHeight * 0.022,
+                        fontSize: deviceHeight * 0.02,
                       ),
+                    ),
+                    SizedBox(
+                      height: 4,
                     ),
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: deviceHeight * 0.02,
+                        fontSize: deviceHeight * 0.018,
                       ),
                     ),
                   ],
