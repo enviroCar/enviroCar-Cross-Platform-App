@@ -72,14 +72,21 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     );
                   }
                 ),
-                DashboardIconButton(
-                  routeName: BluetoothDevicesScreen.routeName,
-                  assetName: 'assets/icons/smartphone.svg',
+                Consumer<BluetoothProvider>(
+                  builder: (context, provider, child) {
+                    bool isConnected = provider.isConnected();
+
+                    return DashboardIconButton(
+                      routeName: BluetoothDevicesScreen.routeName,
+                      assetName: 'assets/icons/smartphone.svg',
+                      buttonColor: isConnected ? kSpringColor : kErrorColor,
+                    );
+                  }
                 ),
                 Consumer<CarsProvider>(
                   builder: (context, provider, child) {
                     return DashboardIconButton(
-                      routeName: BluetoothDevicesScreen.routeName,
+                      routeName: CarScreen.routeName,
                       assetName: 'assets/icons/car.svg',
                       buttonColor: provider.getSelectedCar != null ? kSpringColor : kErrorColor,
                     );

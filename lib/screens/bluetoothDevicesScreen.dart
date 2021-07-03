@@ -147,16 +147,18 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                       value: index,
                       groupValue: selected,
                       onChanged: (value) async {
+                        if (selected != -1)
+                          bluetoothProvider.disconnectDevice();
                         setState(() {
-                          // disconnecting the previously connected device before connecting to new bluetooth device
-                          if (selected != -1)
-                            bluetoothProvider.disconnectDevice();
                           selected = value;
                           selectedBluetoothDevice = detectedBluetoothDevices[value];
                         });
                         bool connectionStatus = await bluetoothProvider.connectToDevice(selectedBluetoothDevice, context);
-                        if (connectionStatus)
-                          bluetoothProvider.discoverServices();
+                        print('connection status $connectionStatus');
+                        if (!connectionStatus)
+                          setState(() {
+                            selected = -1;
+                          });
                       },
                     ),
                   ),
