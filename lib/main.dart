@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/screens/gpsTrackingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -116,6 +117,7 @@ class MyApp extends StatelessWidget {
           MapScreen.routeName: (context) => MapScreen(),
           CarScreen.routeName: (context) => CarScreen(),
           CreateCarScreen.routeName: (context) => CreateCarScreen(),
+          GpsTrackingScreen.routeName: (context) => GpsTrackingScreen(),
         },
       ),
     );

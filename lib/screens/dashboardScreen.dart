@@ -16,6 +16,7 @@ import '../utils/enums.dart';
 import '../providers/bluetoothStatusProvider.dart';
 import '../providers/locationStatusProvider.dart';
 import '../providers/bluetoothProvider.dart';
+import './gpsTrackingScreen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -169,6 +170,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
+              onTap: () {
+                Navigator.pushNamed(context, GpsTrackingScreen.routeName);
+                // final provider = Provider.of<BluetoothProvider>(context, listen: false);
+                // provider.interactWithDevice();
+              },
             ),
             SizedBox(
               height: deviceHeight * 0.02,
