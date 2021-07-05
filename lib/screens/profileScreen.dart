@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/authProvider.dart';
 import './loginScreen.dart';
@@ -11,6 +12,7 @@ import '../providers/userStatsProvider.dart';
 import '../providers/tracksProvider.dart';
 import './logBookScreen.dart';
 import './helpScreen.dart';
+import '../constants.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -109,7 +111,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: 'Rate Us',
               iconData: Icons.star,
               color: Colors.black,
-              onTap: () {},
+              onTap: () async {
+                if (await canLaunch(playstoreUrl)) {
+                  launch(playstoreUrl);
+                  return;
+                } else {
+                  throw 'Cannot Launch';
+                }
+              },
             ),
 
             // Logout button
