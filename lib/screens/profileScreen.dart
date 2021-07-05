@@ -10,6 +10,7 @@ import '../widgets/dividerLine.dart';
 import '../providers/userStatsProvider.dart';
 import '../providers/tracksProvider.dart';
 import './logBookScreen.dart';
+import './helpScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -88,7 +89,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: 'Help',
               iconData: Icons.help_outline,
               color: Colors.black,
-              onTap: () {},
+              onTap: () {
+                Navigator.of(context).pushNamed(HelpScreen.routeName);
+              },
             ),
 
             // Report Issue button

@@ -24,6 +24,7 @@ import './providers/fuelingsProvider.dart';
 import './screens/createFuelingScreen.dart';
 import './screens/logBookScreen.dart';
 import './screens/reportIssueScreen.dart';
+import '../screens/helpScreen.dart';
 
 void main() async {
   // Ensures all the future functions of main() finish before launching the app
@@ -39,7 +40,7 @@ void main() async {
   runApp(
     DevicePreview(
       // to check the UI on different devices make enabled true
-      enabled: true,
+      enabled: false,
       builder: (context) => MyApp(),
     ),
   );
@@ -112,6 +113,7 @@ class MyApp extends StatelessWidget {
           CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
           LogBookScreen.routeName: (context) => LogBookScreen(),
           ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
+          HelpScreen.routeName: (context) => HelpScreen(),
         },
       ),
     );
