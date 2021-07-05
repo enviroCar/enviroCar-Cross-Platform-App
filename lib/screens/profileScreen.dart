@@ -8,6 +8,7 @@ import '../services/authenticationServices.dart';
 import '../constants.dart';
 import '../providers/userStatsProvider.dart';
 import '../providers/tracksProvider.dart';
+import './logBookScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -46,8 +47,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  // Button to navigate to Log book screen
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed(LogBookScreen.routeName);
+                    },
                     child: Row(
                       children: [
                         Icon(
@@ -69,6 +73,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
+
+                  // Button to navigate to help screen
                   TextButton(
                     onPressed: () {},
                     child: Row(
@@ -92,6 +98,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
+
+                  // Button to navigate to Bug report screen
                   TextButton(
                     onPressed: () {},
                     child: Row(
@@ -115,6 +123,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
+
+                  // Button to navigate to playstore for rating the app
                   TextButton(
                     onPressed: () {},
                     child: Row(
@@ -138,6 +148,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
+
+                  // Button to navigate to log out
                   TextButton(
                     onPressed: () {
                       AuthenticationServices().logoutUser(
@@ -170,6 +182,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ],
                     ),
                   ),
+
+                  // Button to navigate to close the app
                   TextButton(
                     onPressed: () {},
                     child: Row(
