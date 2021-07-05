@@ -8,7 +8,7 @@ import '../../screens/trackDetailsScreen.dart';
 class TrackCard extends StatelessWidget {
   final Track track;
 
-  TrackCard({@required this.track});
+  const TrackCard({@required this.track});
 
   @override
   Widget build(BuildContext context) {
@@ -21,18 +21,29 @@ class TrackCard extends StatelessWidget {
       },
       child: Container(
         width: deviceWidth * 0.9,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           vertical: 20,
           horizontal: 20,
         ),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[350],
+              blurRadius: 3.0,
+              spreadRadius: 1.0,
+              offset: const Offset(-2, 2),
+            ),
+          ],
+          color: Colors.white,
+          borderRadius: const BorderRadius.all(Radius.circular(5)),
+        ),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   'Track ',
                   style: TextStyle(
                     fontWeight: FontWeight.w800,
@@ -43,7 +54,7 @@ class TrackCard extends StatelessWidget {
                 ),
                 Text(
                   track.begin.toUtc().toString().replaceFirst('.000Z', ''),
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontWeight: FontWeight.w800,
                   ),
                 ),
@@ -60,7 +71,7 @@ class TrackCard extends StatelessWidget {
                           .difference(track.begin)
                           .toString()
                           .replaceFirst('.000000', ''),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: kSpringColor,
                         fontSize: 25,
                         fontWeight: FontWeight.w800,
@@ -69,7 +80,7 @@ class TrackCard extends StatelessWidget {
                     SizedBox(
                       height: deviceHeight * 0.02,
                     ),
-                    Text(
+                    const Text(
                       'Duration',
                       style: TextStyle(
                         fontSize: 15,
@@ -82,8 +93,8 @@ class TrackCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      track.length.toStringAsFixed(2) + 'km',
-                      style: TextStyle(
+                      '${track.length.toStringAsFixed(2)}km',
+                      style: const TextStyle(
                         color: kSpringColor,
                         fontSize: 25,
                         fontWeight: FontWeight.w800,
@@ -92,7 +103,7 @@ class TrackCard extends StatelessWidget {
                     SizedBox(
                       height: deviceHeight * 0.02,
                     ),
-                    Text(
+                    const Text(
                       'Distance',
                       style: TextStyle(
                         fontSize: 15,
@@ -104,18 +115,6 @@ class TrackCard extends StatelessWidget {
               ],
             ),
           ],
-        ),
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[350],
-              blurRadius: 3.0,
-              spreadRadius: 1.0,
-              offset: Offset(-2, 2),
-            ),
-          ],
-          color: Colors.white,
-          borderRadius: BorderRadius.all(Radius.circular(5)),
         ),
       ),
     );

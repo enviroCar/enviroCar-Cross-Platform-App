@@ -20,22 +20,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // General Settings
-            TitleWidget(title: 'General Settings'),
+            const TitleWidget(title: 'General Settings'),
             SettingsListWidget(settings: generalSettings),
             DividerLine(),
 
             // OBD Mode Settings
-            TitleWidget(title: 'OBD Mode'),
+            const TitleWidget(title: 'OBD Mode'),
             SettingsListWidget(settings: OBDModeSettings),
             DividerLine(),
 
             // GPS Mode Settings
-            TitleWidget(title: 'GPS Mode'),
+            const TitleWidget(title: 'GPS Mode'),
             SettingsListWidget(settings: GPSModeSettings),
             DividerLine(),
 
             // Debugging Settings
-            TitleWidget(title: 'Debugging'),
+            const TitleWidget(title: 'Debugging'),
             SettingsListWidget(settings: debuggingSettings),
           ],
         ),

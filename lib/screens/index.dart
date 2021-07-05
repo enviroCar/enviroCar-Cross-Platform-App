@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
 import './dashboardScreen.dart';
-import './tracksScreen.dart';
-import './settingsScreen.dart';
 import './profileScreen.dart';
+import './settingsScreen.dart';
+import './tracksScreen.dart';
 import '../constants.dart';
 import '../widgets/OBDhelpDialog.dart';
 
@@ -54,7 +53,7 @@ class _IndexState extends State<Index> {
         backgroundColor: kGreyColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(
+          icon: const Icon(
             Icons.help,
             color: Colors.white,
           ),

@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:flutter_blue/flutter_blue.dart' as blue;
+import 'package:system_shortcuts/system_shortcuts.dart';
 
-import '../widgets/bleDialog.dart';
 import '../constants.dart';
+import '../widgets/bleDialog.dart';
 
 // TODO: Add button to connect to devices after searching them
 
@@ -45,7 +45,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
           StreamBuilder(
             stream: blue.FlutterBlue.instance.state,
             initialData: blue.BluetoothState.unknown,
-            builder: (context, snapshot) {
+            builder: (context, AsyncSnapshot<blue.BluetoothState> snapshot) {
               _state = snapshot.data;
               return Switch(
                 value: _state == blue.BluetoothState.on ? true : false,
@@ -67,15 +67,6 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
       // Button to start and stop scanning
       floatingActionButton: FloatingActionButton(
         backgroundColor: _isScanning ? Colors.red : kSpringColor,
-        child: _isScanning
-            ? Icon(
-                Icons.stop,
-                color: Colors.white,
-              )
-            : Icon(
-                Icons.search_rounded,
-                color: Colors.white,
-              ),
         onPressed: () {
           if (!_isScanning) {
             if (_state == blue.BluetoothState.on) {
@@ -100,6 +91,15 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
             });
           }
         },
+        child: _isScanning
+            ? const Icon(
+                Icons.stop,
+                color: Colors.white,
+              )
+            : const Icon(
+                Icons.search_rounded,
+                color: Colors.white,
+              ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -107,14 +107,14 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
             // Shows available Bluetooth devices
             StreamBuilder<List<blue.ScanResult>>(
               stream: blue.FlutterBlue.instance.scanResults,
-              initialData: [],
+              initialData: const [],
               builder: (_, snapshot) {
                 return Column(
                   children: snapshot.data.map((d) {
                     return d.device.name.isEmpty
                         ? Container()
                         : ListTile(
-                            leading: Icon(
+                            leading: const Icon(
                               Icons.bluetooth,
                             ),
                             title: Text(d.device.name),

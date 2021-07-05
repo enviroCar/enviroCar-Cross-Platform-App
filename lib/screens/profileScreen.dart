@@ -24,7 +24,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget buildIconButton(
       {@required String title,
       @required IconData iconData,
-      @required Function onTap,
+      @required void Function() onTap,
       @required Color color}) {
     return Column(
       children: [
@@ -37,7 +37,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 color: color,
                 size: 35,
               ),
-              SizedBox(
+              const SizedBox(
                 width: 10,
               ),
               Text(
@@ -70,12 +70,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
     final TracksProvider _tracksProvider =
         Provider.of<TracksProvider>(context, listen: false);
 
-    return Container(
+    return SizedBox(
       width: double.infinity,
       child: SingleChildScrollView(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             // Log book button
             buildIconButton(

@@ -40,7 +40,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
   // Creates the fueling object and stores it in Provider
   void addFueling() {
     if (_formKey.currentState.validate()) {
-      Fueling fueling = Fueling(
+      final Fueling fueling = Fueling(
         // TODO: generate uuid for id
         id: '32',
         car: selectedCar,
@@ -90,11 +90,11 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
         backgroundColor: kGreyColor,
         elevation: 0,
         // enviroCar logo
-        title: Text('LogBook'),
+        title: const Text('LogBook'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(
+        padding: const EdgeInsets.all(
           15,
         ),
         child: Form(
@@ -102,15 +102,15 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              TitleWidget(title: 'Fueling Detals'),
-              SizedBox(
+              const TitleWidget(title: 'Fueling Detals'),
+              const SizedBox(
                 height: 20,
               ),
 
               // Consumer provides the Cars data in the dropdown button
               Consumer<CarsProvider>(
                 builder: (_, carsProvider, child) {
-                  List<Car> carsList = carsProvider.getCarsList;
+                  final List<Car> carsList = carsProvider.getCarsList;
 
                   // Drop Down button to select Car
                   return DropdownButtonFormField<Car>(
@@ -124,7 +124,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                       return null;
                     },
                     elevation: 24,
-                    icon: Icon(Icons.arrow_drop_down_rounded),
+                    icon: const Icon(Icons.arrow_drop_down_rounded),
                     value: selectedCar,
                     onChanged: (Car newValue) {
                       FocusScope.of(context).requestFocus(FocusNode());
@@ -137,9 +137,8 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                       (index) {
                         return DropdownMenuItem<Car>(
                           value: carsList[index],
-                          child: Text(carsList[index].manufacturer +
-                              ' ' +
-                              carsList[index].model),
+                          child: Text(
+                              '${carsList[index].manufacturer} ${carsList[index].model}'),
                         );
                       },
                     ),
@@ -179,8 +178,8 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
               // Checkbox for partial fueling
               CheckboxListTile(
-                contentPadding: EdgeInsets.all(0),
-                title: Text('Partial Fueling?'),
+                contentPadding: const EdgeInsets.all(0),
+                title: const Text('Partial Fueling?'),
                 value: partialFueling,
                 onChanged: (bool val) {
                   setState(() {
@@ -191,8 +190,8 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
               // Checkbox for missed previous fueling
               CheckboxListTile(
-                contentPadding: EdgeInsets.all(0),
-                title: Text('Missed Previous Fueling?'),
+                contentPadding: const EdgeInsets.all(0),
+                title: const Text('Missed Previous Fueling?'),
                 value: missedPreviousFueling,
                 onChanged: (bool val) {
                   setState(() {
@@ -216,7 +215,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                   return null;
                 },
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               Row(
@@ -230,7 +229,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                     ),
                   ),
 
-                  SizedBox(
+                  const SizedBox(
                     width: 10,
                   ),
 

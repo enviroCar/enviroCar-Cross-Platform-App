@@ -12,7 +12,7 @@ class SingleRowForm extends StatelessWidget {
   final String hint;
   final TextEditingController textEditingController;
 
-  SingleRowForm({
+  const SingleRowForm({
     @required this.title,
     @required this.hint,
     @required this.textEditingController,

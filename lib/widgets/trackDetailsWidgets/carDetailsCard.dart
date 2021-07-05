@@ -9,7 +9,6 @@ class CarDetailsCard extends StatelessWidget {
     @required String information,
   }) {
     return Row(
-      crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Row(
@@ -18,7 +17,7 @@ class CarDetailsCard extends StatelessWidget {
               iconData,
               size: 30,
             ),
-            SizedBox(
+            const SizedBox(
               width: 10,
             ),
             Text(title),
@@ -35,16 +34,27 @@ class CarDetailsCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: deviceWidth * 0.9,
-      padding: EdgeInsets.all(20),
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[350],
+            blurRadius: 3.0,
+            spreadRadius: 1.0,
+            offset: const Offset(-2, 2),
+          ),
+        ],
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           buildWidget(
             title: 'Car',
             iconData: Icons.drive_eta,
             information: 'ALPHA ROMEO 209\n2009, Diesel',
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           buildWidget(
@@ -52,7 +62,7 @@ class CarDetailsCard extends StatelessWidget {
             iconData: Icons.timer,
             information: 'Jun 28, 2021 1:10:31 PM',
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           buildWidget(
@@ -60,11 +70,10 @@ class CarDetailsCard extends StatelessWidget {
             iconData: Icons.lock_clock,
             information: 'Jun 28, 2021 1:10:31 PM',
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
-          Align(
-            alignment: Alignment.center,
+          const Align(
             child: Text(
               'Bei diesen Werten handelt es sich um geschätzte Werte, die sich deutlich von den realen Werten unterscheiden können. Wir können daher keine Gewährleistungfür diese Angaben geben.',
               style: TextStyle(
@@ -73,18 +82,6 @@ class CarDetailsCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[350],
-            blurRadius: 3.0,
-            spreadRadius: 1.0,
-            offset: Offset(-2, 2),
-          ),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
     );
   }

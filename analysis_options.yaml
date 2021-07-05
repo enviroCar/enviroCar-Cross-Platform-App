@@ -1,0 +1,26 @@
+include: package:lint/analysis_options.yaml
+
+# Linting rules for the project
+
+linter:
+  rules:
+    # Blindly follow the Flutter code style, which prefers types everywhere
+    prefer_relative_imports: true
+
+    # Ignoring naming convention of using underscores instead of camelCase
+    file_names: false
+
+    # Ignoring having to make getters for setters
+    avoid_setters_without_getters: false
+
+    # Ignoring avoiding using true and false in conditions
+    avoid_bool_literals_in_conditional_expressions: false
+
+    # Ignoring ordering directives in alphabetical order
+    directives_ordering: false
+
+    # Ignoring converting outter single to doube quotes
+    avoid_escaping_inner_quotes: false
+
+    # ignoring naming convention for constant identifiers
+    constant_identifier_names: false

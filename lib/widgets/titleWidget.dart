@@ -11,7 +11,7 @@ import '../../constants.dart';
 class TitleWidget extends StatelessWidget {
   final String title;
 
-  TitleWidget({@required this.title});
+  const TitleWidget({@required this.title});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class TitleWidget extends StatelessWidget {
         padding: const EdgeInsets.only(top: 10.0, bottom: 5.0),
         child: Text(
           title,
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 15,
             color: kSpringColor,
             fontWeight: FontWeight.bold,

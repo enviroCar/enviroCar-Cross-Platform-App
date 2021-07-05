@@ -1,4 +1,3 @@
-import 'package:envirocar_app_main/providers/tracksProvider.dart';
 import 'package:flutter/foundation.dart';
 import 'dart:convert';
 
@@ -9,6 +8,7 @@ import '../models/user.dart';
 import './secureStorageServices.dart';
 import './statsServices.dart';
 import '../providers/userStatsProvider.dart';
+import '../providers/tracksProvider.dart';
 
 class AuthenticationServices {
   final baseUri = 'https://envirocar.org/api/stable/users';
@@ -19,9 +19,9 @@ class AuthenticationServices {
   }) async {
     final Uri uri = Uri.parse(baseUri);
 
-    String jsonPayload = jsonEncode(user.toMap());
+    final String jsonPayload = jsonEncode(user.toMap());
 
-    http.Response response = await http.post(
+    final http.Response response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
       body: jsonPayload,
@@ -30,8 +30,8 @@ class AuthenticationServices {
     if (response.statusCode == 201) {
       return 'Mail Sent';
     } else {
-      var decodedBody = jsonDecode(response.body);
-      return decodedBody['message'];
+      final decodedBody = jsonDecode(response.body);
+      return decodedBody['message'] as String;
     }
   }
 
@@ -42,9 +42,9 @@ class AuthenticationServices {
     @required UserStatsProvider userStatsProvider,
   }) async {
     if (user.getUsername != null && user.getPassword != null) {
-      final Uri uri = Uri.parse(baseUri + '/' + user.getUsername);
+      final Uri uri = Uri.parse('$baseUri/${user.getUsername}');
 
-      http.Response response = await http.get(
+      final http.Response response = await http.get(
         uri,
         headers: {
           'X-User': user.getUsername,
@@ -57,9 +57,9 @@ class AuthenticationServices {
         SecureStorageServices().setUserInSecureStorage(
             username: user.getUsername, password: user.getPassword);
 
-        var decodedBody = jsonDecode(response.body);
+        final decodedBody = jsonDecode(response.body);
 
-        user.setEmail = decodedBody['mail'];
+        user.setEmail = decodedBody['mail'] as String;
         user.setAcceptedTerms = true;
         user.setAcceptedPrivacy = true;
 
@@ -75,8 +75,8 @@ class AuthenticationServices {
       } else {
         authProvider.setAuthStatus = false;
 
-        var decodedBody = jsonDecode(response.body);
-        return decodedBody['message'];
+        final decodedBody = jsonDecode(response.body);
+        return decodedBody['message'] as String;
       }
     } else {
       authProvider.setAuthStatus = false;
@@ -92,7 +92,7 @@ class AuthenticationServices {
   }) async {
     final User _user = await SecureStorageServices().getUserFromSecureStorage();
 
-    String message = await this.loginUser(
+    final String message = await loginUser(
       authProvider: authProvider,
       user: _user,
       userStatsProvider: userStatsProvider,
@@ -101,7 +101,7 @@ class AuthenticationServices {
     // if user deletes account from website and opens app again
     // then send to login screen and remove data from secure storage
     if (message == 'invalid username or password') {
-      this.logoutUser(
+      logoutUser(
         authProvider: authProvider,
         userStatsProvider: userStatsProvider,
         tracksProvider: tracksProvider,

@@ -5,7 +5,7 @@ class MapServices {
   // Checks if location service is enabled
   // Prompts a dialogbox to ask to turn it on if disabled
   Future<bool> initializeLocationService() async {
-    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    final bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     bool permissionStatus = true;
 
     if (!serviceEnabled) {

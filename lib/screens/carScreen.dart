@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
-
-import '../providers/carsProvider.dart';
-import './createCarScreen.dart';
-import '../models/car.dart';
+import 'createCarScreen.dart';
 import '../constants.dart';
+import '../widgets/carScreenWidgets/carsListWidget.dart';
 
 class CarScreen extends StatefulWidget {
   static const routeName = '/carScreen';
@@ -23,13 +20,13 @@ class _CarScreenState extends State<CarScreen> {
         elevation: 0,
         actions: [
           GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Icon(Icons.add),
-            ),
             onTap: () {
               Navigator.of(context).pushNamed(CreateCarScreen.routeName);
             },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Icon(Icons.add),
+            ),
           ),
         ],
 
@@ -41,53 +38,8 @@ class _CarScreenState extends State<CarScreen> {
         centerTitle: true,
       ),
       body: Container(
-        padding: EdgeInsets.all(15),
-        child: Consumer<CarsProvider>(
-          builder: (_, carsProvider, child) {
-            List<Car> carsList = carsProvider.getCarsList;
-            Car selectedCar = carsProvider.getSelectedCar;
-            if (carsList.isNotEmpty) {
-              return ListView.builder(
-                padding: EdgeInsets.all(0),
-                itemCount: carsList.length,
-                itemBuilder: (_, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      carsProvider.setSelectedCar = carsList[index];
-                    },
-                    child: ListTile(
-                      contentPadding: EdgeInsets.all(0),
-                      leading: Icon(Icons.drive_eta_sharp),
-                      title: Text(carsList[index].manufacturer +
-                          ' - ' +
-                          carsList[index].model),
-                      subtitle: Text(
-                          carsList[index].constructionYear.toString() +
-                              ', ' +
-                              carsList[index].engineDisplacement.toString() +
-                              ', ' +
-                              carsList[index].fuelType),
-                      trailing: Radio(
-                        onChanged: (bool value) {},
-                        groupValue: true,
-                        value: selectedCar == null
-                            ? false
-                            : (carsList[index].id == selectedCar.id
-                                ? true
-                                : false),
-                      ),
-                    ),
-                  );
-                },
-              );
-            }
-            return Center(
-              child: Text(
-                'There are no cars here',
-              ),
-            );
-          },
-        ),
+        padding: const EdgeInsets.all(15),
+        child: CarsListWidget(),
       ),
     );
   }
