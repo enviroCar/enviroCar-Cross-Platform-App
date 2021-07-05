@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
-import '../../globals.dart';
+/// Used in
+/// 1. Create Fueling Screen
+/// 2. Create Car Screen
+/// 3. Dashboard Screen
+/// 4. Report Issue Screen
 
 // General button used throughout the app
 class Button extends StatelessWidget {
@@ -16,29 +20,25 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      child: GestureDetector(
-        child: Container(
-          margin: EdgeInsets.all(10),
-          width: double.infinity,
-          height: deviceHeight * 0.06,
-          decoration: BoxDecoration(
-            color: color,
-            borderRadius: BorderRadius.all(Radius.circular(5)),
-          ),
-          child: Center(
-            child: Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 17,
-                fontWeight: FontWeight.w500,
-              ),
+    return GestureDetector(
+      child: Container(
+        height: 45,
+        decoration: BoxDecoration(
+          color: color,
+          borderRadius: BorderRadius.all(Radius.circular(5)),
+        ),
+        child: Center(
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 17,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
-        onTap: onTap,
       ),
+      onTap: onTap,
     );
   }
 }

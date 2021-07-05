@@ -25,8 +25,8 @@ class DashboardCard extends StatelessWidget {
         Navigator.of(context).pushNamed(routeName);
       },
       child: Container(
+        margin: EdgeInsets.symmetric(horizontal: 15),
         height: deviceHeight * 0.12,
-        width: deviceWidth * 0.9,
         padding: EdgeInsets.symmetric(
           horizontal: 15,
         ),
