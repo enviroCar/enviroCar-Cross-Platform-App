@@ -41,7 +41,7 @@ Future<void> main() async {
   runApp(
     DevicePreview(
       // to check the UI on different devices make enabled true
-      enabled: true,
+      enabled: false,
       builder: (context) => MyApp(),
     ),
   );
