@@ -25,10 +25,21 @@ class DashboardCard extends StatelessWidget {
         Navigator.of(context).pushNamed(routeName);
       },
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 15),
         height: deviceHeight * 0.12,
-        width: deviceWidth * 0.9,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 15,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[300],
+              blurRadius: 8.0,
+              offset: const Offset(3, 4),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,7 +49,7 @@ class DashboardCard extends StatelessWidget {
                 Container(
                   height: deviceHeight * 0.15,
                   width: deviceWidth * 0.15,
-                  decoration: BoxDecoration(
+                  decoration: const BoxDecoration(
                     shape: BoxShape.circle,
                     color: kSpringColor,
                   ),
@@ -52,7 +63,7 @@ class DashboardCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Column(
@@ -83,17 +94,6 @@ class DashboardCard extends StatelessWidget {
               ),
             ),
           ],
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300],
-              blurRadius: 8.0,
-              offset: Offset(3, 4),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );

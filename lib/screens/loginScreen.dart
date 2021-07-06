@@ -21,13 +21,13 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  static final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _username;
   String _password;
   bool _wrongCredentials = false;
 
-  _showDialogbox(String message) async {
+  Future<void> _showDialogbox(String message) async {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -61,7 +61,6 @@ class _LoginScreenState extends State<LoginScreen> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(top: deviceHeight * 0.03),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: deviceHeight * 0.1,
@@ -97,7 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Password
                     TextFormField(
                       obscureText: true,
-                      autofocus: false,
                       decoration: inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
@@ -114,14 +112,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
 
                     // Error for wrong credentials
-                    _wrongCredentials
-                        ? Text(
-                            'Wrong Credentials',
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          )
-                        : Container(),
+                    if (_wrongCredentials)
+                      const Text(
+                        'Wrong Credentials',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      )
+                    else
+                      Container(),
 
                     SizedBox(
                       height: deviceHeight * 0.03,
@@ -129,24 +128,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Login Button
                     GestureDetector(
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: kSpringColor,
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Login',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
                       onTap: () async {
                         setState(
                           () {
@@ -155,12 +136,12 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
 
                         // if (_formKey.currentState.validate()) {
-                        User _user = new User(
+                        final User _user = User(
                           username: _username,
                           password: _password,
                         );
 
-                        String _status =
+                        final String _status =
                             await AuthenticationServices().loginUser(
                           authProvider: _authProvider,
                           user: _user,
@@ -182,6 +163,24 @@ class _LoginScreenState extends State<LoginScreen> {
                         }
                         // }
                       },
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          color: kSpringColor,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Login',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
 
                     SizedBox(
@@ -195,7 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           RegisterScreen.routeName,
                         );
                       },
-                      child: Text(
+                      child: const Text(
                         'New to enviroCar?\nRegister here',
                         textAlign: TextAlign.center,
                         style: TextStyle(

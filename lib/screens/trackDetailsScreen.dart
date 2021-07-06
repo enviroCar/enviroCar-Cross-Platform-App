@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
-import '../models/track.dart';
 import '../widgets/trackDetailsWidgets/carDetailsCard.dart';
 import '../widgets/trackDetailsWidgets/stackedMapButton.dart';
 import '../widgets/tracksScrrenWidgets/trackCard.dart';
+import '../models/track.dart';
 
 class TrackDetailsScreen extends StatelessWidget {
   static const routeName = '/trackDetailsScreen';
 
   final Track track;
 
-  TrackDetailsScreen({
+  const TrackDetailsScreen({
     @required this.track,
   });
 
@@ -32,15 +32,15 @@ class TrackDetailsScreen extends StatelessWidget {
         child: Column(
           children: [
             StackedMapButton(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TrackCard(track: track),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             CarDetailsCard(),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
           ],

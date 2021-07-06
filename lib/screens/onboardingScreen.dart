@@ -13,7 +13,7 @@ class OnboardingScreen extends StatelessWidget {
       key: GlobalKey<IntroductionScreenState>(),
       pages: [
         PageViewModel(
-          decoration: PageDecoration(
+          decoration: const PageDecoration(
             descriptionPadding: EdgeInsets.all(10),
             titlePadding: EdgeInsets.all(10),
           ),
@@ -26,7 +26,7 @@ class OnboardingScreen extends StatelessWidget {
         ),
         PageViewModel(
           titleWidget: Column(
-            children: [
+            children: const [
               Text(
                 'enviroCar',
                 style: TextStyle(
@@ -46,46 +46,46 @@ class OnboardingScreen extends StatelessWidget {
             builder:
                 (BuildContext context, AsyncSnapshot<EnvirocarStats> snapshot) {
               if (snapshot.hasData) {
-                EnvirocarStats envirocarStats = snapshot.data;
+                final EnvirocarStats envirocarStats = snapshot.data;
                 return Column(
                   children: [
                     Text(
                       envirocarStats.users.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 30,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Users',
                       style: TextStyle(
                         fontSize: 25,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Text(
                       envirocarStats.tracks.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 30,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Tracks',
                       style: TextStyle(
                         fontSize: 25,
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 20,
                     ),
                     Text(
                       envirocarStats.measurements.toString(),
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 30,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Measurements',
                       style: TextStyle(
                         fontSize: 25,

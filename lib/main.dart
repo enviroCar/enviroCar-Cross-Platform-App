@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './providers/authProvider.dart';
 import './providers/tracksProvider.dart';
+import 'models/track.dart';
 import './screens/splashScreen.dart';
 import './screens/bluetoothDevicesScreen.dart';
 import './screens/index.dart';
@@ -20,10 +21,17 @@ import './screens/carScreen.dart';
 import './providers/carsProvider.dart';
 import './screens/createCarScreen.dart';
 import './screens/trackDetailsScreen.dart';
+import './providers/fuelingsProvider.dart';
+import './screens/createFuelingScreen.dart';
+import './screens/logBookScreen.dart';
+import './screens/reportIssueScreen.dart';
+import '../screens/helpScreen.dart';
 
-void main() async {
+Future<void> main() async {
+  // Ensures all the future functions of main() finish before launching the app
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
 
   // Restricts rotation of screen
@@ -33,13 +41,14 @@ void main() async {
   runApp(
     DevicePreview(
       // to check the UI on different devices make enabled true
-      enabled: false,
+      enabled: true,
       builder: (context) => MyApp(),
     ),
   );
 }
 
 class MyApp extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -61,7 +70,12 @@ class MyApp extends StatelessWidget {
         // Provides uploaded tracks to different widgets
         ChangeNotifierProvider(
           create: (context) => TracksProvider(),
-        )
+        ),
+
+        // Provides Fueling data to different widgets
+        ChangeNotifierProvider(
+          create: (context) => FuelingsProvider(),
+        ),
       ],
       child: MaterialApp(
         locale: DevicePreview.locale(context),
@@ -78,7 +92,8 @@ class MyApp extends StatelessWidget {
             case TrackDetailsScreen.routeName:
               return MaterialPageRoute(
                 builder: (_) {
-                  return TrackDetailsScreen(track: settings.arguments);
+                  final Track track = settings.arguments as Track;
+                  return TrackDetailsScreen(track: track);
                 },
               );
 
@@ -98,6 +113,10 @@ class MyApp extends StatelessWidget {
           MapScreen.routeName: (context) => MapScreen(),
           CarScreen.routeName: (context) => CarScreen(),
           CreateCarScreen.routeName: (context) => CreateCarScreen(),
+          CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
+          LogBookScreen.routeName: (context) => LogBookScreen(),
+          ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
+          HelpScreen.routeName: (context) => HelpScreen(),
         },
       ),
     );

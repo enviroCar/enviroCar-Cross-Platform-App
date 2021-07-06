@@ -25,7 +25,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   void removeUser() {
-    this.setUser = null;
-    this.setAuthStatus = false;
+    setUser = null;
+    setAuthStatus = false;
   }
 }
