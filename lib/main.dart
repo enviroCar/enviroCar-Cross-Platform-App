@@ -7,6 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import './providers/authProvider.dart';
 import './providers/tracksProvider.dart';
+import 'models/track.dart';
 import './screens/splashScreen.dart';
 import './screens/bluetoothDevicesScreen.dart';
 import './screens/index.dart';
@@ -26,7 +27,7 @@ import './screens/logBookScreen.dart';
 import './screens/reportIssueScreen.dart';
 import '../screens/helpScreen.dart';
 
-void main() async {
+Future<void> main() async {
   // Ensures all the future functions of main() finish before launching the app
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -47,6 +48,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -90,7 +92,8 @@ class MyApp extends StatelessWidget {
             case TrackDetailsScreen.routeName:
               return MaterialPageRoute(
                 builder: (_) {
-                  return TrackDetailsScreen(track: settings.arguments);
+                  final Track track = settings.arguments as Track;
+                  return TrackDetailsScreen(track: track);
                 },
               );
 

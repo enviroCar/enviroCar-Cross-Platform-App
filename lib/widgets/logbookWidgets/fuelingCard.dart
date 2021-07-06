@@ -7,15 +7,15 @@ import '../dividerLine.dart';
 class FuelingCard extends StatelessWidget {
   final Fueling fueling;
 
-  FuelingCard({@required this.fueling});
+  const FuelingCard({@required this.fueling});
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(
+      margin: const EdgeInsets.symmetric(
         vertical: 10,
       ),
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 10,
         horizontal: 15,
       ),
@@ -25,7 +25,7 @@ class FuelingCard extends StatelessWidget {
           BoxShadow(
             color: Colors.grey[300],
             blurRadius: 8.0,
-            offset: Offset(3, 4),
+            offset: const Offset(3, 4),
           ),
         ],
         borderRadius: BorderRadius.circular(10),
@@ -39,7 +39,7 @@ class FuelingCard extends StatelessWidget {
               // Gas station icon and date
               // TODO: Add real date
               Row(
-                children: [
+                children: const [
                   Icon(
                     Icons.ev_station_rounded,
                     size: 30,
@@ -59,8 +59,8 @@ class FuelingCard extends StatelessWidget {
 
               // Total Price
               Text(
-                '\$' + fueling.totalPrice,
-                style: TextStyle(
+                '\$${fueling.totalPrice}',
+                style: const TextStyle(
                   color: kSpringColor,
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -74,11 +74,11 @@ class FuelingCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(fueling.mileage + ' km - ' + fueling.fueledVolume + ' L'),
-              Text(fueling.pricePerLitre + ' \$/L'),
+              Text('${fueling.mileage} km - ${fueling.fueledVolume} L'),
+              Text('${fueling.pricePerLitre} \$/L'),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
 
@@ -86,8 +86,8 @@ class FuelingCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.local_taxi),
-              SizedBox(
+              const Icon(Icons.local_taxi),
+              const SizedBox(
                 width: 10,
               ),
               Flexible(
@@ -96,7 +96,7 @@ class FuelingCard extends StatelessWidget {
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
 
@@ -104,8 +104,8 @@ class FuelingCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Icon(Icons.comment),
-              SizedBox(
+              const Icon(Icons.comment),
+              const SizedBox(
                 width: 10,
               ),
               Flexible(
@@ -116,28 +116,30 @@ class FuelingCard extends StatelessWidget {
           DividerLine(),
 
           // Partial Fill-Up and Missed Previous Fill-Up
-          fueling.partialFueling
-              ? Row(
-                  children: [
-                    Icon(Icons.check),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Partial Fill-up'),
-                  ],
-                )
-              : Container(),
-          fueling.missedPreviousFueling
-              ? Row(
-                  children: [
-                    Icon(Icons.check),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Text('Missed Previous Fill-up'),
-                  ],
-                )
-              : Container(),
+          if (fueling.partialFueling)
+            Row(
+              children: const [
+                Icon(Icons.check),
+                SizedBox(
+                  width: 10,
+                ),
+                Text('Partial Fill-up'),
+              ],
+            )
+          else
+            Container(),
+          if (fueling.missedPreviousFueling)
+            Row(
+              children: const [
+                Icon(Icons.check),
+                SizedBox(
+                  width: 10,
+                ),
+                Text('Missed Previous Fill-up'),
+              ],
+            )
+          else
+            Container(),
         ],
       ),
     );

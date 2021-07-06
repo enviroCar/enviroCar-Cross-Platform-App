@@ -5,19 +5,19 @@ import '../constants.dart';
 class BLEDialog extends StatelessWidget {
   final Function toggleBluetooth;
 
-  BLEDialog({@required this.toggleBluetooth});
+  const BLEDialog({@required this.toggleBluetooth});
 
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text('Turn on Bluetooth?'),
+      title: const Text('Turn on Bluetooth?'),
       actions: [
         //cancel button
         TextButton(
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text(
+          child: const Text(
             'Cancel',
             style: TextStyle(
               color: kSpringColor,
@@ -31,7 +31,7 @@ class BLEDialog extends StatelessWidget {
             toggleBluetooth();
             Navigator.pop(context);
           },
-          child: Text(
+          child: const Text(
             'Yes',
             style: TextStyle(
               color: kSpringColor,

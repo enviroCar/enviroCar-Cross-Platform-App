@@ -23,18 +23,18 @@ class LogBookScreen extends StatelessWidget {
         actions: [
           // Button to navigate to CreateFuelingScreen
           GestureDetector(
-            child: Padding(
-              padding: const EdgeInsets.only(right: 10.0),
-              child: Icon(Icons.add),
-            ),
             onTap: () {
               Navigator.of(context).pushNamed(CreateFuelingScreen.routeName);
             },
+            child: const Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Icon(Icons.add),
+            ),
           ),
         ],
 
         // enviroCar logo
-        title: Text('LogBook'),
+        title: const Text('LogBook'),
         centerTitle: true,
       ),
       body: Padding(
@@ -43,19 +43,18 @@ class LogBookScreen extends StatelessWidget {
         // Consumer provides all the fueling logs
         child: Consumer<FuelingsProvider>(
           builder: (_, fuelingsProvider, child) {
-            List<Fueling> fuelingsList = fuelingsProvider.getFuelingsList;
+            final List<Fueling> fuelingsList = fuelingsProvider.getFuelingsList;
 
             // If there are no logs then show 'No logs' image
             if (fuelingsList.isEmpty) {
               return Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  TitleWidget(title: 'My Fuelings'),
+                  const TitleWidget(title: 'My Fuelings'),
                   Expanded(
-                    child: Container(
+                    child: SizedBox(
                       width: double.infinity,
                       child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           // Image of no logs
@@ -63,17 +62,17 @@ class LogBookScreen extends StatelessWidget {
                             'assets/images/img_logbook.png',
                             height: deviceHeight * 0.3,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
-                          Text(
+                          const Text(
                             'NO FUELINGS',
                             style: TextStyle(
                               fontSize: 25,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
+                          const Text(
                             'There are no fuelings assigned\nto the current user',
                             textAlign: TextAlign.center,
                           ),
@@ -87,12 +86,11 @@ class LogBookScreen extends StatelessWidget {
 
             // else show the fueling logs in a list
             return SingleChildScrollView(
-              child: Container(
+              child: SizedBox(
                 width: double.infinity,
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    TitleWidget(title: 'Your Fuelings'),
+                    const TitleWidget(title: 'Your Fuelings'),
 
                     // Creates fueling cards by taking data from fuelings provider
                     for (Fueling fuelings in fuelingsList)

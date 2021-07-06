@@ -24,16 +24,15 @@ class Report {
   });
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['id'] = this.id;
-    data['estimatedTime'] = this.estimatedTime;
-    data['problem'] = this.problem;
-    data['forceCrash'] = this.forceCrash;
-    data['suddenLags'] = this.suddenLags;
-    data['appWasUnresponsive'] = this.appWasUnresponsive;
-    data['componentDoesNotWorkAsExpected'] =
-        this.componentDoesNotWorkAsExpected;
-    data['requestForAFeature'] = this.requestForAFeature;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['estimatedTime'] = estimatedTime;
+    data['problem'] = problem;
+    data['forceCrash'] = forceCrash;
+    data['suddenLags'] = suddenLags;
+    data['appWasUnresponsive'] = appWasUnresponsive;
+    data['componentDoesNotWorkAsExpected'] = componentDoesNotWorkAsExpected;
+    data['requestForAFeature'] = requestForAFeature;
     return data;
   }
 }

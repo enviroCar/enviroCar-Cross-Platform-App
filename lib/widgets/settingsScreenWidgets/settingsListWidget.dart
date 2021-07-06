@@ -6,7 +6,7 @@ import '../../models/settingsTileModel.dart';
 class SettingsListWidget extends StatefulWidget {
   final List<SettingsTileModel> settings;
 
-  SettingsListWidget({
+  const SettingsListWidget({
     @required this.settings,
   });
   @override
@@ -15,33 +15,31 @@ class SettingsListWidget extends StatefulWidget {
 
 class _SettingsListWidgetState extends State<SettingsListWidget> {
   // Toggles the checkbox
-  void toggleCheckBox({@required index}) {
+  void toggleCheckBox({@required int index}) {
     setState(() {
-      bool currentVal = widget.settings[index].isChecked;
+      final bool currentVal = widget.settings[index].isChecked;
       widget.settings[index].isChecked = !currentVal;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Column(
-        children: List.generate(
-          widget.settings.length,
-          (index) {
-            return CheckboxListTile(
-              contentPadding: EdgeInsets.only(
-                bottom: 10,
-              ),
-              title: Text(widget.settings[index].title),
-              subtitle: Text(widget.settings[index].subtitle),
-              value: widget.settings[index].isChecked,
-              onChanged: (bool val) {
-                toggleCheckBox(index: index);
-              },
-            );
-          },
-        ),
+    return Column(
+      children: List.generate(
+        widget.settings.length,
+        (index) {
+          return CheckboxListTile(
+            contentPadding: const EdgeInsets.only(
+              bottom: 10,
+            ),
+            title: Text(widget.settings[index].title),
+            subtitle: Text(widget.settings[index].subtitle),
+            value: widget.settings[index].isChecked,
+            onChanged: (bool val) {
+              toggleCheckBox(index: index);
+            },
+          );
+        },
       ),
     );
   }

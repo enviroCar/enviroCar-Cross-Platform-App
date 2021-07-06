@@ -17,7 +17,7 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Locate DLC (Diagnostic Link Connector)',
           style: TextStyle(
             fontSize: 20,
@@ -26,17 +26,10 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
           ),
         ),
         Image.asset('assets/images/findobddesgin.png'),
-        SizedBox(height: 10),
-        Text(
+        const SizedBox(height: 10),
+        const Text(
             'This is somewhat triangulalr shaped 16-pin connector that is commonly located underneath the left hand side of the dash near the steering column. If you have trouble locating DLC, refer owner manual.'),
         GestureDetector(
-          child: Text(
-            'www.wikiobd.co.uk',
-            style: TextStyle(
-              color: kSpringColor,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
           onTap: () async {
             if (await canLaunch('https://wikiobd.co.uk')) {
               launch('https://wikiobd.co.uk');
@@ -44,6 +37,13 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
               throw 'Cannot Launch';
             }
           },
+          child: const Text(
+            'www.wikiobd.co.uk',
+            style: TextStyle(
+              color: kSpringColor,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ],
     ),
@@ -52,8 +52,8 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Plug OBD into car\s OBD Port',
+        const Text(
+          'Plug OBD into cars OBD Port',
           style: TextStyle(
             color: kSpringColor,
             fontWeight: FontWeight.bold,
@@ -61,7 +61,7 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
           ),
         ),
         Image.asset('assets/images/obdport.png'),
-        Text(
+        const Text(
             'Plug OBD Bluetooth into car\'s OBD port and turn the ignition on'),
       ],
     ),
@@ -70,7 +70,7 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
+        const Text(
           'Connect enviroCar app to OBD Bluetooth',
           style: TextStyle(
             color: kSpringColor,
@@ -78,9 +78,9 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
             fontSize: 20,
           ),
         ),
-        Text('1. Select'),
+        const Text('1. Select'),
         Image.asset('assets/images/noobdselected.jpeg'),
-        Text(
+        const Text(
             '2. Turn on Bluetooth\n3. Connect to Bluetooth signals with names similar to: OBDII, VLink, ELM327 etc.\n4. All set! Start recording track'),
       ],
     ),
@@ -95,7 +95,7 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(
+      title: const Text(
         'OBD Help',
         style: TextStyle(
           fontWeight: FontWeight.bold,
@@ -110,24 +110,25 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
           onPressed: () {
             Navigator.pop(context);
           },
-          child: Text(
+          child: const Text(
             'Close',
-            style: TextStyle(color: const Color(0xFFd71f1f)),
+            style: TextStyle(color: Color(0xFFd71f1f)),
           ),
         ),
 
         //delete
-        index < 2
-            ? TextButton(
-                onPressed: () {
-                  nextDialog();
-                },
-                child: Text(
-                  'Next',
-                  style: TextStyle(color: const Color(0xFFd71f1f)),
-                ),
-              )
-            : Container(),
+        if (index < 2)
+          TextButton(
+            onPressed: () {
+              nextDialog();
+            },
+            child: const Text(
+              'Next',
+              style: TextStyle(color: Color(0xFFd71f1f)),
+            ),
+          )
+        else
+          Container(),
       ],
     );
   }

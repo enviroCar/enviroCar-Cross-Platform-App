@@ -32,7 +32,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
 
   // triggered when 'Create Report' button is pressed
   void createReport() {
-    Report report = Report(
+    final Report report = Report(
       // TODO: Add id from uuid package
       id: '32',
       estimatedTime: estimatedTimeController.text,
@@ -43,8 +43,6 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
       componentDoesNotWorkAsExpected: componentNotWorkingBool,
       requestForAFeature: featureRequestBool,
     );
-
-    print(report.toJson());
   }
 
   @override
@@ -70,21 +68,20 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
         backgroundColor: kGreyColor,
         elevation: 0,
         // enviroCar logo
-        title: Text('LogBook'),
+        title: const Text('Report Issue'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(15),
+          padding: const EdgeInsets.all(15),
           width: deviceWidth,
           child: Form(
             key: _formKey,
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 // Heading text
-                Text(heading),
-                SizedBox(
+                const Text(heading),
+                const SizedBox(
                   height: 10,
                 ),
 
@@ -94,7 +91,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                   hint: '10.00',
                   textEditingController: estimatedTimeController,
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 
@@ -106,18 +103,18 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                     labelText: describeYourProblem,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 
                 // Categories heading
-                TitleWidget(
+                const TitleWidget(
                   title: categories,
                 ),
 
                 // Force Crash Checkbox
                 CheckboxListTile(
-                  title: Text(forceCrash),
+                  title: const Text(forceCrash),
                   value: forceCrashBool,
                   onChanged: (bool val) {
                     setState(() {
@@ -128,7 +125,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
 
                 // Sudden Lags Checkbox
                 CheckboxListTile(
-                  title: Text(suddenLags),
+                  title: const Text(suddenLags),
                   value: suddenLagsBool,
                   onChanged: (bool val) {
                     setState(() {
@@ -139,7 +136,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
 
                 // App was unresponsive Checkbox
                 CheckboxListTile(
-                  title: Text(appWasUnresponsive),
+                  title: const Text(appWasUnresponsive),
                   value: unresponsiveAppBool,
                   onChanged: (bool val) {
                     setState(() {
@@ -150,7 +147,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
 
                 // Component Does not work Checkbox
                 CheckboxListTile(
-                  title: Text(componentDoesNotWorkAsExpected),
+                  title: const Text(componentDoesNotWorkAsExpected),
                   value: componentNotWorkingBool,
                   onChanged: (bool val) {
                     setState(() {
@@ -161,7 +158,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
 
                 // Feature request Checkbox
                 CheckboxListTile(
-                  title: Text(requestForAFeature),
+                  title: const Text(requestForAFeature),
                   value: featureRequestBool,
                   onChanged: (bool val) {
                     setState(() {
@@ -169,7 +166,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                     });
                   },
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
 

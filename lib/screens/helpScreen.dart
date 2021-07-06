@@ -12,7 +12,7 @@ class HelpScreen extends StatelessWidget {
   Widget buildH1({@required String headline1}) {
     return Text(
       headline1,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 22,
       ),
     );
@@ -22,7 +22,7 @@ class HelpScreen extends StatelessWidget {
   Widget buildH2({@required String headline2}) {
     return Text(
       headline2,
-      style: TextStyle(
+      style: const TextStyle(
         fontSize: 17,
       ),
     );
@@ -32,7 +32,7 @@ class HelpScreen extends StatelessWidget {
   Widget buildParagraph({@required String paragraph}) {
     return Text(
       paragraph,
-      style: TextStyle(
+      style: const TextStyle(
         color: Colors.black45,
       ),
     );
@@ -58,24 +58,24 @@ class HelpScreen extends StatelessWidget {
                     'assets/images/img_envirocar_logo_white.png',
                     scale: 4.5,
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
-                  Text(
+                  const Text(
                     'Help',
                     style: TextStyle(
                       color: Colors.white,
                       fontSize: 30,
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
                   ),
                 ],
               ),
             ),
             Container(
-              padding: EdgeInsets.all(15),
+              padding: const EdgeInsets.all(15),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -87,7 +87,7 @@ class HelpScreen extends StatelessWidget {
 
                   // Headline 2
                   buildH1(headline1: help_headline_2),
-                  SizedBox(
+                  const SizedBox(
                     height: 5,
                   ),
                   buildH2(headline2: help_headline_2_1),
