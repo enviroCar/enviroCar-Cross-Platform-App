@@ -172,8 +172,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
               onTap: () {
                 Navigator.pushNamed(context, GpsTrackingScreen.routeName);
-                // final provider = Provider.of<BluetoothProvider>(context, listen: false);
-                // provider.interactWithDevice();
+                final provider = Provider.of<BluetoothProvider>(context, listen: false);
+                provider.interactWithDevice();
               },
             ),
             SizedBox(
