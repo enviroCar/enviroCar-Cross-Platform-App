@@ -5,14 +5,14 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../models/user.dart';
 
 class SecureStorageServices {
-  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   // Fetches data stored locally on a secure storage
   Future<User> getUserFromSecureStorage() async {
-    String username = await _secureStorage.read(key: 'username');
-    String password = await _secureStorage.read(key: 'password');
+    final String username = await _secureStorage.read(key: 'username');
+    final String password = await _secureStorage.read(key: 'password');
 
-    User user = new User(
+    final User user = User(
       username: username,
       password: password,
     );

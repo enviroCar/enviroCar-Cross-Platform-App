@@ -12,7 +12,7 @@ class LocationStatusProvider extends ChangeNotifier {
   }
 
   /// function to update location stream upon listening to status updates
-  void updateLocationStatus() async {
+  Future updateLocationStatus() async {
     LocationStatusChecker().onStatusChange.listen((status) {
       locationStatus = status;
       notifyListeners();

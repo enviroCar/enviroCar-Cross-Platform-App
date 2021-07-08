@@ -1,0 +1,46 @@
+import 'package:flutter/material.dart';
+
+import '../../models/settingsTileModel.dart';
+
+// List of checkbox settings tile on settings screen
+class SettingsListWidget extends StatefulWidget {
+  final List<SettingsTileModel> settings;
+
+  const SettingsListWidget({
+    @required this.settings,
+  });
+  @override
+  _SettingsListWidgetState createState() => _SettingsListWidgetState();
+}
+
+class _SettingsListWidgetState extends State<SettingsListWidget> {
+  // Toggles the checkbox
+  void toggleCheckBox({@required int index}) {
+    setState(() {
+      final bool currentVal = widget.settings[index].isChecked;
+      widget.settings[index].isChecked = !currentVal;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: List.generate(
+        widget.settings.length,
+        (index) {
+          return CheckboxListTile(
+            contentPadding: const EdgeInsets.only(
+              bottom: 10,
+            ),
+            title: Text(widget.settings[index].title),
+            subtitle: Text(widget.settings[index].subtitle),
+            value: widget.settings[index].isChecked,
+            onChanged: (bool val) {
+              toggleCheckBox(index: index);
+            },
+          );
+        },
+      ),
+    );
+  }
+}

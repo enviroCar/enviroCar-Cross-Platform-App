@@ -1,19 +1,31 @@
-import 'package:envirocar_app_main/widgets/trackDetailsWidgets/trackDetailsTile.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/track.dart';
 import '../../globals.dart';
 import '../../constants.dart';
+import '../trackDetailsWidgets/trackDetailsTile.dart';
 
 class TrackDetailsCard extends StatelessWidget {
   final Track track;
 
-  TrackDetailsCard({@required this.track});
+  const TrackDetailsCard({@required this.track});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: deviceWidth * 0.9,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[350],
+            blurRadius: 3.0,
+            spreadRadius: 1.0,
+            offset: Offset(-2, 2),
+          ),
+        ],
+        color: Colors.white,
+        borderRadius: BorderRadius.all(Radius.circular(5)),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -155,47 +167,41 @@ class TrackDetailsCard extends StatelessWidget {
               iconData: Icons.bus_alert,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
         ],
-      ),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[350],
-            blurRadius: 3.0,
-            spreadRadius: 1.0,
-            offset: Offset(-2, 2),
-          ),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
     );
   }
   
   String trackDay(int weekday) {
     String day = 'Sunday';
-    if (weekday == 1)
+    if (weekday == 1) {
       day = 'Monday';
-    else if (weekday == 2)
+    }
+    else if (weekday == 2) {
       day = 'Tuesday';
-    else if (weekday == 3)
+    }
+    else if (weekday == 3) {
       day = 'Wednesday';
-    else if (weekday == 4)
+    }
+    else if (weekday == 4) {
       day = 'Thursday';
-    else if (weekday == 5)
+    }
+    else if (weekday == 5) {
       day = 'Friday';
-    else if (weekday == 6)
+    }
+    else if (weekday == 6) {
       day = 'Saturday';
+    }
     return day;
   }
 
   double determineSpeed(double distance, DateTime start, DateTime end) {
-    int time = end.difference(start).inMinutes;
-    double t = time / 60;
-    double speed = distance / t;
+    final int duration = end.difference(start).inMinutes;
+    final double timeInHours = duration / 60;
+    final double speed = distance / timeInHours;
     return speed;
   }
 }

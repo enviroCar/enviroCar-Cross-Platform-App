@@ -8,14 +8,25 @@ import '../../screens/trackDetailsScreen.dart';
 class TrackCard extends StatelessWidget {
   final Track track;
 
-  TrackCard({@required this.track});
+  const TrackCard({@required this.track});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: deviceWidth * 0.9,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[350],
+            blurRadius: 3.0,
+            spreadRadius: 1.0,
+            offset: const Offset(-2, 2),
+          ),
+        ],
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
@@ -28,14 +39,15 @@ class TrackCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: EdgeInsets.symmetric(
+                  padding: const EdgeInsets.symmetric(
                     vertical: 20,
                     horizontal: 20,
                   ),
                   child: RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       text: 'Track ',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontWeight: FontWeight.w800,
                         color: kWhiteColor,
                       ),
@@ -45,17 +57,12 @@ class TrackCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
                 Container(
-                  padding: EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(15),
                   child: PopupMenuButton(
                     enabled: true,
-                    child: Icon(
-                      Icons.more_vert_outlined,
-                      color: kWhiteColor,
-                    ),
                     onSelected: (int index) {
                       if (index == 0) {
                         Navigator.of(context).pushNamed(
@@ -77,31 +84,35 @@ class TrackCard extends StatelessWidget {
                       }
                     },
                     itemBuilder: (_) => [
-                      PopupMenuItem(
+                      const PopupMenuItem(
+                        value: 0,
                         child: Text(
                           'Show Details',
                         ),
-                        value: 0,
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
+                        value: 1,
                         child: Text(
                           'Delete Track',
                         ),
-                        value: 1,
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
+                        value: 2,
                         child: Text(
                           'Upload Track as Open Data',
                         ),
-                        value: 2,
                       ),
-                      PopupMenuItem(
+                      const PopupMenuItem(
+                        value: 3,
                         child: Text(
                           'Export Track',
                         ),
-                        value: 3,
                       ),
                     ],
+                    child: const Icon(
+                      Icons.more_vert_outlined,
+                      color: kWhiteColor,
+                    ),
                   ),
                 ),
               ],
@@ -115,13 +126,11 @@ class TrackCard extends StatelessWidget {
               );
             },
             // TODO: replace the placeholder map image with map widget
-            child: Container(
-              child: Image.asset(
-                'assets/images/map_placeholder.png',
-                fit: BoxFit.cover,
-                height: deviceHeight * 0.2,
-                width: double.infinity,
-              ),
+            child: Image.asset(
+              'assets/images/map_placeholder.png',
+              fit: BoxFit.cover,
+              height: deviceHeight * 0.2,
+              width: double.infinity,
             ),
           ),
           GestureDetector(
@@ -132,7 +141,7 @@ class TrackCard extends StatelessWidget {
               );
             },
             child: Container(
-              padding: EdgeInsets.symmetric(
+              padding: const EdgeInsets.symmetric(
                 vertical: 20,
                 horizontal: 20,
               ),
@@ -147,16 +156,13 @@ class TrackCard extends StatelessWidget {
                             .difference(track.begin)
                             .toString()
                             .replaceFirst('.000000', ''),
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: kSpringColor,
                           fontSize: 25,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: deviceHeight * 0.02,
-                      // ),
-                      Text(
+                      const Text(
                         'Duration',
                         style: TextStyle(
                           fontSize: 15,
@@ -169,17 +175,14 @@ class TrackCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        track.length.toStringAsFixed(2) + 'km',
-                        style: TextStyle(
+                        '${track.length.toStringAsFixed(2)}km',
+                        style: const TextStyle(
                           color: kSpringColor,
                           fontSize: 25,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: deviceHeight * 0.02,
-                      // ),
-                      Text(
+                      const Text(
                         'Distance',
                         style: TextStyle(
                           fontSize: 15,
@@ -193,18 +196,6 @@ class TrackCard extends StatelessWidget {
             ),
           ),
         ],
-      ),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[350],
-            blurRadius: 3.0,
-            spreadRadius: 1.0,
-            offset: Offset(-2, 2),
-          ),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
     );
   }

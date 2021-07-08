@@ -10,7 +10,7 @@ class TrackDetailsScreen extends StatelessWidget {
 
   final Track track;
 
-  TrackDetailsScreen({
+  const TrackDetailsScreen({
     @required this.track,
   });
 
@@ -31,13 +31,13 @@ class TrackDetailsScreen extends StatelessWidget {
         child: Column(
           children: [
             StackedMapButton(),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             TrackDetailsCard(
               track: track
             ),
-            SizedBox(
+            const SizedBox(
               height: 100,
             ),
           ],

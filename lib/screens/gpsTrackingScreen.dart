@@ -20,11 +20,11 @@ class GpsTrackingScreen extends StatefulWidget {
 }
 
 class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
-  Completer<GoogleMapController> _googleMapController = Completer();
-  Set<Marker> _markers = Set<Marker>();
-  Set<Polyline> _polyLines = Set<Polyline>();
-  Set<Circle> _circles = Set<Circle>();
-  List<LatLng> _polyLineCoordinates = [];
+  final Completer<GoogleMapController> _googleMapController = Completer();
+  final Set<Marker> _markers = <Marker>{};
+  final Set<Polyline> _polyLines = <Polyline>{};
+  final Set<Circle> _circles = <Circle>{};
+  final List<LatLng> _polyLineCoordinates = [];
   PolylinePoints _polylinePoints;
 
   String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";
@@ -49,8 +49,8 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
   @override
   void initState() {
-    _location = new Location();
-    _polylinePoints = new PolylinePoints();
+    _location = Location();
+    _polylinePoints = PolylinePoints();
 
     trackStartTime = DateTime.now().toUtc().toString().substring(0, 19);
     startTime = DateTime.now().toUtc();
@@ -77,25 +77,25 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
   Future setInitialLocation() async {
     currentLocation = await _location.getLocation();
-    getAddress(currentLocation.latitude, currentLocation.longitude);
+    // getAddress(currentLocation.latitude, currentLocation.longitude);
     startLocation = currentLocation;
   }
 
-  void setTrackIcon() async {
+  Future setTrackIcon() async {
     trackIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 2.5),
         'assets/images/tracking_pin.png'
     );
 
     startIcon = await BitmapDescriptor.fromAssetImage(
-      ImageConfiguration(devicePixelRatio: 2.5),
+      const ImageConfiguration(devicePixelRatio: 2.5),
       'assets/images/source_pin.png'
     );
   }
 
   Future getAddress(double latitude, double longitude) async {
-    Response response = await get(Uri.parse('https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$googleAPIKey'));
-    // print('response is ${response.body}');
+    final Response response = await get(Uri.parse('https://maps.googleapis.com/maps/api/geocode/json?latlng=$latitude,$longitude&key=$googleAPIKey'));
+    debugPrint('response is ${response.body}');
   }
 
   @override
@@ -106,7 +106,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   @override
   Widget build(BuildContext context) {
 
-    CameraPosition cameraPosition = CameraPosition(
+    CameraPosition cameraPosition = const CameraPosition(
       target: LatLng(42.747932,-71.167889),
       zoom: CAMERA_ZOOM,
       tilt: CAMERA_TILT,
@@ -131,13 +131,9 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
           GoogleMap(
             myLocationButtonEnabled: false,
             myLocationEnabled: true,
-            compassEnabled: true,
-            tiltGesturesEnabled: true,
             markers: _markers,
             polylines: _polyLines,
             circles: _circles,
-            mapType: MapType.normal,
-            zoomGesturesEnabled: true,
             zoomControlsEnabled: false,
             initialCameraPosition: cameraPosition,
             onMapCreated: (GoogleMapController googleMapController) async {
@@ -149,72 +145,66 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             },
           ),
           Container(
-            margin: EdgeInsets.only(right: 5, top: 25),
-            padding: EdgeInsets.all(10),
+            margin: const EdgeInsets.only(right: 5, top: 25),
+            padding: const EdgeInsets.all(10),
             alignment: Alignment.topRight,
-            child: Container(
-              child: Column(
-                children: [
-                  ClipOval(
-                    child: Material(
-                      color: kSpringColor,
-                      child: InkWell(
-                        splashColor: kSecondaryColor,
-                        child: SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Icon(Icons.my_location, color: kWhiteColor),
-                        ),
-                        onTap: () {
-                          // TODO: bring my location to camera focus
-                        },
+            child: Column(
+              children: [
+                ClipOval(
+                  child: Material(
+                    color: kSpringColor,
+                    child: InkWell(
+                      splashColor: kSecondaryColor,
+                      onTap: () {
+                        // TODO: bring my location to camera focus
+                      },
+                      child: const SizedBox(
+                        width: 50,
+                        height: 50,
+                        child: Icon(Icons.my_location, color: kWhiteColor),
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
-                  Container(
-                    child: Material(
-                      color: kSpringColor,
-                      child: InkWell(
-                        splashColor: kWhiteColor,
-                        child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: Icon(Icons.add, color: kWhiteColor),
-                        ),
-                        onTap: () async {
-                          await zoomIn();
-                        },
-                      ),
+                ),
+                const SizedBox(height: 20),
+                Material(
+                  color: kSpringColor,
+                  child: InkWell(
+                    splashColor: kWhiteColor,
+                    onTap: () async {
+                      await zoomIn();
+                    },
+                    child: const SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Icon(Icons.add, color: kWhiteColor),
                     ),
                   ),
-                  SizedBox(
-                    width: 40,
-                    height: 2,
-                  ),
-                  Container(
-                    child: Material(
-                      color: kSpringColor,
-                      child: InkWell(
-                        splashColor: kWhiteColor,
-                        child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: Icon(Icons.remove, color: kWhiteColor),
-                        ),
-                        onTap: () async {
-                          await zoomOut();
-                        },
-                      ),
+                ),
+                const SizedBox(
+                  width: 40,
+                  height: 2,
+                ),
+                Material(
+                  color: kSpringColor,
+                  child: InkWell(
+                    splashColor: kWhiteColor,
+                    onTap: () async {
+                      await zoomOut();
+                    },
+                    child: const SizedBox(
+                      width: 40,
+                      height: 40,
+                      child: Icon(Icons.remove, color: kWhiteColor),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
           Container(
             margin: EdgeInsets.fromLTRB(10, deviceHeight * 0.73, 10, 25),
-            padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
             width: deviceWidth,
             height: deviceHeight * 0.24,
             decoration: BoxDecoration(
@@ -222,48 +212,43 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
               borderRadius: BorderRadius.circular(20),
             ),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  child: Text(
-                    'Track $trackStartTime',
-                    style: TextStyle(
-                      color: kWhiteColor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 20
-                    ),
+                Text(
+                  'Track $trackStartTime',
+                  style: const TextStyle(
+                    color: kWhiteColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 20
                   ),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   children: [
                     Column(
                       children: [
                         Consumer<LocationStatusProvider>(
                             builder: (context, gpsStateProvider, child) {
-                              bool locationEnabled = gpsStateProvider.locationState == LocationStatus.enabled ? true : false;
+                              final bool locationEnabled = gpsStateProvider.locationState == LocationStatus.enabled ? true : false;
 
                               return Column(
                                 children: [
-                                  Container(
-                                    child: ClipOval(
-                                      child: Material(
-                                        color: kWhiteColor,
-                                        child: SizedBox(
-                                          height: 35,
-                                          width: 35,
-                                          child: Icon(
-                                            locationEnabled ? Icons.location_on : Icons.location_off,
-                                            color: kSpringColor,
-                                          ),
+                                  ClipOval(
+                                    child: Material(
+                                      color: kWhiteColor,
+                                      child: SizedBox(
+                                        height: 35,
+                                        width: 35,
+                                        child: Icon(
+                                          locationEnabled ? Icons.location_on : Icons.location_off,
+                                          color: kSpringColor,
                                         ),
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.only(top: 5),
-                                    child: Text(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: const Text(
                                       'GPS',
                                       style: TextStyle(
                                         color: kWhiteColor,
@@ -274,31 +259,29 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                               );
                             }
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Consumer<BluetoothProvider>(
                             builder: (context, bluetoothProvider, child) {
-                              bool connectedToOBD = bluetoothProvider.isConnected();
+                              final bool connectedToOBD = bluetoothProvider.isConnected();
 
                               return Column(
                                 children: [
-                                  Container(
-                                    child: ClipOval(
-                                      child: Material(
-                                        color: kWhiteColor,
-                                        child: SizedBox(
-                                          height: 35,
-                                          width: 35,
-                                          child: Icon(
-                                            connectedToOBD ? Icons.bluetooth_connected : Icons.bluetooth_disabled,
-                                            color: kSpringColor,
-                                          ),
+                                  ClipOval(
+                                    child: Material(
+                                      color: kWhiteColor,
+                                      child: SizedBox(
+                                        height: 35,
+                                        width: 35,
+                                        child: Icon(
+                                          connectedToOBD ? Icons.bluetooth_connected : Icons.bluetooth_disabled,
+                                          color: kSpringColor,
                                         ),
                                       ),
                                     ),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.only(top: 5),
-                                    child: Text(
+                                    padding: const EdgeInsets.only(top: 5),
+                                    child: const Text(
                                       'Bluetooth',
                                       style: TextStyle(
                                         color: kWhiteColor,
@@ -311,89 +294,79 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Column(
                       children: [
-                        Container(
-                          child: Text(
-                            durationOfTrack,
-                            style: TextStyle(
-                              color: kWhiteColor,
-                              fontWeight: FontWeight.w600,
-                              fontSize: 24
-                            ),
+                        Text(
+                          durationOfTrack,
+                          style: const TextStyle(
+                            color: kWhiteColor,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 24
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 2,
                         ),
-                        Container(
-                          child: Text(
-                            'time'.toUpperCase(),
-                            style: TextStyle(
-                              color: kWhiteColor
-                            ),
+                        Text(
+                          'time'.toUpperCase(),
+                          style: const TextStyle(
+                            color: kWhiteColor
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
-                        Container(
-                          child: GestureDetector(
-                            child: ClipOval(
-                              child: Material(
-                                color: kErrorColor,
-                                child: SizedBox(
-                                  height: 50,
-                                  width: 50,
-                                  child: Icon(
-                                    Icons.stop,
-                                    color: kWhiteColor.withOpacity(0.7),
-                                  ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              endTrack = true;
+                              trackEndTime = DateTime.now().toUtc().toString().substring(0, 19);
+                              debugPrint('tracking stopped at $trackEndTime');
+                            });
+                          },
+                          child: ClipOval(
+                            child: Material(
+                              color: kErrorColor,
+                              child: SizedBox(
+                                height: 50,
+                                width: 50,
+                                child: Icon(
+                                  Icons.stop,
+                                  color: kWhiteColor.withOpacity(0.7),
                                 ),
                               ),
                             ),
-                            onTap: () {
-                              setState(() {
-                                endTrack = true;
-                                trackEndTime = DateTime.now().toUtc().toString().substring(0, 19);
-                                debugPrint('tracking stopped at $trackEndTime');
-                              });
-                            },
                           ),
                         ),
                       ],
                     ),
-                    Spacer(),
+                    const Spacer(),
                     Column(
                       children: [
                         Column(
                           children: [
-                            Container(
-                              child: Text(
-                                '34.4 km/h', // TODO: change this to speed
-                                style: TextStyle(
-                                  color: kWhiteColor,
-                                  fontWeight: FontWeight.w600
-                                ),
+                            const Text(
+                              '34.4 km/h', // TODO: change this to speed
+                              style: TextStyle(
+                                color: kWhiteColor,
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                            const Text(
+                              'Avg speed',
+                              style: TextStyle(
+                                color: kWhiteColor
                               ),
                             ),
                             Container(
-                              child: Text(
-                                'Avg speed',
-                                style: TextStyle(
-                                  color: kWhiteColor
-                                ),
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(top: 5),
-                              decoration: BoxDecoration(
+                              margin: const EdgeInsets.only(top: 5),
+                              decoration: const BoxDecoration(
                                 borderRadius: BorderRadius.only(topLeft: Radius.circular(10), topRight: Radius.circular(10), bottomLeft: Radius.circular(5), bottomRight: Radius.circular(4)),
                                 color: kWhiteColor
                               ),
-                              padding: EdgeInsets.symmetric(horizontal: 1.5),
-                              child: Icon(
+                              padding: const EdgeInsets.symmetric(horizontal: 1.5),
+                              child: const Icon(
                                 Icons.speed,
                                 size: 18,
                                 color: kSpringColor,
@@ -401,31 +374,27 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                             ),
                           ],
                         ),
-                        SizedBox(
+                        const SizedBox(
                           height: 7,
                         ),
                         Column(
                           children: [
-                            Container(
-                              child: Text(
-                                '1 km', // TODO: change this to distance
-                                style: TextStyle(
-                                  color: kWhiteColor,
-                                  fontWeight: FontWeight.w600
-                                ),
+                            const Text(
+                              '1 km', // TODO: change this to distance
+                              style: TextStyle(
+                                color: kWhiteColor,
+                                fontWeight: FontWeight.w600
+                              ),
+                            ),
+                            const Text(
+                              'Distance',
+                              style: TextStyle(
+                                  color: kWhiteColor
                               ),
                             ),
                             Container(
-                              child: Text(
-                                'Distance',
-                                style: TextStyle(
-                                    color: kWhiteColor
-                                ),
-                              ),
-                            ),
-                            Container(
-                              padding: EdgeInsets.only(top: 5),
-                              child: ClipOval(
+                              padding: const EdgeInsets.only(top: 5),
+                              child: const ClipOval(
                                 child: Material(
                                   color: kWhiteColor,
                                   child: SizedBox(
@@ -465,18 +434,18 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   }
 
   void showPinsOnMap() {
-    var pinPoints = LatLng(
+    final pinPoints = LatLng(
       currentLocation.latitude,
       currentLocation.longitude
     );
 
-    var startPosition = LatLng(
+    final startPosition = LatLng(
       startLocation.latitude,
       startLocation.longitude
     );
 
     _markers.add(Marker(
-      markerId: MarkerId('source'),
+      markerId: const MarkerId('source'),
       position: startPosition,
       icon: startIcon,
       zIndex: 2
@@ -484,8 +453,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
     _circles.add(Circle(
       center: startPosition,
-      visible: true,
-      circleId: CircleId('source-circle'),
+      circleId: const CircleId('source-circle'),
       strokeColor: kWhiteColor,
       strokeWidth: 2,
       radius: 5,
@@ -493,7 +461,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
     ));
 
     _markers.add(Marker(
-      markerId: MarkerId('current'),
+      markerId: const MarkerId('current'),
       position: pinPoints,
       icon: trackIcon,
       zIndex: 2
@@ -501,8 +469,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
     _circles.add(Circle(
       center: pinPoints,
-      visible: true,
-      circleId: CircleId('current-circle'),
+      circleId: const CircleId('current-circle'),
       strokeColor: kWhiteColor,
       strokeWidth: 2,
       radius: 5,
@@ -513,15 +480,15 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   }
 
   void trackDuration() {
-    Duration duration = currentTime.difference(startTime);
+    final Duration duration = currentTime.difference(startTime);
     setState(() {
       durationOfTrack = duration.toString().split('.').first;
     });
-    debugPrint('${durationOfTrack.toString()}');
+    debugPrint(durationOfTrack.toString());
   }
 
-  void setPolyLines() async {
-    PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
+  Future setPolyLines() async {
+    final PolylineResult result = await _polylinePoints.getRouteBetweenCoordinates(
       googleAPIKey,
       PointLatLng(startLocation.latitude, startLocation.longitude),
       PointLatLng(currentLocation.latitude, currentLocation.longitude),
@@ -533,14 +500,14 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
     // }
 
     if (result.points.isNotEmpty) {
-      for (PointLatLng pointLatLng in result.points) {
+      for (final PointLatLng pointLatLng in result.points) {
         _polyLineCoordinates.add(LatLng(pointLatLng.latitude, pointLatLng.longitude));
       }
 
       if (mounted) {
         setState(() {
           _polyLines.add(Polyline(
-              polylineId: PolylineId('track'),
+              polylineId: const PolylineId('track'),
               width: 5,
               color: kBlueColor,
               points: _polyLineCoordinates
@@ -550,7 +517,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
     }
   }
 
-  void updatePinOnMap() async {
+  Future updatePinOnMap() async {
     await setInitialLocation();
     LatLngBounds latLngBounds;
 
@@ -582,7 +549,9 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
       );
     }
 
-    CameraPosition cameraPosition = CameraPosition(
+    debugPrint(latLngBounds.toString());
+
+    final CameraPosition cameraPosition = CameraPosition(
       target: LatLng(
         currentLocation.latitude,
         currentLocation.longitude
@@ -597,13 +566,13 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
     if (mounted) {
       setState(() {
-        var pinPoint = LatLng(currentLocation.latitude, currentLocation.longitude);
+        final pinPoint = LatLng(currentLocation.latitude, currentLocation.longitude);
 
         _markers.removeWhere((element) => element.markerId.value == 'current');
         _circles.removeWhere((element) => element.circleId.value == 'current-circle');
 
         _markers.add(Marker(
-          markerId: MarkerId('current'),
+          markerId: const MarkerId('current'),
           position: pinPoint,
           icon: trackIcon,
           zIndex: 2
@@ -611,8 +580,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
         _circles.add(Circle(
           center: pinPoint,
-          visible: true,
-          circleId: CircleId('current-circle'),
+          circleId: const CircleId('current-circle'),
           strokeColor: kWhiteColor,
           strokeWidth: 2,
           radius: 5,

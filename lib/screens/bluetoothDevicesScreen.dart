@@ -2,12 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:flutter_blue/flutter_blue.dart' as blue;
+import 'package:system_shortcuts/system_shortcuts.dart';
 
-import '../widgets/bleDialog.dart';
 import '../constants.dart';
 import '../providers/bluetoothProvider.dart';
+import '../widgets/bleDialog.dart';
 
 class BluetoothDevicesScreen extends StatefulWidget {
   static const routeName = '/bluetoothDeviceScreen';
@@ -38,8 +38,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   }
 
   /// determining the status of bluetooth to initialize [_state] of bluetooth
-  void determineBluetoothStatus() async {
-    bool state = await Provider.of<BluetoothProvider>(context, listen: false).bluetoothState();
+  Future determineBluetoothStatus() async {
+    final bool state = await Provider.of<BluetoothProvider>(context, listen: false).bluetoothState();
     setState(() {
       _state = state ? blue.BluetoothState.on : blue.BluetoothState.off;
     });
@@ -70,7 +70,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
           StreamBuilder(
             stream: blue.FlutterBlue.instance.state,
             initialData: blue.BluetoothState.unknown,
-            builder: (context, snapshot) {
+            builder: (context, AsyncSnapshot<blue.BluetoothState> snapshot) {
               _state = snapshot.data;
               return Switch(
                 value: _state == blue.BluetoothState.on ? true : false,
@@ -92,15 +92,6 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
       // Button to start and stop scanning
       floatingActionButton: FloatingActionButton(
         backgroundColor: _isScanning ? Colors.red : kSpringColor,
-        child: _isScanning
-            ? Icon(
-                Icons.stop,
-                color: Colors.white,
-              )
-            : Icon(
-                Icons.search_rounded,
-                color: Colors.white,
-              ),
         onPressed: () {
           if (!_isScanning) {
             if (_state == blue.BluetoothState.on) {
@@ -125,47 +116,56 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
             });
           }
         },
+        child: _isScanning
+            ? const Icon(
+                Icons.stop,
+                color: Colors.white,
+              )
+            : const Icon(
+                Icons.search_rounded,
+                color: Colors.white,
+              ),
       ),
       body: Consumer<BluetoothProvider>(
         builder: (context, bluetoothProvider, child) {
-          List<blue.BluetoothDevice> detectedBluetoothDevices = bluetoothProvider.bluetoothDevices;
+          final List<blue.BluetoothDevice> detectedBluetoothDevices = bluetoothProvider.bluetoothDevices;
 
-          return Container(
-            child: ListView.builder(
-              itemBuilder: (BuildContext context, index) {
-                return Container(
-                  padding: EdgeInsets.symmetric(horizontal: 5),
-                  child: ListTile(
-                    title: Text(
-                      (detectedBluetoothDevices[index].name == null || detectedBluetoothDevices[index].name.trim().length == 0) ? 'Unknown Device' : detectedBluetoothDevices[index].name,
-                    ),
-                    subtitle: Text(
-                        detectedBluetoothDevices[index].id.toString()
-                    ),
-                    trailing: Radio(
-                      activeColor: kSpringColor,
-                      value: index,
-                      groupValue: selected,
-                      onChanged: (value) async {
-                        if (selected != -1)
-                          bluetoothProvider.disconnectDevice();
-                        setState(() {
-                          selected = value;
-                          selectedBluetoothDevice = detectedBluetoothDevices[value];
-                        });
-                        bool connectionStatus = await bluetoothProvider.connectToDevice(selectedBluetoothDevice, context);
-                        print('connection status $connectionStatus');
-                        if (!connectionStatus)
-                          setState(() {
-                            selected = -1;
-                          });
-                      },
-                    ),
+          return ListView.builder(
+            itemBuilder: (BuildContext context, index) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: ListTile(
+                  title: Text(
+                    (detectedBluetoothDevices[index].name == null || detectedBluetoothDevices[index].name.trim().isEmpty) ? 'Unknown Device' : detectedBluetoothDevices[index].name,
                   ),
-                );
-              },
-              itemCount: detectedBluetoothDevices.length,
-            ),
+                  subtitle: Text(
+                      detectedBluetoothDevices[index].id.toString()
+                  ),
+                  trailing: Radio(
+                    activeColor: kSpringColor,
+                    value: index,
+                    groupValue: selected,
+                    onChanged: (int value) async {
+                      if (selected != -1) {
+                        bluetoothProvider.disconnectDevice();
+                      }
+                      setState(() {
+                        selected = value;
+                        selectedBluetoothDevice = detectedBluetoothDevices[value];
+                      });
+                      final bool connectionStatus = await bluetoothProvider.connectToDevice(selectedBluetoothDevice, context);
+                      debugPrint('connection status $connectionStatus');
+                      if (!connectionStatus && mounted) {
+                        setState(() {
+                          selected = -1;
+                        });
+                      }
+                    },
+                  ),
+                ),
+              );
+            },
+            itemCount: detectedBluetoothDevices.length,
           );
         }
       ),

@@ -3,27 +3,27 @@ import 'package:flutter/material.dart';
 const InputDecoration inputDecoration = InputDecoration(
   alignLabelWithHint: true,
   labelStyle: TextStyle(
-    color: const Color(0xff7e7e7e),
+    color: Color(0xff7e7e7e),
   ),
-  contentPadding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
+  contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 20.0),
   border: OutlineInputBorder(
-    borderRadius: const BorderRadius.all(
-      const Radius.circular(5.0),
+    borderRadius: BorderRadius.all(
+      Radius.circular(5.0),
     ),
   ),
   enabledBorder: OutlineInputBorder(
-    borderSide: const BorderSide(color: kSecondaryColor, width: 1.5),
-    borderRadius: const BorderRadius.all(
-      const Radius.circular(5.0),
+    borderSide: BorderSide(color: kSecondaryColor, width: 1.5),
+    borderRadius: BorderRadius.all(
+      Radius.circular(5.0),
     ),
   ),
   focusedBorder: OutlineInputBorder(
-    borderSide: const BorderSide(
+    borderSide: BorderSide(
       color: kGreyColor,
       width: 1.5,
     ),
-    borderRadius: const BorderRadius.all(
-      const Radius.circular(5.0),
+    borderRadius: BorderRadius.all(
+      Radius.circular(5.0),
     ),
   ),
 );
@@ -36,3 +36,7 @@ const Color kErrorColor = Color.fromARGB(250, 255, 50, 64);
 const Color kWhiteColor = Color(0xffffffff);
 const Color kTertiaryColor = Color.fromARGB(200, 0, 0, 0);
 const Color kBlueColor = Color.fromARGB(255, 40, 122, 198);
+
+// PlayStore URL for 'Rate Us' feature
+const String playstoreUrl =
+    'https://play.google.com/store/apps/details?id=org.envirocar.app';

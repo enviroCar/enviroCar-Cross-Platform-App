@@ -1,4 +1,3 @@
-import 'package:envirocar_app_main/screens/gpsTrackingScreen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -9,6 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import './providers/authProvider.dart';
 import './providers/tracksProvider.dart';
 import './providers/bluetoothStatusProvider.dart';
+import 'models/track.dart';
 import './screens/splashScreen.dart';
 import './screens/bluetoothDevicesScreen.dart';
 import './screens/index.dart';
@@ -17,6 +17,7 @@ import './screens/mapScreen.dart';
 import './screens/registerScreen.dart';
 import './constants.dart';
 import './providers/userStatsProvider.dart';
+import './screens/gpsTrackingScreen.dart';
 import './globals.dart';
 import './screens/carScreen.dart';
 import './providers/carsProvider.dart';
@@ -24,10 +25,17 @@ import './screens/createCarScreen.dart';
 import './screens/trackDetailsScreen.dart';
 import './providers/locationStatusProvider.dart';
 import './providers/bluetoothProvider.dart';
+import './providers/fuelingsProvider.dart';
+import './screens/createFuelingScreen.dart';
+import './screens/logBookScreen.dart';
+import './screens/reportIssueScreen.dart';
+import 'screens/helpScreen.dart';
 
-void main() async {
+Future<void> main() async {
+  // Ensures all the future functions of main() finish before launching the app
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
 
   // Restricts rotation of screen
@@ -44,6 +52,7 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
@@ -80,7 +89,12 @@ class MyApp extends StatelessWidget {
         // Provides bluetooth functionality to the different widgets on the tree
         ChangeNotifierProvider(
           create: (context) => BluetoothProvider(),
-        )
+        ),
+
+        // Provides Fueling data to different widgets
+        ChangeNotifierProvider(
+          create: (context) => FuelingsProvider(),
+        ),
       ],
       child: MaterialApp(
         locale: DevicePreview.locale(context),
@@ -97,7 +111,8 @@ class MyApp extends StatelessWidget {
             case TrackDetailsScreen.routeName:
               return MaterialPageRoute(
                 builder: (_) {
-                  return TrackDetailsScreen(track: settings.arguments);
+                  final Track track = settings.arguments as Track;
+                  return TrackDetailsScreen(track: track);
                 },
               );
 
@@ -118,6 +133,10 @@ class MyApp extends StatelessWidget {
           CarScreen.routeName: (context) => CarScreen(),
           CreateCarScreen.routeName: (context) => CreateCarScreen(),
           GpsTrackingScreen.routeName: (context) => GpsTrackingScreen(),
+          CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
+          LogBookScreen.routeName: (context) => LogBookScreen(),
+          ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
+          HelpScreen.routeName: (context) => HelpScreen(),
         },
       ),
     );
