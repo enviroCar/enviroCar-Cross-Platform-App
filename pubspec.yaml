@@ -24,24 +24,54 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # for state management
   provider: ^5.0.0
+
+  # for making http calls
   http: ^0.13.1
+
+  # to securely store user info for silent signin
   flutter_secure_storage: ^4.1.0
+
+
   flutter_blue: ^0.8.0
   system_shortcuts: ^1.0.0
+
+  # for getting user location
   geolocator: ^7.0.1
   latlong: ^0.6.1
   flutter_map: ^0.12.0
   location: ^4.1.1
+
+  # to launch App store and Play store to rate the app
   url_launcher: ^6.0.6
+
+  # to preview the app on different screens sizes
   device_preview: ^0.7.3
+
+  # for onboarding screens
   introduction_screen: ^2.1.0
+
+  # to store small persistent data
   shared_preferences: ^2.0.6
+
+  # to show SVGs
   flutter_svg: ^0.22.0
+
+  # to use custom fonts
   google_fonts: ^2.1.0
+
+  # to generate unique IDs
   uuid: ^3.0.4
   toast: ^0.1.5
+
+  # for storing data locally
   sqflite: ^2.0.0+3
+
+  # to follow good code guildeines by google
+  lint: ^1.5.3
+
+  # to get path of the app on the device
   path: ^1.8.0
   
 

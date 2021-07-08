@@ -10,17 +10,17 @@ class Sensor {
   });
 
   Sensor.fromJson(Map<String, dynamic> json) {
-    type = json['type'];
+    type = json['type'] as String;
     properties = json['properties'] != null
-        ? new Properties.fromJson(json['properties'])
+        ? Properties.fromJson(json['properties'] as Map<String, dynamic>)
         : null;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['type'] = this.type;
-    if (this.properties != null) {
-      data['properties'] = this.properties.toJson();
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['type'] = type;
+    if (properties != null) {
+      data['properties'] = properties.toJson();
     }
     return data;
   }

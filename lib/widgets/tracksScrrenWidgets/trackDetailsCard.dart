@@ -1,35 +1,46 @@
-import 'package:envirocar_app_main/widgets/trackDetailsWidgets/trackDetailsTile.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/track.dart';
 import '../../globals.dart';
 import '../../constants.dart';
+import '../trackDetailsWidgets/trackDetailsTile.dart';
 
 class TrackDetailsCard extends StatelessWidget {
   final Track track;
 
-  TrackDetailsCard({@required this.track});
+  const TrackDetailsCard({@required this.track});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       width: deviceWidth * 0.9,
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey[350],
+            blurRadius: 3.0,
+            spreadRadius: 1.0,
+            offset: const Offset(-2, 2),
+          ),
+        ],
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(Radius.circular(5)),
+      ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
             width: double.infinity,
-            padding: EdgeInsets.symmetric(vertical: 15),
+            padding: const EdgeInsets.symmetric(vertical: 15),
             alignment: Alignment.center,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               color: kSpringColor,
               borderRadius: BorderRadius.only(topRight: Radius.circular(5), topLeft: Radius.circular(5))
             ),
             child: RichText(
               text: TextSpan(
                 text: 'Track ',
-                style: TextStyle(
+                style: const TextStyle(
                   color: kWhiteColor,
                   fontWeight: FontWeight.w600,
                   fontSize: 22,
@@ -42,9 +53,9 @@ class TrackDetailsCard extends StatelessWidget {
               ),
             ),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           Container(
-            padding: EdgeInsets.all(10),
+            padding: const EdgeInsets.all(10),
             child: Text(
               'Your track with ${track.sensor.properties.manufacturer} ${track.sensor.properties.model} on ${trackDay(track.begin.weekday)}',
               style: TextStyle(
@@ -53,7 +64,7 @@ class TrackDetailsCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(
+            padding: const EdgeInsets.symmetric(
               vertical: 14,
               horizontal: 20,
             ),
@@ -68,7 +79,7 @@ class TrackDetailsCard extends StatelessWidget {
                           .difference(track.begin)
                           .toString()
                           .replaceFirst('.000000', ''),
-                      style: TextStyle(
+                      style: const TextStyle(
                         color: kSpringColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 22,
@@ -88,8 +99,8 @@ class TrackDetailsCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      track.length.toStringAsFixed(2) + ' km',
-                      style: TextStyle(
+                      '${track.length.toStringAsFixed(2)} km',
+                      style: const TextStyle(
                         color: kSpringColor,
                         fontWeight: FontWeight.w500,
                         fontSize: 22,
@@ -109,22 +120,22 @@ class TrackDetailsCard extends StatelessWidget {
             ),
           ),
           Container(
-            margin: EdgeInsets.symmetric(horizontal: 16),
+            margin: const EdgeInsets.symmetric(horizontal: 16),
             child: Divider(
               color: kGreyColor.withOpacity(0.3),
               thickness: 1.2,
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
               title: 'Car',
-              details: track.sensor.properties.manufacturer + ' - ' + track.sensor.properties.model + ' ' + track.sensor.properties.constructionYear.toString() + ', ' + track.sensor.properties.engineDisplacement.toString() + ' cm, ' + track.sensor.properties.fuelType,
+              details: '${track.sensor.properties.manufacturer} - ${track.sensor.properties.model} ${track.sensor.properties.constructionYear}, ${track.sensor.properties.engineDisplacement} cm, ${track.sensor.properties.fuelType}',
               iconData: Icons.directions_car
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
               title: 'Start',
               details: track.begin.toUtc().toString().replaceFirst('.000Z', ''),
@@ -132,7 +143,7 @@ class TrackDetailsCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
               title: 'End',
               details: track.end.toUtc().toString().replaceFirst('.000Z', ''),
@@ -140,62 +151,56 @@ class TrackDetailsCard extends StatelessWidget {
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6),
+            padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
               title: 'Speed',
-              details: determineSpeed(track.length, track.begin, track.end).toStringAsFixed(2) + ' km/hr',
+              details: '${determineSpeed(track.length, track.begin, track.end).toStringAsFixed(2)} km/hr',
               iconData: Icons.speed_rounded,
             ),
           ),
           Container(
-            padding: EdgeInsets.symmetric(horizontal: 6),
-            child: TrackDetailsTile(
+            padding: const EdgeInsets.symmetric(horizontal: 6),
+            child: const TrackDetailsTile(
               title: 'Number of stops',
               details: '1 stops',
               iconData: Icons.bus_alert,
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
         ],
-      ),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey[350],
-            blurRadius: 3.0,
-            spreadRadius: 1.0,
-            offset: Offset(-2, 2),
-          ),
-        ],
-        color: Colors.white,
-        borderRadius: BorderRadius.all(Radius.circular(5)),
       ),
     );
   }
   
   String trackDay(int weekday) {
     String day = 'Sunday';
-    if (weekday == 1)
+    if (weekday == 1) {
       day = 'Monday';
-    else if (weekday == 2)
+    }
+    else if (weekday == 2) {
       day = 'Tuesday';
-    else if (weekday == 3)
+    }
+    else if (weekday == 3) {
       day = 'Wednesday';
-    else if (weekday == 4)
+    }
+    else if (weekday == 4) {
       day = 'Thursday';
-    else if (weekday == 5)
+    }
+    else if (weekday == 5) {
       day = 'Friday';
-    else if (weekday == 6)
+    }
+    else if (weekday == 6) {
       day = 'Saturday';
+    }
     return day;
   }
 
   double determineSpeed(double distance, DateTime start, DateTime end) {
-    int time = end.difference(start).inMinutes;
-    double t = time / 60;
-    double speed = distance / t;
+    final int duration = end.difference(start).inMinutes;
+    final double timeInHours = duration / 60;
+    final double speed = distance / timeInHours;
     return speed;
   }
 }

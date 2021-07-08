@@ -35,13 +35,13 @@ class BluetoothProvider extends ChangeNotifier {
 
   /// determining the status of bluetooth to initialize [_state] of bluetooth
   Future<bool> bluetoothState() async {
-    var status = await _flutterBlue.isOn;
+    final status = await _flutterBlue.isOn;
     return status;
   }
 
   /// function to start the scan and population of [_detectedBluetoothDevices] list if [_state] bluetooth is ON
-  void startScan() async {
-    bool state = await bluetoothState();
+  Future startScan() async {
+    final bool state = await bluetoothState();
     if (state) {
       scanAndPopulateList();
     }
@@ -62,17 +62,17 @@ class BluetoothProvider extends ChangeNotifier {
 
   /// callback function to add the [connectedDevices] to [_detectedBluetoothDevices] list
   void addConnectedDevices(List<BluetoothDevice> devices) {
-    for (BluetoothDevice bluetoothDevice in devices) {
+    for (final BluetoothDevice bluetoothDevice in devices) {
       addDeviceToList(bluetoothDevice);
-      print(bluetoothDevice.toString());
+      debugPrint(bluetoothDevice.toString());
     }
   }
 
   /// callback function to add the [scannedDevices] to [_detectedBluetoothDevices] list
   void addScannedDevices(List<ScanResult> stream) {
-    for (ScanResult scanResult in stream) {
+    for (final ScanResult scanResult in stream) {
       addDeviceToList(scanResult.device);
-      print(scanResult.device.toString());
+      debugPrint(scanResult.device.toString());
     }
   }
 
@@ -88,15 +88,18 @@ class BluetoothProvider extends ChangeNotifier {
   Future<bool> connectToDevice(BluetoothDevice selectedBluetoothDevice, BuildContext context) async {
     Future<bool> returnValue;
     String deviceDisplayName;
-    if (selectedBluetoothDevice.name.trim().isNotEmpty)
+    if (selectedBluetoothDevice.name.trim().isNotEmpty) {
       deviceDisplayName = selectedBluetoothDevice.name;
-    else
+    }
+    else {
       deviceDisplayName = selectedBluetoothDevice.id.toString();
+    }
+
     try {
       await selectedBluetoothDevice.connect(
         autoConnect: false,
       ).timeout(
-          Duration(seconds: 30), onTimeout: () {
+          const Duration(seconds: 30), onTimeout: () {
         debugPrint('timeout occurred');
         returnValue = Future.value(false);
         disconnectDevice();
@@ -130,7 +133,7 @@ class BluetoothProvider extends ChangeNotifier {
         discoverServices();
         notifyListeners();
       }
-      throw e;
+      rethrow;
     } catch (e) {
       debugPrint(e.toString());
       Toast.show(
@@ -142,13 +145,13 @@ class BluetoothProvider extends ChangeNotifier {
       );
       connectedBluetoothDevice = null;
       notifyListeners();
-      throw e;
+      rethrow;
     }
     return connectedBluetoothDevice == null ? false : true;
   }
 
   /// function to discover services
-  void discoverServices() async {
+  Future discoverServices() async {
     _services = await connectedBluetoothDevice.discoverServices();
     debugPrint('services ${_services.toString()}');
     logCharacteristicsForServices();
@@ -156,23 +159,26 @@ class BluetoothProvider extends ChangeNotifier {
 
   /// function to retrieve the service uuid and characteristic uuid from [_services]
   void logCharacteristicsForServices() {
-    for (BluetoothService service in _services) {
-      List<BluetoothCharacteristic> characteristics = [];
-      for (BluetoothCharacteristic characteristic in service.characteristics) {
+    for (final BluetoothService service in _services) {
+      final List<BluetoothCharacteristic> characteristics = [];
+      for (final BluetoothCharacteristic characteristic in service.characteristics) {
         if (characteristic.uuid != null) {
           characteristics.add(characteristic);
         }
         // if the characteristic can be read, reading the value it returns
-        if (characteristic.properties.read)
+        if (characteristic.properties.read) {
           addCharacteristicsToReadQueue(characteristic);
+        }
 
         // if the characteristic have the property to write to it
-        if (characteristic.properties.write)
+        if (characteristic.properties.write) {
           addCharacteristicsToWriteQueue(characteristic);
+        }
 
         // if the characteristic have the property to notify changes in its value
-        if (characteristic.properties.notify)
+        if (characteristic.properties.notify) {
           addCharacteristicsToNotifyQueue(characteristic);
+        }
       }
       _servicesCharacteristics[service.uuid] = characteristics;
     }
@@ -185,21 +191,21 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   /// function to call read, write and notify characteristics functions
-  void interactWithDevice() async {
+  Future interactWithDevice() async {
     if (readCharacteristicsQueue.isNotEmpty) {
-      for (BluetoothCharacteristic readCh in readCharacteristicsQueue) {
+      for (final BluetoothCharacteristic readCh in readCharacteristicsQueue) {
         await readCharacteristics(readCh);
       }
     }
 
     if (writeCharacteristicsQueue.isNotEmpty) {
-      for (BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
+      for (final BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
         await writeCharacteristics(writeCh);
       }
     }
 
     if (notifyCharacteristicsQueue.isNotEmpty) {
-      for (BluetoothCharacteristic notifyCh in notifyCharacteristicsQueue) {
+      for (final BluetoothCharacteristic notifyCh in notifyCharacteristicsQueue) {
         await notify(notifyCh);
       }
     }
@@ -219,21 +225,22 @@ class BluetoothProvider extends ChangeNotifier {
 
   /// function to read data of a particular [characteristic]
   Future readCharacteristics(BluetoothCharacteristic characteristic) async {
-    List<int> readValue = await characteristic.read().onError((error, stackTrace) {
+    final List<int> readValue = await characteristic.read().onError((error, stackTrace) {
       debugPrint('error is ${error.toString()}');
       return null;
     });
-    if (readValue != null)
+    if (readValue != null) {
       debugPrint('read characteristic ${characteristic.uuid.toString()} its value is ${readValue.toString()}');
+    }
   }
 
   /// function to write data to a [characteristic]
   Future writeCharacteristics(BluetoothCharacteristic characteristic) async {
     // write characteristics is a way to send data to the bluetooth device
-    String response = await characteristic.write([0x12, 0x34]).onError((error, stackTrace) {
+    final String response = await characteristic.write([0x12, 0x34]).onError((error, stackTrace) {
       debugPrint('error is ${error.toString()}');
     });
-    print('response after writing the characteristics ${characteristic.uuid.toString()} is $response');
+    debugPrint('response after writing the characteristics ${characteristic.uuid.toString()} is $response');
   }
 
   /// notify is simply a callback executed every time the characteristic’s value handling the notifications is updated

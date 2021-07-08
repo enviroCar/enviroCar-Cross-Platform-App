@@ -12,7 +12,7 @@ class DashboardIconButton extends StatelessWidget {
   const DashboardIconButton({
     @required this.routeName,
     @required this.assetName,
-    this.buttonColor: kSpringColor
+    this.buttonColor = kSpringColor
   });
 
   @override
