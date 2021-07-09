@@ -16,22 +16,22 @@ class Properties {
   });
 
   Properties.fromJson(Map<String, dynamic> json) {
-    engineDisplacement = json['engineDisplacement'];
-    model = json['model'];
-    id = json['id'];
-    fuelType = json['fuelType'];
-    constructionYear = json['constructionYear'];
-    manufacturer = json['manufacturer'];
+    engineDisplacement = json['engineDisplacement'] as int;
+    model = json['model'] as String;
+    id = json['id'] as String;
+    fuelType = json['fuelType'] as String;
+    constructionYear = json['constructionYear'] as int;
+    manufacturer = json['manufacturer'] as String;
   }
 
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = new Map<String, dynamic>();
-    data['engineDisplacement'] = this.engineDisplacement;
-    data['model'] = this.model;
-    data['id'] = this.id;
-    data['fuelType'] = this.fuelType;
-    data['constructionYear'] = this.constructionYear;
-    data['manufacturer'] = this.manufacturer;
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['engineDisplacement'] = engineDisplacement;
+    data['model'] = model;
+    data['id'] = id;
+    data['fuelType'] = fuelType;
+    data['constructionYear'] = constructionYear;
+    data['manufacturer'] = manufacturer;
     return data;
   }
 }

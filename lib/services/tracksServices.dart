@@ -10,9 +10,9 @@ class TracksServices {
     @required AuthProvider authProvider,
     @required TracksProvider tracksProvider,
   }) async {
-    final String uri = 'https://envirocar.org/api/stable/tracks';
+    const String uri = 'https://envirocar.org/api/stable/tracks';
 
-    http.Response response = await http.get(
+    final http.Response response = await http.get(
       Uri.parse(uri),
       headers: {
         'X-User': authProvider.getUser.getUsername,
@@ -20,6 +20,6 @@ class TracksServices {
       },
     );
 
-    tracksProvider.setTracks(jsonDecode(response.body));
+    tracksProvider.setTracks(jsonDecode(response.body) as Map<String, dynamic>);
   }
 }

@@ -15,6 +15,6 @@ class UserStatsProvider with ChangeNotifier {
   }
 
   void removeStats() {
-    this._userStats = null;
+    _userStats = null;
   }
 }

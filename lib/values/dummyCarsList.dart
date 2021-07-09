@@ -1,0 +1,60 @@
+import '../models/car.dart';
+
+final List<Car> _carsList = [
+  Car(
+    manufacturer: 'Volkswagen',
+    model: 'S309',
+    constructionYear: 1930,
+    fuelType: 'Diesel',
+    engineDisplacement: 1600,
+    // isSelected: true,
+  ),
+  Car(
+    manufacturer: 'BMW',
+    model: 'M3-GT',
+    constructionYear: 1930,
+    fuelType: 'Diesel',
+    engineDisplacement: 1600,
+    // isSelected: false,
+  ),
+  Car(
+    manufacturer: 'Ferrari',
+    model: 'Ultra',
+    constructionYear: 1930,
+    fuelType: 'Diesel',
+    engineDisplacement: 1600,
+    // isSelected: false,
+  ),
+  Car(
+    manufacturer: 'Hector',
+    model: 'SH43',
+    constructionYear: 1930,
+    fuelType: 'Diesel',
+    engineDisplacement: 1600,
+    // isSelected: false,
+  ),
+  Car(
+    manufacturer: 'Audi',
+    model: 'R8',
+    constructionYear: 1930,
+    fuelType: 'Diesel',
+    engineDisplacement: 1600,
+    // isSelected: false,
+  ),
+  Car(
+    manufacturer: 'Mercedez',
+    model: 'Benz',
+    constructionYear: 1930,
+    fuelType: 'Diesel',
+    engineDisplacement: 1600,
+    // isSelected: false,
+  ),
+  Car(
+    manufacturer: 'Rolls Royce',
+    model: 'Antique',
+    constructionYear: 1930,
+    fuelType: 'Diesel',
+    engineDisplacement: 1600,
+    // isSelected: false,
+  ),
+];

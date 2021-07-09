@@ -9,9 +9,9 @@ class TracksProvider with ChangeNotifier {
   // and notifies widgets once done
   void setTracks(Map<String, dynamic> json) {
     if (json['tracks'] != null) {
-      List<Track> tracks = [];
+      final List<Track> tracks = [];
       json['tracks'].forEach((v) {
-        tracks.add(new Track.fromJson(v));
+        tracks.add(Track.fromJson(v as Map<String, dynamic>));
       });
 
       _tracks = tracks;

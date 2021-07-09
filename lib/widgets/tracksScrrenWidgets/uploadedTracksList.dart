@@ -34,16 +34,16 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
             _tracksProvider.getTracks().isNotEmpty) {
           return Consumer<TracksProvider>(
             builder: (_, tracksProvider, child) {
-              List<Track> tracksList = tracksProvider.getTracks();
+              final List<Track> tracksList = tracksProvider.getTracks();
               if (tracksList.isEmpty) {
-                return Center(
+                return const Center(
                   child: Text('No Tracks'),
                 );
               }
 
               return ListView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 itemCount: tracksList.length,
                 itemBuilder: (_, i) {
                   return Padding(
@@ -57,7 +57,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
             },
           );
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
