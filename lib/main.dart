@@ -30,6 +30,7 @@ import './screens/createFuelingScreen.dart';
 import './screens/logBookScreen.dart';
 import './screens/reportIssueScreen.dart';
 import 'screens/helpScreen.dart';
+import 'providers/gpsTrackProvider.dart';
 
 Future<void> main() async {
   // Ensures all the future functions of main() finish before launching the app
@@ -95,6 +96,10 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => FuelingsProvider(),
         ),
+
+        ChangeNotifierProvider(
+          create: (context) => GpsTrackProvider(),
+        )
       ],
       child: MaterialApp(
         locale: DevicePreview.locale(context),
