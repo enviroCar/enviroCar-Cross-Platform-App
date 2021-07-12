@@ -5,8 +5,12 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart';
+import 'package:provider/provider.dart';
 
 import '../constants.dart';
+import 'bluetoothProvider.dart';
+import '../screens/gpsTrackingScreen.dart';
+import '../services/notification_service.dart';
 
 class GpsTrackProvider extends ChangeNotifier {
   final Set<Marker> _markers = <Marker>{};
@@ -20,6 +24,8 @@ class GpsTrackProvider extends ChangeNotifier {
   bool isMounted;
   bool reloadMap;
   StreamSubscription<LocationData> streamSubscription;
+  Timer _timer;
+  Set<LatLng> latLngCoordinates;
 
   String trackStartTime = ' ';
   String trackEndTime = ' ';
@@ -40,6 +46,8 @@ class GpsTrackProvider extends ChangeNotifier {
   double cameraZoom = 15; // the magnification level of the camera position on the map
   double cameraTilt = 80; // the angle the camera points to the center location
   double cameraBearing = 100; // the direction the camera faces (north, south, east, west, etc)
+
+  Duration defaultDuration = const Duration(seconds: 10);
 
   GpsTrackProvider() {
     isUserLocationDetermined = false;
@@ -74,6 +82,7 @@ class GpsTrackProvider extends ChangeNotifier {
     _location = Location();
     _polylinePoints = PolylinePoints();
 
+    latLngCoordinates = {};
     durationOfTrack = '0:00:00';
     startTrack = true;
     endTrack = false;
@@ -89,6 +98,31 @@ class GpsTrackProvider extends ChangeNotifier {
     if (_location != null) {
       streamSubscription = _location.onLocationChanged.listen(listenToLocationUpdates);
     }
+
+    NotificationService().showNotifications(trackId, 'GPS tracking has started!', GpsTrackingScreen.routeName);
+
+    // adding the startLocation coordinates to set of lat lng coordinates
+    latLngCoordinates.add(LatLng(startLocation.latitude, startLocation.longitude));
+
+    logCoordinates();
+  }
+
+  void logCoordinates([Timer timer]) {
+    _timer?.cancel();
+    timer?.cancel();
+
+    if (currentLocation != null) {
+      latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
+      debugPrint('the lat lng is ${startLocation.toString()} and ${currentLocation.toString()}');
+    }
+
+    BluetoothProvider().interactWithDevice();
+
+    if (reloadMap) {
+      return;
+    }
+
+    _timer = Timer(defaultDuration, logCoordinates);
   }
 
   /// function to set the [_googleMapController]
@@ -347,6 +381,8 @@ class GpsTrackProvider extends ChangeNotifier {
     endTrack = true;
     trackEndTime = DateTime.now().toUtc().toString().substring(0, 19);
     streamSubscription.cancel();
+    latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
+    NotificationService().turnOffNotification();
     debugPrint('tracking stopped at $trackEndTime');
     notifyListeners();
   }

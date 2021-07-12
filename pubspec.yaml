@@ -75,13 +75,14 @@ dependencies:
   # for storing data locally
   sqflite: ^2.0.0+3
 
-  # to follow good code guildeines by google
+  # to follow good code guidelines by google
   lint: ^1.5.3
 
   # to get path of the app on the device
   path: ^1.8.0
-  
 
+  # to send notifications
+  flutter_local_notifications: ^6.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

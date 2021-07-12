@@ -31,6 +31,7 @@ import './screens/logBookScreen.dart';
 import './screens/reportIssueScreen.dart';
 import 'screens/helpScreen.dart';
 import 'providers/gpsTrackProvider.dart';
+import 'services/notification_service.dart';
 
 Future<void> main() async {
   // Ensures all the future functions of main() finish before launching the app
@@ -38,6 +39,9 @@ Future<void> main() async {
 
   // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
+
+  // initialising the flutter local notification plugin
+  await NotificationService().initialiseNotificationPlugin();
 
   // Restricts rotation of screen
   SystemChrome.setPreferredOrientations(

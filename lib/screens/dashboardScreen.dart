@@ -18,6 +18,7 @@ import '../providers/locationStatusProvider.dart';
 import '../providers/bluetoothProvider.dart';
 import '../widgets/button.dart';
 import './gpsTrackingScreen.dart';
+import '../providers/gpsTrackProvider.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override

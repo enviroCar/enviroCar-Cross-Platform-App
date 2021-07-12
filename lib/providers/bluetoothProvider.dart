@@ -198,17 +198,17 @@ class BluetoothProvider extends ChangeNotifier {
       }
     }
 
-    if (writeCharacteristicsQueue.isNotEmpty) {
-      for (final BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
-        await writeCharacteristics(writeCh);
-      }
-    }
-
-    if (notifyCharacteristicsQueue.isNotEmpty) {
-      for (final BluetoothCharacteristic notifyCh in notifyCharacteristicsQueue) {
-        await notify(notifyCh);
-      }
-    }
+    // if (writeCharacteristicsQueue.isNotEmpty) {
+    //   for (final BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
+    //     await writeCharacteristics(writeCh);
+    //   }
+    // }
+    //
+    // if (notifyCharacteristicsQueue.isNotEmpty) {
+    //   for (final BluetoothCharacteristic notifyCh in notifyCharacteristicsQueue) {
+    //     await notify(notifyCh);
+    //   }
+    // }
   }
 
   void addCharacteristicsToReadQueue(BluetoothCharacteristic characteristic) {
