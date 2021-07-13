@@ -1,54 +1,40 @@
-import 'package:flutter/foundation.dart';
-import 'dart:convert';
+import 'package:flutter/material.dart';
 
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart' as dio;
 
 import '../providers/authProvider.dart';
 import '../models/userStats.dart';
 import '../providers/userStatsProvider.dart';
-import '../models/envirocarStats.dart';
+import '../exceptionHandling/appException.dart';
+import '../exceptionHandling/result.dart';
+import '../exceptionHandling/errorHandler.dart';
 
 class StatsServices {
   final baseUri = 'https://envirocar.org/api/stable';
 
   // Fetches user stats
-  Future<void> getUserStats({
+  Future<Result> getUserStats({
     @required AuthProvider authProvider,
     @required UserStatsProvider userStatsProvider,
   }) async {
-    final Uri uri = Uri.parse(
-        '$baseUri/users/${authProvider.getUser.getUsername}/userStatistic');
+    try {
+      final dio.Response responsee = await dio.Dio().get(
+        '$baseUri/users/${authProvider.getUser.getUsername}/userStatistic',
+        options: dio.Options(
+          headers: {
+            'X-User': authProvider.getUser.getUsername,
+            'X-Token': authProvider.getUser.getPassword,
+          },
+        ),
+      );
 
-    final http.Response response = await http.get(
-      uri,
-      headers: {
-        'X-User': authProvider.getUser.getUsername,
-        'X-Token': authProvider.getUser.getPassword,
-      },
-    );
+      userStatsProvider.setUserStats =
+          UserStats.fromJson(responsee.data as Map<String, dynamic>);
 
-    userStatsProvider.setUserStats =
-        UserStats.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
-  }
-
-  // Fetches general enviroCar stats
-  Future<EnvirocarStats> getEnvirocarStats() async {
-    final Uri uri = Uri.parse(baseUri);
-
-    final http.Response response = await http.get(
-      uri,
-    );
-
-    final dynamic responseBody = jsonDecode(response.body)['counts'];
-
-    final int users = responseBody['users'] as int;
-    final int tracks = responseBody['tracks'] as int;
-    final int measurements = responseBody['measurements'] as int;
-
-    return EnvirocarStats(
-      users: users,
-      tracks: tracks,
-      measurements: measurements,
-    );
+      return Result.success(responsee.data);
+    } catch (e) {
+      final ApplicationException exception = handleException(e);
+      return Result.failure(exception);
+    }
   }
 }

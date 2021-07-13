@@ -72,6 +72,9 @@ dependencies:
 
   # for logging
   logger: ^1.0.0
+
+  # for making http calls
+  dio: ^4.0.0
   
 
 

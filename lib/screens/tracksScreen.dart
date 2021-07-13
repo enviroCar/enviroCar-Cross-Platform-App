@@ -1,4 +1,4 @@
-import 'Package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 import '../../widgets/tracksScrrenWidgets/localTracksList.dart';
 import '../../widgets/tracksScrrenWidgets/uploadedTracksList.dart';
@@ -26,17 +26,13 @@ class _TracksScreenState extends State<TracksScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          TabButtonsPage(
-            button1Title: 'Local',
-            button2Title: 'Uploaded',
-            tab1: TracksTab.local,
-            tab2: TracksTab.uploaded,
-            page1: LocalTracksList(),
-            page2: UploadedTracksList(),
-          ),
-        ],
+      child: TabButtonsPage(
+        button1Title: 'Local',
+        button2Title: 'Uploaded',
+        tab1: TracksTab.local,
+        tab2: TracksTab.uploaded,
+        page1: LocalTracksList(),
+        page2: UploadedTracksList(),
       ),
     );
   }

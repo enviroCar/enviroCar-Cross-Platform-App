@@ -1,16 +1,14 @@
 import 'package:flutter/material.dart';
 
 import 'package:logger/logger.dart';
-import 'package:provider/provider.dart';
 
-import '../providers/authProvider.dart';
 import '../constants.dart';
 import '../services/authenticationServices.dart';
 import './registerScreen.dart';
 import '../models/user.dart';
 import './index.dart';
-import '../providers/userStatsProvider.dart';
 import '../globals.dart';
+import '../exceptionHandling/result.dart';
 
 // TODO: Add validators
 
@@ -47,11 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider _authProvider =
-        Provider.of<AuthProvider>(context, listen: false);
-    final UserStatsProvider _userStatsProvider =
-        Provider.of<UserStatsProvider>(context, listen: false);
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -150,31 +143,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: _password,
                         );
 
-                        final String _status =
-                            await AuthenticationServices().loginUser(
-                          authProvider: _authProvider,
+                        await AuthenticationServices()
+                            .loginUser(
+                          context: context,
                           user: _user,
-                          userStatsProvider: _userStatsProvider,
+                        )
+                            .then(
+                          (Result result) {
+                            if (result.status == ResultStatus.error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text(result.exception.getErrorMessage()),
+                                ),
+                              );
+                            } else {
+                              _logger.i('Logged in successfully');
+                              _logger.i('Going to Dashboard');
+                              Navigator.of(context).pushReplacementNamed(
+                                Index.routeName,
+                              );
+                            }
+                          },
                         );
-
-                        if (_status == 'Logged In') {
-                          _logger.i('Logged in successfully');
-                          _logger.i('Going to Dashboard');
-                          Navigator.of(context).pushReplacementNamed(
-                            Index.routeName,
-                          );
-                        } else if (_status == 'invalid username or password') {
-                          _logger.i('Entered invalid credentials');
-                          setState(
-                            () {
-                              _wrongCredentials = true;
-                            },
-                          );
-                        } else if (_status == 'mail not confirmed') {
-                          _logger.i('Mail not confirmed');
-                          _showDialogbox('mail not confirmed');
-                        }
-                        // }
                       },
                       child: Container(
                         width: double.infinity,
