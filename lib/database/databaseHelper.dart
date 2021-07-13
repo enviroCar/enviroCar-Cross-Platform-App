@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import './carsTable.dart';
+import 'tracksTable.dart';
 
 class DatabaseHelper {
   static Database _database;
@@ -39,6 +39,7 @@ class DatabaseHelper {
   // creating the database and the tables if it is the first time
   Future<void> createDatabase(Database db, int version) async {
     await db.execute(CarsTable.carsTableQuery);
+    await db.execute(TracksTable.localTrackCreateTableQuery);
   }
 
   // method to insert values in the database
@@ -60,6 +61,17 @@ class DatabaseHelper {
     final Database db = await instance.getDatabase;
 
     return db.query(tableName);
+  }
+
+  // update a value in the table
+  Future<int> updateValue({@required String tableName, @required int columnId, @required Map<String, dynamic> updatedData}) async {
+    final Database db = await instance.getDatabase;
+    return db.update(tableName, updatedData, where: '$tableName = ?', whereArgs: [columnId]);
+  }
+
+  Future<List<Map<String, dynamic>>> readValue({@required String tableName, @required String id}) async {
+    final Database db = await instance.getDatabase;
+    return db.query(tableName, where: 'id = ?', whereArgs: [id]);
   }
 
   // deletes the value
