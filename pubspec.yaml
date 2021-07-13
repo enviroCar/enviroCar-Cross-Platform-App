@@ -53,6 +53,12 @@ dependencies:
   # for onboarding screens
   introduction_screen: ^2.1.0
 
+  # for google maps
+  google_maps_flutter: ^2.0.6
+
+  # to display poly lines on map connecting two or more places
+  flutter_polyline_points: ^1.0.0
+
   # to store small persistent data
   shared_preferences: ^2.0.6
 
@@ -62,10 +68,10 @@ dependencies:
   # to use custom fonts
   google_fonts: ^2.1.0
 
-  toast: ^0.1.5
-
   # to generate unique IDs
   uuid: ^3.0.4
+
+  toast: ^0.1.5
 
   # for storing data locally
   sqflite: ^2.0.0+3
@@ -75,6 +81,9 @@ dependencies:
 
   # to get path of the app on the device
   path: ^1.8.0
+
+  # to send notifications
+  flutter_local_notifications: ^6.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

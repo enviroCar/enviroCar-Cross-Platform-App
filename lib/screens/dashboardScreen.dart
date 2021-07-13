@@ -18,6 +18,7 @@ import '../providers/carsProvider.dart';
 import '../models/car.dart';
 import '../utils/enums.dart';
 import '../widgets/button.dart';
+import 'gpsTrackingScreen.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -159,7 +160,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
             child: Button(
               title: 'Start Track',
               color: kSpringColor,
-              onTap: () {},
+              onTap: () {
+                Navigator.pushNamed(context, GpsTrackingScreen.routeName);
+              },
             ),
           ),
           SizedBox(
