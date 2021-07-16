@@ -9,7 +9,7 @@ import 'package:location/location.dart';
 import '../constants.dart';
 import 'bluetoothProvider.dart';
 import '../screens/gpsTrackingScreen.dart';
-import '../screens/notificationServices.dart';
+import '../services/notificationServices.dart';
 
 class GpsTrackProvider extends ChangeNotifier {
   final Set<Marker> _markers = <Marker>{};

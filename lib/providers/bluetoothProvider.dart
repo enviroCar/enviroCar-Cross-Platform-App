@@ -66,8 +66,9 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   /// function to handle error while scanning
-  void handleError(Exception e) {
-    debugPrint(e.toString());
+  void handleError(Object error, StackTrace stackTrace) {
+    debugPrint(error.toString());
+    debugPrint(stackTrace.toString());
   }
 
   /// function to stop scanning by deinitializing [_flutterReactiveBle]
@@ -124,7 +125,7 @@ class BluetoothProvider extends ChangeNotifier {
   Future discoverServices() async {
     _flutterReactiveBle = FlutterReactiveBle();
     _services = await _flutterReactiveBle.discoverServices(connectedBluetoothDevice.id);
-    debugPrint(_services.toString());
+    // debugPrint(_services.toString());
     logCharacteristicsForServices();
   }
 
@@ -132,10 +133,10 @@ class BluetoothProvider extends ChangeNotifier {
   Future logCharacteristicsForServices() async {
     for (final DiscoveredService service in _services) {
       _servicesCharacteristics[service.serviceId] = service.characteristicIds;
-      debugPrint('service id ${service.serviceId.toString()} characteristics Id ${service.characteristicIds.toString()}');
+      // debugPrint('service id ${service.serviceId.toString()} characteristics Id ${service.characteristicIds.toString()}');
       for (final Uuid characteristicId in service.characteristicIds) {
         readCharacteristic(service.serviceId, characteristicId);
-        writeCharacteristic(service.serviceId, characteristicId, [0x00]);
+        // writeCharacteristic(service.serviceId, characteristicId, [0x00]);
         // subscribeCharacteristic(service.serviceId, characteristicId);
       }
     }
