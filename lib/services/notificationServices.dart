@@ -1,5 +1,10 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+
+import '../constants.dart';
+import '../globals.dart';
+import '../screens/gpsTrackingScreen.dart';
 
 class NotificationService {
   static final NotificationService _notificationService = NotificationService._();
@@ -8,86 +13,92 @@ class NotificationService {
 
   NotificationService._();
 
-  static FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-  /// function to initialise location plugin
+  /// function to initialise notification plugin
   Future initialiseNotificationPlugin() async {
-    const AndroidInitializationSettings androidInitializationSettings = AndroidInitializationSettings('app_icon');
-
-    final IOSInitializationSettings iosInitializationSettings = IOSInitializationSettings(
-        onDidReceiveLocalNotification: onDidReceiveLocalNotification,
-        requestAlertPermission: false,
-        requestBadgePermission: false,
-        requestSoundPermission: false
-    );
-
-    final InitializationSettings initializationSettings = InitializationSettings(
-      android: androidInitializationSettings,
-      iOS: iosInitializationSettings,
-    );
-
-    await flutterLocalNotificationsPlugin.initialize(initializationSettings, onSelectNotification: onSelectNotification);
-  }
-
-  Future onDidReceiveLocalNotification(int id, String title, String body, String payload) async {
-
-  }
-
-  Future onSelectNotification(String payload) async {
-    // handle notification tapped logic
-    if (payload != null) {
-      debugPrint('notification $payload');
+    try {
+      AwesomeNotifications().initialize(
+          'resource://drawable/app_icon',
+          [
+            notificationChannel
+          ],
+          debug: true
+      );
+    } catch (e) {
+      debugPrint(e.toString());
+      rethrow;
     }
   }
 
-  static String channelId = '1';
+  NotificationChannel notificationChannel = NotificationChannel(
+    channelKey: channelKey,
+    channelName: channelName,
+    channelDescription: channelDescription,
+    defaultColor: kSpringColor,
+    ledColor: kPrimaryColor,
+    playSound: false,
+    enableLights: true,
+    enableVibration: true,
+    locked: false,
+  );
+
+  static String channelKey = '1';
   static String channelName = 'track';
   static String channelDescription = 'to display notification for the track in progress';
 
-  // android platform channel specifics
-  static AndroidNotificationDetails androidNotificationDetails = AndroidNotificationDetails(
-      channelId,//Required for Android 8.0 or after,
-      channelName, //Required for Android 8.0 or after
-      channelDescription, //Required for Android 8.0 or after
-      importance: Importance.high,
-      priority: Priority.high,
-      autoCancel: false
-  );
+  Future showNotifications(String title, String body) async {
+    const NotificationLayout notificationLayout = NotificationLayout.BigText;
+    const NotificationLifeCycle notificationLifeCycle = NotificationLifeCycle.Foreground;
 
-  static List<IOSNotificationAttachment> iosNotificationAttachment = [const IOSNotificationAttachment('assets/icons/appIcon.png')];
+    final NotificationContent notificationContent = NotificationContent(
+      id: 1,
+      channelKey: channelKey,
+      title: title,
+      body: body,
+      icon: 'resource://drawable/app_icon',
+      autoCancel: false,
+      // payload: payload,
+      hideLargeIconOnExpand: true,
+      notificationLayout: notificationLayout,
+      locked: true,
+      displayOnBackground: true,
+      displayOnForeground: true,
+      displayedDate: DateTime.now().toLocal().toString().substring(0, 19),
+      displayedLifeCycle: notificationLifeCycle,
+      // summary: '$title $body'
+    );
 
-  // iOS platform channel specifics
-  static IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails(
-      presentAlert: false, // presents an alert when the notification is displayed and the app is in foreground (from iOS 10 onwards)
-      presentBadge: false, // presents the badge number when the notification is displayed and the app is in foreground (from iOS 10 onwards)
-      presentSound: false, // play a sound when the notification is displayed and the app is in foreground (from iOS 10 onwards)
-      attachments: iosNotificationAttachment, // only from iOS 10 onwards
-      subtitle: channelDescription, // secondary description (only from iOS 10 onwards)
-      threadIdentifier: channelId // only from iOS 10 onwards
-  );
+    final NotificationActionButton notificationActionButton = NotificationActionButton(
+      key: 'actionButton',
+      enabled: true,
+      buttonType: ActionButtonType.KeepOnTop,
+      autoCancel: false,
+      label: 'stop track'.toUpperCase(),
+    );
 
-  // platform channel specifics
-  NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-      iOS: iosNotificationDetails
-  );
+    await AwesomeNotifications().createNotification(
+      content: notificationContent,
+      actionButtons: [notificationActionButton],
+    );
 
-  void showNotifications(String title, String body, String routeName) {
-    flutterLocalNotificationsPlugin.show(0, title, body, notificationDetails, payload: routeName);
+    listenToNotification();
+  }
+
+  void listenToNotification() {
+    AwesomeNotifications().actionStream.listen((receivedNotification) {
+      Navigator.pushReplacementNamed(navigatorKey.currentState.context, GpsTrackingScreen.routeName);
+    });
   }
 
   Future turnOffNotification() async {
-    flutterLocalNotificationsPlugin.cancelAll();
+    AwesomeNotifications().cancelAll();
   }
 
-  void requestIOSPermissions() {
-    flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<IOSFlutterLocalNotificationsPlugin>()
-        ?.requestPermissions(
-        alert: true,
-        badge: true,
-        sound: true
-    );
+  void requestNotificationPermissions() {
+    AwesomeNotifications().isNotificationAllowed().then((bool allowed) {
+      if (!allowed) {
+        AwesomeNotifications().requestPermissionToSendNotifications();
+      }
+    });
   }
 
 }

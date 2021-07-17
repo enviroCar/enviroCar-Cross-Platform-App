@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:envirocar_app_main/services/notification_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -172,7 +171,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
                               return StatusIndicatorWidget(
                                 title: 'Bluetooth',
-                                iconData: connectedToOBD ? Icons.bluetooth_connected : Icons.bluetooth_disabled,
+                                iconData: connectedToOBD ? Icons.bluetooth : Icons.bluetooth_disabled,
                               );
                             }
                         ),
@@ -188,16 +187,16 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                     ),
                     const Spacer(),
                     Column(
-                      children: [
-                        const DetailsIcon(
+                      children: const [
+                        DetailsIcon(
                           title: 'Avg speed',
                           data: '40 km/h',
                           iconData: Icons.speed,
                         ),
-                        const SizedBox(
+                        SizedBox(
                           height: 7,
                         ),
-                        const DetailsIcon(
+                        DetailsIcon(
                           title: 'Distance',
                           data: '1 km',
                           iconData: Icons.trending_up_rounded,

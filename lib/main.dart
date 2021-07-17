@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,6 +30,7 @@ import './screens/reportIssueScreen.dart';
 import './screens/helpScreen.dart';
 import 'providers/gpsTrackProvider.dart';
 import 'screens/gpsTrackingScreen.dart';
+import '../services/notificationServices.dart';
 
 Future<void> main() async {
   // Ensures all the future functions of main() finish before launching the app
@@ -38,6 +38,11 @@ Future<void> main() async {
 
   // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
+
+  // initialise notification plugin
+  NotificationService().initialiseNotificationPlugin();
+
+  navigatorKey = GlobalKey<NavigatorState>();
 
   // Restricts rotation of screen
   SystemChrome.setPreferredOrientations(
@@ -125,7 +130,7 @@ class MyApp extends StatelessWidget {
           }
         },
 
-        // Helps in navigating to different screens via route name
+        // Helps in navigating to different screens via route name https://leetcode.com/problems/binary-tree-upside-down/
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
           RegisterScreen.routeName: (context) => RegisterScreen(),

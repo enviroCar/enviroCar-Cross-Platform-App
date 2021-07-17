@@ -8,7 +8,6 @@ import 'package:location/location.dart';
 
 import '../constants.dart';
 import 'bluetoothProvider.dart';
-import '../screens/gpsTrackingScreen.dart';
 import '../services/notificationServices.dart';
 
 class GpsTrackProvider extends ChangeNotifier {
@@ -99,7 +98,7 @@ class GpsTrackProvider extends ChangeNotifier {
     }
 
     NotificationService().showNotifications(
-        'Track $trackId', 'GPS tracking has started!', GpsTrackingScreen.routeName);
+        'Track $trackId', 'GPS tracking has started!');
 
     // adding the startLocation coordinates to set of lat lng coordinates
     latLngCoordinates.add(LatLng(startLocation.latitude, startLocation.longitude));

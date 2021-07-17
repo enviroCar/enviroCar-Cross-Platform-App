@@ -83,7 +83,7 @@ dependencies:
   path: ^1.8.0
 
   # to send notifications
-  flutter_local_notifications: ^6.0.0
+  awesome_notifications: ^0.0.6+9
 
 
   # The following adds the Cupertino Icons font to your application.
