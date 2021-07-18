@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/utils/obdResponseParser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -230,6 +231,13 @@ class BluetoothProvider extends ChangeNotifier {
       return null;
     });
     if (readValue != null) {
+      if (readValue.length > 5) {
+        ObdResponseParseService(buffer: readValue).parseSpeed();
+        ObdResponseParseService(buffer: readValue).parseRPM();
+        ObdResponseParseService(buffer: readValue).parseFuelLevel();
+        ObdResponseParseService(buffer: readValue).parseTemperature();
+        ObdResponseParseService(buffer: readValue).parseVIN();
+      }
       debugPrint('read characteristic ${characteristic.uuid.toString()} its value is ${readValue.toString()}');
     }
   }
