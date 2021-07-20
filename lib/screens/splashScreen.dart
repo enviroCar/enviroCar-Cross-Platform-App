@@ -1,4 +1,3 @@
-import 'package:envirocar_app_main/providers/tracksProvider.dart';
 import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
@@ -10,6 +9,7 @@ import '../services/authenticationServices.dart';
 import '../providers/userStatsProvider.dart';
 import '../globals.dart';
 import './onboardingScreen.dart';
+import '../providers/tracksProvider.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/splashScreen';
@@ -61,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen> {
       future: buildScreen,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return snapshot.data ? Index() : navigate();
+          return snapshot.data != null ? Index() : navigate();
         } else {
           return Scaffold(
             body: Center(

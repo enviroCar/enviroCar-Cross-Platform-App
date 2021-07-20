@@ -16,13 +16,10 @@ class StatsServices {
     @required AuthProvider authProvider,
     @required UserStatsProvider userStatsProvider,
   }) async {
-    final Uri uri = Uri.parse(baseUri +
-        '/users' +
-        '/' +
-        authProvider.getUser.getUsername +
-        '/userStatistic');
+    final Uri uri = Uri.parse(
+        '$baseUri/users/${authProvider.getUser.getUsername}/userStatistic');
 
-    http.Response response = await http.get(
+    final http.Response response = await http.get(
       uri,
       headers: {
         'X-User': authProvider.getUser.getUsername,
@@ -31,22 +28,22 @@ class StatsServices {
     );
 
     userStatsProvider.setUserStats =
-        UserStats.fromJson(jsonDecode(response.body));
+        UserStats.fromJson(jsonDecode(response.body) as Map<String, dynamic>);
   }
 
   // Fetches general enviroCar stats
   Future<EnvirocarStats> getEnvirocarStats() async {
     final Uri uri = Uri.parse(baseUri);
 
-    http.Response response = await http.get(
+    final http.Response response = await http.get(
       uri,
     );
 
-    dynamic responseBody = jsonDecode(response.body)['counts'];
+    final dynamic responseBody = jsonDecode(response.body)['counts'];
 
-    int users = responseBody['users'];
-    int tracks = responseBody['tracks'];
-    int measurements = responseBody['measurements'];
+    final int users = responseBody['users'] as int;
+    final int tracks = responseBody['tracks'] as int;
+    final int measurements = responseBody['measurements'] as int;
 
     return EnvirocarStats(
       users: users,

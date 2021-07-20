@@ -12,11 +12,11 @@ class User {
       String password,
       bool acceptedTerms,
       bool acceptedPrivacy}) {
-    this.setUsername = username;
-    this.setEmail = email;
-    this.setPassword = password;
-    this.setAcceptedTerms = acceptedTerms;
-    this.setAcceptedPrivacy = acceptedPrivacy;
+    setUsername = username;
+    setEmail = email;
+    setPassword = password;
+    setAcceptedTerms = acceptedTerms;
+    setAcceptedPrivacy = acceptedPrivacy;
   }
 
   set setUsername(String username) {
@@ -61,11 +61,11 @@ class User {
 
   Map<String, dynamic> toMap() {
     return {
-      'name': this.getUsername,
-      'mail': this.getEmail,
-      'token': this.getPassword,
-      'acceptedTerms': this.getAccpetedTerms,
-      'acceptedPrivacy': this.getAccpetedPrivacy,
+      'name': getUsername,
+      'mail': getEmail,
+      'token': getPassword,
+      'acceptedTerms': getAccpetedTerms,
+      'acceptedPrivacy': getAccpetedPrivacy,
     };
   }
 }
