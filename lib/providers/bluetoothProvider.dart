@@ -17,12 +17,17 @@ class BluetoothProvider extends ChangeNotifier {
 
   Map<Uuid, List<Uuid>> _servicesCharacteristics;
 
-  BluetoothProvider() {
+  /// creating the [BluetoothProvider] a singleton class
+  factory BluetoothProvider() => _bluetoothProvider;
+
+  BluetoothProvider._() {
     _flutterReactiveBle = FlutterReactiveBle();
     _detectedBluetoothDevices = [];
     _services = [];
     _servicesCharacteristics = {};
   }
+
+  static final BluetoothProvider _bluetoothProvider = BluetoothProvider._();
 
   Future<BleStatus> bluetoothState() async {
     return _flutterReactiveBle.status;
@@ -66,8 +71,9 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   /// function to handle error while scanning
-  void handleError(Exception e) {
+  void handleError(Object e, StackTrace stackTrace) {
     debugPrint(e.toString());
+    debugPrint(stackTrace.toString());
   }
 
   /// function to stop scanning by deinitializing [_flutterReactiveBle]
@@ -125,17 +131,17 @@ class BluetoothProvider extends ChangeNotifier {
     _flutterReactiveBle = FlutterReactiveBle();
     _services = await _flutterReactiveBle.discoverServices(connectedBluetoothDevice.id);
     debugPrint(_services.toString());
-    logCharacteristicsForServices();
+    // logCharacteristicsForServices();
   }
 
   /// function to add the [serviceId] and [characteristicIds] to [_servicesCharacteristics]
   Future logCharacteristicsForServices() async {
     for (final DiscoveredService service in _services) {
       _servicesCharacteristics[service.serviceId] = service.characteristicIds;
-      debugPrint('service id ${service.serviceId.toString()} characteristics Id ${service.characteristicIds.toString()}');
+      // debugPrint('service id ${service.serviceId.toString()} characteristics Id ${service.characteristicIds.toString()}');
       for (final Uuid characteristicId in service.characteristicIds) {
         readCharacteristic(service.serviceId, characteristicId);
-        writeCharacteristic(service.serviceId, characteristicId, [0x00]);
+        // writeCharacteristic(service.serviceId, characteristicId, [0x00]);
         // subscribeCharacteristic(service.serviceId, characteristicId);
       }
     }
@@ -159,11 +165,7 @@ class BluetoothProvider extends ChangeNotifier {
     _flutterReactiveBle = FlutterReactiveBle();
     final QualifiedCharacteristic qualifiedCharacteristic = QualifiedCharacteristic(characteristicId: characteristicId, serviceId: serviceId, deviceId: connectedBluetoothDevice.id);
 
-    await _flutterReactiveBle.writeCharacteristicWithResponse(qualifiedCharacteristic, value: byteArray).whenComplete(() {
-      debugPrint('write operation completed');
-    }).catchError((e) {
-      debugPrint('error is ${e.toString()}');
-    });
+    await _flutterReactiveBle.writeCharacteristicWithResponse(qualifiedCharacteristic, value: byteArray);
   }
 
   /// function to subscribe to a characteristic and listen to the updates in the value of [characteristic]
