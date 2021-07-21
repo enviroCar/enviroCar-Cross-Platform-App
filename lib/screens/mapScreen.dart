@@ -18,7 +18,8 @@ class _MapScreenState extends State<MapScreen> {
   // checks if location service in enabled
   // promts permission dialogbox if service is disabled
   Future<void> initializeLocation() async {
-    bool permissionStatus = await MapServices().initializeLocationService();
+    final bool permissionStatus =
+        await MapServices().initializeLocationService();
 
     setState(() {
       _locationServiceEnabled = permissionStatus;
@@ -38,7 +39,7 @@ class _MapScreenState extends State<MapScreen> {
         backgroundColor: kGreyColor,
         elevation: 0,
         centerTitle: true,
-        title: Text('Location'),
+        title: const Text('Location'),
       ),
       body: FutureBuilder(
         future: _startLocationService,
@@ -46,13 +47,12 @@ class _MapScreenState extends State<MapScreen> {
           if (snapshot.connectionState == ConnectionState.done) {
             // when location service is disabled by clicking 'No Thanks' on dialogbox
             if (!_locationServiceEnabled) {
-              return Container(
+              return SizedBox(
                 width: double.infinity,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
+                    const Text(
                       'Location Service is OFF',
                       style: TextStyle(
                         fontSize: 15,
@@ -63,14 +63,14 @@ class _MapScreenState extends State<MapScreen> {
                         await initializeLocation();
                       },
                       child: Container(
-                        margin: EdgeInsets.all(5),
+                        margin: const EdgeInsets.all(5),
                         height: 40,
                         width: 100,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: kSpringColor,
                           borderRadius: BorderRadius.all(Radius.circular(5)),
                         ),
-                        child: Center(
+                        child: const Center(
                           child: Text(
                             'Turn on',
                             style: TextStyle(
@@ -91,7 +91,7 @@ class _MapScreenState extends State<MapScreen> {
               );
             }
           } else {
-            return Center(
+            return const Center(
               child: CircularProgressIndicator(),
             );
           }
