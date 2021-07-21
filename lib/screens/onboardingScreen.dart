@@ -4,6 +4,7 @@ import 'package:logger/logger.dart';
 
 import './loginScreen.dart';
 import '../constants.dart';
+import '../globals.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -154,6 +155,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               color: kSpringColor,
               child: GestureDetector(
                 onTap: () {
+                  preferences.setBool('displayIntroduction', false);
                   _logger.i('Going to login screen');
                   Navigator.of(context)
                       .pushReplacementNamed(LoginScreen.routeName);

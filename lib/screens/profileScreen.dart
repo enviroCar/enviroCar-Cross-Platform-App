@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/authProvider.dart';
-import './loginScreen.dart';
 import '../services/authenticationServices.dart';
 import './reportIssueScreen.dart';
 import '../widgets/dividerLine.dart';
@@ -144,9 +143,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   authProvider: _authProvider,
                   userStatsProvider: _userStatsProvider,
                   tracksProvider: _tracksProvider,
-                );
-                Navigator.of(context).pushReplacementNamed(
-                  LoginScreen.routeName,
                 );
               },
             ),

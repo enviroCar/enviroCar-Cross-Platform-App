@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/track.dart';
+import '../../exceptionHandling/result.dart';
 import '../../providers/authProvider.dart';
 import '../../providers/tracksProvider.dart';
 import '../../services/tracksServices.dart';
@@ -22,43 +23,48 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
     final TracksProvider _tracksProvider =
         Provider.of<TracksProvider>(context, listen: false);
 
-    return FutureBuilder(
-      future: _tracksProvider.getTracks().isEmpty
-          ? TracksServices().getTracks(
-              authProvider: _authProvider,
-              tracksProvider: _tracksProvider,
-            )
-          : null,
-      builder: (_, snapShot) {
-        if (snapShot.connectionState == ConnectionState.done ||
-            _tracksProvider.getTracks().isNotEmpty) {
-          return Consumer<TracksProvider>(
-            builder: (_, tracksProvider, child) {
-              final List<Track> tracksList = tracksProvider.getTracks();
-              if (tracksList.isEmpty) {
-                return const Center(
-                  child: Text('No Tracks'),
+    return Consumer<TracksProvider>(
+      builder: (_, tracksProvider, child) {
+        final List<Track> tracksList = tracksProvider.getTracks();
+        if (tracksList == null) {
+          TracksServices()
+              .getTracks(
+            authProvider: _authProvider,
+            tracksProvider: _tracksProvider,
+          )
+              .then(
+            (Result result) {
+              if (result.status == ResultStatus.error) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    backgroundColor: Colors.red,
+                    content: Text(
+                      result.exception.getErrorMessage(),
+                    ),
+                  ),
                 );
               }
-
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: tracksList.length,
-                itemBuilder: (_, i) {
-                  return Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: TrackCard(
-                      track: tracksList[i],
-                    ),
-                  );
-                },
-              );
             },
           );
-        } else {
+
+          return const CircularProgressIndicator();
+        } else if (tracksList.isEmpty) {
           return const Center(
-            child: CircularProgressIndicator(),
+            child: Text('No Tracks'),
+          );
+        } else {
+          return ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: tracksList.length,
+            itemBuilder: (_, i) {
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: TrackCard(
+                  track: tracksList[i],
+                ),
+              );
+            },
           );
         }
       },
