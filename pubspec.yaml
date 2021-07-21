@@ -49,9 +49,6 @@ dependencies:
   # to preview the app on different screens sizes
   device_preview: ^0.7.3
 
-  # for onboarding screens
-  introduction_screen: ^2.1.0
-
   # to store small persistent data
   shared_preferences: ^2.0.6
 
@@ -98,6 +95,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/onboarding/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

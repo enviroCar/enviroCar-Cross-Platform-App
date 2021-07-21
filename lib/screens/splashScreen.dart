@@ -61,7 +61,8 @@ class _SplashScreenState extends State<SplashScreen> {
       future: buildScreen,
       builder: (BuildContext context, AsyncSnapshot snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
-          return snapshot.data != null ? Index() : navigate();
+          final bool isLoggedIn = snapshot.data as bool;
+          return isLoggedIn ? Index() : navigate();
         } else {
           return Scaffold(
             body: Center(
