@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
+
 import '../constants.dart';
 import '../services/authenticationServices.dart';
 import '../models/user.dart';
@@ -15,6 +17,12 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _username;
@@ -26,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _showError = false;
 
   Future<void> _showDialogbox(String message) async {
+    _logger.i('Showing dialog');
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -215,6 +224,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
 
                         if (_formKey.currentState.validate() && !_showError) {
+                          _logger.i('Registering user');
                           final User _newUser = User(
                             username: _username,
                             email: _email,
@@ -229,10 +239,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           );
 
                           if (_status == 'Mail Sent') {
+                            _logger.i('Registration mail sent');
                             _showDialogbox('Mail Sent');
                           } else if (_status == 'name already exists') {
+                            _logger.w('Mail already in use');
                             _showDialogbox('Email already in use');
                           } else {
+                            _logger.w('Unknown error while registering');
                             _showDialogbox('Some other error');
                           }
                         }
@@ -264,6 +277,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Go to Login Screen button
                     TextButton(
                       onPressed: () {
+                        _logger.i('Going to login screen');
                         Navigator.of(context).pop();
                       },
                       child: const Text(

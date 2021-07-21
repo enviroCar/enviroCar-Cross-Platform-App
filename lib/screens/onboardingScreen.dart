@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
+
 import './loginScreen.dart';
 import '../constants.dart';
 
@@ -9,6 +11,12 @@ class OnboardingScreen extends StatefulWidget {
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   final int _numPages = 3;
   int _currentPage = 0;
 
@@ -146,6 +154,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               color: kSpringColor,
               child: GestureDetector(
                 onTap: () {
+                  _logger.i('Going to login screen');
                   Navigator.of(context)
                       .pushReplacementNamed(LoginScreen.routeName);
                 },

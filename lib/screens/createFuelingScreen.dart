@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
+import '../database/carsTable.dart';
 import '../models/car.dart';
 import '../models/fueling.dart';
 import '../providers/carsProvider.dart';
@@ -21,6 +23,12 @@ class CreateFuelingScreen extends StatefulWidget {
 }
 
 class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   // Form key to validate the fueling form
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -39,6 +47,8 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
   // Triggered when 'Add' button is pressed after filling the form
   // Creates the fueling object and stores it in Provider
   void addFueling() {
+    _logger.i('addFueling called');
+
     if (_formKey.currentState.validate()) {
       final Fueling fueling = Fueling(
         // TODO: generate uuid for id
@@ -66,6 +76,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
   // Navigates user to the Log book screen when 'Cancel' button is pressed
   void cancelFueling() {
+    _logger.i('cancelFueling called');
     Navigator.of(context).pop();
   }
 
@@ -112,37 +123,45 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                 builder: (_, carsProvider, child) {
                   final List<Car> carsList = carsProvider.getCarsList;
 
-                  // Drop Down button to select Car
-                  return DropdownButtonFormField<Car>(
-                    decoration: inputDecoration.copyWith(
-                      labelText: 'Car',
-                    ),
-                    validator: (value) {
-                      if (value == null) {
-                        return 'Required';
-                      }
-                      return null;
-                    },
-                    elevation: 24,
-                    icon: const Icon(Icons.arrow_drop_down_rounded),
-                    value: selectedCar,
-                    onChanged: (Car newValue) {
-                      FocusScope.of(context).requestFocus(FocusNode());
-                      setState(() {
-                        selectedCar = newValue;
-                      });
-                    },
-                    items: List.generate(
-                      carsList.length,
-                      (index) {
-                        return DropdownMenuItem<Car>(
-                          value: carsList[index],
-                          child: Text(
-                              '${carsList[index].manufacturer} ${carsList[index].model}'),
-                        );
+                  // if cars list is null then fetch from database
+                  if (carsList == null) {
+                    CarsTable().getCarsFromDatabase(carsProvider: carsProvider);
+                    return const Text('You have no cars');
+                  } else if (carsList.isEmpty) {
+                    return const Text('You have no cars');
+                  } else {
+                    // Drop Down button to select Car
+                    return DropdownButtonFormField<Car>(
+                      decoration: inputDecoration.copyWith(
+                        labelText: 'Car',
+                      ),
+                      validator: (value) {
+                        if (value == null) {
+                          return 'Required';
+                        }
+                        return null;
                       },
-                    ),
-                  );
+                      elevation: 24,
+                      icon: const Icon(Icons.arrow_drop_down_rounded),
+                      value: selectedCar,
+                      onChanged: (Car newValue) {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                        setState(() {
+                          selectedCar = newValue;
+                        });
+                      },
+                      items: List.generate(
+                        carsList.length,
+                        (index) {
+                          return DropdownMenuItem<Car>(
+                            value: carsList[index],
+                            child: Text(
+                                '${carsList[index].manufacturer} ${carsList[index].model}'),
+                          );
+                        },
+                      ),
+                    );
+                  }
                 },
               ),
               DividerLine(),

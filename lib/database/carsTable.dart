@@ -1,3 +1,8 @@
+import 'package:flutter/material.dart';
+
+import 'databaseHelper.dart';
+import '../providers/carsProvider.dart';
+
 class CarsTable {
   // name of the table
   static const String tableName = 'cars';
@@ -21,4 +26,12 @@ class CarsTable {
         ${CarsTable.engineDisplacementColumn} INTEGER NOT NULL
       )
       ''';
+
+  // method to fetch cars from database and store them in provider
+  Future<void> getCarsFromDatabase(
+      {@required CarsProvider carsProvider}) async {
+    final List<Map<String, dynamic>> carsList = await DatabaseHelper.instance
+        .readAllValues(tableName: CarsTable.tableName);
+    carsProvider.setCarsList = carsList;
+  }
 }

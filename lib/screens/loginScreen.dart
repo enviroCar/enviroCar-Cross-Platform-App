@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/authProvider.dart';
@@ -21,6 +22,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _username;
@@ -28,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _wrongCredentials = false;
 
   Future<void> _showDialogbox(String message) async {
+    _logger.i('Showing dialog');
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -129,6 +137,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Login Button
                     GestureDetector(
                       onTap: () async {
+                        _logger.i('Loggin user in');
                         setState(
                           () {
                             _wrongCredentials = false;
@@ -149,16 +158,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
 
                         if (_status == 'Logged In') {
+                          _logger.i('Logged in successfully');
+                          _logger.i('Going to Dashboard');
                           Navigator.of(context).pushReplacementNamed(
                             Index.routeName,
                           );
                         } else if (_status == 'invalid username or password') {
+                          _logger.i('Entered invalid credentials');
                           setState(
                             () {
                               _wrongCredentials = true;
                             },
                           );
                         } else if (_status == 'mail not confirmed') {
+                          _logger.i('Mail not confirmed');
                           _showDialogbox('mail not confirmed');
                         }
                         // }
@@ -190,6 +203,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Register screen button
                     TextButton(
                       onPressed: () {
+                        _logger.i('Going to register screen');
                         Navigator.of(context).pushNamed(
                           RegisterScreen.routeName,
                         );

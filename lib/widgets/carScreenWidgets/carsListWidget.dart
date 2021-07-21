@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../models/car.dart';
 import '../../providers/carsProvider.dart';
 import '../../database/carsTable.dart';
-import '../../database/databaseHelper.dart';
 
 class CarsListWidget extends StatefulWidget {
   @override
@@ -13,15 +13,14 @@ class CarsListWidget extends StatefulWidget {
 }
 
 class _CarsListWidgetState extends State<CarsListWidget> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   // Provider to set cars list in the data store and notify widgets
   CarsProvider carsProvider;
-
-  // method to fetch cars from database and store them in provider
-  Future<void> getCarsFromDatabase() async {
-    final List<Map<String, dynamic>> carsList = await DatabaseHelper.instance
-        .readAllValues(tableName: CarsTable.tableName);
-    carsProvider.setCarsList = carsList;
-  }
 
   @override
   void initState() {
@@ -39,7 +38,8 @@ class _CarsListWidgetState extends State<CarsListWidget> {
         // Cars haven't been fetched from DB yet
         // Fetch them
         if (carsList == null) {
-          getCarsFromDatabase();
+          _logger.i('getCarsFromDatabase called');
+          CarsTable().getCarsFromDatabase(carsProvider: carsProvider);
           return const Center(
             child: Text(
               'There are no cars here',

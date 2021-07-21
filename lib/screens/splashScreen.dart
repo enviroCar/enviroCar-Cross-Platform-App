@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
 import 'package:provider/provider.dart';
+import 'package:logger/logger.dart';
 
 import './index.dart';
 import './loginScreen.dart';
@@ -19,11 +21,19 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   Future buildScreen;
 
   // Navigates user to either Onboarding Screens or Login Screen
   // depending on whether the app has been opened the very first time
   Widget navigate() {
+    _logger.i(
+        'displayIntroduction: ${preferences.getBool('displayIntroduction')}');
     if (preferences.getBool('displayIntroduction') == null) {
       preferences.setBool('displayIntroduction', false);
       return OnboardingScreen();
@@ -43,6 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
     final TracksProvider _tracksProvider =
         Provider.of<TracksProvider>(context, listen: false);
 
+    _logger.i('silent sign-in called');
     buildScreen = AuthenticationServices().loginExistingUser(
       authProvider: _authProvider,
       userStatsProvider: _userStatsProvider,
