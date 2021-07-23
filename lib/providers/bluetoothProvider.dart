@@ -1,4 +1,3 @@
-import 'package:envirocar_app_main/utils/obdResponseParser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +6,7 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:toast/toast.dart';
 
 import '../constants.dart';
+import '../utils/obdResponseParser.dart';
 
 class BluetoothProvider extends ChangeNotifier {
   FlutterBlue _flutterBlue;
@@ -24,7 +24,9 @@ class BluetoothProvider extends ChangeNotifier {
   List<BluetoothCharacteristic> writeCharacteristicsQueue;
   List<BluetoothCharacteristic> notifyCharacteristicsQueue;
 
-  BluetoothProvider() {
+  factory BluetoothProvider() => _bluetoothProvider;
+
+  BluetoothProvider._() {
     _flutterBlue = FlutterBlue.instance;
     _detectedBluetoothDevices = [];
     _services = [];
@@ -33,6 +35,8 @@ class BluetoothProvider extends ChangeNotifier {
     writeCharacteristicsQueue = [];
     notifyCharacteristicsQueue = [];
   }
+
+  static final BluetoothProvider _bluetoothProvider = BluetoothProvider._();
 
   /// determining the status of bluetooth to initialize [_state] of bluetooth
   Future<bool> bluetoothState() async {

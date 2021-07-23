@@ -172,7 +172,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
                                   return StatusIndicatorWidget(
                                     title: 'gps'.toUpperCase(),
-                                    iconData: locationEnabled ? Icons.location_on : Icons.location_off,
+                                    icon: Icon(locationEnabled ? Icons.location_on : Icons.location_off, color: kSpringColor),
                                   );
                                 }
                             ),
@@ -183,7 +183,8 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
                                   return StatusIndicatorWidget(
                                     title: 'Bluetooth',
-                                    iconData: connectedToOBD ? Icons.bluetooth_connected : Icons.bluetooth_disabled,
+                                    icon: connectedToOBD ? const Icon(Icons.bluetooth, color: kWhiteColor) : const Icon(Icons.bluetooth_disabled, color: kSpringColor),
+                                    backgroundColor: connectedToOBD ? kBlueColor : kWhiteColor,
                                   );
                                 }
                             ),
@@ -231,7 +232,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                   // TODO: turn on location
                 },
               ),
-            if (!bluetoothProvider.isConnected())
+            if (bluetoothProvider.isConnected())
               StatusIndicatorCard(
                 heading: 'No OBD-II selected',
                 subHeading: 'Your device is not connected to OBD-II adapter',

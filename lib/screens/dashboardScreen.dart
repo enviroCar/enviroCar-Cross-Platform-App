@@ -18,7 +18,6 @@ import '../providers/locationStatusProvider.dart';
 import '../providers/bluetoothProvider.dart';
 import '../widgets/button.dart';
 import './gpsTrackingScreen.dart';
-import '../providers/gpsTrackProvider.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -159,8 +158,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: 'Start Track',
               color: kSpringColor,
               onTap: () {
-                final provider = Provider.of<BluetoothProvider>(context, listen: false);
-                provider.interactWithDevice();
                 Navigator.pushNamed(context, GpsTrackingScreen.routeName);
               },
             ),

@@ -27,9 +27,9 @@ class _RippleAnimationState extends State<RippleAnimation> with TickerProviderSt
 
   @override
   void dispose() {
-    super.dispose();
-    animationController.dispose();
     animationController.stop();
+    animationController.dispose();
+    super.dispose();
   }
 
   @override
