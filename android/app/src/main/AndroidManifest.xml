@@ -12,7 +12,7 @@
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
    <application
-        android:label="enviroCar Cross-Platform"
+        android:label="enviroCar 2.0"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../constants.dart';
@@ -14,6 +15,12 @@ import '../widgets/titleWidget.dart';
 class LogBookScreen extends StatelessWidget {
   static const routeName = '/logBookScreen';
 
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -24,6 +31,7 @@ class LogBookScreen extends StatelessWidget {
           // Button to navigate to CreateFuelingScreen
           GestureDetector(
             onTap: () {
+              _logger.i('Going to create fueling screen');
               Navigator.of(context).pushNamed(CreateFuelingScreen.routeName);
             },
             child: const Padding(

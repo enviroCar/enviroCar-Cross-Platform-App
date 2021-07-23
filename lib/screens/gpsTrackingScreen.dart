@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -25,6 +26,12 @@ class GpsTrackingScreen extends StatefulWidget {
 class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   final Completer<GoogleMapController> _googleMapController = Completer();
   GpsTrackProvider gpsTrackProvider;
+
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true
+    ),
+  );
 
   @override
   void initState() {
@@ -232,13 +239,14 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                   // TODO: turn on location
                 },
               ),
-            if (bluetoothProvider.isConnected())
+            if (!bluetoothProvider.isConnected())
               StatusIndicatorCard(
                 heading: 'No OBD-II selected',
                 subHeading: 'Your device is not connected to OBD-II adapter',
                 buttonTitle: 'Select OBD-II adapter',
                 icon: const Icon(Icons.bluetooth, size: 50, color: kWhiteColor),
                 function: () {
+                  _logger.i('Going to bluetooth devices screen');
                   Navigator.pushReplacementNamed(context, BluetoothDevicesScreen.routeName);
                 },
               )

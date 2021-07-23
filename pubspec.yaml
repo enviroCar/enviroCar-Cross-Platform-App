@@ -81,6 +81,12 @@ dependencies:
   # to get path of the app on the device
   path: ^1.8.0
 
+  # for logging
+  logger: ^1.0.0
+
+  # for making http calls
+  dio: ^4.0.0
+
   # to send notifications
   flutter_local_notifications: ^6.0.0
 
@@ -107,6 +113,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/onboarding/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

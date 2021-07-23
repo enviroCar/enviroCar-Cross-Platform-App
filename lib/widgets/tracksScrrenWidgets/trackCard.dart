@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
+
 import '../../globals.dart';
 import '../../models/track.dart';
 import '../../constants.dart';
 import '../../screens/trackDetailsScreen.dart';
 
 class TrackCard extends StatelessWidget {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   final Track track;
 
-  const TrackCard({@required this.track});
+  TrackCard({@required this.track});
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +73,7 @@ class TrackCard extends StatelessWidget {
                     enabled: true,
                     onSelected: (int index) {
                       if (index == 0) {
+                        _logger.i('Going to track details screen');
                         Navigator.of(context).pushNamed(
                           TrackDetailsScreen.routeName,
                           arguments: track,
@@ -120,6 +129,7 @@ class TrackCard extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
+              _logger.i('Going to track details screen');
               Navigator.of(context).pushNamed(
                 TrackDetailsScreen.routeName,
                 arguments: track,

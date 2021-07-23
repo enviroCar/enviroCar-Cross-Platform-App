@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 
-import 'package:provider/provider.dart';
+import 'package:logger/logger.dart';
 
-import '../providers/authProvider.dart';
 import '../constants.dart';
 import '../services/authenticationServices.dart';
 import './registerScreen.dart';
 import '../models/user.dart';
 import './index.dart';
-import '../providers/userStatsProvider.dart';
 import '../globals.dart';
+import '../exceptionHandling/result.dart';
 
 // TODO: Add validators
 
@@ -21,6 +20,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _username;
@@ -28,6 +33,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _wrongCredentials = false;
 
   Future<void> _showDialogbox(String message) async {
+    _logger.i('Showing dialog');
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -39,11 +45,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final AuthProvider _authProvider =
-        Provider.of<AuthProvider>(context, listen: false);
-    final UserStatsProvider _userStatsProvider =
-        Provider.of<UserStatsProvider>(context, listen: false);
-
     return Scaffold(
       body: SafeArea(
         child: Container(
@@ -129,6 +130,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Login Button
                     GestureDetector(
                       onTap: () async {
+                        _logger.i('Loggin user in');
                         setState(
                           () {
                             _wrongCredentials = false;
@@ -141,27 +143,29 @@ class _LoginScreenState extends State<LoginScreen> {
                           password: _password,
                         );
 
-                        final String _status =
-                            await AuthenticationServices().loginUser(
-                          authProvider: _authProvider,
+                        await AuthenticationServices()
+                            .loginUser(
+                          context: context,
                           user: _user,
-                          userStatsProvider: _userStatsProvider,
+                        )
+                            .then(
+                          (Result result) {
+                            if (result.status == ResultStatus.error) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content:
+                                      Text(result.exception.getErrorMessage()),
+                                ),
+                              );
+                            } else {
+                              _logger.i('Logged in successfully');
+                              _logger.i('Going to Dashboard');
+                              Navigator.of(context).pushReplacementNamed(
+                                Index.routeName,
+                              );
+                            }
+                          },
                         );
-
-                        if (_status == 'Logged In') {
-                          Navigator.of(context).pushReplacementNamed(
-                            Index.routeName,
-                          );
-                        } else if (_status == 'invalid username or password') {
-                          setState(
-                            () {
-                              _wrongCredentials = true;
-                            },
-                          );
-                        } else if (_status == 'mail not confirmed') {
-                          _showDialogbox('mail not confirmed');
-                        }
-                        // }
                       },
                       child: Container(
                         width: double.infinity,
@@ -190,6 +194,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     // Register screen button
                     TextButton(
                       onPressed: () {
+                        _logger.i('Going to register screen');
                         Navigator.of(context).pushNamed(
                           RegisterScreen.routeName,
                         );

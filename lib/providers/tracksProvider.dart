@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import '../models/track.dart';
 
 class TracksProvider with ChangeNotifier {
-  List<Track> _tracks = [];
+  List<Track> _tracks;
 
   // Converts JSON tracks data from server to list
   // and notifies widgets once done

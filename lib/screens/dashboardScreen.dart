@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_blue/flutter_blue.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/dashboardWidgets/statsWidget.dart';
@@ -25,6 +26,12 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -158,6 +165,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: 'Start Track',
               color: kSpringColor,
               onTap: () {
+                _logger.i('Going to GPS tracking screen');
                 Navigator.pushNamed(context, GpsTrackingScreen.routeName);
               },
             ),
