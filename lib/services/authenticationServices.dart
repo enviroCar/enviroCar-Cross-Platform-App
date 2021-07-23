@@ -73,8 +73,7 @@ class AuthenticationServices {
       _authProvider.setUser = user;
 
       StatsServices().getUserStats(
-        authProvider: _authProvider,
-        userStatsProvider: _userStatsProvider,
+        context: context,
       );
 
       _authProvider.setAuthStatus = true;
