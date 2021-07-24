@@ -92,22 +92,53 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                 padding: const EdgeInsets.all(10),
                 alignment: Alignment.topRight,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    ClipOval(
-                      child: Material(
-                        color: kSpringColor,
-                        child: InkWell(
-                          splashColor: kSecondaryColor,
-                          onTap: () async {
-                            await myLocation();
-                          },
-                          child: const SizedBox(
-                            width: 50,
-                            height: 50,
-                            child: Icon(Icons.my_location, color: kWhiteColor),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ClipOval(
+                          child: Material(
+                            color: kSpringColor,
+                            child: InkWell(
+                              splashColor: kSecondaryColor,
+                              onTap: () async {
+                                if (gpsTrackProvider.isTrackingPaused) {
+                                  gpsTrackProvider.resumeTracking();
+                                }
+                                else {
+                                  gpsTrackProvider.pauseTracking();
+                                }
+                              },
+                              child: SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Consumer<GpsTrackProvider>(
+                                  builder: (context, trackProvider, child) {
+                                    return Icon(trackProvider.isTrackingPaused ? Icons.directions_car: Icons.pause, color: kWhiteColor);
+                                  }
+                                ),
+                              ),
+                            ),
                           ),
                         ),
-                      ),
+                        ClipOval(
+                          child: Material(
+                            color: kSpringColor,
+                            child: InkWell(
+                              splashColor: kSecondaryColor,
+                              onTap: () async {
+                                await myLocation();
+                              },
+                              child: const SizedBox(
+                                width: 50,
+                                height: 50,
+                                child: Icon(Icons.my_location, color: kWhiteColor),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 20),
                     Material(

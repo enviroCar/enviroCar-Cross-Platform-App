@@ -110,12 +110,11 @@ class GpsTrackProvider extends ChangeNotifier {
     _timer?.cancel();
     timer?.cancel();
 
-    if (currentLocation != null) {
+    if (currentLocation != null && !streamSubscription.isPaused) {
       latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
       debugPrint('the lat lng is ${startLocation.toString()} and ${currentLocation.toString()}');
+      BluetoothProvider().interactWithDevice();
     }
-
-    BluetoothProvider().interactWithDevice();
 
     if (reloadMap) {
       return;
@@ -386,6 +385,14 @@ class GpsTrackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void pauseTracking() {
+    streamSubscription.pause();
+  }
+
+  void resumeTracking() {
+    streamSubscription.resume();
+  }
+
   /// function to reset the values
   void resetAllValues() {
     startTrack = false;
@@ -437,6 +444,9 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to know the status of [endTrack]
   bool get getEndTrackStatus => endTrack;
+
+  /// function to determine whether tracking is stopped
+  bool get isTrackingPaused => streamSubscription.isPaused;
 
   /// function to determine whether the map needs to be rebuilt
   bool get needsRebuild => reloadMap;
