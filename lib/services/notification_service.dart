@@ -72,7 +72,7 @@ class NotificationService {
     iOS: iosNotificationDetails
   );
 
-  Future showNotifications(String title, String body, String routeName) {
+  void showNotifications(String title, String body, String routeName) {
     flutterLocalNotificationsPlugin.show(0, title, body, notificationDetails, payload: routeName);
   }
 

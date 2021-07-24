@@ -15,6 +15,7 @@ import '../widgets/gpsTrackingWidgets/statusIndicatorWidget.dart';
 import '../widgets/gpsTrackingWidgets/timeWidget.dart';
 import '../widgets/statusIndicatorCard.dart';
 import 'bluetoothDevicesScreen.dart';
+import '../animations/blinkAnimation.dart';
 
 class GpsTrackingScreen extends StatefulWidget {
   static String routeName = '/gpsTracking';
@@ -26,6 +27,7 @@ class GpsTrackingScreen extends StatefulWidget {
 class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   final Completer<GoogleMapController> _googleMapController = Completer();
   GpsTrackProvider gpsTrackProvider;
+  bool showPauseIcon;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -37,6 +39,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   void initState() {
     final provider = Provider.of<GpsTrackProvider>(context, listen: false);
     provider.trackScreenMounted(true);
+    showPauseIcon = true;
     super.initState();
   }
 
@@ -105,19 +108,22 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                               onTap: () async {
                                 if (gpsTrackProvider.isTrackingPaused) {
                                   gpsTrackProvider.resumeTracking();
+                                  setState(() {
+                                    showPauseIcon = true;
+                                  });
                                 }
                                 else {
                                   gpsTrackProvider.pauseTracking();
+                                  setState(() {
+                                    showPauseIcon = false;
+                                  });
                                 }
                               },
                               child: SizedBox(
                                 width: 50,
                                 height: 50,
-                                child: Consumer<GpsTrackProvider>(
-                                  builder: (context, trackProvider, child) {
-                                    return Icon(trackProvider.isTrackingPaused ? Icons.directions_car: Icons.pause, color: kWhiteColor);
-                                  }
-                                ),
+                                child: showPauseIcon ? const Icon(Icons.pause, color: kWhiteColor)
+                                    : const BlinkAnimation(child: Icon(Icons.time_to_leave_rounded, color: kWhiteColor)),
                               ),
                             ),
                           ),
