@@ -85,6 +85,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                   _googleMapController.complete(googleMapController);
                   await gpsTrackProvider.setMapController(_googleMapController.future);
                   gpsTrackProvider.addMarkersAndCircles();
+                  showPauseIcon = !gpsTrackProvider.isTrackingPaused;
                 },
               ),
             ),

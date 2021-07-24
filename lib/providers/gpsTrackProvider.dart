@@ -31,7 +31,7 @@ class GpsTrackProvider extends ChangeNotifier {
   String trackEndTime = ' ';
   bool startTrack = true, endTrack = false;
   String durationOfTrack = '0:00:00';
-  int time;
+  int time, stopsCount;
 
   String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";
 
@@ -89,6 +89,7 @@ class GpsTrackProvider extends ChangeNotifier {
     endTrack = false;
 
     time = 0;
+    stopsCount = 0;
 
     await setTrackIcon();
     await setInitialLocation();
@@ -396,13 +397,14 @@ class GpsTrackProvider extends ChangeNotifier {
     streamSubscription.cancel();
     latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
     NotificationService().turnOffNotification();
-    debugPrint('tracking stopped at $trackEndTime');
+    debugPrint('tracking stopped at $trackEndTime no of stops is $stopsCount');
     notifyListeners();
   }
 
   /// function to pause the tracking by pausing the [streamSubscription]
   void pauseTracking() {
     streamSubscription.pause();
+    stopsCount++;
   }
 
   /// function to resume the tracking by subscribing again or resuming the [streamSubscription]
