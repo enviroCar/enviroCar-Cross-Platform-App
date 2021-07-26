@@ -16,6 +16,7 @@ import '../widgets/gpsTrackingWidgets/timeWidget.dart';
 import '../widgets/statusIndicatorCard.dart';
 import 'bluetoothDevicesScreen.dart';
 import '../animations/blinkAnimation.dart';
+import '../widgets/gpsTrackingWidgets/editTrackName.dart';
 
 class GpsTrackingScreen extends StatefulWidget {
   static String routeName = '/gpsTracking';
@@ -199,7 +200,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      'Track ${gpsTrackProvider.trackId}',
+                      gpsTrackProvider.getTrackName,
                       style: const TextStyle(
                           color: kWhiteColor,
                           fontWeight: FontWeight.w600,
@@ -240,7 +241,6 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                           duration: gpsTrackProvider.getTrackDuration,
                           function: () {
                             gpsTrackProvider.stopTrack();
-                            Navigator.of(context).pop();
                           },
                         ),
                         const Spacer(),
@@ -289,8 +289,9 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                 },
               )
           ],
-        ) : const Center(
-          child: CircularProgressIndicator(),
+        ) : Center(
+          child: !gpsTrackProvider.getEndTrackStatus
+              ? const CircularProgressIndicator() : EditTrackName(gpsTrackProvider: gpsTrackProvider),
       ),
     );
   }

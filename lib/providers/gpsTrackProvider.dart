@@ -29,6 +29,7 @@ class GpsTrackProvider extends ChangeNotifier {
 
   String trackStartTime = ' ';
   String trackEndTime = ' ';
+  String trackName = ' ';
   bool startTrack = true, endTrack = false;
   String durationOfTrack = '0:00:00';
   int time, stopsCount;
@@ -50,7 +51,9 @@ class GpsTrackProvider extends ChangeNotifier {
   Duration defaultDuration = const Duration(seconds: 10);
   Duration timeCounterDuration = const Duration(seconds: 1);
 
-  GpsTrackProvider() {
+  factory GpsTrackProvider() => _gpsTrackProvider;
+
+  GpsTrackProvider._() {
     isUserLocationDetermined = false;
     startLocation = null;
     currentLocation = null;
@@ -68,6 +71,8 @@ class GpsTrackProvider extends ChangeNotifier {
 
     setUpMap();
   }
+
+  static final GpsTrackProvider _gpsTrackProvider = GpsTrackProvider._();
 
   // ignore: use_setters_to_change_properties, avoid_positional_boolean_parameters
   void trackScreenMounted(bool mounted) {
@@ -95,6 +100,7 @@ class GpsTrackProvider extends ChangeNotifier {
     await setInitialLocation();
 
     trackStartTime = DateTime.now().toUtc().toString().substring(0, 19);
+    trackName = 'Track $trackId';
     isUserLocationDetermined = true;
     notifyListeners();
 
@@ -115,7 +121,7 @@ class GpsTrackProvider extends ChangeNotifier {
     _timer?.cancel();
     timer?.cancel();
 
-    if (currentLocation != null && !isTrackingPaused) {
+    if (currentLocation != null && !isTrackingPaused && _location != null) {
       latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
       debugPrint('the lat lng is ${startLocation.toString()} and ${currentLocation.toString()}');
       BluetoothProvider().interactWithDevice();
@@ -383,7 +389,7 @@ class GpsTrackProvider extends ChangeNotifier {
       notifyListeners();
     }
 
-    if (reloadMap || isTrackingPaused) {
+    if (reloadMap || isTrackingPaused || _location == null) {
       return;
     }
 
@@ -395,6 +401,8 @@ class GpsTrackProvider extends ChangeNotifier {
     endTrack = true;
     trackEndTime = DateTime.now().toUtc().toString().substring(0, 19);
     streamSubscription.cancel();
+    isUserLocationDetermined = false;
+    _location = null;
     latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
     NotificationService().turnOffNotification();
     debugPrint('tracking stopped at $trackEndTime no of stops is $stopsCount');
@@ -415,6 +423,12 @@ class GpsTrackProvider extends ChangeNotifier {
     trackDuration();
   }
 
+  /// function to set [trackName]
+  void setTrackName(String name) {
+    trackName = name;
+    notifyListeners();
+  }
+
   /// function to reset the values
   void resetAllValues() {
     startTrack = false;
@@ -428,6 +442,7 @@ class GpsTrackProvider extends ChangeNotifier {
     _location = null;
     trackStartTime = ' ';
     trackEndTime = ' ';
+    trackName = ' ';
     startLocation = null;
     currentLocation = null;
     isMounted = false;
@@ -464,6 +479,18 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to know the status of [endTrack]
   bool get getEndTrackStatus => endTrack;
+
+  /// function to get [trackName]
+  String get getTrackName => trackName;
+
+  /// function to get [trackStartTime]
+  String get getTrackStartTime => trackStartTime;
+
+  /// function to get [trackEndTime]
+  String get getTrackEndTime => trackEndTime;
+
+  /// function to get [stopsCount]
+  int get getNoOfStops => stopsCount;
 
   /// function to determine whether tracking is stopped
   bool get isTrackingPaused => streamSubscription.isPaused;
