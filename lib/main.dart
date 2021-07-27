@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 import './providers/authProvider.dart';
 import './providers/tracksProvider.dart';
@@ -40,7 +41,11 @@ Future<void> main() async {
   // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
 
-  // initialising the flutter local notification plugin
+  // initialise hive db
+  final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
+
+  // initialise the flutter local notification plugin
   await NotificationService().initialiseNotificationPlugin();
 
   // Restricts rotation of screen
