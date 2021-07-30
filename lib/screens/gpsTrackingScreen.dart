@@ -13,8 +13,7 @@ import '../providers/gpsTrackProvider.dart';
 import '../widgets/gpsTrackingWidgets/detailsIcon.dart';
 import '../widgets/gpsTrackingWidgets/statusIndicatorWidget.dart';
 import '../widgets/gpsTrackingWidgets/timeWidget.dart';
-import '../widgets/statusIndicatorCard.dart';
-import 'bluetoothDevicesScreen.dart';
+import '../widgets/gpsTrackingWidgets/statusWidget.dart';
 import '../animations/blinkAnimation.dart';
 import '../widgets/gpsTrackingWidgets/editTrackName.dart';
 
@@ -73,7 +72,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
       body: showMap ? Stack(
           children: [
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled,
+              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
               child: GoogleMap(
                 myLocationButtonEnabled: false,
                 myLocationEnabled: true,
@@ -91,7 +90,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
               ),
             ),
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled,
+              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
               child: Container(
                 margin: const EdgeInsets.only(right: 5, top: 25),
                 padding: const EdgeInsets.all(10),
@@ -186,7 +185,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
               ),
             ),
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled,
+              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, deviceHeight * 0.73, 10, 25),
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -267,27 +266,9 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                 ),
               ),
             ),
-            if (locationStatusProvider.locationState == LocationStatus.disabled)
-              StatusIndicatorCard(
-                heading: 'Location turned off',
-                subHeading: 'Your location services is turned off.',
-                buttonTitle: 'Turn on location',
-                icon: const Icon(Icons.location_off, size: 50, color: kWhiteColor),
-                function: () {
-                  // TODO: turn on location
-                },
-              ),
-            if (!bluetoothProvider.isConnected())
-              StatusIndicatorCard(
-                heading: 'No OBD-II selected',
-                subHeading: 'Your device is not connected to OBD-II adapter',
-                buttonTitle: 'Select OBD-II adapter',
-                icon: const Icon(Icons.bluetooth, size: 50, color: kWhiteColor),
-                function: () {
-                  _logger.i('Going to bluetooth devices screen');
-                  Navigator.pushReplacementNamed(context, BluetoothDevicesScreen.routeName);
-                },
-              )
+            if (locationStatusProvider.locationState == LocationStatus.disabled && !bluetoothProvider.isConnected())
+              TabBarViewWidget()
+            else (locationStatusProvider.locationState == LocationStatus.disabled) ? LocationStatusWidget() : BluetoothStatusWidget()
           ],
         ) : Center(
           child: !gpsTrackProvider.getEndTrackStatus
