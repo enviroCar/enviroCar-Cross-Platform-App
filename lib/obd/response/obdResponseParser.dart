@@ -1,6 +1,11 @@
-import 'ascii_util.dart';
-import 'obdCommands.dart';
-import 'string_util.dart';
+import 'entity/lambdaProbeCurrent.dart';
+import 'entity/lambdaProbeVoltage.dart';
+import 'entity/longTermFuelTrim.dart';
+import 'entity/shortTermFuelTrim.dart';
+
+import '../ascii_util.dart';
+import '../obdCommands.dart';
+import '../string_util.dart';
 
 class ObdResponseParseService {
   List<int> buffer;
@@ -9,6 +14,18 @@ class ObdResponseParseService {
   ObdResponseParseService({
     this.buffer,
   });
+
+  double parseEngineLoad() {
+    return (buffer[2] * 100.0) / 255.0;
+  }
+
+  int parseFuelPressure() {
+    return buffer[2] * 3;
+  }
+
+  int parseIntakeMap() {
+    return buffer[2];
+  }
 
   double parseRPM() {
     stringList = intListToStringList(buffer, spaceSymbol);
@@ -28,6 +45,36 @@ class ObdResponseParseService {
   int parseTemperature() {
     stringList = intListToStringList(buffer, spaceSymbol);
     return hexadecimalToDecimal(stringList[2]) - 40;
+  }
+
+  int parseIntakeAirTemperature() {
+    return buffer[2] - 40;
+  }
+
+  double parseMaf() {
+    return (buffer[2] * 256 + buffer[3]) / 100.0;
+  }
+
+  int parseThrottlePosition() {
+    return (buffer[2] * 100) / 255 as int;
+  }
+
+  ShortTermFuelTrim parseShortTermFuelTrim() {
+    return ShortTermFuelTrim(value: (buffer[2] - 128) * (100 / 128), bank: 1);
+  }
+
+  LongTermFuelTrim parseLongTermFuelTrim() {
+    return LongTermFuelTrim(value: (buffer[2] - 128) * (100 / 128), bank: 1);
+  }
+
+  LambdaProbeVoltage parseLambdaProbeVoltage() {
+    return LambdaProbeVoltage(voltage: ((buffer[4] * 256) + buffer[5]) / 8192,
+        equivalenceRatio: ((buffer[2] * 256) + buffer[3]) / 32768);
+  }
+
+  LambdaProbeCurrent parseLambdaProbeCurrent() {
+    return LambdaProbeCurrent(current: ((buffer[4] * 256) + buffer[5]) / 256 - 128,
+        equivalenceRatio: ((buffer[2] * 256) + buffer[3]) / 32768);
   }
 
   String parseVIN() {

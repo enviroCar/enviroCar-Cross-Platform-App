@@ -1,5 +1,5 @@
 import 'package:envirocar_app_main/obd/ascii_util.dart';
-import 'package:envirocar_app_main/obd/obdResponseParser.dart';
+import '../obd/response/obdResponseParser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';

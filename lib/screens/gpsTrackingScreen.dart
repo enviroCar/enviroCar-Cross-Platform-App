@@ -72,7 +72,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
       body: showMap ? Stack(
           children: [
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled,
+              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
               child: GoogleMap(
                 myLocationButtonEnabled: false,
                 myLocationEnabled: true,
@@ -90,7 +90,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
               ),
             ),
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled,
+              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
               child: Container(
                 margin: const EdgeInsets.only(right: 5, top: 25),
                 padding: const EdgeInsets.all(10),
@@ -185,7 +185,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
               ),
             ),
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled,
+              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, deviceHeight * 0.73, 10, 25),
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -268,7 +268,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
             if (locationStatusProvider.locationState == LocationStatus.disabled && !bluetoothProvider.isConnected())
               TabBarViewWidget()
-            else (locationStatusProvider.locationState == LocationStatus.disabled) ? LocationStatusWidget() : Container()
+            else (locationStatusProvider.locationState == LocationStatus.disabled) ? LocationStatusWidget() : BluetoothStatusWidget()
           ],
         ) : Center(
           child: !gpsTrackProvider.getEndTrackStatus
