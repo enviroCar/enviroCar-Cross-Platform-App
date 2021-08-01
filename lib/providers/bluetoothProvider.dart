@@ -1,3 +1,5 @@
+import 'package:envirocar_app_main/obd/ascii_util.dart';
+import 'package:envirocar_app_main/obd/obdResponseParser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +8,6 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:toast/toast.dart';
 
 import '../constants.dart';
-import '../utils/obdResponseParser.dart';
 
 class BluetoothProvider extends ChangeNotifier {
   FlutterBlue _flutterBlue;
@@ -170,19 +171,24 @@ class BluetoothProvider extends ChangeNotifier {
         if (characteristic.uuid != null) {
           characteristics.add(characteristic);
         }
-        // if the characteristic can be read, reading the value it returns
-        if (characteristic.properties.read) {
-          addCharacteristicsToReadQueue(characteristic);
-        }
 
-        // if the characteristic have the property to write to it
-        if (characteristic.properties.write) {
-          addCharacteristicsToWriteQueue(characteristic);
-        }
+        if (service.uuid.toString().toLowerCase().substring(4,8) == "fff0") {
+          if (characteristic.uuid.toString().startsWith("0000fff1-0000-1000-8000", 0)) {
+            // if the characteristic can be read, reading the value it returns
+            if (characteristic.properties.read) {
+              addCharacteristicsToReadQueue(characteristic);
+            }
 
-        // if the characteristic have the property to notify changes in its value
-        if (characteristic.properties.notify) {
-          addCharacteristicsToNotifyQueue(characteristic);
+            // if the characteristic have the property to write to it
+            if (characteristic.properties.write) {
+              addCharacteristicsToWriteQueue(characteristic);
+            }
+
+            // if the characteristic have the property to notify changes in its value
+            if (characteristic.properties.notify) {
+              addCharacteristicsToNotifyQueue(characteristic);
+            }
+          }
         }
       }
       _servicesCharacteristics[service.uuid] = characteristics;
@@ -196,24 +202,45 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   /// function to call read, write and notify characteristics functions
-  Future interactWithDevice() async {
+  Future interactWithDevice(List<int> value) async {
     if (readCharacteristicsQueue.isNotEmpty) {
       for (final BluetoothCharacteristic readCh in readCharacteristicsQueue) {
-        await readCharacteristics(readCh);
+        final List<int> value = await readCharacteristics(readCh);
+        if (value != null) {
+          dataCallback(value);
+        }
       }
     }
 
-    // if (writeCharacteristicsQueue.isNotEmpty) {
-    //   for (final BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
-    //     await writeCharacteristics(writeCh);
-    //   }
-    // }
-    //
-    // if (notifyCharacteristicsQueue.isNotEmpty) {
-    //   for (final BluetoothCharacteristic notifyCh in notifyCharacteristicsQueue) {
-    //     await notify(notifyCh);
-    //   }
-    // }
+    if (writeCharacteristicsQueue.isNotEmpty) {
+      for (final BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
+        await writeCharacteristics(writeCh, value);
+      }
+    }
+
+    if (notifyCharacteristicsQueue.isNotEmpty) {
+      for (final BluetoothCharacteristic notifyCh in notifyCharacteristicsQueue) {
+        await notify(notifyCh);
+      }
+    }
+  }
+
+  void dataCallback(List<int> value) {
+    final List<int> data = [];
+    for (var i = 0; i < value.length; i++) {
+      String dataString = value[i].toRadixString(16);
+      if (dataString.length < 2) {
+        dataString = "0$dataString";
+      }
+      dataString = "0x$dataString";
+      data.add(hexadecimalToDecimal(dataString));
+    }
+
+    // ObdResponseParseService(buffer: data).parseSpeed();
+    // ObdResponseParseService(buffer: data).parseRPM();
+    // ObdResponseParseService(buffer: data).parseFuelLevel();
+    // ObdResponseParseService(buffer: data).parseTemperature();
+    // ObdResponseParseService(buffer: data).parseVIN();
   }
 
   void addCharacteristicsToReadQueue(BluetoothCharacteristic characteristic) {
@@ -229,25 +256,24 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   /// function to read data of a particular [characteristic]
-  Future readCharacteristics(BluetoothCharacteristic characteristic) async {
+  Future<List<int>> readCharacteristics(BluetoothCharacteristic characteristic) async {
     final List<int> readValue = await characteristic.read().onError((error, stackTrace) {
       debugPrint('error is ${error.toString()}');
       return null;
     });
+
     if (readValue != null) {
-      ObdResponseParseService(buffer: readValue).parseSpeed();
-      ObdResponseParseService(buffer: readValue).parseRPM();
-      ObdResponseParseService(buffer: readValue).parseFuelLevel();
-      ObdResponseParseService(buffer: readValue).parseTemperature();
-      // ObdResponseParseService(buffer: readValue).parseVIN();
+      return readValue;
       // debugPrint('read characteristic ${characteristic.uuid.toString()} its value is ${readValue.toString()}');
     }
+
+    return null;
   }
 
   /// function to write data to a [characteristic]
-  Future writeCharacteristics(BluetoothCharacteristic characteristic) async {
+  Future writeCharacteristics(BluetoothCharacteristic characteristic, List<int> value) async {
     // write characteristics is a way to send data to the bluetooth device
-    final String response = await characteristic.write([0x12, 0x34]).onError((error, stackTrace) {
+    final String response = await characteristic.write(value).onError((error, stackTrace) {
       debugPrint('error is ${error.toString()}');
     });
     debugPrint('response after writing the characteristics ${characteristic.uuid.toString()} is $response');
@@ -261,7 +287,7 @@ class BluetoothProvider extends ChangeNotifier {
       return false;
     });
     characteristic.value.listen((value) {
-      debugPrint('characteristics (${characteristic.uuid.toString()}) value updated,  its value is ${value.toString()}');
+      debugPrint('characteristics (${characteristic.uuid.toString()}) value updated, its value is ${value.toString()}');
     });
   }
 

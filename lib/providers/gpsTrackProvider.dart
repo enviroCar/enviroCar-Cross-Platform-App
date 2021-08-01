@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart';
@@ -33,6 +34,7 @@ class GpsTrackProvider extends ChangeNotifier {
   bool startTrack = true, endTrack = false;
   String durationOfTrack = '0:00:00';
   int time, stopsCount;
+  double distance;
 
   String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";
 
@@ -95,6 +97,7 @@ class GpsTrackProvider extends ChangeNotifier {
 
     time = 0;
     stopsCount = 0;
+    distance = 0;
 
     await setTrackIcon();
     await setInitialLocation();
@@ -124,7 +127,7 @@ class GpsTrackProvider extends ChangeNotifier {
     if (currentLocation != null && !isTrackingPaused && _location != null) {
       latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
       debugPrint('the lat lng is ${startLocation.toString()} and ${currentLocation.toString()}');
-      BluetoothProvider().interactWithDevice();
+      BluetoothProvider().interactWithDevice([0x22]); // todo:
     }
 
     if (reloadMap || isTrackingPaused) {
@@ -278,6 +281,18 @@ class GpsTrackProvider extends ChangeNotifier {
     );
 
     _circles.add(currentLocationCircle);
+
+    // determine the distance between start position and current position
+    distance = GeolocatorPlatform.instance.distanceBetween(
+        startLocation.latitude,
+        startLocation.longitude,
+        currentLocation.latitude,
+        currentLocation.longitude
+    );
+
+    distance /= 1000; // distance in km
+
+    notifyListeners();
 
   }
 
@@ -491,6 +506,9 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to get [stopsCount]
   int get getNoOfStops => stopsCount;
+
+  /// function to get [distance] between [startLocation] and [currentLocation]
+  double get getDistance => distance;
 
   /// function to determine whether tracking is stopped
   bool get isTrackingPaused => streamSubscription.isPaused;

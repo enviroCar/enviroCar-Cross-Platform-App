@@ -28,8 +28,14 @@ class _EditTrackNameState extends State<EditTrackName> {
     ),
   );
 
-  bool useDefaultTrackName = false;
+  bool useDefaultTrackName = true;
   String customTrackName = '';
+
+  @override
+  void initState() {
+    _textEditingController.text = widget.gpsTrackProvider.getTrackName;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -61,7 +67,6 @@ class _EditTrackNameState extends State<EditTrackName> {
                         controller: _textEditingController,
                         decoration: InputDecoration(
                           hintText: 'Track Name',
-                          // labelText: 'Track Name',
                           hintStyle: TextStyle(
                               color: kPrimaryColor.withOpacity(0.6),
                               fontSize: 15
@@ -178,9 +183,9 @@ class _EditTrackNameState extends State<EditTrackName> {
                             title: 'speed',
                             subTitle: '49.3 km/hr', // todo: change hardcoded value
                           ),
-                          const TrackDetailsTile(
+                          TrackDetailsTile(
                             title: 'distance',
-                            subTitle: '1 km', // todo: change hardcoded value
+                            subTitle: '${widget.gpsTrackProvider.getDistance.toStringAsFixed(2)} km',
                           ),
                           TrackDetailsTile(
                               title: 'Duration',

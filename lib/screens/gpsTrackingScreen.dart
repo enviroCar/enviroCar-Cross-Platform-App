@@ -72,7 +72,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
       body: showMap ? Stack(
           children: [
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+              visible: locationStatusProvider.locationState == LocationStatus.enabled,
               child: GoogleMap(
                 myLocationButtonEnabled: false,
                 myLocationEnabled: true,
@@ -90,7 +90,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
               ),
             ),
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+              visible: locationStatusProvider.locationState == LocationStatus.enabled,
               child: Container(
                 margin: const EdgeInsets.only(right: 5, top: 25),
                 padding: const EdgeInsets.all(10),
@@ -185,7 +185,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
               ),
             ),
             Visibility(
-              visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+              visible: locationStatusProvider.locationState == LocationStatus.enabled,
               child: Container(
                 margin: EdgeInsets.fromLTRB(10, deviceHeight * 0.73, 10, 25),
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -244,18 +244,18 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                         ),
                         const Spacer(),
                         Column(
-                          children: const [
-                            DetailsIcon(
+                          children: [
+                            const DetailsIcon(
                               title: 'Avg speed',
                               data: '40 km/h',
                               iconData: Icons.speed,
                             ),
-                            SizedBox(
+                            const SizedBox(
                               height: 7,
                             ),
                             DetailsIcon(
                               title: 'Distance',
-                              data: '1 km',
+                              data: gpsTrackProvider.getDistance.toStringAsFixed(2),
                               iconData: Icons.trending_up_rounded,
                             ),
                           ],
@@ -268,7 +268,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
             if (locationStatusProvider.locationState == LocationStatus.disabled && !bluetoothProvider.isConnected())
               TabBarViewWidget()
-            else (locationStatusProvider.locationState == LocationStatus.disabled) ? LocationStatusWidget() : BluetoothStatusWidget()
+            else (locationStatusProvider.locationState == LocationStatus.disabled) ? LocationStatusWidget() : Container()
           ],
         ) : Center(
           child: !gpsTrackProvider.getEndTrackStatus
