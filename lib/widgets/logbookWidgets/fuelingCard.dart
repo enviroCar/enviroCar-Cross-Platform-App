@@ -59,7 +59,7 @@ class FuelingCard extends StatelessWidget {
 
               // Total Price
               Text(
-                '\$${fueling.totalPrice}',
+                '\$${fueling.cost}',
                 style: const TextStyle(
                   color: kSpringColor,
                   fontSize: 20,
@@ -74,8 +74,8 @@ class FuelingCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${fueling.mileage} km - ${fueling.fueledVolume} L'),
-              Text('${fueling.pricePerLitre} \$/L'),
+              Text('${fueling.mileage} km - ${fueling.volume} L'),
+              Text('${fueling.cost / fueling.volume} \$/L'),
             ],
           ),
           const SizedBox(
@@ -128,7 +128,7 @@ class FuelingCard extends StatelessWidget {
             )
           else
             Container(),
-          if (fueling.missedPreviousFueling)
+          if (fueling.missedFuelStop)
             Row(
               children: const [
                 Icon(Icons.check),

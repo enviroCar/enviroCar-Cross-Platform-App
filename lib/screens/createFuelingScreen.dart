@@ -51,15 +51,12 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
     if (_formKey.currentState.validate()) {
       final Fueling fueling = Fueling(
-        // TODO: generate uuid for id
-        id: '32',
         car: selectedCar,
-        mileage: mileageController.text,
-        fueledVolume: fueledVolumeController.text,
-        totalPrice: totalPriceController.text,
-        pricePerLitre: pricePerLitreController.text,
+        mileage: int.parse(mileageController.text),
+        volume: int.parse(fueledVolumeController.text),
+        cost: int.parse(totalPriceController.text),
         partialFueling: partialFueling,
-        missedPreviousFueling: missedPreviousFueling,
+        missedFuelStop: missedPreviousFueling,
         comment: commentController.text,
       );
 
