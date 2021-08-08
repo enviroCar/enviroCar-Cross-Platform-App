@@ -3,7 +3,6 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 import './carsTable.dart';
-import 'tracksTable.dart';
 
 class DatabaseHelper {
   static Database _database;
@@ -39,7 +38,6 @@ class DatabaseHelper {
   // creating the database and the tables if it is the first time
   Future<void> createDatabase(Database db, int version) async {
     await db.execute(CarsTable.carsTableQuery);
-    await db.execute(TracksTable.localTrackCreateTableQuery);
   }
 
   // method to insert values in the database

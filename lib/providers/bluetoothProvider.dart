@@ -1,5 +1,3 @@
-import 'package:envirocar_app_main/obd/ascii_util.dart';
-import '../obd/response/obdResponseParser.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +6,8 @@ import 'package:flutter_blue/flutter_blue.dart';
 import 'package:toast/toast.dart';
 
 import '../constants.dart';
+import '../obd/ascii_util.dart';
+import '../obd/response/obdResponseParser.dart'; // ignore: unused_import todo:
 
 class BluetoothProvider extends ChangeNotifier {
   FlutterBlue _flutterBlue;
@@ -203,20 +203,20 @@ class BluetoothProvider extends ChangeNotifier {
 
   /// function to call read, write and notify characteristics functions
   Future interactWithDevice(List<int> value) async {
-    if (readCharacteristicsQueue.isNotEmpty) {
-      for (final BluetoothCharacteristic readCh in readCharacteristicsQueue) {
-        final List<int> value = await readCharacteristics(readCh);
-        if (value != null) {
-          dataCallback(value);
-        }
-      }
-    }
-
-    if (writeCharacteristicsQueue.isNotEmpty) {
-      for (final BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
-        await writeCharacteristics(writeCh, value);
-      }
-    }
+    // if (readCharacteristicsQueue.isNotEmpty) {
+    //   for (final BluetoothCharacteristic readCh in readCharacteristicsQueue) {
+    //     final List<int> value = await readCharacteristics(readCh);
+    //     if (value != null) {
+    //       dataCallback(value);
+    //     }
+    //   }
+    // }
+    //
+    // if (writeCharacteristicsQueue.isNotEmpty) {
+    //   for (final BluetoothCharacteristic writeCh in writeCharacteristicsQueue) {
+    //     await writeCharacteristics(writeCh, value);
+    //   }
+    // }
 
     if (notifyCharacteristicsQueue.isNotEmpty) {
       for (final BluetoothCharacteristic notifyCh in notifyCharacteristicsQueue) {
@@ -263,8 +263,8 @@ class BluetoothProvider extends ChangeNotifier {
     });
 
     if (readValue != null) {
+      debugPrint('read characteristic ${characteristic.uuid.toString()} its value is ${readValue.toString()}');
       return readValue;
-      // debugPrint('read characteristic ${characteristic.uuid.toString()} its value is ${readValue.toString()}');
     }
 
     return null;

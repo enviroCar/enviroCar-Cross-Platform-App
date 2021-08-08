@@ -1,19 +1,36 @@
 import 'package:flutter_blue/flutter_blue.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:hive/hive.dart';
 
+import '../constants.dart';
+part 'localTrackModel.g.dart';
+
+@HiveType(typeId: kLocalTrackTypeId)
 class LocalTrackModel {
-  String trackId;
-  String trackName;
-  DateTime modifiedTime;
-  DateTime endTime;
-  Duration duration;
-  double distance;
-  double speed;
-  String selectedCarId; // or Car selectedCar
-  bool isTrackUploaded;
-  int stops;
-  BluetoothDevice bluetoothDevice;
-  Map<LatLng, Map<String, dynamic>> dataAtCoordinates;
+  @HiveField(0)
+  final String trackId;
+  @HiveField(1)
+  final String trackName;
+  @HiveField(2)
+  final DateTime modifiedTime;
+  @HiveField(3)
+  final DateTime endTime;
+  @HiveField(4)
+  final String duration;
+  @HiveField(5)
+  final double distance;
+  @HiveField(6)
+  final double speed;
+  @HiveField(7)
+  final String selectedCarId; // or Car selectedCar
+  @HiveField(8)
+  final bool isTrackUploaded;
+  @HiveField(9)
+  final int stops;
+  @HiveField(10)
+  final BluetoothDevice bluetoothDevice;
+  @HiveField(11)
+  final Map<LatLng, Map<String, dynamic>> properties;
 
   LocalTrackModel({
     this.trackId,
@@ -27,7 +44,7 @@ class LocalTrackModel {
     this.isTrackUploaded,
     this.stops,
     this.bluetoothDevice,
-    this.dataAtCoordinates
+    this.properties
   });
 
   @override
@@ -47,7 +64,7 @@ class LocalTrackModel {
         isTrackUploaded == other.isTrackUploaded &&
         stops == other.stops &&
         bluetoothDevice == other.bluetoothDevice &&
-        dataAtCoordinates == other.dataAtCoordinates;
+        properties == other.properties;
   }
 
   @override
@@ -63,7 +80,22 @@ class LocalTrackModel {
         isTrackUploaded.hashCode ^
         stops.hashCode ^
         bluetoothDevice.hashCode ^
-        dataAtCoordinates.hashCode;
+        properties.hashCode;
   }
+
+  /// function to return [trackId] of the [track]
+  String get getTrackId => trackId;
+
+  /// function to return [distance] covered during the [track]
+  double get getDistance => distance;
+
+  /// function to return [startTime] of the [track]
+  DateTime get getStartTime => modifiedTime;
+
+  /// function to return [endTime] of the [track]
+  DateTime get getEndTime => endTime;
+
+  /// function to return selected [carId]
+  String get getCarId => selectedCarId;
 
 }

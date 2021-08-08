@@ -40,3 +40,6 @@ const Color kBlueColor = Color.fromARGB(255, 40, 122, 198);
 // PlayStore URL for 'Rate Us' feature
 const String playstoreUrl =
     'https://play.google.com/store/apps/details?id=org.envirocar.app';
+
+const int kLocalTrackTypeId = 2;
+const String localTracksTableName = 'localTracks';

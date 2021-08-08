@@ -9,6 +9,7 @@ import 'package:location/location.dart';
 
 import '../constants.dart';
 import 'bluetoothProvider.dart';
+import '../models/localTrackModel.dart';
 import '../screens/gpsTrackingScreen.dart';
 import '../services/notification_service.dart';
 
@@ -35,6 +36,7 @@ class GpsTrackProvider extends ChangeNotifier {
   String durationOfTrack = '0:00:00';
   int time, stopsCount;
   double distance;
+  Duration duration;
 
   String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";
 
@@ -94,6 +96,7 @@ class GpsTrackProvider extends ChangeNotifier {
     durationOfTrack = '0:00:00';
     startTrack = true;
     endTrack = false;
+    duration = const Duration();
 
     time = 0;
     stopsCount = 0;
@@ -400,6 +403,7 @@ class GpsTrackProvider extends ChangeNotifier {
       final int seconds = (time - 1) % 60;
       final double minutes = ((time - 1) / 60) % 60;
       final double hours = time / 3600;
+      duration = Duration(hours: hours.toInt(), minutes: minutes.toInt(), seconds: seconds);
       durationOfTrack = '${hours.toInt()}:${minutes < 10 ? '0${minutes.toInt()}' : minutes.toInt()}:${seconds < 10 ? '0$seconds' : seconds}';
       notifyListeners();
     }
@@ -444,6 +448,37 @@ class GpsTrackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// function to get [LocalTrack] object
+  LocalTrackModel getLocalTrack() {
+    final LocalTrackModel trackModel = LocalTrackModel(
+      trackId: trackId,
+      trackName: trackName,
+      modifiedTime: formatDate(trackStartTime),
+      endTime: formatDate(trackEndTime),
+      duration: getTrackDuration,
+      distance: getDistance,
+      speed: 40,
+      selectedCarId: '1', // todo: change the hardcoded value
+      isTrackUploaded: false,
+      stops: getNoOfStops,
+      bluetoothDevice: null, // todo: change this to selected bluetooth device
+      properties: {}
+    );
+    return trackModel;
+  }
+
+  DateTime formatDate(String date) {
+    final DateTime dateTime = DateTime(
+      int.parse(date.substring(0, 4)),    // year
+      int.parse(date.substring(5, 7)),    // month
+      int.parse(date.substring(8, 10)),   // day
+      int.parse(date.substring(11, 13)),  // hour
+      int.parse(date.substring(14, 16)),  // minute
+      int.parse(date.substring(17, 19)),  // second
+    );
+    return dateTime;
+  }
+
   /// function to reset the values
   void resetAllValues() {
     startTrack = false;
@@ -462,6 +497,7 @@ class GpsTrackProvider extends ChangeNotifier {
     currentLocation = null;
     isMounted = false;
     reloadMap = true;
+    duration = null;
 
     cameraPosition = CameraPosition(
         target: const LatLng(42.747932,-71.167889),
@@ -509,6 +545,9 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to get [distance] between [startLocation] and [currentLocation]
   double get getDistance => distance;
+
+  /// function to get [duration] of the [track]
+  Duration get getDuration => duration;
 
   /// function to determine whether tracking is stopped
   bool get isTrackingPaused => streamSubscription.isPaused;

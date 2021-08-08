@@ -255,7 +255,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                             ),
                             DetailsIcon(
                               title: 'Distance',
-                              data: gpsTrackProvider.getDistance.toStringAsFixed(2),
+                              data: '${gpsTrackProvider.getDistance.toStringAsFixed(2)} km',
                               iconData: Icons.trending_up_rounded,
                             ),
                           ],

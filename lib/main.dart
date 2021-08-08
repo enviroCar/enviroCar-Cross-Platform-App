@@ -32,6 +32,8 @@ import './screens/logBookScreen.dart';
 import './screens/reportIssueScreen.dart';
 import 'screens/helpScreen.dart';
 import 'providers/gpsTrackProvider.dart';
+import 'models/localTrackModel.dart';
+import 'providers/localTracksProvider.dart';
 import 'services/notification_service.dart';
 
 Future<void> main() async {
@@ -44,6 +46,8 @@ Future<void> main() async {
   // initialise hive db
   final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter<LocalTrackModel>(LocalTrackModelAdapter());
+  await Hive.openBox<LocalTrackModel>(localTracksTableName);
 
   // initialise the flutter local notification plugin
   await NotificationService().initialiseNotificationPlugin();
@@ -108,7 +112,11 @@ class MyApp extends StatelessWidget {
 
         ChangeNotifierProvider(
           create: (context) => GpsTrackProvider(),
-        )
+        ),
+
+        ChangeNotifierProvider(
+          create: (context) => LocalTracksProvider(),
+        ),
       ],
       child: MaterialApp(
         locale: DevicePreview.locale(context),

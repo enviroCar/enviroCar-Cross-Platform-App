@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
+import 'trackDetailsTile.dart';
 import '../../constants.dart';
 import '../../globals.dart';
+import '../../models/localTrackModel.dart';
+import '../../providers/localTracksProvider.dart';
 import '../../providers/gpsTrackProvider.dart';
-import 'trackDetailsTile.dart';
 import '../button.dart';
 
 class EditTrackName extends StatefulWidget {
@@ -209,6 +212,9 @@ class _EditTrackNameState extends State<EditTrackName> {
                           onTap: () {
                             if (_key.currentState.validate()) {
                               widget.gpsTrackProvider.setTrackName(customTrackName);
+                              final LocalTrackModel track = widget.gpsTrackProvider.getLocalTrack();
+                              final LocalTracksProvider localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
+                              localTracksProvider.addLocalTrack(track);
                               Navigator.of(context).pop();
                             }
                           }
