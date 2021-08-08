@@ -59,8 +59,10 @@ class LocalTracksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteLocalTrack(Track track) {
+  /// function to delete [track]
+  void deleteLocalTrack(Track track, int index) {
     _tracksList.removeWhere((Track trackItem) => track.id == trackItem.id);
+    LocalTracks.deleteTrack(index);
     notifyListeners();
   }
 

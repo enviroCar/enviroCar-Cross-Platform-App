@@ -43,6 +43,9 @@ Future<void> main() async {
   // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
 
+  // instance of scaffold messenger state global key
+  scaffoldMessengerState = GlobalKey<ScaffoldMessengerState>();
+
   // initialise hive db
   final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);

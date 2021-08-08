@@ -22,4 +22,10 @@ class LocalTracks {
     return list;
   }
 
+  /// function to delete track
+  static void deleteTrack(int index) {
+    final tracksBox = Hive.box<LocalTrackModel>(localTracksTableName);
+    tracksBox.deleteAt(index);
+  }
+
 }

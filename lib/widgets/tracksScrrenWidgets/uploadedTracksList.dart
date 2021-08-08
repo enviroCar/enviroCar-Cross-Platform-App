@@ -59,7 +59,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
             itemBuilder: (_, i) {
               return Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: TrackCard(
+                child: UploadedTrackCard(
                   track: tracksList[i],
                 ),
               );

@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 
 import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 import '../../globals.dart';
-import '../../models/track.dart';
 import '../../constants.dart';
+import '../../models/track.dart';
+import '../../utils/snackBar.dart';
 import '../../screens/trackDetailsScreen.dart';
+import '../../providers/localTracksProvider.dart';
 
-class UploadedTrackCard extends StatelessWidget {
+class LocalTrackCard extends StatelessWidget {
   final Logger _logger = Logger(
     printer: PrettyPrinter(
       printTime: true,
@@ -15,8 +18,9 @@ class UploadedTrackCard extends StatelessWidget {
   );
 
   final Track track;
+  final int index;
 
-  UploadedTrackCard({@required this.track});
+  LocalTrackCard({@required this.track, @required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -71,15 +75,24 @@ class UploadedTrackCard extends StatelessWidget {
                   padding: const EdgeInsets.all(15),
                   child: PopupMenuButton(
                     enabled: true,
-                    onSelected: (int index) {
-                      if (index == 0) {
+                    onSelected: (int menuIndex) {
+                      if (menuIndex == 0) {
                         _logger.i('Going to track details screen');
                         Navigator.of(context).pushNamed(
                           TrackDetailsScreen.routeName,
                           arguments: track,
                         );
                       }
-                      else if (index == 1) {
+                      else if (menuIndex == 1) {
+                        final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
+                        localTracksProvider.deleteLocalTrack(track, index);
+                        displaySnackBar(track.id);
+                      }
+                      else if (menuIndex == 2) {
+                        // TODO: function to upload track as open data
+                        debugPrint('upload as open data tapped');
+                      }
+                      else if (menuIndex == 3) {
                         // TODO: function to export track
                         debugPrint('export track tapped');
                       }
@@ -92,7 +105,19 @@ class UploadedTrackCard extends StatelessWidget {
                         ),
                       ),
                       const PopupMenuItem(
+                        value: 1,
+                        child: Text(
+                          'Delete Track',
+                        ),
+                      ),
+                      const PopupMenuItem(
                         value: 2,
+                        child: Text(
+                          'Upload Track as Open Data',
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 3,
                         child: Text(
                           'Export Track',
                         ),

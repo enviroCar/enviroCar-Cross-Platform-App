@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/widgets/tracksScrrenWidgets/localTrackCard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,8 +25,9 @@ class LocalTracksList extends StatelessWidget {
             itemBuilder: (context, index) {
               return Padding(
                 padding: const EdgeInsets.all(15.0),
-                child: TrackCard(
+                child: LocalTrackCard(
                   track: trackList[index],
+                  index: index,
                 ),
               );
             });
