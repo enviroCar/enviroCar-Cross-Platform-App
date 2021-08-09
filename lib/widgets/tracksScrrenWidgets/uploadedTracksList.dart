@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../constants.dart';
 import '../../models/track.dart';
 import '../../exceptionHandling/result.dart';
 import '../../providers/authProvider.dart';
 import '../../providers/tracksProvider.dart';
 import '../../services/tracksServices.dart';
 import '../../widgets/tracksScrrenWidgets/trackCard.dart';
+import 'noLocalTracks.dart';
 
 class UploadedTracksList extends StatefulWidget {
   @override
@@ -36,7 +38,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
               if (result.status == ResultStatus.error) {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    backgroundColor: Colors.red,
+                    backgroundColor: kErrorColor,
                     content: Text(
                       result.exception.getErrorMessage(),
                     ),
@@ -48,8 +50,10 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
 
           return const CircularProgressIndicator();
         } else if (tracksList.isEmpty) {
-          return const Center(
-            child: Text('No Tracks'),
+          return const NoLocalTracks(
+            title: 'no tracks uploaded',
+            subTitle: 'You have 0 uploaded tracks',
+            iconData: Icons.location_history_rounded,
           );
         } else {
           return ListView.builder(
