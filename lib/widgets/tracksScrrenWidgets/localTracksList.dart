@@ -1,4 +1,4 @@
-import 'package:envirocar_app_main/widgets/tracksScrrenWidgets/localTrackCard.dart';
+import 'localTrackCard.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

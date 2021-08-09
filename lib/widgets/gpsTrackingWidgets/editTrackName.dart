@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/providers/carsProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
@@ -32,11 +33,14 @@ class _EditTrackNameState extends State<EditTrackName> {
   );
 
   bool useDefaultTrackName = true;
-  String customTrackName = '';
+  String customTrackName;
 
   @override
   void initState() {
     _textEditingController.text = widget.gpsTrackProvider.getTrackName;
+    setState(() {
+      customTrackName = _textEditingController.text;
+    });
     super.initState();
   }
 
@@ -133,8 +137,8 @@ class _EditTrackNameState extends State<EditTrackName> {
                                 }
                                 else {
                                   setState(() {
-                                    _textEditingController.text = '';
                                     customTrackName = _textEditingController.text;
+                                    _textEditingController.text = '';
                                   });
                                 }
                               });
@@ -212,7 +216,8 @@ class _EditTrackNameState extends State<EditTrackName> {
                           onTap: () {
                             if (_key.currentState.validate()) {
                               widget.gpsTrackProvider.setTrackName(customTrackName);
-                              final LocalTrackModel track = widget.gpsTrackProvider.getLocalTrack();
+                              final CarsProvider carsProvider = Provider.of<CarsProvider>(context, listen: false);
+                              final LocalTrackModel track = widget.gpsTrackProvider.getLocalTrack(sensorId: carsProvider.getSelectedCar.id.toString());
                               final LocalTracksProvider localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
                               localTracksProvider.addLocalTrack(track);
                               Navigator.of(context).pop();

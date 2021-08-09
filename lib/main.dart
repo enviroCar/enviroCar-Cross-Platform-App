@@ -34,6 +34,7 @@ import 'screens/helpScreen.dart';
 import 'providers/gpsTrackProvider.dart';
 import 'models/localTrackModel.dart';
 import 'providers/localTracksProvider.dart';
+import 'models/pointProperties.dart';
 import 'services/notification_service.dart';
 
 Future<void> main() async {
@@ -50,6 +51,7 @@ Future<void> main() async {
   final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
   Hive.init(appDocumentDirectory.path);
   Hive.registerAdapter<LocalTrackModel>(LocalTrackModelAdapter());
+  Hive.registerAdapter<PointProperties>(PointPropertiesAdapter());
   await Hive.openBox<LocalTrackModel>(localTracksTableName);
 
   // initialise the flutter local notification plugin

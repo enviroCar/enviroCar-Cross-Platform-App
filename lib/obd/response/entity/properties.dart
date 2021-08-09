@@ -17,7 +17,6 @@ class Properties {
   LambdaProbeCurrent lambdaProbeCurrent;
   LambdaProbeVoltage lambdaProbeVoltage;
 
-
   /// function to set [engineLoad]
   set engineLoadResponse(double value) {
     engineLoad = value;

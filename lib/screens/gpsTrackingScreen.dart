@@ -268,7 +268,10 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
             if (locationStatusProvider.locationState == LocationStatus.disabled && !bluetoothProvider.isConnected())
               TabBarViewWidget()
-            else (locationStatusProvider.locationState == LocationStatus.disabled) ? LocationStatusWidget() : BluetoothStatusWidget()
+            else if (locationStatusProvider.locationState == LocationStatus.disabled)
+              LocationStatusWidget()
+            else if (!bluetoothProvider.isConnected())
+              BluetoothStatusWidget()
           ],
         ) : Center(
           child: !gpsTrackProvider.getEndTrackStatus

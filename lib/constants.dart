@@ -42,4 +42,5 @@ const String playstoreUrl =
     'https://play.google.com/store/apps/details?id=org.envirocar.app';
 
 const int kLocalTrackTypeId = 2;
+const int kPointPropertiesId = 3;
 const String localTracksTableName = 'localTracks';

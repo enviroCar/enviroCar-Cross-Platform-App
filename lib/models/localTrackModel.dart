@@ -1,8 +1,8 @@
-import 'package:flutter_blue/flutter_blue.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:hive/hive.dart';
 
 import '../constants.dart';
+import 'pointProperties.dart';
+
 part 'localTrackModel.g.dart';
 
 @HiveType(typeId: kLocalTrackTypeId)
@@ -22,15 +22,15 @@ class LocalTrackModel {
   @HiveField(6)
   final double speed;
   @HiveField(7)
-  final String selectedCarId; // or Car selectedCar
+  final String selectedCarId;
   @HiveField(8)
   final bool isTrackUploaded;
   @HiveField(9)
   final int stops;
   @HiveField(10)
-  final BluetoothDevice bluetoothDevice;
+  final String bluetoothDevice;
   @HiveField(11)
-  final Map<LatLng, Map<String, dynamic>> properties;
+  final Map<int, PointProperties> properties;
 
   LocalTrackModel({
     this.trackId,
@@ -97,5 +97,11 @@ class LocalTrackModel {
 
   /// function to return selected [carId]
   String get getCarId => selectedCarId;
+
+  /// function to get [trackName] of the [track]
+  String get getTrackName => trackName;
+
+  /// function to return [properties] of the [track]
+  Map<int, PointProperties> get getProperties => properties;
 
 }

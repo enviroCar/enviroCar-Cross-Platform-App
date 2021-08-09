@@ -28,4 +28,10 @@ class LocalTracks {
     tracksBox.deleteAt(index);
   }
 
+  /// function to get [track] at index [index]
+  static LocalTrackModel getTrackAtIndex(int index) {
+    final tracksBox = Hive.box<LocalTrackModel>(localTracksTableName);
+    return tracksBox.getAt(index);
+  }
+
 }

@@ -7,7 +7,7 @@ import 'package:toast/toast.dart';
 
 import '../constants.dart';
 import '../obd/ascii_util.dart';
-import '../obd/response/obdResponseParser.dart'; // ignore: unused_import todo:
+import '../obd/response/obdResponseParser.dart';
 
 class BluetoothProvider extends ChangeNotifier {
   FlutterBlue _flutterBlue;
@@ -206,7 +206,7 @@ class BluetoothProvider extends ChangeNotifier {
     // if (readCharacteristicsQueue.isNotEmpty) {
     //   for (final BluetoothCharacteristic readCh in readCharacteristicsQueue) {
     //     final List<int> value = await readCharacteristics(readCh);
-    //     if (value != null) {
+    //     if (value.isNotEmpty) {
     //       dataCallback(value);
     //     }
     //   }

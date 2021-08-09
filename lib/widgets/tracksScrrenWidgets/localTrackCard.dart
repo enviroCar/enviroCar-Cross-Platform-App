@@ -86,11 +86,11 @@ class LocalTrackCard extends StatelessWidget {
                       else if (menuIndex == 1) {
                         final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
                         localTracksProvider.deleteLocalTrack(track, index);
-                        displaySnackBar(track.id);
+                        displaySnackBar('Track ${track.id} deleted successfully!');
                       }
                       else if (menuIndex == 2) {
-                        // TODO: function to upload track as open data
-                        debugPrint('upload as open data tapped');
+                        final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
+                        localTracksProvider.uploadTrack(context, index);
                       }
                       else if (menuIndex == 3) {
                         // TODO: function to export track

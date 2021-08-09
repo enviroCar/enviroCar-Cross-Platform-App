@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../globals.dart';
 
-void displaySnackBar(String trackId) {
+void displaySnackBar(String message) {
   final snackBar = SnackBar(
     content: Text(
-      'Track $trackId deleted successfully!',
+      message,
       textAlign: TextAlign.center,
       style: const TextStyle(
           fontSize: 15
