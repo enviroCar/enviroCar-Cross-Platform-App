@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../database/carsTable.dart';
 import '../models/car.dart';
 import '../models/fueling.dart';
 import '../providers/carsProvider.dart';
@@ -13,6 +12,11 @@ import '../widgets/button.dart';
 import '../widgets/dividerLine.dart';
 import '../widgets/titleWidget.dart';
 import '../constants.dart';
+import '../hiveDB/fuelingsCollection.dart';
+import '../providers/authProvider.dart';
+import '../exceptionHandling/result.dart';
+import '../hiveDB/sensorsCollection.dart';
+import '../services/fuelingServices.dart';
 
 // Screen to create fueling logs
 class CreateFuelingScreen extends StatefulWidget {
@@ -46,28 +50,82 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
   // Triggered when 'Add' button is pressed after filling the form
   // Creates the fueling object and stores it in Provider
-  void addFueling() {
+  Future<void> createFueling() async {
     _logger.i('addFueling called');
 
     if (_formKey.currentState.validate()) {
+      final UnitValue mileage = UnitValue(
+        value: double.parse(mileageController.text),
+        unit: 'KILOMETRES',
+      );
+
+      final UnitValue volume = UnitValue(
+        value: double.parse(fueledVolumeController.text),
+        unit: 'LITRES',
+      );
+
+      final UnitValue cost = UnitValue(
+        value: double.parse(totalPriceController.text),
+        unit: 'EURO',
+      );
+
       final Fueling fueling = Fueling(
         car: selectedCar,
-        mileage: int.parse(mileageController.text),
-        volume: int.parse(fueledVolumeController.text),
-        cost: int.parse(totalPriceController.text),
+        fuelType: selectedCar.properties.fuelType,
+        time: '${DateTime.now().toIso8601String().substring(0, 19)}Z',
+        mileage: mileage,
+        volume: volume,
+        cost: cost,
         partialFueling: partialFueling,
         missedFuelStop: missedPreviousFueling,
         comment: commentController.text,
       );
 
-      // Provider instance to add the new fueling log to the list
-      final FuelingsProvider fuelingsProvider =
-          Provider.of<FuelingsProvider>(context, listen: false);
+      // upload to server if internet is available
+      await FuelingServices()
+          .uploadFuelingToServer(context: context, fueling: fueling)
+          .then(
+        (Result result) {
+          if (result.status == ResultStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(result.exception.getErrorMessage()),
+              ),
+            );
+          }
 
-      fuelingsProvider.addFueling(fueling);
+          // if uploading to server is successful
+          else {
+            // get the ID from headers
+            final String fuelingID = result.value as String;
 
-      // Navigates user to the Log book screen after fueling log is added
-      Navigator.of(context).pop();
+            // set the ID fetched to the car object
+            fueling.id = fuelingID;
+
+            // set username in fueling object to identify the creator when
+            // fetching from Hive
+            final AuthProvider authProvider =
+                Provider.of<AuthProvider>(context, listen: false);
+            fueling.username = authProvider.getUser.getUsername;
+
+            // set Car object in the fueling for Hive
+            final Map<String, dynamic> fuelingMap = fueling.toJson();
+            fuelingMap['car'] = selectedCar.toJson();
+
+            // store the data in local db
+            FuelingsCollection().addFuelingToHive(fueling: fuelingMap);
+
+            // set the fueling in the provider to show on the fuelings screen
+            final FuelingsProvider fuelingsProvider =
+                Provider.of<FuelingsProvider>(context, listen: false);
+            fuelingsProvider.addFueling(fueling);
+
+            // close the screen and go back to prev screen
+            Navigator.pop(context);
+          }
+        },
+      );
     }
   }
 
@@ -122,9 +180,11 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
                   // if cars list is null then fetch from database
                   if (carsList == null) {
-                    CarsTable().getCarsFromDatabase(carsProvider: carsProvider);
+                    CarsCollection().getCarsFromHive(context: context);
                     return const Text('You have no cars');
-                  } else if (carsList.isEmpty) {
+                  }
+                  // when data has been fetched but it's empty
+                  else if (carsList.isEmpty) {
                     return const Text('You have no cars');
                   } else {
                     // Drop Down button to select Car
@@ -153,7 +213,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                           return DropdownMenuItem<Car>(
                             value: carsList[index],
                             child: Text(
-                                '${carsList[index].manufacturer} ${carsList[index].model}'),
+                                '${carsList[index].properties.manufacturer} ${carsList[index].properties.model}'),
                           );
                         },
                       ),
@@ -253,7 +313,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                   Expanded(
                     child: Button(
                       title: 'Add',
-                      onTap: addFueling,
+                      onTap: createFueling,
                       color: kSpringColor,
                     ),
                   ),

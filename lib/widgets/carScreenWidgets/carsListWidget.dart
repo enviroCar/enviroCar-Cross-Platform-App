@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
-import '../../models/car.dart';
 import '../../providers/carsProvider.dart';
-import '../../database/carsTable.dart';
+import '../../hiveDB/sensorsCollection.dart';
+import '../../constants.dart';
+import '../../models/car.dart';
 
 class CarsListWidget extends StatefulWidget {
   @override
@@ -19,35 +20,31 @@ class _CarsListWidgetState extends State<CarsListWidget> {
     ),
   );
 
-  // Provider to set cars list in the data store and notify widgets
-  CarsProvider carsProvider;
-
-  @override
-  void initState() {
-    super.initState();
-
-    carsProvider = Provider.of<CarsProvider>(context, listen: false);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Consumer<CarsProvider>(
       builder: (_, carsProvider, child) {
         final List<Car> carsList = carsProvider.getCarsList;
         final Car selectedCar = carsProvider.getSelectedCar;
-        // Cars haven't been fetched from DB yet
-        // Fetch them
+
+        // Cars haven't been fetched from Hive yet so fetch them
         if (carsList == null) {
           _logger.i('getCarsFromDatabase called');
-          CarsTable().getCarsFromDatabase(carsProvider: carsProvider);
+
+          // delaying to avoid rebuilding before the widget is built
+          Future.delayed(
+            const Duration(),
+            () => CarsCollection().getCarsFromHive(context: context),
+          );
+
           return const Center(
-            child: Text(
-              'There are no cars here',
+            child: CircularProgressIndicator(
+              color: kSpringColor,
             ),
           );
         }
 
-        // Cars have been fetched from DB but it's empty
+        // Cars have been fetched from Hive but it's empty
         else if (carsList.isEmpty) {
           return const Center(
             child: Text(
@@ -56,7 +53,7 @@ class _CarsListWidgetState extends State<CarsListWidget> {
           );
         }
 
-        // Cars have been fetched from DB and it's not empty
+        // Cars have been fetched from Hive and it's not empty
         else {
           return ListView.builder(
             padding: const EdgeInsets.all(0),
@@ -70,15 +67,18 @@ class _CarsListWidgetState extends State<CarsListWidget> {
                   contentPadding: const EdgeInsets.all(0),
                   leading: const Icon(Icons.drive_eta_sharp),
                   title: Text(
-                      '${carsList[index].manufacturer} - ${carsList[index].model}'),
+                      '${carsList[index].properties.manufacturer} - ${carsList[index].properties.model}'),
                   subtitle: Text(
-                      '${carsList[index].constructionYear}, ${carsList[index].engineDisplacement}, ${carsList[index].fuelType}'),
+                      '${carsList[index].properties.constructionYear}, ${carsList[index].properties.engineDisplacement}, ${carsList[index].properties.fuelType}'),
                   trailing: Radio(
                     onChanged: (bool value) {},
                     groupValue: true,
                     value: selectedCar == null
                         ? false
-                        : (carsList[index].id == selectedCar.id ? true : false),
+                        : (carsList[index].properties.id ==
+                                selectedCar.properties.id
+                            ? true
+                            : false),
                   ),
                 ),
               );

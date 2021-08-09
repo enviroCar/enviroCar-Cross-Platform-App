@@ -9,11 +9,14 @@ import '../exceptionHandling/result.dart';
 import '../exceptionHandling/errorHandler.dart';
 
 class TracksServices {
-  Future<Result> getTracks({
+  Future<Result> getTracksFromServer({
     @required AuthProvider authProvider,
     @required TracksProvider tracksProvider,
   }) async {
-    const String uri = 'https://envirocar.org/api/stable/tracks';
+    final String username = authProvider.getUser.getUsername;
+
+    final String uri =
+        'https://envirocar.org/api/stable/users/$username/tracks';
 
     try {
       final dio.Response response = await dio.Dio().get(

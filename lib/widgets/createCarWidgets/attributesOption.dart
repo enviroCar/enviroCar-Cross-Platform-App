@@ -4,11 +4,13 @@ import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
-import '../../models/car.dart';
 import '../../providers/carsProvider.dart';
 import '../button.dart';
-import '../../database/carsTable.dart';
-import '../../database/databaseHelper.dart';
+import '../../exceptionHandling/result.dart';
+import '../../hiveDB/sensorsCollection.dart';
+import '../../models/car.dart';
+import '../../providers/authProvider.dart';
+import '../../services/carServices.dart';
 
 class AttributesOption extends StatefulWidget {
   static const routeName = '/createCarScreen';
@@ -24,21 +26,60 @@ class _AttributesOptionState extends State<AttributesOption> {
   );
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Car newCar = Car();
+  Properties newProperties = Properties();
 
   Future<void> createCar() async {
     if (_formKey.currentState.validate()) {
       _logger.i('createCar called');
+      final AuthProvider authProvider =
+          Provider.of<AuthProvider>(context, listen: false);
+
       final CarsProvider carsProvider =
           Provider.of<CarsProvider>(context, listen: false);
 
-      carsProvider.addCar(newCar);
-      await DatabaseHelper.instance.insertValue(
-        tableName: CarsTable.tableName,
-        data: newCar.toJson(),
+      final Car newCar = Car(
+        username: authProvider.getUser.getUsername,
+        type: 'car',
+        properties: newProperties,
       );
 
-      Navigator.pop(context);
+      // upload car to server
+      await CarServices().uploadCarToServer(context: context, car: newCar).then(
+        (Result result) {
+          if (result.status == ResultStatus.error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                backgroundColor: Colors.red,
+                content: Text(result.exception.getErrorMessage()),
+              ),
+            );
+          }
+
+          // if uploading to server is successful
+          else {
+            // get the ID from headers
+            final String carID = result.value as String;
+
+            // set the ID fetched to the car object
+            newCar.properties.id = carID;
+
+            // set username in fueling object to identify the creator when
+            // fetching from Hive
+            final AuthProvider authProvider =
+                Provider.of<AuthProvider>(context, listen: false);
+            newCar.username = authProvider.getUser.getUsername;
+
+            // store the data in local db
+            CarsCollection().addCarToHive(car: newCar.toJson());
+
+            // add car to the list to show on cars screen
+            carsProvider.addCar(newCar);
+
+            // close the screen and go back to prev screen
+            Navigator.pop(context);
+          }
+        },
+      );
     }
   }
 
@@ -72,7 +113,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   labelText: 'Manufacturer',
                 ),
                 onChanged: (value) {
-                  newCar.manufacturer = value;
+                  newProperties.manufacturer = value;
                 },
                 validator: (value) {
                   if (value.isEmpty || value == null) {
@@ -92,7 +133,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   labelText: 'Model',
                 ),
                 onChanged: (value) {
-                  newCar.model = value;
+                  newProperties.model = value;
                 },
                 validator: (value) {
                   if (value.isEmpty || value == null) {
@@ -113,7 +154,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   labelText: 'Construction year',
                 ),
                 onChanged: (value) {
-                  newCar.constructionYear = int.parse(value);
+                  newProperties.constructionYear = int.parse(value);
                 },
                 validator: (value) {
                   if (value.isEmpty || value == null) {
@@ -133,7 +174,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   labelText: 'Fuel Type',
                 ),
                 onChanged: (value) {
-                  newCar.fuelType = value;
+                  newProperties.fuelType = value;
                 },
                 validator: (value) {
                   if (value.isEmpty || value == null) {
@@ -154,7 +195,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   labelText: 'Engine Displacement',
                 ),
                 onChanged: (value) {
-                  newCar.engineDisplacement = int.parse(value);
+                  newProperties.engineDisplacement = int.parse(value);
                 },
                 validator: (value) {
                   if (value.isEmpty || value == null) {

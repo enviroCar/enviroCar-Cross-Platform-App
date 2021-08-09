@@ -7,11 +7,11 @@ import './bluetoothDevicesScreen.dart';
 import '../widgets/dashboardWidgets/dashboardIconButton.dart';
 import '../widgets/dashboardWidgets/dashboardCard.dart';
 import '../constants.dart';
+import '../models/car.dart';
 import './mapScreen.dart';
 import '../globals.dart';
 import './carScreen.dart';
 import '../providers/carsProvider.dart';
-import '../models/car.dart';
 import '../widgets/button.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -100,10 +100,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 assetName: 'assets/icons/car.svg',
                 title: selectedCar == null
                     ? 'No car selected'
-                    : '${selectedCar.manufacturer}, ${selectedCar.model}',
+                    : '${selectedCar.properties.manufacturer}, ${selectedCar.properties.model}',
                 subtitle: selectedCar == null
                     ? 'Select a car'
-                    : '${selectedCar.constructionYear}, ${selectedCar.engineDisplacement}, ${selectedCar.fuelType}',
+                    : '${selectedCar.properties.constructionYear}, ${selectedCar.properties.engineDisplacement}, ${selectedCar.properties.fuelType}',
                 routeName: CarScreen.routeName,
               );
             },
