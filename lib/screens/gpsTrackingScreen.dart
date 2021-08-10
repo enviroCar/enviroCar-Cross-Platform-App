@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:envirocar_app_main/animations/blinkAnimation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -10,6 +9,7 @@ import '../providers/bluetoothProvider.dart';
 import '../utils/enums.dart';
 import '../providers/locationStatusProvider.dart';
 import '../providers/gpsTrackProvider.dart';
+import '../animations/blinkAnimation.dart';
 import '../widgets/gpsTrackingWidgets/statusWidget.dart';
 import '../widgets/gpsTrackingWidgets/detailsIcon.dart';
 import '../widgets/gpsTrackingWidgets/statusIndicatorWidget.dart';
@@ -65,7 +65,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
       body: showMap ? Stack(
         children: [
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
             child: GoogleMap(
               myLocationButtonEnabled: false,
               myLocationEnabled: true,
@@ -82,7 +82,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
           ),
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
             child: Container(
               margin: const EdgeInsets.only(right: 5, top: 25),
               padding: const EdgeInsets.all(10),
@@ -177,7 +177,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
           ),
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
             child: Container(
               margin: EdgeInsets.fromLTRB(10, deviceHeight * 0.73, 10, 25),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -244,18 +244,18 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                       ),
                       const Spacer(),
                       Column(
-                        children: const [
-                          DetailsIcon(
+                        children: [
+                          const DetailsIcon(
                             title: 'Avg speed',
                             data: '40 km/h',
                             iconData: Icons.speed,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 7,
                           ),
                           DetailsIcon(
                             title: 'Distance',
-                            data: '1 km',
+                            data: '${gpsTrackProvider.getDistance.toStringAsFixed(2)} km',
                             iconData: Icons.trending_up_rounded,
                           ),
                         ],
@@ -271,7 +271,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
           else if (locationStatusProvider.locationState == LocationStatus.disabled)
             LocationStatusWidget()
           else if (!bluetoothProvider.isConnected())
-            Container()
+            BluetoothStatusWidget()
         ],
       ) : const Center(
         child: CircularProgressIndicator(),

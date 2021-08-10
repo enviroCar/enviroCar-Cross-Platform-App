@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart';
@@ -28,9 +29,11 @@ class GpsTrackProvider extends ChangeNotifier {
 
   String trackStartTime = ' ';
   String trackEndTime = ' ';
+  String trackName = ' ';
   bool startTrack = true, endTrack = false;
   DateTime startTime, currentTime;
   String durationOfTrack = '0:00:00';
+  double distance;
   int time, stopsCount;
   Duration duration;
 
@@ -95,6 +98,7 @@ class GpsTrackProvider extends ChangeNotifier {
 
     time = 0;
     stopsCount = 0;
+    distance =  0;
     duration = const Duration();
 
     await setTrackIcon();
@@ -102,6 +106,7 @@ class GpsTrackProvider extends ChangeNotifier {
     startTime = DateTime.now().toUtc();
 
     trackStartTime = startTime.toString().substring(0, 19);
+    trackName = 'Track $trackId';
     isUserLocationDetermined = true;
     notifyListeners();
 
@@ -286,6 +291,18 @@ class GpsTrackProvider extends ChangeNotifier {
 
     _circles.add(currentLocationCircle);
 
+    // determine the distance between start position and current position
+    distance = GeolocatorPlatform.instance.distanceBetween(
+        startLocation.latitude,
+        startLocation.longitude,
+        currentLocation.latitude,
+        currentLocation.longitude
+    );
+
+    distance /= 1000; // distance in km
+
+    notifyListeners();
+
   }
 
   /// function to add markers and circles to [_markers] and [_circles]
@@ -410,9 +427,11 @@ class GpsTrackProvider extends ChangeNotifier {
     endTrack = true;
     trackEndTime = DateTime.now().toUtc().toString().substring(0, 19);
     streamSubscription.cancel();
-    latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
+    isUserLocationDetermined = false;
+    _location = null;
+
     NotificationService().turnOffNotification();
-    debugPrint('tracking stopped at $trackEndTime');
+    debugPrint('tracking stopped at $trackEndTime no of stops is $stopsCount');
     notifyListeners();
   }
 
@@ -428,6 +447,12 @@ class GpsTrackProvider extends ChangeNotifier {
 
     logCoordinates();
     trackDuration();
+  }
+
+  /// function to set [trackName]
+  void setTrackName(String name) {
+    trackName = name;
+    notifyListeners();
   }
 
   /// function to reset the values
@@ -481,6 +506,24 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to know the status of [endTrack]
   bool get getEndTrackStatus => endTrack;
+
+  /// function to get [trackName]
+  String get getTrackName => trackName;
+
+  /// function to get [trackStartTime]
+  String get getTrackStartTime => trackStartTime;
+
+  /// function to get [trackEndTime]
+  String get getTrackEndTime => trackEndTime;
+
+  /// function to get [stopsCount]
+  int get getNoOfStops => stopsCount;
+
+  /// function to get [distance] between [startLocation] and [currentLocation]
+  double get getDistance => distance;
+
+  /// function to get [duration] of the [track]
+  Duration get getDuration => duration;
 
   /// function to determine whether tracking is stopped
   bool get isTrackingPaused => streamSubscription.isPaused;
