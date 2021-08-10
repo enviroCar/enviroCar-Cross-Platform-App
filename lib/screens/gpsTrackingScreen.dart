@@ -55,6 +55,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
     final bool showMap = gpsTrackProvider.locationDetermined;
 
     return Scaffold(
+      key: navigatorKey,
       body: showMap ? Stack(
         children: [
           GoogleMap(
@@ -160,7 +161,11 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
                               return StatusIndicatorWidget(
                                 title: 'gps'.toUpperCase(),
-                                iconData: locationEnabled ? Icons.location_on : Icons.location_off,
+                                icon: Icon(
+                                  locationEnabled ? Icons.location_on : Icons.location_off,
+                                  color: kSpringColor,
+                                ),
+                                backgroundColor: kWhiteColor,
                               );
                             }
                         ),
@@ -171,7 +176,11 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
                               return StatusIndicatorWidget(
                                 title: 'Bluetooth',
-                                iconData: connectedToOBD ? Icons.bluetooth : Icons.bluetooth_disabled,
+                                icon: Icon(
+                                  connectedToOBD ? Icons.bluetooth : Icons.bluetooth_disabled,
+                                  color: connectedToOBD ? kWhiteColor : kSpringColor,
+                                ),
+                                backgroundColor: connectedToOBD ? kBlueColor : kWhiteColor,
                               );
                             }
                         ),

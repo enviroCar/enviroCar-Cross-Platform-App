@@ -130,7 +130,7 @@ class MyApp extends StatelessWidget {
           }
         },
 
-        // Helps in navigating to different screens via route name https://leetcode.com/problems/binary-tree-upside-down/
+        // Helps in navigating to different screens via route name
         routes: {
           LoginScreen.routeName: (context) => LoginScreen(),
           RegisterScreen.routeName: (context) => RegisterScreen(),

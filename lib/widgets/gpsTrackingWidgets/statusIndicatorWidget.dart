@@ -4,9 +4,10 @@ import '../../constants.dart';
 
 class StatusIndicatorWidget extends StatelessWidget {
   final String title;
-  final IconData iconData;
+  final Icon icon;
+  final Color backgroundColor;
 
-  const StatusIndicatorWidget({this.title, this.iconData});
+  const StatusIndicatorWidget({this.title, this.icon, this.backgroundColor = kSpringColor});
 
   @override
   Widget build(BuildContext context) {
@@ -14,14 +15,11 @@ class StatusIndicatorWidget extends StatelessWidget {
       children: [
         ClipOval(
           child: Material(
-            color: kWhiteColor,
+            color: backgroundColor,
             child: SizedBox(
               height: 35,
               width: 35,
-              child: Icon(
-                iconData,
-                color: kSpringColor,
-              ),
+              child: icon
             ),
           ),
         ),

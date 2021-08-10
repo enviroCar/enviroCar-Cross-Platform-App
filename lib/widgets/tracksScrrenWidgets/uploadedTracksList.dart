@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:provider/provider.dart';
 
+import 'noTracksWidget.dart';
 import '../../models/track.dart';
 import '../../providers/authProvider.dart';
 import '../../providers/tracksProvider.dart';
@@ -37,7 +38,11 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
               final List<Track> tracksList = tracksProvider.getTracks();
               if (tracksList.isEmpty) {
                 return const Center(
-                  child: Text('No Tracks'),
+                  child: NoTracksWidget(
+                    title: 'no uploaded tracks',
+                    subTitle: 'You have 0 uploaded tracks',
+                    iconData: Icons.location_history_rounded
+                  ),
                 );
               }
 
