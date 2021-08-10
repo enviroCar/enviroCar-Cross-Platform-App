@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:envirocar_app_main/widgets/gpsTrackingWidgets/editTrackName.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -65,7 +66,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
       body: showMap ? Stack(
         children: [
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
             child: GoogleMap(
               myLocationButtonEnabled: false,
               myLocationEnabled: true,
@@ -82,7 +83,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
           ),
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
             child: Container(
               margin: const EdgeInsets.only(right: 5, top: 25),
               padding: const EdgeInsets.all(10),
@@ -177,7 +178,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
           ),
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
             child: Container(
               margin: EdgeInsets.fromLTRB(10, deviceHeight * 0.73, 10, 25),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -239,7 +240,6 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                         duration: gpsTrackProvider.getTrackDuration,
                         function: () {
                           gpsTrackProvider.stopTrack();
-                          Navigator.of(context).pop();
                         },
                       ),
                       const Spacer(),
@@ -271,10 +271,11 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
           else if (locationStatusProvider.locationState == LocationStatus.disabled)
             LocationStatusWidget()
           else if (!bluetoothProvider.isConnected())
-            BluetoothStatusWidget()
+            Container()
         ],
-      ) : const Center(
-        child: CircularProgressIndicator(),
+      ) : Center(
+        child: !gpsTrackProvider.getEndTrackStatus
+            ? const CircularProgressIndicator() : EditTrackName(gpsTrackProvider: gpsTrackProvider),
       ),
     );
   }

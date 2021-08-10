@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../constants.dart';
-import '../../globals.dart';
-import '../button.dart';
-import '../../animations/rippleAnimation.dart';
+import '../constants.dart';
+import '../globals.dart';
+import 'button.dart';
+import '../animations/rippleAnimation.dart';
 
 class StatusIndicatorCard extends StatelessWidget {
   final String heading;

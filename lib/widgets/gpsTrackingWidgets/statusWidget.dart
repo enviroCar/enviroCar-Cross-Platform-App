@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../globals.dart';
 import '../../constants.dart';
-import 'statusIndicatorCard.dart';
+import '../statusIndicatorCard.dart';
 import '../../screens/bluetoothDevicesScreen.dart';
 
 class TabBarViewWidget extends StatefulWidget {
