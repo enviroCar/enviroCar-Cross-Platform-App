@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:envirocar_app_main/animations/blinkAnimation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -24,11 +25,13 @@ class GpsTrackingScreen extends StatefulWidget {
 class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   final Completer<GoogleMapController> _googleMapController = Completer();
   GpsTrackProvider gpsTrackProvider;
+  bool showPauseIcon;
 
   @override
   void initState() {
     final provider = Provider.of<GpsTrackProvider>(context, listen: false);
     provider.trackScreenMounted(true);
+    showPauseIcon = true;
     super.initState();
   }
 
@@ -62,7 +65,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
       body: showMap ? Stack(
         children: [
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
             child: GoogleMap(
               myLocationButtonEnabled: false,
               myLocationEnabled: true,
@@ -79,28 +82,62 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
           ),
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
             child: Container(
               margin: const EdgeInsets.only(right: 5, top: 25),
               padding: const EdgeInsets.all(10),
               alignment: Alignment.topRight,
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  ClipOval(
-                    child: Material(
-                      color: kSpringColor,
-                      child: InkWell(
-                        splashColor: kSecondaryColor,
-                        onTap: () async {
-                          await myLocation();
-                        },
-                        child: const SizedBox(
-                          width: 50,
-                          height: 50,
-                          child: Icon(Icons.my_location, color: kWhiteColor),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ClipOval(
+                        child: Material(
+                          color: kSpringColor,
+                          child: InkWell(
+                            splashColor: kSecondaryColor,
+                            onTap: () async {
+                              if (gpsTrackProvider.isTrackingPaused) {
+                                gpsTrackProvider.resumeTracking();
+                                setState(() {
+                                  showPauseIcon = true;
+                                });
+                              }
+                              else {
+                                gpsTrackProvider.pauseTracking();
+                                setState(() {
+                                  showPauseIcon = false;
+                                });
+                              }
+                            },
+                            child: SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: showPauseIcon ? const Icon(Icons.pause, color: kWhiteColor)
+                                  : const BlinkAnimation(child: Icon(Icons.time_to_leave_rounded, color: kWhiteColor)),
+                            ),
+                          ),
                         ),
                       ),
-                    ),
+                      ClipOval(
+                        child: Material(
+                          color: kSpringColor,
+                          child: InkWell(
+                            splashColor: kSecondaryColor,
+                            onTap: () async {
+                              await myLocation();
+                            },
+                            child: const SizedBox(
+                              width: 50,
+                              height: 50,
+                              child: Icon(Icons.my_location, color: kWhiteColor),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 20),
                   Material(
@@ -140,7 +177,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
             ),
           ),
           Visibility(
-            visible: locationStatusProvider.locationState == LocationStatus.enabled && bluetoothProvider.isConnected(),
+            visible: locationStatusProvider.locationState == LocationStatus.enabled && !bluetoothProvider.isConnected(),
             child: Container(
               margin: EdgeInsets.fromLTRB(10, deviceHeight * 0.73, 10, 25),
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -234,7 +271,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
           else if (locationStatusProvider.locationState == LocationStatus.disabled)
             LocationStatusWidget()
           else if (!bluetoothProvider.isConnected())
-            BluetoothStatusWidget()
+            Container()
         ],
       ) : const Center(
         child: CircularProgressIndicator(),

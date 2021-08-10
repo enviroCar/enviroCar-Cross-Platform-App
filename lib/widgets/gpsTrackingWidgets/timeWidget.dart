@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../constants.dart';
+import '../../animations/blinkAnimation.dart';
+import '../../providers/gpsTrackProvider.dart';
 
 class TimeWidget extends StatelessWidget {
   final String duration;
@@ -12,13 +15,31 @@ class TimeWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Text(
-          duration,
-          style: const TextStyle(
-              color: kWhiteColor,
-              fontWeight: FontWeight.w600,
-              fontSize: 24
-          ),
+        Consumer<GpsTrackProvider>(
+          builder: (context, gpsTrackProvider, child) {
+            final bool trackPaused = gpsTrackProvider.isTrackingPaused;
+
+            if (trackPaused) {
+              return BlinkAnimation(child: Text(
+                duration,
+                style: const TextStyle(
+                    color: kWhiteColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24
+                ),
+              ));
+            }
+            else {
+              return Text(
+                duration,
+                style: const TextStyle(
+                    color: kWhiteColor,
+                    fontWeight: FontWeight.w600,
+                    fontSize: 24
+                ),
+              );
+            }
+          }
         ),
         const SizedBox(
           height: 2,
