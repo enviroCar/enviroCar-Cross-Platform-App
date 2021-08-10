@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 
+import '../button.dart';
 import 'trackDetailsTile.dart';
 import '../../constants.dart';
 import '../../globals.dart';
+import '../../models/localTrackModel.dart';
+import '../../providers/carsProvider.dart';
+import '../../providers/localTracksProvider.dart';
 import '../../providers/gpsTrackProvider.dart';
-import '../button.dart';
 
 class EditTrackName extends StatefulWidget {
   final GpsTrackProvider gpsTrackProvider;
@@ -212,6 +216,10 @@ class _EditTrackNameState extends State<EditTrackName> {
                           onTap: () {
                             if (_key.currentState.validate()) {
                               widget.gpsTrackProvider.setTrackName(customTrackName);
+                              final CarsProvider carsProvider = Provider.of<CarsProvider>(context, listen: false);
+                              final LocalTrackModel track = widget.gpsTrackProvider.getLocalTrack(sensorId: carsProvider.getSelectedCar.id.toString());
+                              final LocalTracksProvider localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
+                              localTracksProvider.addLocalTrack(track);
                               Navigator.of(context).pop();
                             }
                           }

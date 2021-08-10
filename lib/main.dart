@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hive/hive.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import './providers/authProvider.dart';
 import './providers/tracksProvider.dart';
+import 'models/localTrackModel.dart';
+import 'models/pointProperties.dart';
 import 'models/track.dart';
+import 'providers/localTracksProvider.dart';
 import './screens/splashScreen.dart';
 import './screens/bluetoothDevicesScreen.dart';
 import './screens/index.dart';
@@ -41,6 +46,13 @@ Future<void> main() async {
 
   // initialise notification plugin
   NotificationService().initialiseNotificationPlugin();
+
+  // initialise hive db
+  final appDocumentDirectory = await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter<LocalTrackModel>(LocalTrackModelAdapter());
+  Hive.registerAdapter<PointProperties>(PointPropertiesAdapter());
+  await Hive.openBox<LocalTrackModel>(localTracksTableName);
 
   navigatorKey = GlobalKey<NavigatorState>();
 
@@ -96,6 +108,7 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => BluetoothProvider(),
         ),
+
         // Provides Fueling data to different widgets
         ChangeNotifierProvider(
           create: (context) => FuelingsProvider(),
@@ -103,6 +116,10 @@ class MyApp extends StatelessWidget {
 
         ChangeNotifierProvider(
           create: (context) => GpsTrackProvider()
+        ),
+
+        ChangeNotifierProvider(
+            create: (context) => LocalTracksProvider()
         ),
       ],
       child: MaterialApp(

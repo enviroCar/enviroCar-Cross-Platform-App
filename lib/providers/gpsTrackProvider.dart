@@ -9,6 +9,8 @@ import 'package:location/location.dart';
 
 import '../constants.dart';
 import 'bluetoothProvider.dart';
+import '../models/localTrackModel.dart';
+import '../models/pointProperties.dart';
 import '../services/notificationServices.dart';
 
 class GpsTrackProvider extends ChangeNotifier {
@@ -23,9 +25,9 @@ class GpsTrackProvider extends ChangeNotifier {
   bool isMounted;
   bool reloadMap;
   StreamSubscription<LocationData> streamSubscription;
+  Map<int, PointProperties> pointProperties;
   Timer _timer;
   Timer _timeCounter;
-  Set<LatLng> latLngCoordinates;
 
   String trackStartTime = ' ';
   String trackEndTime = ' ';
@@ -36,6 +38,12 @@ class GpsTrackProvider extends ChangeNotifier {
   double distance;
   int time, stopsCount;
   Duration duration;
+  double altitude;
+  double consumption;
+  double co2;
+  double speed;
+  double maf;
+  int count;
 
   String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";
 
@@ -91,14 +99,19 @@ class GpsTrackProvider extends ChangeNotifier {
     _location = Location();
     _polylinePoints = PolylinePoints();
 
-    latLngCoordinates = {};
+    pointProperties = {};
     durationOfTrack = '0:00:00';
     startTrack = true;
     endTrack = false;
 
     time = 0;
     stopsCount = 0;
-    distance =  0;
+    distance = 0;
+    consumption = 0;
+    co2 = 0;
+    speed = 0;
+    maf = 0;
+    count = 1;
     duration = const Duration();
 
     await setTrackIcon();
@@ -117,32 +130,40 @@ class GpsTrackProvider extends ChangeNotifier {
     NotificationService().showNotifications(
         'Track $trackId', 'GPS tracking has started!');
 
-    // adding the startLocation coordinates to set of lat lng coordinates
-    latLngCoordinates.add(LatLng(startLocation.latitude, startLocation.longitude));
-
-    logCoordinates();
+    collectFeatureData();
     trackDuration();
   }
 
-  void logCoordinates([Timer timer]) {
+  void collectFeatureData([Timer timer]) {
     _timer?.cancel();
     timer?.cancel();
 
     if (currentLocation != null && !isTrackingPaused && _location != null) {
-      latLngCoordinates.add(LatLng(currentLocation.latitude, currentLocation.longitude));
-      debugPrint('the lat lng is ${startLocation.toString()} and ${currentLocation.toString()}');
-    }
+      altitude = currentLocation.altitude;
+      // todo: update and set speed, consumption, co2, maf from parsed data
+      String time = DateTime.now().toUtc().toString().substring(0, 19).replaceAll(" ", "T");
+      time = '${time}Z';
 
-    final obdIsConnected = BluetoothProvider().isConnected();
-    if (obdIsConnected) {
-      BluetoothProvider().logCharacteristicsForServices();
+      final PointProperties properties = PointProperties(
+          latitude: currentLocation.latitude,
+          longitude: currentLocation.longitude,
+          altitude: currentLocation.altitude,
+          consumption: consumption,
+          co2: co2,
+          speed: speed,
+          maf: maf,
+          time: time
+      );
+
+      pointProperties[count] = properties;
+      count++;
     }
 
     if (reloadMap || isTrackingPaused) {
       return;
     }
 
-    _timer = Timer(defaultDuration, logCoordinates);
+    _timer = Timer(defaultDuration, collectFeatureData);
   }
 
   /// function to set the [_googleMapController]
@@ -430,6 +451,22 @@ class GpsTrackProvider extends ChangeNotifier {
     isUserLocationDetermined = false;
     _location = null;
 
+    String time = DateTime.now().toUtc().toString().substring(0, 19).replaceAll(" ", "T");
+    time = '${time}Z';
+
+    final PointProperties properties = PointProperties(
+        latitude: currentLocation.latitude,
+        longitude: currentLocation.longitude,
+        altitude: currentLocation.altitude,
+        consumption: consumption,
+        co2: co2,
+        speed: speed,
+        maf: maf,
+        time: time
+    );
+
+    pointProperties[count] = properties;
+
     NotificationService().turnOffNotification();
     debugPrint('tracking stopped at $trackEndTime no of stops is $stopsCount');
     notifyListeners();
@@ -445,7 +482,7 @@ class GpsTrackProvider extends ChangeNotifier {
   void resumeTracking() {
     streamSubscription.resume();
 
-    logCoordinates();
+    collectFeatureData();
     trackDuration();
   }
 
@@ -453,6 +490,38 @@ class GpsTrackProvider extends ChangeNotifier {
   void setTrackName(String name) {
     trackName = name;
     notifyListeners();
+  }
+
+  /// function to get [LocalTrack] object
+  LocalTrackModel getLocalTrack({@required String sensorId}) {
+    final LocalTrackModel trackModel = LocalTrackModel(
+        trackId: trackId,
+        trackName: getTrackName,
+        modifiedTime: formatDate(trackStartTime),
+        endTime: formatDate(trackEndTime),
+        duration: getTrackDuration,
+        distance: getDistance,
+        speed: 40, // todo: change hardcoded value
+        selectedCarId: sensorId,
+        isTrackUploaded: false,
+        stops: getNoOfStops,
+        bluetoothDevice: BluetoothProvider().getConnectedDevice.name,
+        properties: pointProperties
+    );
+
+    return trackModel;
+  }
+
+  DateTime formatDate(String date) {
+    final DateTime dateTime = DateTime(
+      int.parse(date.substring(0, 4)),    // year
+      int.parse(date.substring(5, 7)),    // month
+      int.parse(date.substring(8, 10)),   // day
+      int.parse(date.substring(11, 13)),  // hour
+      int.parse(date.substring(14, 16)),  // minute
+      int.parse(date.substring(17, 19)),  // second
+    );
+    return dateTime;
   }
 
   /// function to reset the values
