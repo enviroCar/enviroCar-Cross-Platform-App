@@ -1,11 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../providers/authProvider.dart';
-import './loginScreen.dart';
 import '../services/authenticationServices.dart';
 import './reportIssueScreen.dart';
 import '../widgets/dividerLine.dart';
@@ -21,6 +21,12 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   Widget buildIconButton(
       {@required String title,
       @required IconData iconData,
@@ -82,6 +88,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               iconData: Icons.menu_book,
               color: Colors.black,
               onTap: () {
+                _logger.i('Going to logbook screen');
                 Navigator.of(context).pushNamed(LogBookScreen.routeName);
               },
             ),
@@ -92,6 +99,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               iconData: Icons.help_outline,
               color: Colors.black,
               onTap: () {
+                _logger.i('Going to help screen');
                 Navigator.of(context).pushNamed(HelpScreen.routeName);
               },
             ),
@@ -102,6 +110,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               iconData: Icons.bug_report,
               color: Colors.black,
               onTap: () {
+                _logger.i('Going to report issue screen');
                 Navigator.of(context).pushNamed(ReportIssueScreen.routeName);
               },
             ),
@@ -113,9 +122,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               color: Colors.black,
               onTap: () async {
                 if (await canLaunch(playstoreUrl)) {
+                  _logger.i('Launching playstore');
                   launch(playstoreUrl);
                   return;
                 } else {
+                  _logger.w('Tried opening playstore but failed');
                   throw 'Cannot Launch';
                 }
               },
@@ -127,13 +138,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               iconData: Icons.logout,
               color: Colors.black,
               onTap: () {
+                _logger.i('logoutUser called');
                 AuthenticationServices().logoutUser(
                   authProvider: _authProvider,
                   userStatsProvider: _userStatsProvider,
                   tracksProvider: _tracksProvider,
-                );
-                Navigator.of(context).pushReplacementNamed(
-                  LoginScreen.routeName,
                 );
               },
             ),
@@ -144,6 +153,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               iconData: Icons.highlight_off_rounded,
               color: Colors.red,
               onTap: () {
+                _logger.i('closeEnvirocar called');
                 // Closes the app programatically
                 // Apple may SUSPEND THE APP as it is again Apple's Human Interface Guidelines
                 exit(0);

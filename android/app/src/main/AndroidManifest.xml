@@ -10,7 +10,7 @@
    <!-- till here -->
 
    <application
-        android:label="enviroCar Cross-Platform"
+        android:label="enviroCar 2.0"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

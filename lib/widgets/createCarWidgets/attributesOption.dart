@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import '../../constants.dart';
@@ -16,11 +17,18 @@ class AttributesOption extends StatefulWidget {
 }
 
 class _AttributesOptionState extends State<AttributesOption> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   Car newCar = Car();
 
   Future<void> createCar() async {
     if (_formKey.currentState.validate()) {
+      _logger.i('createCar called');
       final CarsProvider carsProvider =
           Provider.of<CarsProvider>(context, listen: false);
 

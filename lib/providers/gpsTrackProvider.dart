@@ -505,7 +505,7 @@ class GpsTrackProvider extends ChangeNotifier {
         selectedCarId: sensorId,
         isTrackUploaded: false,
         stops: getNoOfStops,
-        bluetoothDevice: BluetoothProvider().getConnectedDevice.name,
+        bluetoothDevice: null,
         properties: pointProperties
     );
 

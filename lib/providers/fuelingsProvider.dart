@@ -4,76 +4,21 @@ import '../models/fueling.dart';
 
 // Provides data of the Log Book
 class FuelingsProvider with ChangeNotifier {
-  // Dummy list for fueling data
-  final List<Fueling> _fuelingsList = [
-    // Fueling(
-    //   id: '1',
-    //   car: Car(
-    //     id: '1',
-    //     manufacturer: 'Volkswagen',
-    //     model: 'S309',
-    //     constructionYear: 1930,
-    //     fuelType: 'Diesel',
-    //     engineDisplacement: 1600,
-    //     // isSelected: true,
-    //   ),
-    //   mileage: '25',
-    //   fueledVolume: '25',
-    //   totalPrice: '25',
-    //   pricePerLitre: '25',
-    //   partialFueling: true,
-    //   missedPreviousFueling: true,
-    //   comment: 'Hello There',
-    // ),
-    // Fueling(
-    //   id: '2',
-    //   car: Car(
-    //     id: '2',
-    //     manufacturer: 'BMW',
-    //     model: 'M3-GT',
-    //     constructionYear: 1930,
-    //     fuelType: 'Diesel',
-    //     engineDisplacement: 1600,
-    //     // isSelected: false,
-    //   ),
-    //   mileage: '25',
-    //   fueledVolume: '25',
-    //   totalPrice: '25',
-    //   pricePerLitre: '25',
-    //   partialFueling: false,
-    //   missedPreviousFueling: true,
-    //   comment: 'Hello There',
-    // ),
-    // Fueling(
-    //   id: '3',
-    //   car: Car(
-    //     id: '3',
-    //     manufacturer: 'Ferrari',
-    //     model: 'Ultra',
-    //     constructionYear: 1930,
-    //     fuelType: 'Diesel',
-    //     engineDisplacement: 1600,
-    //     // isSelected: false,
-    //   ),
-    //   mileage: '25',
-    //   fueledVolume: '25',
-    //   totalPrice: '25',
-    //   pricePerLitre: '25',
-    //   partialFueling: false,
-    //   missedPreviousFueling: true,
-    //   comment: 'Hello There',
-    // ),
-  ];
+  List<Fueling> _fuelingsList;
 
   // Adds newly created fueling data and notifies log book screen
   void addFueling(Fueling fueling) {
+    // if list is null then create an empty list to add to
+    _fuelingsList ??= [];
     _fuelingsList.add(fueling);
 
     notifyListeners();
   }
 
-  // TODO: Write method to delete using ID
-  void deleteFueling() {}
+  // delete fueling log from ID
+  void deleteFueling({@required String id}) {
+    _fuelingsList.removeWhere((Fueling fueling) => fueling.id == id);
+  }
 
   // get method to get the list data
   List<Fueling> get getFuelingsList {

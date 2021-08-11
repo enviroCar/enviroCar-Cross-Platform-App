@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
-import 'createCarScreen.dart';
+import 'package:logger/logger.dart';
+
+import './createCarScreen.dart';
 import '../constants.dart';
 import '../widgets/carScreenWidgets/carsListWidget.dart';
 
@@ -12,6 +14,12 @@ class CarScreen extends StatefulWidget {
 }
 
 class _CarScreenState extends State<CarScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,6 +29,7 @@ class _CarScreenState extends State<CarScreen> {
         actions: [
           GestureDetector(
             onTap: () {
+              _logger.i('Going to create car screen');
               Navigator.of(context).pushNamed(CreateCarScreen.routeName);
             },
             child: const Padding(

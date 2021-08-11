@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
+
 import '../../globals.dart';
 import '../../models/track.dart';
 import '../../constants.dart';
 import '../../screens/trackDetailsScreen.dart';
 
-class TrackCard extends StatelessWidget {
+class UploadedTrackCard extends StatelessWidget {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   final Track track;
 
-  const TrackCard({@required this.track});
+  UploadedTrackCard({@required this.track});
 
   @override
   Widget build(BuildContext context) {
@@ -65,6 +73,7 @@ class TrackCard extends StatelessWidget {
                     enabled: true,
                     onSelected: (int menuIndex) {
                       if (menuIndex == 0) {
+                        _logger.i('Going to track details screen');
                         Navigator.of(context).pushNamed(
                           TrackDetailsScreen.routeName,
                           arguments: track,
@@ -142,9 +151,6 @@ class TrackCard extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: deviceHeight * 0.02,
-                      // ),
                       const Text(
                         'Duration',
                         style: TextStyle(

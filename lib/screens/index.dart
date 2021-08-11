@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:logger/logger.dart';
 
 import '../globals.dart';
 import './dashboardScreen.dart';
@@ -16,6 +18,12 @@ class Index extends StatefulWidget {
 }
 
 class _IndexState extends State<Index> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   int _currentIndex = 0;
 
   List<Widget> _screensList;
@@ -39,6 +47,7 @@ class _IndexState extends State<Index> {
   }
 
   void showHelpDialog() {
+    _logger.i('Showing help dialog');
     showDialog(
       context: context,
       builder: (_) {
@@ -84,6 +93,7 @@ class _IndexState extends State<Index> {
             children: [
               GestureDetector(
                 onTap: () {
+                  _logger.i('On dashboard');
                   changeScreen(0);
                 },
                 child: SvgPicture.asset(
@@ -94,6 +104,7 @@ class _IndexState extends State<Index> {
               ),
               GestureDetector(
                 onTap: () {
+                  _logger.i('On tracks screen');
                   changeScreen(1);
                 },
                 child: SvgPicture.asset(
@@ -104,6 +115,7 @@ class _IndexState extends State<Index> {
               ),
               GestureDetector(
                 onTap: () {
+                  _logger.i('On settings screen');
                   changeScreen(2);
                 },
                 child: Icon(
@@ -114,6 +126,7 @@ class _IndexState extends State<Index> {
               ),
               GestureDetector(
                 onTap: () {
+                  _logger.i('On profile screen');
                   changeScreen(3);
                 },
                 child: Icon(

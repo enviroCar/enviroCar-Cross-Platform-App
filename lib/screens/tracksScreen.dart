@@ -26,17 +26,13 @@ class _TracksScreenState extends State<TracksScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          TabButtonsPage(
-            button1Title: 'Local',
-            button2Title: 'Uploaded',
-            tab1: TracksTab.local,
-            tab2: TracksTab.uploaded,
-            page1: LocalTracksList(),
-            page2: UploadedTracksList(),
-          ),
-        ],
+      child: TabButtonsPage(
+        button1Title: 'Local',
+        button2Title: 'Uploaded',
+        tab1: TracksTab.local,
+        tab2: TracksTab.uploaded,
+        page1: LocalTracksList(),
+        page2: UploadedTracksList(),
       ),
     );
   }

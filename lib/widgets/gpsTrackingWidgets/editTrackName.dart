@@ -217,7 +217,7 @@ class _EditTrackNameState extends State<EditTrackName> {
                             if (_key.currentState.validate()) {
                               widget.gpsTrackProvider.setTrackName(customTrackName);
                               final CarsProvider carsProvider = Provider.of<CarsProvider>(context, listen: false);
-                              final LocalTrackModel track = widget.gpsTrackProvider.getLocalTrack(sensorId: carsProvider.getSelectedCar.id.toString());
+                              final LocalTrackModel track = widget.gpsTrackProvider.getLocalTrack(sensorId: "1"); // todo: change the hardcoded value "carsProvider.getSelectedCar.id.toString()"
                               final LocalTracksProvider localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
                               localTracksProvider.addLocalTrack(track);
                               Navigator.of(context).pop();

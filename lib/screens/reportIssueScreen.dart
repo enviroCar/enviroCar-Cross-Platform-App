@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'package:logger/logger.dart';
+
 import '../constants.dart';
 import '../globals.dart';
 import '../models/report.dart';
@@ -16,6 +18,12 @@ class ReportIssueScreen extends StatefulWidget {
 }
 
 class _ReportIssueScreenState extends State<ReportIssueScreen> {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   // Key to validate the form
   GlobalKey<FormState> _formKey;
 
@@ -32,6 +40,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
 
   // triggered when 'Create Report' button is pressed
   void createReport() {
+    _logger.i('createReport called');
     final Report report = Report(
       // TODO: Add id from uuid package
       id: '32',
@@ -43,6 +52,8 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
       componentDoesNotWorkAsExpected: componentNotWorkingBool,
       requestForAFeature: featureRequestBool,
     );
+
+    _logger.i(report);
   }
 
   @override
