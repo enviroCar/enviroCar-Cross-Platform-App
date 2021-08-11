@@ -49,7 +49,7 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.all(10.0),
+          padding: const EdgeInsets.fromLTRB(10.0, 20.0, 10.0, 10.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -72,7 +72,7 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                         : Colors.white,
                   ),
                   height: 40,
-                  width: deviceWidth * 0.3,
+                  width: deviceWidth * 0.46,
                   child: Center(
                     child: Text(
                       widget.button1Title,
@@ -104,7 +104,7 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                         : Colors.white,
                   ),
                   height: 40,
-                  width: deviceWidth * 0.3,
+                  width: deviceWidth * 0.46,
                   child: Center(
                     child: Text(
                       widget.button2Title,

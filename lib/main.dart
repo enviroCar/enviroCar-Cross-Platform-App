@@ -56,6 +56,8 @@ Future<void> main() async {
 
   navigatorKey = GlobalKey<NavigatorState>();
 
+  scaffoldMessengerState = GlobalKey<ScaffoldMessengerState>();
+
   // Restricts rotation of screen
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);

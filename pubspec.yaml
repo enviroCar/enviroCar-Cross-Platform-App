@@ -71,6 +71,8 @@ dependencies:
   # to generate unique IDs
   uuid: ^3.0.4
 
+  logger: ^1.0.0
+
   toast: ^0.1.5
 
   # for storing data locally

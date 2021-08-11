@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
+import 'package:provider/provider.dart';
 
 import '../../globals.dart';
-import '../../models/track.dart';
 import '../../constants.dart';
+import '../../models/track.dart';
+import '../../utils/snackBar.dart';
 import '../../screens/trackDetailsScreen.dart';
+import '../../providers/localTracksProvider.dart';
 
-class TrackCard extends StatelessWidget {
+class LocalTrackCard extends StatelessWidget {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
   final Track track;
+  final int index;
 
-  const TrackCard({@required this.track});
+  LocalTrackCard({@required this.track, @required this.index});
 
   @override
   Widget build(BuildContext context) {
@@ -44,6 +55,7 @@ class TrackCard extends StatelessWidget {
                     horizontal: 20,
                   ),
                   child: RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       text: 'Track ',
                       style: const TextStyle(
@@ -56,7 +68,6 @@ class TrackCard extends StatelessWidget {
                         ),
                       ],
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
                 Container(
@@ -65,12 +76,22 @@ class TrackCard extends StatelessWidget {
                     enabled: true,
                     onSelected: (int menuIndex) {
                       if (menuIndex == 0) {
+                        _logger.i('Going to track details screen');
                         Navigator.of(context).pushNamed(
                           TrackDetailsScreen.routeName,
                           arguments: track,
                         );
                       }
                       else if (menuIndex == 1) {
+                        final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
+                        localTracksProvider.deleteLocalTrack(track, index);
+                        displaySnackBar('Track ${track.id} deleted successfully!');
+                      }
+                      else if (menuIndex == 2) {
+                        // TODO: function to upload track
+                        debugPrint('export track tapped');
+                      }
+                      else if (menuIndex == 3) {
                         // TODO: function to export track
                         debugPrint('export track tapped');
                       }
@@ -84,6 +105,18 @@ class TrackCard extends StatelessWidget {
                       ),
                       const PopupMenuItem(
                         value: 1,
+                        child: Text(
+                          'Delete Track',
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 2,
+                        child: Text(
+                          'Upload Track as Open Data',
+                        ),
+                      ),
+                      const PopupMenuItem(
+                        value: 3,
                         child: Text(
                           'Export Track',
                         ),
@@ -100,6 +133,7 @@ class TrackCard extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
+              _logger.i('Going to track details screen');
               Navigator.of(context).pushNamed(
                 TrackDetailsScreen.routeName,
                 arguments: track,
@@ -142,9 +176,6 @@ class TrackCard extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: deviceHeight * 0.02,
-                      // ),
                       const Text(
                         'Duration',
                         style: TextStyle(
@@ -165,9 +196,6 @@ class TrackCard extends StatelessWidget {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: deviceHeight * 0.02,
-                      // ),
                       const Text(
                         'Distance',
                         style: TextStyle(
