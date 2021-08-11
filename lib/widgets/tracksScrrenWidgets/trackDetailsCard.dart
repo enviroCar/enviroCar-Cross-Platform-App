@@ -99,7 +99,7 @@ class TrackDetailsCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${track.length.toStringAsFixed(2)} km',
+                      track.length == null ? '0km' :'0${track.length.toStringAsFixed(2)}km',
                       style: const TextStyle(
                         color: kSpringColor,
                         fontWeight: FontWeight.w500,
@@ -130,7 +130,8 @@ class TrackDetailsCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
                 title: 'Car',
-                details: '${track.sensor.properties.manufacturer} - ${track.sensor.properties.model} ${track.sensor.properties.constructionYear}, ${track.sensor.properties.engineDisplacement} cm, ${track.sensor.properties.fuelType}',
+                details: '${track.sensor.properties.manufacturer} ${track.sensor.properties.fuelType}',
+                // details: '${track.sensor.properties.manufacturer}- ${track.sensor.properties.model}, ${track.sensor.properties.engineDisplacement} cm, ${track.sensor.properties.fuelType}',
                 iconData: Icons.directions_car
             ),
           ),
@@ -195,6 +196,7 @@ class TrackDetailsCard extends StatelessWidget {
   double determineSpeed(double distance, DateTime start, DateTime end) {
     final int duration = end.difference(start).inMinutes;
     final double timeInHours = duration / 60;
+    distance ??= 0.0;
     final double speed = distance / timeInHours;
     return speed;
   }

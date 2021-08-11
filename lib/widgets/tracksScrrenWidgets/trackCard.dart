@@ -164,7 +164,7 @@ class UploadedTrackCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${track.length.toStringAsFixed(2)}km',
+                      track.length == null ? '0 km' :'0${track.length.toStringAsFixed(2)}km',
                         style: const TextStyle(
                           color: kSpringColor,
                           fontSize: 25,

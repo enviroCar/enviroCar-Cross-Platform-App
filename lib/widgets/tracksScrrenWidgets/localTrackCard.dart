@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
@@ -88,8 +89,8 @@ class LocalTrackCard extends StatelessWidget {
                         displaySnackBar('Track ${track.id} deleted successfully!');
                       }
                       else if (menuIndex == 2) {
-                        // TODO: function to upload track
-                        debugPrint('export track tapped');
+                        final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
+                        localTracksProvider.uploadTrack(context, index);
                       }
                       else if (menuIndex == 3) {
                         // TODO: function to export track
