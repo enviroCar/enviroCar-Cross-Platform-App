@@ -17,12 +17,16 @@ class BluetoothProvider extends ChangeNotifier {
 
   Map<Uuid, List<Uuid>> _servicesCharacteristics;
 
-  BluetoothProvider() {
+  factory BluetoothProvider() => _bluetoothProvider;
+
+  BluetoothProvider._() {
     _flutterReactiveBle = FlutterReactiveBle();
     _detectedBluetoothDevices = [];
     _services = [];
     _servicesCharacteristics = {};
   }
+
+  static final BluetoothProvider _bluetoothProvider = BluetoothProvider._();
 
   Future<BleStatus> bluetoothState() async {
     return _flutterReactiveBle.status;
