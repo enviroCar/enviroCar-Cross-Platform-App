@@ -1,5 +1,5 @@
 class Car {
-  int id;
+  String id;
   String manufacturer;
   String model;
   int constructionYear;
@@ -16,7 +16,7 @@ class Car {
   });
 
   Car.fromJson(Map<String, dynamic> json) {
-    id = json['id'] as int;
+    id = json['id'] as String;
     manufacturer = json['manufacturer'] as String;
     model = json['model'] as String;
     constructionYear = json['constructionYear'] as int;

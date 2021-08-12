@@ -93,8 +93,8 @@ class LocalTrackCard extends StatelessWidget {
                         localTracksProvider.uploadTrack(context, index);
                       }
                       else if (menuIndex == 3) {
-                        // TODO: function to export track
-                        debugPrint('export track tapped');
+                        final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
+                        localTracksProvider.exportTrack(index);
                       }
                     },
                     itemBuilder: (_) => [

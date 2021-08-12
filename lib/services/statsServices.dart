@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'package:dio/dio.dart' as dio;
+import 'package:provider/provider.dart';
 
 import '../providers/authProvider.dart';
 import '../models/userStats.dart';
@@ -13,10 +14,12 @@ class StatsServices {
   final baseUri = 'https://envirocar.org/api/stable';
 
   // Fetches user stats
-  Future<Result> getUserStats({
-    @required AuthProvider authProvider,
-    @required UserStatsProvider userStatsProvider,
-  }) async {
+  Future<Result> getUserStats({@required BuildContext context}) async {
+    final AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
+    final UserStatsProvider userStatsProvider =
+        Provider.of<UserStatsProvider>(context, listen: false);
+
     try {
       final dio.Response responsee = await dio.Dio().get(
         '$baseUri/users/${authProvider.getUser.getUsername}/userStatistic',

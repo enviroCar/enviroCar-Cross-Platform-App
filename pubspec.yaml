@@ -94,6 +94,9 @@ dependencies:
   hive: ^2.0.4
   hive_flutter: ^1.1.0
 
+  # to export data as csv
+  csv: ^5.0.0
+
   # for OS specific directory paths
   path_provider: ^2.0.2
 
@@ -107,6 +110,9 @@ dev_dependencies:
 
   build_runner: ^2.0.6
   hive_generator: ^1.0.1
+
+  # for writing mocks for unit tests
+  mockito: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

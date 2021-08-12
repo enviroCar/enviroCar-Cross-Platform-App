@@ -1,5 +1,9 @@
+import 'dart:io';
+
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
 import '../models/track.dart';
 import '../models/localTrackModel.dart';
@@ -8,6 +12,7 @@ import '../models/properties.dart';
 import '../models/sensor.dart';
 import '../exceptionHandling/result.dart';
 import 'authProvider.dart';
+import '../models/pointProperties.dart';
 import '../services/tracksServices.dart';
 import '../utils/snackBar.dart';
 
@@ -97,6 +102,39 @@ class LocalTracksProvider extends ChangeNotifier {
         displaySnackBar('${localTrackModel.getTrackName} uploaded successfully!');
       }
     });
+  }
+
+  /// function to export the track data as csv
+  Future exportTrack(int index) async {
+    final LocalTrackModel localTrackModel = LocalTracks.getTrackAtIndex(index);
+    final List<PointProperties> properties = localTrackModel.getProperties.values.toList();
+
+    // final applicationDocumentsDirectory = await path_provider.getApplicationDocumentsDirectory();
+
+    final List<List<dynamic>> data = [];
+    final List<dynamic> dataRow = [];
+
+    dataRow.add("Latitude");
+    dataRow.add("Longitude");
+    dataRow.add("Altitude");
+
+    data.add(dataRow);
+
+    for (int i = 0; i < properties.length; i++) {
+      final List<dynamic> dataRow = [];
+      dataRow.add(properties[i].latitude);
+      dataRow.add(properties[i].longitude);
+      dataRow.add(properties[i].altitude);
+
+      data.add(dataRow);
+    }
+
+    // todo: export the converted file and store it in external storage
+
+    final String trackDataCsv = const ListToCsvConverter().convert(data);
+    // final File file = File("${applicationDocumentsDirectory.path}/${localTrackModel.getTrackName}.csv");
+    // file.writeAsString(trackDataCsv);
+
   }
 
 }
