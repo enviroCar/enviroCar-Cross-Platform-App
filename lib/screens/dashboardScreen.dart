@@ -31,32 +31,79 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey _startTrack = GlobalKey();
 
   BuildContext showcaseContext;
+  bool showWalkthrough;
+
+  void _showDialog() {
+    WidgetsBinding.instance.addPostFrameCallback(
+      (_) => Future.delayed(
+        const Duration(milliseconds: 200),
+        () {
+          showDialog(
+            context: context,
+            builder: (BuildContext ctx) {
+              return AlertDialog(
+                title: const Text(
+                  'Hi and welcome to enviroCar! Do you want to take a quick tour of the app?',
+                ),
+                actions: [
+                  //Skip button
+                  TextButton(
+                    onPressed: () {
+                      preferences.setBool('showWalkthrough', false);
+                      Navigator.pop(context);
+                    },
+                    child: const Text(
+                      'Skip',
+                      style: TextStyle(
+                        color: Color(0xFFd71f1f),
+                      ),
+                    ),
+                  ),
+
+                  //delete
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      beginWalkthrough();
+                    },
+                    child: const Text(
+                      'Let\'s Go',
+                      style: TextStyle(
+                        color: kSpringColor,
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  void beginWalkthrough() {
+    ShowCaseWidget.of(showcaseContext).startShowCase(
+      [
+        _userStats,
+        _bluetooth,
+        _obd,
+        _car,
+        _gps,
+        _selectedObd,
+        _selectedCar,
+        _startTrack,
+      ],
+    );
+  }
+
   @override
   void initState() {
     super.initState();
 
-    final bool showWalkthrough = preferences.getBool('showWalkthrough');
-
+    showWalkthrough = preferences.getBool('showWalkthrough');
     if (showWalkthrough == null) {
-      WidgetsBinding.instance.addPostFrameCallback(
-        (_) => Future.delayed(
-          const Duration(milliseconds: 200),
-          () {
-            ShowCaseWidget.of(showcaseContext).startShowCase(
-              [
-                _userStats,
-                _bluetooth,
-                _obd,
-                _car,
-                _gps,
-                _selectedObd,
-                _selectedCar,
-                _startTrack,
-              ],
-            );
-          },
-        ),
-      );
+      _showDialog();
     }
   }
 
