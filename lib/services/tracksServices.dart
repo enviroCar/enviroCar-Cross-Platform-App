@@ -37,4 +37,19 @@ class TracksServices {
       return Result.failure(exception);
     }
   }
+
+  Future<Result> getTrackFromID({@required String trackID}) async {
+    final String uri = 'https://envirocar.org/api/stable/tracks/$trackID';
+
+    try {
+      final dio.Response response = await dio.Dio().get(
+        uri,
+      );
+
+      return Result.success(response.data);
+    } catch (e) {
+      final ApplicationException exception = handleException(e);
+      return Result.failure(exception);
+    }
+  }
 }
