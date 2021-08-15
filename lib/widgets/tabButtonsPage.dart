@@ -75,8 +75,9 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                   width: deviceWidth * 0.46,
                   child: Center(
                     child: Text(
-                      widget.button1Title,
+                      widget.button1Title.toUpperCase(),
                       style: TextStyle(
+                        fontSize: 16,
                         color: selectedTab == widget.tab1
                             ? Colors.white
                             : kSpringColor,
@@ -107,8 +108,9 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                   width: deviceWidth * 0.46,
                   child: Center(
                     child: Text(
-                      widget.button2Title,
+                      widget.button2Title.toUpperCase(),
                       style: TextStyle(
+                        fontSize: 16,
                         color: selectedTab == widget.tab2
                             ? Colors.white
                             : kSpringColor,

@@ -47,10 +47,7 @@ class UploadedTrackCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 20,
-                  ),
+                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
@@ -165,7 +162,7 @@ class UploadedTrackCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${track.length.toStringAsFixed(2)}km',
+                        track.length != null ? '${track.length.toStringAsFixed(2)}km' : '0km',
                         style: const TextStyle(
                           color: kSpringColor,
                           fontSize: 25,

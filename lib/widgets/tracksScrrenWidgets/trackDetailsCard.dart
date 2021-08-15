@@ -43,7 +43,7 @@ class TrackDetailsCard extends StatelessWidget {
                 style: const TextStyle(
                   color: kWhiteColor,
                   fontWeight: FontWeight.w600,
-                  fontSize: 22,
+                  fontSize: 20,
                 ),
                 children: [
                   TextSpan(
@@ -99,7 +99,7 @@ class TrackDetailsCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${track.length.toStringAsFixed(2)} km',
+                      track.length != null ? '${track.length.toStringAsFixed(2)} km' : '0 km',
                       style: const TextStyle(
                         color: kSpringColor,
                         fontWeight: FontWeight.w500,
@@ -125,6 +125,9 @@ class TrackDetailsCard extends StatelessWidget {
               color: kGreyColor.withOpacity(0.3),
               thickness: 1.2,
             ),
+          ),
+          const SizedBox(
+            height: 10,
           ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6),
@@ -200,7 +203,13 @@ class TrackDetailsCard extends StatelessWidget {
   double determineSpeed(double distance, DateTime start, DateTime end) {
     final int duration = end.difference(start).inMinutes;
     final double timeInHours = duration / 60;
-    final double speed = distance / timeInHours;
+    double speed = 0;
+    if (distance != null) {
+      speed = distance / timeInHours;
+    }
+    if (speed.isNaN || speed.isInfinite) {
+      speed = 0;
+    }
     return speed;
   }
 }
