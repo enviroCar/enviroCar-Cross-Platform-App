@@ -19,7 +19,7 @@ class LocalTrackModelAdapter extends TypeAdapter<LocalTrackModel> {
     return LocalTrackModel(
       trackId: fields[0] as String,
       trackName: fields[1] as String,
-      modifiedTime: fields[2] as DateTime,
+      startTime: fields[2] as DateTime,
       endTime: fields[3] as DateTime,
       duration: fields[4] as String,
       distance: fields[5] as double,
@@ -41,7 +41,7 @@ class LocalTrackModelAdapter extends TypeAdapter<LocalTrackModel> {
       ..writeByte(1)
       ..write(obj.trackName)
       ..writeByte(2)
-      ..write(obj.modifiedTime)
+      ..write(obj.startTime)
       ..writeByte(3)
       ..write(obj.endTime)
       ..writeByte(4)

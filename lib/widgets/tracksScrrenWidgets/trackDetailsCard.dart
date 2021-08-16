@@ -201,8 +201,8 @@ class TrackDetailsCard extends StatelessWidget {
   }
 
   double determineSpeed(double distance, DateTime start, DateTime end) {
-    final int duration = end.difference(start).inMinutes;
-    final double timeInHours = duration / 60;
+    final Duration duration = end.difference(start);
+    final double timeInHours = duration.inHours + duration.inMinutes / 60 + duration.inSeconds / 3600;
     double speed = 0;
     if (distance != null) {
       speed = distance / timeInHours;

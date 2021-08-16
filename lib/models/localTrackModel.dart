@@ -12,7 +12,7 @@ class LocalTrackModel {
   @HiveField(1)
   final String trackName;
   @HiveField(2)
-  final DateTime modifiedTime;
+  final DateTime startTime;
   @HiveField(3)
   final DateTime endTime;
   @HiveField(4)
@@ -35,7 +35,7 @@ class LocalTrackModel {
   LocalTrackModel({
     this.trackId,
     this.trackName,
-    this.modifiedTime,
+    this.startTime,
     this.endTime,
     this.duration,
     this.distance,
@@ -55,7 +55,7 @@ class LocalTrackModel {
         runtimeType == other.runtimeType &&
         trackId == other.trackId &&
         trackName == other.trackName &&
-        modifiedTime == other.modifiedTime &&
+        startTime == other.startTime &&
         endTime == other.endTime &&
         duration == other.duration &&
         distance == other.distance &&
@@ -71,7 +71,7 @@ class LocalTrackModel {
   int get hashCode {
     return trackId.hashCode ^
         trackName.hashCode ^
-        modifiedTime.hashCode ^
+        startTime.hashCode ^
         endTime.hashCode ^
         duration.hashCode ^
         distance.hashCode ^
@@ -83,6 +83,12 @@ class LocalTrackModel {
         properties.hashCode;
   }
 
+
+  @override
+  String toString() {
+    return 'LocalTrackModel{trackId: $trackId, trackName: $trackName, startTime: $startTime, endTime: $endTime, duration: $duration, distance: $distance, speed: $speed, selectedCarId: $selectedCarId, isTrackUploaded: $isTrackUploaded, stops: $stops, bluetoothDevice: $bluetoothDevice, properties: $properties}';
+  }
+
   /// function to return [trackId] of the [track]
   String get getTrackId => trackId;
 
@@ -90,7 +96,7 @@ class LocalTrackModel {
   double get getDistance => distance;
 
   /// function to return [startTime] of the [track]
-  DateTime get getStartTime => modifiedTime;
+  DateTime get getStartTime => startTime;
 
   /// function to return [endTime] of the [track]
   DateTime get getEndTime => endTime;

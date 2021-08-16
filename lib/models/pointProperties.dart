@@ -58,4 +58,8 @@ class PointProperties extends HiveObject {
     return data;
   }
 
+  @override
+  String toString() {
+    return 'PointProperties{latitude: $latitude, longitude: $longitude, altitude: $altitude, consumption: $consumption, co2: $co2, speed: $speed, maf: $maf, time: $time}';
+  }
 }

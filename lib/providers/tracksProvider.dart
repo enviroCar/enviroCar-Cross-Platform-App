@@ -1,9 +1,13 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 
 import '../models/track.dart';
+import '../models/localTrackModel.dart';
+import '../services/tracksServices.dart';
 
 class TracksProvider with ChangeNotifier {
   List<Track> _tracks;
+  List<LocalTrackModel> uploadedTracksList;
 
   // Converts JSON tracks data from server to list
   // and notifies widgets once done
@@ -18,6 +22,17 @@ class TracksProvider with ChangeNotifier {
 
       notifyListeners();
     }
+    setTrackData();
+  }
+
+  Future setTrackData() async {
+    final List<LocalTrackModel> list = [];
+    for (final Track track in _tracks) {
+      final LocalTrackModel trackModel = await TracksServices().getTrackWithId(track.id);
+      list.add(trackModel);
+    }
+    uploadedTracksList = list;
+    notifyListeners();
   }
 
   // Provides tracks data to widgets
@@ -28,5 +43,9 @@ class TracksProvider with ChangeNotifier {
   // Removes tracks when user logs out
   void removeTracks() {
     _tracks = [];
+  }
+
+  List<LocalTrackModel> getTracksWithId() {
+    return [...uploadedTracksList];
   }
 }

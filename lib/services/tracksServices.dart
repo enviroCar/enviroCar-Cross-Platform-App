@@ -1,11 +1,12 @@
 import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
-
 import 'package:dio/dio.dart' as dio;
 
+import '../models/user.dart';
+import '../utils/dateUtil.dart';
 import '../models/feature.dart';
 import '../models/geometry.dart';
+import 'secureStorageServices.dart';
 import '../models/localTrackModel.dart';
 import '../models/pointProperties.dart';
 import '../models/phenomenons.dart';
@@ -39,6 +40,63 @@ class TracksServices {
     } catch (e) {
       final ApplicationException exception = handleException(e);
       return Result.failure(exception);
+    }
+  }
+
+  Future<LocalTrackModel> getTrackWithId(String id) async {
+    final User user = await SecureStorageServices().getUserFromSecureStorage();
+    final String uri = 'https://envirocar.org/api/stable/users/${user.getUsername}/tracks/$id';
+
+    try {
+      final dio.Response response = await dio.Dio().get(
+        uri,
+        options: dio.Options(
+          headers: {
+            'X-User': user.getUsername,
+            'X-Token': user.getPassword,
+          },
+        ),
+      );
+
+      final Duration duration = formatDate(response.data['properties']['end'] as String)
+          .difference(formatDate(response.data['properties']['begin'] as String));
+
+      final double time = duration.inHours + duration.inMinutes / 60 + duration.inSeconds / 3600;
+
+      final Map<int, PointProperties> properties = {};
+      final List feature = response.data['features'] as List<dynamic>;
+      for (var i = 0; i < feature.length; i++) {
+        final PointProperties pointProperties = PointProperties(
+          latitude: feature[i]['geometry']['coordinates'][0] as double,
+          longitude: feature[i]['geometry']['coordinates'][1] as double,
+          time: formatDate(feature[i]['properties']['time'] as String).toString(),
+          consumption: feature[i]['properties']['phenomenons']['Consumption']['value'] as double,
+          co2: feature[i]['properties']['phenomenons']['CO2']['value'] as double,
+          speed: feature[i]['properties']['phenomenons']['Speed']['value'] as double,
+          maf: feature[i]['properties']['phenomenons']['MAF']['value'] as double,
+        );
+        properties[i + 1] = pointProperties;
+      }
+
+      final LocalTrackModel localTrackModel = LocalTrackModel(
+        trackId: response.data['properties']['id'] as String,
+        trackName: response.data['properties']['name'] as String,
+        startTime: formatDate(response.data['properties']['begin'] as String),
+        endTime: formatDate(response.data['properties']['end'] as String),
+        duration: duration.toString()
+          .replaceFirst('.000000', ''),
+        distance: response.data['properties']['length'] as double,
+        speed: response.data['properties']['length'] / time as double,
+        selectedCarId: response.data['properties']['sensor']['properties']['id'] as String,
+        isTrackUploaded: true,
+        properties: properties,
+      );
+
+      return localTrackModel;
+
+    } catch (e) {
+      handleException(e);
+      return null;
     }
   }
 

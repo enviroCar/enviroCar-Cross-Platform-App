@@ -7,7 +7,10 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart';
 
+import '../obd/obdCommands.dart';
+import '../obd/string_util.dart';
 import '../constants.dart';
+import '../utils/dateUtil.dart';
 import '../models/pointProperties.dart';
 import 'bluetoothProvider.dart';
 import '../models/localTrackModel.dart';
@@ -132,12 +135,12 @@ class GpsTrackProvider extends ChangeNotifier {
     trackDuration();
   }
 
-  void collectFeatureData([Timer timer]) {
+  Future collectFeatureData([Timer timer]) async {
     _timer?.cancel();
     timer?.cancel();
 
     if (currentLocation != null && !isTrackingPaused && _location != null) {
-      BluetoothProvider().interactWithDevice([0x22]);
+      BluetoothProvider().interactWithDevice(stringToIntList(obdRequestSymbol['SPD'] + returnSymbol));
       altitude = currentLocation.altitude;
       // todo: update and set speed, consumption, co2, maf from parsed data
       String time = DateTime.now().toUtc().toString().substring(0, 19).replaceAll(" ", "T");
@@ -491,7 +494,7 @@ class GpsTrackProvider extends ChangeNotifier {
     final LocalTrackModel trackModel = LocalTrackModel(
       trackId: trackId,
       trackName: getTrackName,
-      modifiedTime: formatDate(trackStartTime),
+      startTime: formatDate(trackStartTime),
       endTime: formatDate(trackEndTime),
       duration: getTrackDuration,
       distance: getDistance,
@@ -504,18 +507,6 @@ class GpsTrackProvider extends ChangeNotifier {
     );
 
     return trackModel;
-  }
-
-  DateTime formatDate(String date) {
-    final DateTime dateTime = DateTime(
-      int.parse(date.substring(0, 4)),    // year
-      int.parse(date.substring(5, 7)),    // month
-      int.parse(date.substring(8, 10)),   // day
-      int.parse(date.substring(11, 13)),  // hour
-      int.parse(date.substring(14, 16)),  // minute
-      int.parse(date.substring(17, 19)),  // second
-    );
-    return dateTime;
   }
 
   /// function to reset the values
