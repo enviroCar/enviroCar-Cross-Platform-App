@@ -8,6 +8,7 @@ import '../services/tracksServices.dart';
 class TracksProvider with ChangeNotifier {
   List<Track> _tracks;
   List<LocalTrackModel> uploadedTracksList;
+  bool uploadedTrackListSet = false;
 
   // Converts JSON tracks data from server to list
   // and notifies widgets once done
@@ -32,6 +33,7 @@ class TracksProvider with ChangeNotifier {
       list.add(trackModel);
     }
     uploadedTracksList = list;
+    uploadedTrackListSet = true;
     notifyListeners();
   }
 
@@ -44,6 +46,8 @@ class TracksProvider with ChangeNotifier {
   void removeTracks() {
     _tracks = [];
   }
+
+  bool get getListSetStatus => uploadedTrackListSet;
 
   List<LocalTrackModel> getTracksWithId() {
     return [...uploadedTracksList];

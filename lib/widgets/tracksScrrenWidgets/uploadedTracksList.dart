@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'noLocalTracks.dart';
 import '../../constants.dart';
 import '../../models/track.dart';
 import '../../exceptionHandling/result.dart';
 import '../../providers/authProvider.dart';
 import '../../providers/tracksProvider.dart';
 import '../../services/tracksServices.dart';
-import '../../widgets/tracksScrrenWidgets/trackCard.dart';
-import 'noLocalTracks.dart';
+import '../../widgets/tracksScrrenWidgets/uploadedTrackCard.dart';
 
 class UploadedTracksList extends StatefulWidget {
   @override
@@ -65,6 +65,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
                 padding: const EdgeInsets.all(15.0),
                 child: UploadedTrackCard(
                   track: tracksList[i],
+                  index: i,
                 ),
               );
             },

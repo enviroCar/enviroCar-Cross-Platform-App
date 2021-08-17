@@ -48,8 +48,6 @@ class GpsTrackProvider extends ChangeNotifier {
   double maf;
   int count;
 
-  String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";
-
   LocationData startLocation;
   LocationData currentLocation;
 
@@ -221,60 +219,6 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to update pin points on map
   void updatePins() {
-    LatLngBounds latLngBounds;
-
-    if (startLocation.latitude < currentLocation.latitude && startLocation.longitude < currentLocation.longitude) {
-      latLngBounds = LatLngBounds(
-        southwest: LatLng(
-          startLocation.latitude,
-          startLocation.longitude
-        ),
-        northeast: LatLng(
-          currentLocation.latitude,
-          currentLocation.longitude
-        )
-      );
-    }
-
-    else if (startLocation.latitude < currentLocation.latitude) {
-      latLngBounds = LatLngBounds(
-        southwest: LatLng(
-          startLocation.latitude,
-          currentLocation.longitude
-        ),
-        northeast: LatLng(
-          currentLocation.latitude,
-          startLocation.longitude
-        )
-      );
-    }
-
-    else if (startLocation.longitude < currentLocation.longitude) {
-      latLngBounds = LatLngBounds(
-        southwest: LatLng(
-          currentLocation.latitude,
-          startLocation.longitude
-        ),
-        northeast: LatLng(
-          startLocation.latitude,
-          currentLocation.longitude
-        )
-      );
-    }
-
-    else {
-      latLngBounds = LatLngBounds(
-        southwest: LatLng(
-          currentLocation.latitude,
-          currentLocation.longitude
-        ),
-        northeast: LatLng(
-          startLocation.latitude,
-          startLocation.longitude
-        )
-      );
-    }
-
     final newPinLocation = LatLng(currentLocation.latitude, currentLocation.longitude);
 
     cameraPosition = CameraPosition(
