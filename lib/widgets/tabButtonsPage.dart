@@ -69,7 +69,7 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                     ),
                     color: selectedTab == widget.tab1
                         ? kSpringColor
-                        : Colors.white,
+                        : Theme.of(context).primaryColor,
                   ),
                   height: 40,
                   width: deviceWidth * 0.3,
@@ -101,7 +101,7 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                     ),
                     color: selectedTab == widget.tab2
                         ? kSpringColor
-                        : Colors.white,
+                        : Theme.of(context).primaryColor,
                   ),
                   height: 40,
                   width: deviceWidth * 0.3,

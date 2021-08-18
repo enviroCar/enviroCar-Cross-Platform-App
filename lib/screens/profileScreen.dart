@@ -8,7 +8,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../providers/authProvider.dart';
 import '../services/authenticationServices.dart';
 import './reportIssueScreen.dart';
-import '../widgets/dividerLine.dart';
 import '../providers/userStatsProvider.dart';
 import '../providers/tracksProvider.dart';
 import './logBookScreen.dart';
@@ -31,34 +30,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
       {@required String title,
       @required IconData iconData,
       @required void Function() onTap,
-      @required Color color}) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onTap,
-          child: Row(
-            children: [
-              Icon(
-                iconData,
-                color: color,
-                size: 35,
-              ),
-              const SizedBox(
-                width: 10,
-              ),
-              Text(
-                title,
-                style: TextStyle(
-                  color: color,
-                  fontSize: 18,
-                  fontWeight: FontWeight.normal,
+      Color color}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Column(
+        children: [
+          GestureDetector(
+            onTap: onTap,
+            child: Row(
+              children: [
+                Icon(
+                  iconData,
+                  size: 35,
+                  color: color ?? Theme.of(context).iconTheme.color,
                 ),
-              ),
-            ],
+                const SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  title,
+                  style: TextStyle(
+                    color: color ?? Theme.of(context).iconTheme.color,
+                    fontSize: 18,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
-        DividerLine(),
-      ],
+        ],
+      ),
     );
   }
 
@@ -86,7 +87,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildIconButton(
               title: 'Log Book',
               iconData: Icons.menu_book,
-              color: Colors.black,
               onTap: () {
                 _logger.i('Going to logbook screen');
                 Navigator.of(context).pushNamed(LogBookScreen.routeName);
@@ -97,7 +97,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildIconButton(
               title: 'Help',
               iconData: Icons.help_outline,
-              color: Colors.black,
               onTap: () {
                 _logger.i('Going to help screen');
                 Navigator.of(context).pushNamed(HelpScreen.routeName);
@@ -108,7 +107,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildIconButton(
               title: 'Report Issue',
               iconData: Icons.bug_report,
-              color: Colors.black,
               onTap: () {
                 _logger.i('Going to report issue screen');
                 Navigator.of(context).pushNamed(ReportIssueScreen.routeName);
@@ -119,7 +117,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildIconButton(
               title: 'Rate Us',
               iconData: Icons.star,
-              color: Colors.black,
               onTap: () async {
                 if (await canLaunch(playstoreUrl)) {
                   _logger.i('Launching playstore');
@@ -136,7 +133,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
             buildIconButton(
               title: 'Logout',
               iconData: Icons.logout,
-              color: Colors.black,
               onTap: () {
                 _logger.i('logoutUser called');
                 AuthenticationServices().logoutUser(

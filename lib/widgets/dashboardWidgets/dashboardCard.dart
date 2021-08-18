@@ -31,7 +31,7 @@ class DashboardCard extends StatelessWidget {
           horizontal: 15,
         ),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).primaryColor,
           boxShadow: [
             BoxShadow(
               color: Colors.grey[300],
