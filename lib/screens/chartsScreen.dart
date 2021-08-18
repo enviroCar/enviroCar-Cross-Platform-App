@@ -9,6 +9,11 @@ import '../constants.dart';
 import '../widgets/trackDetailsWidgets/chartWidget.dart';
 import '../models/chartData.dart';
 
+/// Screen to show graphs for Speed, CO2, Consumption and Altitude
+///
+/// Currently all the graphs, if data available, are shown in the same screen
+/// so that user's can compare them with each other
+
 class ChartScreen extends StatefulWidget {
   final Map<String, dynamic> track;
 

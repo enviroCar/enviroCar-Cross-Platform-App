@@ -21,6 +21,7 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
+  // keys used to focus the tooltip of instructions on specific widget
   final GlobalKey _userStats = GlobalKey();
   final GlobalKey _bluetooth = GlobalKey();
   final GlobalKey _obd = GlobalKey();
@@ -30,9 +31,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey _selectedCar = GlobalKey();
   final GlobalKey _startTrack = GlobalKey();
 
+  // context passed to show the instructions
   BuildContext showcaseContext;
+
   bool showWalkthrough;
 
+  // dialog to ask whether to show the instructions or not
   void _showDialog() {
     WidgetsBinding.instance.addPostFrameCallback(
       (_) => Future.delayed(
@@ -60,7 +64,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
 
-                  //delete
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
@@ -82,6 +85,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
+  // initializes the instructions
   void beginWalkthrough() {
     ShowCaseWidget.of(showcaseContext).startShowCase(
       [
@@ -101,6 +105,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   void initState() {
     super.initState();
 
+    /// check whether user has opened the app the first time
+    /// if yes then ask whether to show the instructions or not
+    /// if not then don't show any dialogs or instructions
     showWalkthrough = preferences.getBool('showWalkthrough');
     if (showWalkthrough == null) {
       _showDialog();

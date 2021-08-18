@@ -1,7 +1,10 @@
 import 'appException.dart';
 
-/// object returned by http calls to tell whether the call
-/// was successful or not
+/// object returned by http call
+///
+/// it shows the status of the call made and has a value attribute
+/// that can be used to store the data received from the respone
+/// and later use in the UI
 
 enum ResultStatus { success, error }
 

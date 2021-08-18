@@ -1,3 +1,5 @@
+/// All the string values shown on the help screen
+
 const String help_headline_1 = '1. About enviroCar';
 const String help_content_1 =
     'This app is part of the Citizen Science platform enviroCar. You can use it to collect and analyze test drives and provide the measured data as Open Data.\n\nenviroCar is currently in a beta phase. As a result, the software’s stability is not yet comparable to standards associated with mature software.\n\nWe welcome your feedback (enviroCar@52north.org)! Your advice and suggestions help us to improve the software.';
