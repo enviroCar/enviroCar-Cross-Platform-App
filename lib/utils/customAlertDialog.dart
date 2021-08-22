@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../widgets/iconBadge.dart';
 
+/// function to show alert dialog
 // ignore: avoid_positional_boolean_parameters
 void showAlertDialog({
       @required BuildContext context,

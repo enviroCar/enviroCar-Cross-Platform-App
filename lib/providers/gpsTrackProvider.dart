@@ -138,9 +138,9 @@ class GpsTrackProvider extends ChangeNotifier {
     timer?.cancel();
 
     if (currentLocation != null && !isTrackingPaused && _location != null) {
-      BluetoothProvider().interactWithDevice(stringToIntList(obdRequestSymbol['SPD'] + returnSymbol));
       altitude = currentLocation.altitude;
       // todo: update and set speed, consumption, co2, maf from parsed data
+      BluetoothProvider().interactWithDevice(stringToIntList(obdRequestSymbol['SPD'] + returnSymbol));
       String time = DateTime.now().toUtc().toString().substring(0, 19).replaceAll(" ", "T");
       time = '${time}Z';
 

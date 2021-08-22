@@ -17,6 +17,7 @@ import '../exceptionHandling/result.dart';
 import '../exceptionHandling/errorHandler.dart';
 
 class TracksServices {
+  /// function to get all the tracks uploaded by the currently signed in user
   Future<Result> getTracks({
     @required AuthProvider authProvider,
     @required TracksProvider tracksProvider,
@@ -43,6 +44,7 @@ class TracksServices {
     }
   }
 
+  /// function to get track with specific id from the server
   Future<LocalTrackModel> getTrackWithId(String id) async {
     final User user = await SecureStorageServices().getUserFromSecureStorage();
     final String uri = 'https://envirocar.org/api/stable/users/${user.getUsername}/tracks/$id';
@@ -100,6 +102,7 @@ class TracksServices {
     }
   }
 
+  /// function to send a post request with track data to the server
   Future<Result> postTrack({
     @required AuthProvider authProvider,
     @required LocalTrackModel localTrackModel

@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../globals.dart';
 import '../../constants.dart';
+import '../../utils/enums.dart';
 import '../../models/track.dart';
 import '../../utils/snackBar.dart';
 import '../../utils/mapFunctions.dart';
@@ -101,21 +102,30 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                     onSelected: (int menuIndex) {
                       if (menuIndex == 0) {
                         _logger.i('Going to track details screen');
-                        Navigator.of(context).pushNamed(
-                          TrackDetailsScreen.routeName,
-                          arguments: widget.track,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TrackDetailsScreen(
+                                track: widget.track,
+                                trackType: TrackType.Local,
+                                index: widget.index
+                            ),
+                          ),
                         );
                       }
                       else if (menuIndex == 1) {
+                        _logger.i('Call function to delete track from local database');
                         final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
                         localTracksProvider.deleteLocalTrack(widget.track, widget.index);
                         displaySnackBar('Track ${widget.track.id} deleted successfully!');
                       }
                       else if (menuIndex == 2) {
+                        _logger.i('Call function to upload track to the server.');
                         final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
                         localTracksProvider.uploadTrack(context, widget.index);
                       }
                       else if (menuIndex == 3) {
+                        _logger.i('Call function to convert track data to csv');
                         final localTracksProvider = Provider.of<LocalTracksProvider>(context, listen: false);
                         localTracksProvider.exportTrack(widget.index);
                       }
@@ -158,9 +168,15 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
           GestureDetector(
             onTap: () {
               _logger.i('Going to track details screen');
-              Navigator.of(context).pushNamed(
-                TrackDetailsScreen.routeName,
-                arguments: widget.track,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrackDetailsScreen(
+                      track: widget.track,
+                      trackType: TrackType.Local,
+                      index: widget.index
+                  ),
+                ),
               );
             },
             child: SizedBox(
@@ -194,8 +210,8 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                       polylines: polyLines,
                       onMapCreated: (GoogleMapController googleMapController) async {
                         _googleMapController = googleMapController;
-                        animateCamera(startPosition, destinationPosition);
                         polyLines = await setPolyLines(trackModel.properties.values.toList());
+                        animateCamera(startPosition, destinationPosition);
                       },
                     );
                   }
@@ -204,9 +220,16 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(
-                TrackDetailsScreen.routeName,
-                arguments: widget.track,
+              _logger.i('Going to track details screen');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrackDetailsScreen(
+                      track: widget.track,
+                      trackType: TrackType.Local,
+                      index: widget.index
+                  ),
+                ),
               );
             },
             child: Container(

@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../globals.dart';
 import '../../constants.dart';
+import '../../utils/enums.dart';
 import '../../models/track.dart';
 import '../../utils/mapFunctions.dart';
 import '../../models/localTrackModel.dart';
@@ -96,9 +97,15 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                     onSelected: (int index) {
                       if (index == 0) {
                         _logger.i('Going to track details screen');
-                        Navigator.of(context).pushNamed(
-                          TrackDetailsScreen.routeName,
-                          arguments: widget.track,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TrackDetailsScreen(
+                              track: widget.track,
+                              trackType: TrackType.Remote,
+                              index: widget.index
+                            ),
+                          ),
                         );
                       }
                       else if (index == 1) {
@@ -132,9 +139,15 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
           GestureDetector(
             onTap: () {
               _logger.i('Going to track details screen');
-              Navigator.of(context).pushNamed(
-                TrackDetailsScreen.routeName,
-                arguments: widget.track,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrackDetailsScreen(
+                      track: widget.track,
+                      trackType: TrackType.Remote,
+                      index: widget.index
+                  ),
+                ),
               );
             },
             child: SizedBox(
@@ -175,8 +188,8 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                         polylines: polyLines,
                         onMapCreated: (GoogleMapController googleMapController) async {
                           _googleMapController = googleMapController;
-                          animateCamera(startPosition, destinationPosition);
                           polyLines = await setPolyLines(trackModel.properties.values.toList());
+                          animateCamera(startPosition, destinationPosition);
                       },
                     );
                   } else {
@@ -196,9 +209,15 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(
-                TrackDetailsScreen.routeName,
-                arguments: widget.track,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrackDetailsScreen(
+                      track: widget.track,
+                      trackType: TrackType.Remote,
+                      index: widget.index
+                  ),
+                ),
               );
             },
             child: Container(

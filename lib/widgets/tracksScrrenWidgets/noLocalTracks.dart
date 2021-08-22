@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../../globals.dart';
 import '../../constants.dart';
 
-class NoLocalTracks extends StatelessWidget {
+class NoTracksWidget extends StatelessWidget {
   final String title;
   final String subTitle;
   final IconData iconData;
 
 
-  const NoLocalTracks({
+  const NoTracksWidget({
     @required this.title,
     @required this.subTitle,
     @required this.iconData

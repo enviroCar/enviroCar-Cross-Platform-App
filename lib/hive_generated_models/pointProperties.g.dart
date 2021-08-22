@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'pointProperties.dart';
+part of '../models/pointProperties.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

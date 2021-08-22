@@ -17,3 +17,8 @@ enum LocationStatus {
   enabled,
   disabled
 }
+
+enum TrackType {
+  Local,
+  Remote
+}

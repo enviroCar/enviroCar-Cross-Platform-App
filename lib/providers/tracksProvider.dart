@@ -26,6 +26,7 @@ class TracksProvider with ChangeNotifier {
     setTrackData();
   }
 
+  /// function to fetch [track] with [track.id] from the server and add them to [uploadedTracksList]
   Future setTrackData() async {
     final List<LocalTrackModel> list = [];
     for (final Track track in _tracks) {
@@ -47,8 +48,10 @@ class TracksProvider with ChangeNotifier {
     _tracks = [];
   }
 
+  /// function to get the status of fetching of tracks with id
   bool get getListSetStatus => uploadedTrackListSet;
 
+  /// function to get [uploadedTracksList]
   List<LocalTrackModel> getTracksWithId() {
     return [...uploadedTracksList];
   }

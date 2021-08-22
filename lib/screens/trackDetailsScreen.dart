@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../utils/enums.dart';
 import '../models/track.dart';
 import '../widgets/tracksScrrenWidgets/trackDetailsCard.dart';
 import '../widgets/trackDetailsWidgets/stackedMapButton.dart';
@@ -9,9 +10,13 @@ class TrackDetailsScreen extends StatelessWidget {
   static const routeName = '/trackDetailsScreen';
 
   final Track track;
+  final TrackType trackType;
+  final int index;
 
   const TrackDetailsScreen({
     @required this.track,
+    @required this.trackType,
+    @required this.index
   });
 
   @override
@@ -30,7 +35,10 @@ class TrackDetailsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            StackedMapButton(),
+            StackedMapButton(
+              trackType: trackType,
+              index: index,
+            ),
             const SizedBox(
               height: 20,
             ),

@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import '../constants.dart';
 import '../models/pointProperties.dart';
 
+/// function to get [LatLngBounds] for between [startLocation] and [destinationLocation]
 LatLngBounds getLatLngBounds(LatLng startLocation, LatLng destinationLocation) {
   LatLngBounds latLngBounds;
 
@@ -63,6 +64,7 @@ LatLngBounds getLatLngBounds(LatLng startLocation, LatLng destinationLocation) {
   return latLngBounds;
 }
 
+/// function to get [CameraPosition] for given latitude and longitude
 CameraPosition getInitialCameraPosition(double latitude, double longitude) {
   final CameraPosition cameraPosition = CameraPosition(
       target: LatLng(
@@ -74,6 +76,7 @@ CameraPosition getInitialCameraPosition(double latitude, double longitude) {
   return cameraPosition;
 }
 
+/// function to get Set of [Marker] for [startPosition] and [destinationPosition]
 Set<Marker> getMarkers(LatLng startPosition, LatLng destinationPosition) {
   final Set<Marker> markers = {};
 
@@ -93,6 +96,7 @@ Set<Marker> getMarkers(LatLng startPosition, LatLng destinationPosition) {
   return markers;
 }
 
+/// function to get Set of [Circle] for [startPosition] and [destinationPosition]
 Set<Circle> getCircles(LatLng startPosition, LatLng destinationPosition) {
   final Set<Circle> circles = {};
 
@@ -122,6 +126,7 @@ Set<Circle> getCircles(LatLng startPosition, LatLng destinationPosition) {
   return circles;
 }
 
+/// function to get Set of [Polyline] for a set of positions
 Future<Set<Polyline>> setPolyLines(List<PointProperties> properties) async {
   final Set<Polyline> polyLines = {};
   int len = properties.length;
@@ -161,6 +166,7 @@ Future<Set<Polyline>> setPolyLines(List<PointProperties> properties) async {
   return polyLines;
 }
 
+/// function to get distance between [startLocation] and [destinationLocation] in km
 double distanceBetweenCoordinates(LatLng startLocation, LatLng destinationLocation) {
   return GeolocatorPlatform.instance.distanceBetween(startLocation.latitude, startLocation.longitude, destinationLocation.latitude, destinationLocation.longitude) / 1000;
 }

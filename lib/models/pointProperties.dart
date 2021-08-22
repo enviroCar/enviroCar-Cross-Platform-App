@@ -2,7 +2,7 @@ import 'package:hive/hive.dart';
 
 import '../constants.dart';
 
-part 'pointProperties.g.dart';
+part '../hive_generated_models/pointProperties.g.dart';
 
 @HiveType(typeId: kPointPropertiesId)
 class PointProperties extends HiveObject {

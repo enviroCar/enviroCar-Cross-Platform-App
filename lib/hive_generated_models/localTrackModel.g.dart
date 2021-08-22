@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'localTrackModel.dart';
+part of '../models/localTrackModel.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator

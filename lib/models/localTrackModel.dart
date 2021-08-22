@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 import '../constants.dart';
 import 'pointProperties.dart';
 
-part 'localTrackModel.g.dart';
+part '../hive_generated_models/localTrackModel.g.dart';
 
 @HiveType(typeId: kLocalTrackTypeId)
 class LocalTrackModel {

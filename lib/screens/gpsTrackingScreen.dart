@@ -108,12 +108,14 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                               splashColor: kSecondaryColor,
                               onTap: () async {
                                 if (gpsTrackProvider.isTrackingPaused) {
+                                  _logger.i('Call resume tracking function');
                                   gpsTrackProvider.resumeTracking();
                                   setState(() {
                                     showPauseIcon = true;
                                   });
                                 }
                                 else {
+                                  _logger.i('Call pause tracking function');
                                   gpsTrackProvider.pauseTracking();
                                   setState(() {
                                     showPauseIcon = false;
@@ -135,6 +137,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                             child: InkWell(
                               splashColor: kSecondaryColor,
                               onTap: () async {
+                                _logger.i('call my location function to animate camera and bring current location to focus');
                                 await myLocation();
                               },
                               child: const SizedBox(
@@ -153,6 +156,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                       child: InkWell(
                         splashColor: kWhiteColor,
                         onTap: () async {
+                          _logger.i('Call function to zoom in');
                           await zoomIn();
                         },
                         child: const SizedBox(
@@ -171,6 +175,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                       child: InkWell(
                         splashColor: kWhiteColor,
                         onTap: () async {
+                          _logger.i('Call function to zoom out.');
                           await zoomOut();
                         },
                         child: const SizedBox(
@@ -239,6 +244,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                         TimeWidget(
                           duration: gpsTrackProvider.getTrackDuration,
                           function: () {
+                            _logger.i('Stopping gps tracking and going to edit track name widget');
                             gpsTrackProvider.stopTrack();
                           },
                         ),

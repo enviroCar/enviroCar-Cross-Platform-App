@@ -1,12 +1,13 @@
-import 'package:envirocar_app_main/providers/carsProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'trackDetailsTile.dart';
 import '../../constants.dart';
 import '../../globals.dart';
+import '../../providers/carsProvider.dart';
 import '../../models/localTrackModel.dart';
 import '../../providers/localTracksProvider.dart';
 import '../../providers/gpsTrackProvider.dart';
@@ -34,6 +35,12 @@ class _EditTrackNameState extends State<EditTrackName> {
 
   bool useDefaultTrackName = true;
   String customTrackName;
+
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+        printTime: true
+    ),
+  );
 
   @override
   void initState() {
@@ -215,6 +222,7 @@ class _EditTrackNameState extends State<EditTrackName> {
                           color: kSpringColor,
                           onTap: () {
                             if (_key.currentState.validate()) {
+                              _logger.i('Call function to save recording data and set track name.');
                               widget.gpsTrackProvider.setTrackName(customTrackName);
                               final CarsProvider carsProvider = Provider.of<CarsProvider>(context, listen: false);
                               final LocalTrackModel track = widget.gpsTrackProvider.getLocalTrack(sensorId: carsProvider.getSelectedCar.id.toString());

@@ -9,7 +9,6 @@ class DetailsIcon extends StatelessWidget {
 
   const DetailsIcon({this.title, this.data, this.iconData});
 
-
   @override
   Widget build(BuildContext context) {
     return Column(

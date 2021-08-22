@@ -6,10 +6,14 @@ import '../services/locationStatusChecker.dart';
 class LocationStatusProvider extends ChangeNotifier {
   LocationStatus locationStatus;
 
-  LocationStatusProvider() {
+  factory LocationStatusProvider() => _locationStatusProvider;
+
+  LocationStatusProvider._() {
     locationStatus = LocationStatus.disabled;
     updateLocationStatus();
   }
+
+  static final LocationStatusProvider _locationStatusProvider = LocationStatusProvider._();
 
   /// function to update location stream upon listening to status updates
   Future updateLocationStatus() async {

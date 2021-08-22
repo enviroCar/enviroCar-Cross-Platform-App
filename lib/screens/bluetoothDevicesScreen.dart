@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 import 'package:flutter_blue/flutter_blue.dart' as blue;
@@ -22,6 +23,12 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   int selected;
   blue.BluetoothDevice selectedBluetoothDevice;
   BluetoothProvider bluetoothProvider;
+
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+        printTime: true
+    ),
+  );
 
   /// Toggles bluetooth on and off
   // Works only on Android
@@ -99,6 +106,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                 _isScanning = true;
               });
               bluetoothProvider.startScan();
+              _logger.i('Bluetooth Scanning started to detect nearby Bluetooth devices.');
             } else {
               showDialog(
                 context: context,
@@ -111,6 +119,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
             }
           } else {
             bluetoothProvider.stopScan();
+            _logger.i('Bluetooth scanning stopped.');
             setState(() {
               _isScanning = false;
             });
@@ -147,6 +156,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                     groupValue: selected,
                     onChanged: (int value) async {
                       if (selected != -1) {
+                        _logger.i('Disconnect from previously connected device before connecting to new one.');
                         bluetoothProvider.disconnectDevice();
                       }
                       setState(() {
@@ -159,6 +169,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                         setState(() {
                           selected = -1;
                         });
+                      } else {
+                        _logger.i('Connected successfully to the ${detectedBluetoothDevices[index].name} ${detectedBluetoothDevices[index].id}');
                       }
                     },
                   ),

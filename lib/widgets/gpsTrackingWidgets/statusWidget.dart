@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:logger/logger.dart';
 
 import '../../globals.dart';
 import '../../constants.dart';
@@ -101,6 +102,12 @@ class LocationStatusWidget extends StatelessWidget {
 }
 
 class BluetoothStatusWidget extends StatelessWidget {
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+        printTime: true
+    ),
+  );
+
   @override
   Widget build(BuildContext context) {
     return StatusIndicatorCard(
@@ -109,7 +116,7 @@ class BluetoothStatusWidget extends StatelessWidget {
       buttonTitle: 'Select OBD-II adapter',
       icon: const Icon(Icons.bluetooth, size: 50, color: kWhiteColor),
       function: () {
-        // _logger.i('Going to bluetooth devices screen');
+        _logger.i('Going to bluetooth devices screen');
         Navigator.pushReplacementNamed(context, BluetoothDevicesScreen.routeName);
       },
     );

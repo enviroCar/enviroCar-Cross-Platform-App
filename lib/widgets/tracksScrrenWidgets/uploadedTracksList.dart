@@ -50,7 +50,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
 
           return const CircularProgressIndicator();
         } else if (tracksList.isEmpty) {
-          return const NoLocalTracks(
+          return const NoTracksWidget(
             title: 'no tracks uploaded',
             subTitle: 'You have 0 uploaded tracks',
             iconData: Icons.location_history_rounded,

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../globals.dart';
 
+/// function to display snack bar
 void displaySnackBar(String message) {
   final snackBar = SnackBar(
     content: Text(

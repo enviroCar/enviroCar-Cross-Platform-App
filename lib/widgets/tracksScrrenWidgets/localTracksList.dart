@@ -13,7 +13,7 @@ class LocalTracksList extends StatelessWidget {
       builder: (context, localTracksProvider, child) {
         final List<Track> trackList = localTracksProvider.getLocalTracks;
         if (trackList.isEmpty) {
-          return const NoLocalTracks(
+          return const NoTracksWidget(
             title: 'no local tracks',
             subTitle: 'You have 0 local tracks',
             iconData: Icons.map,

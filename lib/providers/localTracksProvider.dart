@@ -1,9 +1,6 @@
-import 'dart:io';
-
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:path_provider/path_provider.dart' as path_provider;
 
 import '../models/track.dart';
 import '../models/localTrackModel.dart';
@@ -28,6 +25,7 @@ class LocalTracksProvider extends ChangeNotifier {
 
   static final LocalTracksProvider _localTracksProvider = LocalTracksProvider._();
 
+  /// function to fetch [tracks] from the database and add them in [_tracksList]
   void setLocalTracks() {
     final list = LocalTracks.getLocalTracks();
     for (var i = 0; i < list.length; i++) {
@@ -37,6 +35,7 @@ class LocalTracksProvider extends ChangeNotifier {
     }
   }
 
+  /// function to encode [LocalTrackModel] to [Track]
   Track encodeToTrack(LocalTrackModel trackData) {
     final Track track = Track();
     track.id = trackData.getTrackId;
@@ -62,6 +61,7 @@ class LocalTracksProvider extends ChangeNotifier {
     return track;
   }
 
+  /// function to add [localTrack] to the database and save it
   void addLocalTrack(LocalTrackModel localTrackModel) {
     LocalTracks.saveTrack(localTrackModel);
     final Track track = encodeToTrack(localTrackModel);
@@ -76,14 +76,12 @@ class LocalTracksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // void decodeTrack(Map<String, dynamic> localTrackData) {
-  //   DatabaseHelper.instance.insertValue(tableName: TracksTable.tableName, data: localTrackData);
-  // }
-
+  /// function to get [_tracksList]
   List<Track> get getLocalTracks {
     return [..._tracksList];
   }
 
+  /// function to upload local track to the server
   void uploadTrack(BuildContext context, int index) {
     final AuthProvider _authProvider = Provider.of<AuthProvider>(context, listen: false);
     final LocalTrackModel localTrackModel = LocalTracks.getTrackAtIndex(index);
