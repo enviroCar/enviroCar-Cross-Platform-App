@@ -2,13 +2,12 @@ import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 
 import '../../globals.dart';
 import '../../constants.dart';
 import '../../models/track.dart';
+import '../../utils/mapFunctions.dart';
 import '../../models/localTrackModel.dart';
-import '../../models/pointProperties.dart';
 import '../../providers/tracksProvider.dart';
 import '../../screens/trackDetailsScreen.dart';
 
@@ -24,9 +23,7 @@ class UploadedTrackCard extends StatefulWidget {
 
 class _UploadedTrackCardState extends State<UploadedTrackCard> {
   GoogleMapController _googleMapController;
-  PolylinePoints polylinePoints;
   Set<Polyline> polyLines;
-  List<LatLng> polyLineCoordinates;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -37,8 +34,6 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
   @override
   void initState() {
     polyLines = {};
-    polyLineCoordinates = [];
-    polylinePoints = PolylinePoints();
     super.initState();
   }
 
@@ -176,12 +171,12 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                           startPosition.latitude,
                           startPosition.longitude
                         ),
-                        markers: getMarkers(startPosition, destinationPosition),
+                        circles: getCircles(startPosition, destinationPosition),
                         polylines: polyLines,
                         onMapCreated: (GoogleMapController googleMapController) async {
                           _googleMapController = googleMapController;
                           animateCamera(startPosition, destinationPosition);
-                          setPolyLines(trackModel.properties.values.toList());
+                          polyLines = await setPolyLines(trackModel.properties.values.toList());
                       },
                     );
                   } else {
@@ -266,137 +261,15 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
     );
   }
 
-  LatLngBounds getLatLngBounds(LatLng startLocation, LatLng destinationLocation) {
-    LatLngBounds latLngBounds;
-
-    if (startLocation.latitude < destinationLocation.latitude && startLocation.longitude < destinationLocation.longitude) {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              startLocation.latitude,
-              startLocation.longitude
-          ),
-          northeast: LatLng(
-              destinationLocation.latitude,
-              destinationLocation.longitude
-          )
-      );
-    }
-
-    else if (startLocation.latitude < destinationLocation.latitude) {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              startLocation.latitude,
-              destinationLocation.longitude
-          ),
-          northeast: LatLng(
-              destinationLocation.latitude,
-              startLocation.longitude
-          )
-      );
-    }
-
-    else if (startLocation.longitude < destinationLocation.longitude) {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              destinationLocation.latitude,
-              startLocation.longitude
-          ),
-          northeast: LatLng(
-              startLocation.latitude,
-              destinationLocation.longitude
-          )
-      );
-    }
-
-    else {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              destinationLocation.latitude,
-              destinationLocation.longitude
-          ),
-          northeast: LatLng(
-              startLocation.latitude,
-              startLocation.longitude
-          )
-      );
-    }
-
-    return latLngBounds;
-  }
-
-  CameraPosition getInitialCameraPosition(double latitude, double longitude) {
-    final CameraPosition cameraPosition = CameraPosition(
-      target: LatLng(
-        latitude,
-        longitude
-      ),
-      zoom: 14
-    );
-    return cameraPosition;
-  }
-
-  Set<Marker> getMarkers(LatLng startPosition, LatLng destinationPosition) {
-    final Set<Marker> markers = {};
-
-    final Marker sourceMarker = Marker(
-        markerId: const MarkerId('source'),
-        position: startPosition,
-    );
-
-    final Marker destinationMarker = Marker(
-      markerId: const MarkerId('destination'),
-      position: startPosition,
-    );
-
-    markers.add(sourceMarker);
-    markers.add(destinationMarker);
-
-    return markers;
-  }
-
   void animateCamera(LatLng startLocation, LatLng destinationLocation) {
-    setState(() {
-      _googleMapController.animateCamera(CameraUpdate.newLatLngBounds(getLatLngBounds(
-          startLocation,
-          startLocation
-      ), 10));
-    });
-  }
-
-  Future setPolyLines(List<PointProperties> properties) async {
-    int len = properties.length;
-    if (len > 1) {
-      for (final int i = 0; i < len - 1; len++) {
-        final PointLatLng origin = PointLatLng(properties[i].latitude, properties[i].longitude);
-        final PointLatLng destination = PointLatLng(properties[i + 1].latitude, properties[i + 1].longitude);
-        final PolylineResult polylineResult = await polylinePoints.getRouteBetweenCoordinates(
-          googleAPIKey,
-          origin,
-          destination,
-          travelMode: TravelMode.driving
-        );
-
-        if (polylineResult.points.isEmpty) {
-          // debugPrint('error is ${polylineResult.errorMessage}'); You must enable Billing on the Google Cloud Project at https://console.cloud.google.com/project/_/billing/enable Learn more at https://developers.google.com/maps/gmp-get-started
-        }
-        else {
-          for (final PointLatLng pointLatLng in polylineResult.points) {
-            final LatLng latLng = LatLng(pointLatLng.latitude, pointLatLng.longitude);
-            polyLineCoordinates.add(latLng);
-          }
-
-          final Polyline trackPolyline = Polyline(
-              polylineId: const PolylineId('track'),
-              width: 5,
-              color: kBlueColor,
-              points: polyLineCoordinates
-          );
-
-          setState(() {
-            polyLines.add(trackPolyline);
-          });
-        }
-      }
+    if (distanceBetweenCoordinates(startLocation, destinationLocation) > 0.1) {
+      setState(() {
+        _googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(getLatLngBounds(
+                startLocation,
+                destinationLocation
+            ), 30));
+      });
     }
   }
 
