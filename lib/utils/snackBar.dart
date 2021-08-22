@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
 import '../globals.dart';
 
 /// function to display snack bar
@@ -13,7 +12,6 @@ void displaySnackBar(String message) {
           fontSize: 15
       ),
     ),
-    backgroundColor: kSpringColor,
     behavior: SnackBarBehavior.floating,
     elevation: 6,
     shape: RoundedRectangleBorder(
