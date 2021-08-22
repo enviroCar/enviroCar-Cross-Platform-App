@@ -1,4 +1,4 @@
-import 'package:envirocar_app_main/globals.dart';
+import '../globals.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_svg/flutter_svg.dart';

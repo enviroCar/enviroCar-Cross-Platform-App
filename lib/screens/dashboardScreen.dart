@@ -18,6 +18,7 @@ import '../providers/bluetoothStatusProvider.dart';
 import '../providers/locationStatusProvider.dart';
 import '../providers/bluetoothProvider.dart';
 import '../widgets/button.dart';
+import '../utils/customAlertDialog.dart';
 import './gpsTrackingScreen.dart';
 
 class DashboardScreen extends StatefulWidget {
@@ -72,31 +73,36 @@ class _DashboardScreenState extends State<DashboardScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Consumer<BluetoothStatusProvider>(
-                builder: (context, provider, child) {
-                  return DashboardIconButton(
-                    routeName: BluetoothDevicesScreen.routeName,
-                    assetName: 'assets/icons/bluetooth.svg',
-                    buttonColor: provider.bluetoothState == BluetoothConnectionStatus.ON ? kSpringColor : kErrorColor,
-                  );
-                }
+                  builder: (context, provider, child) {
+                    return DashboardIconButton(
+                      routeName: BluetoothDevicesScreen.routeName,
+                      assetName: 'assets/icons/bluetooth.svg',
+                      buttonColor: provider.bluetoothState ==
+                          BluetoothConnectionStatus.ON
+                          ? kSpringColor
+                          : kErrorColor,
+                    );
+                  }
               ),
               Consumer<BluetoothProvider>(
-                builder: (context, provider, child) {
-                  final bool isConnected = provider.isConnected();
+                  builder: (context, provider, child) {
+                    final bool isConnected = provider.isConnected();
 
-                  return DashboardIconButton(
-                    routeName: BluetoothDevicesScreen.routeName,
-                    assetName: 'assets/icons/smartphone.svg',
-                    buttonColor: isConnected ? kSpringColor : kErrorColor,
-                  );
-                }
+                    return DashboardIconButton(
+                      routeName: BluetoothDevicesScreen.routeName,
+                      assetName: 'assets/icons/smartphone.svg',
+                      buttonColor: isConnected ? kSpringColor : kErrorColor,
+                    );
+                  }
               ),
               Consumer<CarsProvider>(
                 builder: (context, provider, child) {
                   return DashboardIconButton(
                     routeName: CarScreen.routeName,
                     assetName: 'assets/icons/car.svg',
-                    buttonColor: provider.getSelectedCar != null ? kSpringColor : kErrorColor,
+                    buttonColor: provider.getSelectedCar != null
+                        ? kSpringColor
+                        : kErrorColor,
                   );
                 },
               ),
@@ -105,7 +111,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   return DashboardIconButton(
                     routeName: MapScreen.routeName,
                     assetName: 'assets/icons/gps.svg',
-                    buttonColor: provider.locationState == LocationStatus.enabled ? kSpringColor : kErrorColor,
+                    buttonColor: provider.locationState ==
+                        LocationStatus.enabled ? kSpringColor : kErrorColor,
                   );
                 },
               ),
@@ -126,8 +133,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
               return DashboardCard(
                 assetName: 'assets/icons/bluetooth.svg',
-                title: isConnected ? (connectedDevice.name.isNotEmpty ? connectedDevice.name : 'Unknown Device') : 'No OBD-II adapter selected',
-                subtitle: isConnected ? connectedDevice.id.toString() : 'Click here to select one',
+                title: isConnected ? (connectedDevice.name.isNotEmpty
+                    ? connectedDevice.name
+                    : 'Unknown Device') : 'No OBD-II adapter selected',
+                subtitle: isConnected
+                    ? connectedDevice.id.toString()
+                    : 'Click here to select one',
                 routeName: BluetoothDevicesScreen.routeName,
                 iconBackgroundColor: isConnected ? kSpringColor : kErrorColor,
               );
@@ -148,9 +159,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     : '${selectedCar.manufacturer}, ${selectedCar.model}',
                 subtitle: selectedCar == null
                     ? 'Select a car'
-                    : '${selectedCar.constructionYear}, ${selectedCar.engineDisplacement}, ${selectedCar.fuelType}',
+                    : '${selectedCar.constructionYear}, ${selectedCar
+                    .engineDisplacement}, ${selectedCar.fuelType}',
                 routeName: CarScreen.routeName,
-                iconBackgroundColor: carsProvider.getSelectedCar != null ? kSpringColor : kErrorColor,
+                iconBackgroundColor: carsProvider.getSelectedCar != null
+                    ? kSpringColor
+                    : kErrorColor,
               );
             },
           ),
@@ -165,8 +179,62 @@ class _DashboardScreenState extends State<DashboardScreen> {
               title: 'Start Track',
               color: kSpringColor,
               onTap: () {
-                _logger.i('Going to GPS tracking screen');
-                Navigator.pushNamed(context, GpsTrackingScreen.routeName);
+                final locationProvider = Provider.of<LocationStatusProvider>(context, listen: false);
+                final carsProvider = Provider.of<CarsProvider>(context, listen: false);
+                final bluetoothProvider = Provider.of<BluetoothProvider>(context, listen: false);
+
+                if (locationProvider.locationState == LocationStatus.enabled &&
+                    carsProvider.getSelectedCar != null &&
+                    bluetoothProvider.isConnected()) {
+                  _logger.i('Going to GPS tracking screen');
+                  Navigator.pushNamed(context, GpsTrackingScreen.routeName);
+                }
+                else {
+                  const String title = 'Cannot start GPS tracking';
+                  String content = ' ';
+                  bool carState = true, locationState = true, bluetoothState = true;
+                  if (locationProvider.locationState == LocationStatus.disabled && carsProvider.getSelectedCar == null && !bluetoothProvider.isConnected()) {
+                    content = 'Please turn on location, select a car and connect to OBD-II adapter to start recording your track.';
+                    locationState = false;
+                    carState = false;
+                    bluetoothState = false;
+                  }
+                  else if (carsProvider.getSelectedCar == null && !bluetoothProvider.isConnected()) {
+                    content = 'Please select a car and connect to OBD-II adapter to start recording your track.';
+                    carState = false;
+                    bluetoothState = false;
+                  }
+                  else if (carsProvider.getSelectedCar == null && locationProvider.locationState == LocationStatus.disabled) {
+                    content = 'Please turn on location and select a car to start recording your track.';
+                    locationState = false;
+                    carState = false;
+                  }
+                  else if (locationProvider.locationState == LocationStatus.disabled && !bluetoothProvider.isConnected()) {
+                    content = 'Please turn on location and connect to OBD-II adapter to start recording your track.';
+                    locationState = false;
+                    bluetoothState = false;
+                  }
+                  else if (!bluetoothProvider.isConnected()) {
+                    content = 'Please connect to OBD-II adapter to start recording your track.';
+                    bluetoothState = false;
+                  }
+                  else if (carsProvider.getSelectedCar == null) {
+                    content = 'Please select a car to start recording your track.';
+                    carState = false;
+                  }
+                  else if (locationProvider.locationState == LocationStatus.disabled) {
+                    content = 'Please turn on location services to start recording your track.';
+                    locationState = false;
+                  }
+                  showAlertDialog(
+                    context: context,
+                    title: title,
+                    content: content,
+                    carState: carState,
+                    locationState: locationState,
+                    bluetoothState: bluetoothState
+                  );
+                }
               },
             ),
           ),

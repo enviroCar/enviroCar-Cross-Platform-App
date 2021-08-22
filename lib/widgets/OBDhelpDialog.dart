@@ -27,7 +27,7 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
         Image.asset('assets/images/findobddesgin.png'),
         const SizedBox(height: 10),
         const Text(
-            'This is somewhat triangulalr shaped 16-pin connector that is commonly located underneath the left hand side of the dash near the steering column. If you have trouble locating DLC, refer owner manual.'),
+            'This is somewhat triangular shaped 16-pin connector that is commonly located underneath the left hand side of the dash near the steering column. If you have trouble locating DLC, refer owner manual.'),
         GestureDetector(
           onTap: () async {
             if (await canLaunch('https://wikiobd.co.uk')) {
