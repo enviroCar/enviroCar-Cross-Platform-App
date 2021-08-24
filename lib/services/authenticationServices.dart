@@ -16,6 +16,7 @@ import '../exceptionHandling/errorHandler.dart';
 import '../exceptionHandling/result.dart';
 
 /// Authentication services include logging user in, registering new user and silent sign in
+///
 /// To the base URI we send user's username and token to log them in after fetching from secure storage
 /// For new user we pass two boolean values along with them
 /// The response and request sample can be found on the link below
@@ -40,8 +41,8 @@ class AuthenticationServices {
       body: jsonPayload,
     );
 
-    // After succesful registration the user is sent an email from where they to 
-    // confirm their email to log in
+    /// After succesful registration the user is sent an email from where they to
+    /// confirm their email to log in
     if (response.statusCode == 201) {
       return 'Mail Sent';
     } else {

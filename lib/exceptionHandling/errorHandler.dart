@@ -6,6 +6,11 @@ import 'appException.dart';
 import 'exceptionType.dart';
 
 /// identifies the error and return an appropriate error type
+///
+/// It takes the dio error as a parameter and using it identifies
+/// the kind of error that might have occured and corresponding to
+/// that error, it returns an application exception which contains
+/// a message to show to the user
 ApplicationException handleException(dynamic error) {
   if (error is Exception) {
     try {

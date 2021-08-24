@@ -58,18 +58,6 @@ class LogBookScreen extends StatelessWidget {
             final List<Fueling> fuelingsList = fuelingsProvider.getFuelingsList;
 
             if (fuelingsList == null) {
-              // fetch the fuelings from server if user is connected to internet
-              // return FutureBuilder(
-              //   future: FuelingServices().getFuelings(context: context),
-              //   builder: (BuildContext _, AsyncSnapshot snapshot) {
-              //     if (snapshot.connectionState == ConnectionState.done) {
-              //       return const Center(
-              //         child: Text('Fuelings Fetched'),
-              //       );
-              //     }
-              //     return const CircularProgressIndicator();
-              //   },
-              // );
               FuelingServices().getFuelingsFromServer(context: context).then(
                 (Result result) {
                   if (result.status == ResultStatus.error) {
