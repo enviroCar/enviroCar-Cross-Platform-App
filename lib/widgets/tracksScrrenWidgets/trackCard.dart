@@ -102,7 +102,9 @@ class TrackCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      '${track.length.toStringAsFixed(2)}km',
+                      track.length != null
+                          ? '${track.length.toStringAsFixed(2)}km'
+                          : '0.00',
                       style: const TextStyle(
                         color: kSpringColor,
                         fontSize: 25,

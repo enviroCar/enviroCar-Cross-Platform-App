@@ -31,7 +31,9 @@ class TrackDetailsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            StackedMapButton(),
+            StackedMapButton(
+              trackID: track.id,
+            ),
             const SizedBox(
               height: 20,
             ),
