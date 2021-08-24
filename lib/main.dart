@@ -16,7 +16,7 @@ import './screens/index.dart';
 import './screens/loginScreen.dart';
 import './screens/mapScreen.dart';
 import './screens/registerScreen.dart';
-import './constants.dart';
+import 'providers/themeProvider.dart';
 import './providers/userStatsProvider.dart';
 import './globals.dart';
 import './screens/carScreen.dart';
@@ -53,7 +53,42 @@ Future<void> main() async {
     DevicePreview(
       // to check the UI on different devices make enabled true
       enabled: false,
-      builder: (context) => MyApp(),
+      builder: (context) {
+        return MultiProvider(
+          providers: [
+            // Provides user data to different widgets on the tree
+            ChangeNotifierProvider(
+              create: (context) => AuthProvider(),
+            ),
+
+            // Provides user stats data to different widgets on the tree
+            ChangeNotifierProvider(
+              create: (context) => UserStatsProvider(),
+            ),
+
+            // Provides car data to different widget
+            ChangeNotifierProvider(
+              create: (context) => CarsProvider(),
+            ),
+
+            // Provides uploaded tracks to different widgets
+            ChangeNotifierProvider(
+              create: (context) => TracksProvider(),
+            ),
+
+            // Provides Fueling data to different widgets
+            ChangeNotifierProvider(
+              create: (context) => FuelingsProvider(),
+            ),
+
+            // Provides theme data to different widgets on the tree
+            ChangeNotifierProvider(
+              create: (context) => ThemeProvider(),
+            ),
+          ],
+          child: MyApp(),
+        );
+      },
     ),
   );
 }
@@ -61,75 +96,44 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        // Provides user data to different widgets on the tree
-        ChangeNotifierProvider(
-          create: (context) => AuthProvider(),
-        ),
+    return MaterialApp(
+      locale: DevicePreview.locale(context),
+      builder: DevicePreview.appBuilder,
+      theme: Provider.of<ThemeProvider>(context).getTheme,
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
 
-        // Provides user stats data to different widgets on the tree
-        ChangeNotifierProvider(
-          create: (context) => UserStatsProvider(),
-        ),
+      // For navigating to screens which accept arguments
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case TrackDetailsScreen.routeName:
+            return MaterialPageRoute(
+              builder: (_) {
+                final Track track = settings.arguments as Track;
+                return TrackDetailsScreen(track: track);
+              },
+            );
 
-        // Provides car data to different widget
-        ChangeNotifierProvider(
-          create: (context) => CarsProvider(),
-        ),
+          default:
+            return null;
+        }
+      },
 
-        // Provides uploaded tracks to different widgets
-        ChangeNotifierProvider(
-          create: (context) => TracksProvider(),
-        ),
-
-        // Provides Fueling data to different widgets
-        ChangeNotifierProvider(
-          create: (context) => FuelingsProvider(),
-        ),
-      ],
-      child: MaterialApp(
-        locale: DevicePreview.locale(context),
-        builder: DevicePreview.appBuilder,
-        theme: ThemeData(
-          accentColor: kSpringColor,
-        ),
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
-
-        // For navigating to screens which accept arguments
-        onGenerateRoute: (settings) {
-          switch (settings.name) {
-            case TrackDetailsScreen.routeName:
-              return MaterialPageRoute(
-                builder: (_) {
-                  final Track track = settings.arguments as Track;
-                  return TrackDetailsScreen(track: track);
-                },
-              );
-
-            default:
-              return null;
-          }
-        },
-
-        // Helps in navigating to different screens via route name
-        routes: {
-          LoginScreen.routeName: (context) => LoginScreen(),
-          RegisterScreen.routeName: (context) => RegisterScreen(),
-          SplashScreen.routeName: (context) => SplashScreen(),
-          Index.routeName: (context) => Index(),
-          BluetoothDevicesScreen.routeName: (context) =>
-              BluetoothDevicesScreen(),
-          MapScreen.routeName: (context) => MapScreen(),
-          CarScreen.routeName: (context) => CarScreen(),
-          CreateCarScreen.routeName: (context) => CreateCarScreen(),
-          CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
-          LogBookScreen.routeName: (context) => LogBookScreen(),
-          ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
-          HelpScreen.routeName: (context) => HelpScreen(),
-        },
-      ),
+      // Helps in navigating to different screens via route name
+      routes: {
+        LoginScreen.routeName: (context) => LoginScreen(),
+        RegisterScreen.routeName: (context) => RegisterScreen(),
+        SplashScreen.routeName: (context) => SplashScreen(),
+        Index.routeName: (context) => Index(),
+        BluetoothDevicesScreen.routeName: (context) => BluetoothDevicesScreen(),
+        MapScreen.routeName: (context) => MapScreen(),
+        CarScreen.routeName: (context) => CarScreen(),
+        CreateCarScreen.routeName: (context) => CreateCarScreen(),
+        CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
+        LogBookScreen.routeName: (context) => LogBookScreen(),
+        ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
+        HelpScreen.routeName: (context) => HelpScreen(),
+      },
     );
   }
 }
