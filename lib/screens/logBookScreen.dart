@@ -10,6 +10,10 @@ import '../providers/fuelingsProvider.dart';
 import './createFuelingScreen.dart';
 import '../widgets/logbookWidgets/fuelingCard.dart';
 import '../widgets/titleWidget.dart';
+import '../exceptionHandling/exceptionType.dart';
+import '../exceptionHandling/result.dart';
+import '../hiveDB/fuelingsCollection.dart';
+import '../services/fuelingServices.dart';
 
 // Screen that displays all the fueling logs
 class LogBookScreen extends StatelessWidget {
@@ -52,6 +56,45 @@ class LogBookScreen extends StatelessWidget {
         child: Consumer<FuelingsProvider>(
           builder: (_, fuelingsProvider, child) {
             final List<Fueling> fuelingsList = fuelingsProvider.getFuelingsList;
+
+            if (fuelingsList == null) {
+              // fetch the fuelings from server if user is connected to internet
+              // return FutureBuilder(
+              //   future: FuelingServices().getFuelings(context: context),
+              //   builder: (BuildContext _, AsyncSnapshot snapshot) {
+              //     if (snapshot.connectionState == ConnectionState.done) {
+              //       return const Center(
+              //         child: Text('Fuelings Fetched'),
+              //       );
+              //     }
+              //     return const CircularProgressIndicator();
+              //   },
+              // );
+              FuelingServices().getFuelingsFromServer(context: context).then(
+                (Result result) {
+                  if (result.status == ResultStatus.error) {
+                    // if the error type is no internet then fetch fuelings from Hive
+                    if (result.exception.type ==
+                        ExceptionType.noInternetConnection) {
+                      FuelingsCollection()
+                          .getFuelingsFromHive(context: context);
+                    }
+                    // for any other error show snackbar with message
+                    else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        SnackBar(
+                          backgroundColor: Colors.red,
+                          content: Text(result.exception.getErrorMessage()),
+                        ),
+                      );
+                    }
+                  }
+                },
+              );
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }
 
             // If there are no logs then show 'No logs' image
             if (fuelingsList.isEmpty) {

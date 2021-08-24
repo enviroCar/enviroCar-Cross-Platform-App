@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,10 +28,19 @@ import './screens/createFuelingScreen.dart';
 import './screens/logBookScreen.dart';
 import './screens/reportIssueScreen.dart';
 import '../screens/helpScreen.dart';
+import './hiveDB/fuelingsCollection.dart';
+import './hiveDB/sensorsCollection.dart';
 
 Future<void> main() async {
   // Ensures all the future functions of main() finish before launching the app
   WidgetsFlutterBinding.ensureInitialized();
+
+  // initializing Hive DB
+  await Hive.initFlutter();
+
+  // open Hive boxes to fetch data from
+  await CarsCollection().openCarsHive();
+  await FuelingsCollection().openFuelingsHive();
 
   // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();

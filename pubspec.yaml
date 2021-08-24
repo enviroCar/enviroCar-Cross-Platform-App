@@ -75,6 +75,10 @@ dependencies:
 
   # for making http calls
   dio: ^4.0.0
+
+  # for local db
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
   
 
 

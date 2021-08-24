@@ -3,9 +3,9 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:envirocar_app_main/models/car.dart';
 import 'package:envirocar_app_main/models/fueling.dart';
 import 'package:envirocar_app_main/providers/fuelingsProvider.dart';
+import 'package:envirocar_app_main/models/car.dart';
 
 void main() {
   testWidgets(
@@ -49,22 +49,21 @@ void main() {
 
 final Fueling _fueling = Fueling(
   id: '1234',
-  car: Car(
-    id: '3',
-    manufacturer: 'Ferrari',
-    model: 'Ultra',
-    constructionYear: 1930,
-    fuelType: 'Diesel',
-    engineDisplacement: 1600,
+  car: Car(),
+  mileage: UnitValue(
+    value: 32,
+    unit: 'KILOMETRES',
   ),
-  mileage: 25,
-  volume: 25,
-  cost: 5,
+  volume: UnitValue(
+    value: 12,
+    unit: 'LITRES',
+  ),
+  cost: UnitValue(
+    value: 45,
+    unit: 'EURO',
+  ),
   partialFueling: false,
   missedFuelStop: true,
   comment: 'Hello There',
-  costUnit: 'EUROS',
   fuelType: 'HYBRID',
-  milageUnit: 'KM/L',
-  volumeUnit: 'LITRES',
 );

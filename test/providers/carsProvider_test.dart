@@ -3,8 +3,8 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:provider/provider.dart';
 
-import 'package:envirocar_app_main/models/car.dart';
 import 'package:envirocar_app_main/providers/carsProvider.dart';
+import 'package:envirocar_app_main/models/car.dart';
 
 void main() {
   testWidgets(
@@ -38,19 +38,21 @@ void main() {
       // Set data in provider
       Provider.of<CarsProvider>(childContext, listen: false).setSelectedCar =
           Car(
-        id: 'dummyID',
-        constructionYear: 2020,
-        engineDisplacement: 3600,
-        fuelType: 'HYBRID',
-        manufacturer: 'Toyota',
-        model: 'Pnetagon',
+        type: "car",
+        properties: Properties(
+          id: 'dummyID',
+          constructionYear: 2020,
+          engineDisplacement: 3600,
+          fuelType: 'HYBRID',
+          manufacturer: 'Toyota',
+          model: 'Pnetagon',
+        ),
       );
 
       // Fetch the new data and check if it matches the one stored in it
       expect(
-          Provider.of<CarsProvider>(childContext, listen: false)
-              .getSelectedCar
-              .fuelType,
+          Provider.of<CarsProvider>(childContext, listen: false).getSelectedCar
+            ..properties.fuelType,
           'HYBRID');
     },
   );

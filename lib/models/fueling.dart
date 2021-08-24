@@ -1,70 +1,85 @@
-import 'car.dart';
+import './car.dart';
 
 class Fueling {
   String id;
-  Car car;
+  String username;
   String fuelType;
   String comment;
-  int cost;
-  String costUnit;
-  int mileage;
-  String milageUnit;
+  UnitValue cost;
+  UnitValue mileage;
+  UnitValue volume;
   bool missedFuelStop;
   bool partialFueling;
-  int time;
-  int volume;
-  String volumeUnit;
+  String time;
+  Car car;
 
   Fueling(
       {this.id,
-      this.car,
+      this.username,
       this.fuelType,
       this.comment,
       this.cost,
-      this.costUnit,
       this.mileage,
-      this.milageUnit,
+      this.volume,
       this.missedFuelStop,
       this.partialFueling,
       this.time,
-      this.volume,
-      this.volumeUnit});
+      this.car});
 
-  Fueling.fromJson(Map<String, dynamic> json) {
-    id = json['car'] as String;
-    car = json['car'] != null
-        ? Car.fromJson(json['car'] as Map<String, dynamic>)
-        : null;
+  Fueling.fromJson(dynamic json) {
+    id = json['id'] as String;
+    username = json['username'] as String;
     fuelType = json['fuelType'] as String;
     comment = json['comment'] as String;
-    cost = json['cost'] as int;
-    costUnit = json['costUnit'] as String;
-    mileage = json['mileage'] as int;
-    milageUnit = json['milageUnit'] as String;
+    cost = json['cost'] != null ? UnitValue.fromJson(json['cost']) : null;
+    mileage =
+        json['mileage'] != null ? UnitValue.fromJson(json['mileage']) : null;
+    volume = json['volume'] != null ? UnitValue.fromJson(json['volume']) : null;
     missedFuelStop = json['missedFuelStop'] as bool;
     partialFueling = json['partialFueling'] as bool;
-    time = json['time'] as int;
-    volume = json['volume'] as int;
-    volumeUnit = json['volumeUnit'] as String;
+    time = json['time'] as String;
+    car = Car.fromJson(json['car']);
   }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
-    if (car != null) {
-      data['car'] = car.toJson();
-    }
+    data['username'] = username;
     data['fuelType'] = fuelType;
     data['comment'] = comment;
-    data['cost'] = cost;
-    data['costUnit'] = costUnit;
-    data['mileage'] = mileage;
-    data['milageUnit'] = milageUnit;
+    if (cost != null) {
+      data['cost'] = cost.toJson();
+    }
+    if (mileage != null) {
+      data['mileage'] = mileage.toJson();
+    }
+    if (volume != null) {
+      data['volume'] = volume.toJson();
+    }
     data['missedFuelStop'] = missedFuelStop;
     data['partialFueling'] = partialFueling;
     data['time'] = time;
-    data['volume'] = volume;
-    data['volumeUnit'] = volumeUnit;
+    data['car'] = car.properties.id;
+    return data;
+  }
+}
+
+class UnitValue {
+  String unit;
+  dynamic value;
+
+  UnitValue({this.unit, this.value});
+
+  UnitValue.fromJson(dynamic json) {
+    unit = json['unit'] as String;
+    value = json['value'] as dynamic;
+  }
+
+  dynamic toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['unit'] = unit;
+    data['value'] = value;
+
     return data;
   }
 }
