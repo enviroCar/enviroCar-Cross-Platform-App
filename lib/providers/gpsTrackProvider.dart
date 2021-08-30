@@ -7,11 +7,13 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart';
 
-import '../constants.dart';
-import 'bluetoothProvider.dart';
-import '../models/localTrackModel.dart';
-import '../models/pointProperties.dart';
 import '../services/notificationServices.dart';
+import '../constants.dart';
+import '../utils/dateUtil.dart';
+import '../models/pointProperties.dart';
+import 'bluetoothProvider.dart';
+import '../models/car.dart';
+import '../models/localTrackModel.dart';
 
 class GpsTrackProvider extends ChangeNotifier {
   final Set<Marker> _markers = <Marker>{};
@@ -25,18 +27,17 @@ class GpsTrackProvider extends ChangeNotifier {
   bool isMounted;
   bool reloadMap;
   StreamSubscription<LocationData> streamSubscription;
-  Map<int, PointProperties> pointProperties;
   Timer _timer;
   Timer _timeCounter;
+  Map<int, PointProperties> pointProperties;
 
   String trackStartTime = ' ';
   String trackEndTime = ' ';
   String trackName = ' ';
   bool startTrack = true, endTrack = false;
-  DateTime startTime, currentTime;
   String durationOfTrack = '0:00:00';
-  double distance;
   int time, stopsCount;
+  double distance;
   Duration duration;
   double altitude;
   double consumption;
@@ -44,8 +45,6 @@ class GpsTrackProvider extends ChangeNotifier {
   double speed;
   double maf;
   int count;
-
-  String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";
 
   LocationData startLocation;
   LocationData currentLocation;
@@ -103,6 +102,7 @@ class GpsTrackProvider extends ChangeNotifier {
     durationOfTrack = '0:00:00';
     startTrack = true;
     endTrack = false;
+    duration = const Duration();
 
     time = 0;
     stopsCount = 0;
@@ -112,13 +112,11 @@ class GpsTrackProvider extends ChangeNotifier {
     speed = 0;
     maf = 0;
     count = 1;
-    duration = const Duration();
 
     await setTrackIcon();
     await setInitialLocation();
-    startTime = DateTime.now().toUtc();
 
-    trackStartTime = startTime.toString().substring(0, 19);
+    trackStartTime = DateTime.now().toUtc().toString().substring(0, 19);
     trackName = 'Track $trackId';
     isUserLocationDetermined = true;
     notifyListeners();
@@ -134,7 +132,7 @@ class GpsTrackProvider extends ChangeNotifier {
     trackDuration();
   }
 
-  void collectFeatureData([Timer timer]) {
+  Future collectFeatureData([Timer timer]) async {
     _timer?.cancel();
     timer?.cancel();
 
@@ -177,7 +175,6 @@ class GpsTrackProvider extends ChangeNotifier {
     if (startTrack && !endTrack) {
       currentLocation = locationData;
       updatePins();
-      currentTime = DateTime.now().toUtc();
     }
   }
 
@@ -220,62 +217,6 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to update pin points on map
   void updatePins() {
-    LatLngBounds latLngBounds;
-
-    if (startLocation.latitude < currentLocation.latitude && startLocation.longitude < currentLocation.longitude) {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              startLocation.latitude,
-              startLocation.longitude
-          ),
-          northeast: LatLng(
-              currentLocation.latitude,
-              currentLocation.longitude
-          )
-      );
-    }
-
-    else if (startLocation.latitude < currentLocation.latitude) {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              startLocation.latitude,
-              currentLocation.longitude
-          ),
-          northeast: LatLng(
-              currentLocation.latitude,
-              startLocation.longitude
-          )
-      );
-    }
-
-    else if (startLocation.longitude < currentLocation.longitude) {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              currentLocation.latitude,
-              startLocation.longitude
-          ),
-          northeast: LatLng(
-              startLocation.latitude,
-              currentLocation.longitude
-          )
-      );
-    }
-
-    else {
-      latLngBounds = LatLngBounds(
-          southwest: LatLng(
-              currentLocation.latitude,
-              currentLocation.longitude
-          ),
-          northeast: LatLng(
-              startLocation.latitude,
-              startLocation.longitude
-          )
-      );
-    }
-
-    debugPrint(latLngBounds.toString());
-
     final newPinLocation = LatLng(currentLocation.latitude, currentLocation.longitude);
 
     cameraPosition = CameraPosition(
@@ -421,7 +362,6 @@ class GpsTrackProvider extends ChangeNotifier {
   }
 
   /// function to calculate track duration
-  /// function to calculate track duration
   void trackDuration([Timer timer]) {
     _timeCounter?.cancel();
     timer?.cancel();
@@ -466,13 +406,12 @@ class GpsTrackProvider extends ChangeNotifier {
     );
 
     pointProperties[count] = properties;
-
     NotificationService().turnOffNotification();
     debugPrint('tracking stopped at $trackEndTime no of stops is $stopsCount');
     notifyListeners();
   }
 
-  /// function to pause tracking by pausing the [streamSubscription]
+  /// function to pause the tracking by pausing the [streamSubscription]
   void pauseTracking() {
     streamSubscription.pause();
     stopsCount++;
@@ -493,35 +432,28 @@ class GpsTrackProvider extends ChangeNotifier {
   }
 
   /// function to get [LocalTrack] object
-  LocalTrackModel getLocalTrack({@required String sensorId}) {
+  LocalTrackModel getLocalTrack({@required Car sensor}) {
     final LocalTrackModel trackModel = LocalTrackModel(
         trackId: trackId,
         trackName: getTrackName,
-        modifiedTime: formatDate(trackStartTime),
+        startTime: formatDate(trackStartTime),
         endTime: formatDate(trackEndTime),
         duration: getTrackDuration,
         distance: getDistance,
         speed: 40, // todo: change hardcoded value
-        selectedCarId: sensorId,
+        selectedCarId: sensor.properties.id,
         isTrackUploaded: false,
         stops: getNoOfStops,
         bluetoothDevice: null,
-        properties: pointProperties
+        properties: pointProperties,
+        carManufacturer: sensor.properties.manufacturer,
+        carModel: sensor.properties.model,
+        carFuelType: sensor.properties.fuelType,
+        carEngineDisplacement: sensor.properties.engineDisplacement,
+        carConstructionYear: sensor.properties.constructionYear
     );
 
     return trackModel;
-  }
-
-  DateTime formatDate(String date) {
-    final DateTime dateTime = DateTime(
-      int.parse(date.substring(0, 4)),    // year
-      int.parse(date.substring(5, 7)),    // month
-      int.parse(date.substring(8, 10)),   // day
-      int.parse(date.substring(11, 13)),  // hour
-      int.parse(date.substring(14, 16)),  // minute
-      int.parse(date.substring(17, 19)),  // second
-    );
-    return dateTime;
   }
 
   /// function to reset the values
@@ -537,12 +469,12 @@ class GpsTrackProvider extends ChangeNotifier {
     _location = null;
     trackStartTime = ' ';
     trackEndTime = ' ';
-    startTime = null;
-    currentTime = null;
+    trackName = ' ';
     startLocation = null;
     currentLocation = null;
     isMounted = false;
     reloadMap = true;
+    duration = null;
 
     cameraPosition = CameraPosition(
         target: const LatLng(42.747932,-71.167889),

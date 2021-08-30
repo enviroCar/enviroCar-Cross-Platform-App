@@ -8,7 +8,6 @@ class Feature {
   Phenomenons phenomenons;
   String sensorId;
 
-
   Feature({
     this.type,
     this.geometry,

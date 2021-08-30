@@ -1,22 +1,48 @@
-import 'package:flutter/material.dart';
-
 import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../globals.dart';
-import '../../models/track.dart';
 import '../../constants.dart';
+import '../../utils/enums.dart';
+import '../../models/track.dart';
+import '../../utils/mapFunctions.dart';
+import '../../models/localTrackModel.dart';
+import '../../providers/tracksProvider.dart';
 import '../../screens/trackDetailsScreen.dart';
 
-class UploadedTrackCard extends StatelessWidget {
+class UploadedTrackCard extends StatefulWidget {
+  final Track track;
+  final int index;
+
+  const UploadedTrackCard({@required this.track, @required this.index});
+
+  @override
+  _UploadedTrackCardState createState() => _UploadedTrackCardState();
+}
+
+class _UploadedTrackCardState extends State<UploadedTrackCard> {
+  GoogleMapController _googleMapController;
+  Set<Polyline> polyLines;
+
   final Logger _logger = Logger(
     printer: PrettyPrinter(
       printTime: true,
     ),
   );
 
-  final Track track;
+  @override
+  void initState() {
+    polyLines = {};
+    super.initState();
+  }
 
-  UploadedTrackCard({@required this.track});
+  @override
+  void dispose() {
+    _googleMapController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +73,9 @@ class UploadedTrackCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 20,
-                    horizontal: 20,
-                  ),
+                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
                   child: RichText(
+                    textAlign: TextAlign.center,
                     text: TextSpan(
                       text: 'Track ',
                       style: const TextStyle(
@@ -60,26 +84,31 @@ class UploadedTrackCard extends StatelessWidget {
                       ),
                       children: [
                         TextSpan(
-                          text: track.begin.toUtc().toString().replaceFirst('.000Z', ''),
+                          text: widget.track.begin.toUtc().toString().replaceFirst('.000Z', ''),
                         ),
                       ],
                     ),
-                    textAlign: TextAlign.center,
                   ),
                 ),
                 Container(
                   padding: const EdgeInsets.all(15),
                   child: PopupMenuButton(
                     enabled: true,
-                    onSelected: (int menuIndex) {
-                      if (menuIndex == 0) {
+                    onSelected: (int index) {
+                      if (index == 0) {
                         _logger.i('Going to track details screen');
-                        Navigator.of(context).pushNamed(
-                          TrackDetailsScreen.routeName,
-                          arguments: track,
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => TrackDetailsScreen(
+                                track: widget.track,
+                                trackType: TrackType.Remote,
+                                index: widget.index
+                            ),
+                          ),
                         );
                       }
-                      else if (menuIndex == 1) {
+                      else if (index == 1) {
                         // TODO: function to export track
                         debugPrint('export track tapped');
                       }
@@ -109,24 +138,86 @@ class UploadedTrackCard extends StatelessWidget {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(
-                TrackDetailsScreen.routeName,
-                arguments: track,
+              _logger.i('Going to track details screen');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrackDetailsScreen(
+                      track: widget.track,
+                      trackType: TrackType.Remote,
+                      index: widget.index
+                  ),
+                ),
               );
             },
-            // TODO: replace the placeholder map image with map widget
-            child: Image.asset(
-              'assets/images/map_placeholder.png',
-              fit: BoxFit.cover,
+            child: SizedBox(
               height: deviceHeight * 0.2,
               width: double.infinity,
+              child: Consumer<TracksProvider>(
+                  builder: (context, tracksProvider, child) {
+                    LocalTrackModel trackModel;
+                    LatLng startPosition, destinationPosition;
+
+                    final bool isListFetched = tracksProvider.getListSetStatus;
+
+                    if (isListFetched) {
+                      trackModel = tracksProvider.getTracksWithId()[widget.index];
+
+                      startPosition = LatLng(
+                          trackModel.getProperties.values.first.latitude,
+                          trackModel.getProperties.values.first.longitude
+                      );
+
+                      destinationPosition = LatLng(
+                          trackModel.getProperties.values.last.latitude,
+                          trackModel.getProperties.values.last.longitude
+                      );
+                    }
+
+                    if (isListFetched) {
+                      return GoogleMap(
+                        myLocationButtonEnabled: false,
+                        zoomControlsEnabled: false,
+                        scrollGesturesEnabled: false,
+                        zoomGesturesEnabled: false,
+                        initialCameraPosition: getInitialCameraPosition(
+                            startPosition.latitude,
+                            startPosition.longitude
+                        ),
+                        circles: getCircles(startPosition, destinationPosition),
+                        polylines: polyLines,
+                        onMapCreated: (GoogleMapController googleMapController) async {
+                          _googleMapController = googleMapController;
+                          polyLines = await setPolyLines(trackModel.properties.values.toList());
+                          animateCamera(startPosition, destinationPosition);
+                        },
+                      );
+                    } else {
+                      return const Center(
+                        child: SizedBox(
+                          width: 40,
+                          height: 40,
+                          child: CircularProgressIndicator(
+                            color: kSpringColor,
+                          ),
+                        ),
+                      );
+                    }
+                  }
+              ),
             ),
           ),
           GestureDetector(
             onTap: () {
-              Navigator.of(context).pushNamed(
-                TrackDetailsScreen.routeName,
-                arguments: track,
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => TrackDetailsScreen(
+                      track: widget.track,
+                      trackType: TrackType.Remote,
+                      index: widget.index
+                  ),
+                ),
               );
             },
             child: Container(
@@ -141,8 +232,8 @@ class UploadedTrackCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        track.end
-                            .difference(track.begin)
+                        widget.track.end
+                            .difference(widget.track.begin)
                             .toString()
                             .replaceFirst('.000000', ''),
                         style: const TextStyle(
@@ -164,16 +255,13 @@ class UploadedTrackCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                      track.length == null ? '0 km' :'0${track.length.toStringAsFixed(2)}km',
+                        widget.track.length != null ? '${widget.track.length.toStringAsFixed(2)}km' : '0km',
                         style: const TextStyle(
                           color: kSpringColor,
                           fontSize: 25,
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      // SizedBox(
-                      //   height: deviceHeight * 0.02,
-                      // ),
                       const Text(
                         'Distance',
                         style: TextStyle(
@@ -191,4 +279,17 @@ class UploadedTrackCard extends StatelessWidget {
       ),
     );
   }
+
+  void animateCamera(LatLng startLocation, LatLng destinationLocation) {
+    if (distanceBetweenCoordinates(startLocation, destinationLocation) > 0.1) {
+      setState(() {
+        _googleMapController.animateCamera(
+            CameraUpdate.newLatLngBounds(getLatLngBounds(
+                startLocation,
+                destinationLocation
+            ), 30));
+      });
+    }
+  }
+
 }

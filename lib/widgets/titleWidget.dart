@@ -2,12 +2,6 @@ import 'package:flutter/material.dart';
 
 import '../constants.dart';
 
-/// Used in
-/// 1. Create Fueling Screen
-/// 2. Log Book Screen
-/// 3. Report Issue Screen
-/// 4. Settings Screen
-
 class TitleWidget extends StatelessWidget {
   final String title;
 

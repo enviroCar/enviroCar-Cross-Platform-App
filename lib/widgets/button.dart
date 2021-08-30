@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
 
-/// Used in
-/// 1. Create Fueling Screen
-/// 2. Create Car Screen
-/// 3. Dashboard Screen
-/// 4. Report Issue Screen
-
 // General button used throughout the app
 class Button extends StatelessWidget {
   final String title;

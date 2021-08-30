@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../models/track.dart';
 
+import '../../models/track.dart';
 import '../../globals.dart';
 import '../../constants.dart';
-import '../../widgets/trackDetailsWidgets/trackDetailsTile.dart';
+import '../trackDetailsWidgets/trackDetailsTile.dart';
 
 class TrackDetailsCard extends StatelessWidget {
   final Track track;
@@ -43,7 +43,7 @@ class TrackDetailsCard extends StatelessWidget {
                   style: const TextStyle(
                     color: kWhiteColor,
                     fontWeight: FontWeight.w600,
-                    fontSize: 22,
+                    fontSize: 20,
                   ),
                   children: [
                     TextSpan(
@@ -99,7 +99,7 @@ class TrackDetailsCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      track.length == null ? '0km' :'0${track.length.toStringAsFixed(2)}km',
+                      track.length != null ? '${track.length.toStringAsFixed(2)} km' : '0 km',
                       style: const TextStyle(
                         color: kSpringColor,
                         fontWeight: FontWeight.w500,
@@ -126,12 +126,14 @@ class TrackDetailsCard extends StatelessWidget {
               thickness: 1.2,
             ),
           ),
+          const SizedBox(
+            height: 10,
+          ),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
                 title: 'Car',
-                details: '${track.sensor.properties.manufacturer} ${track.sensor.properties.fuelType}',
-                // details: '${track.sensor.properties.manufacturer}- ${track.sensor.properties.model}, ${track.sensor.properties.engineDisplacement} cm, ${track.sensor.properties.fuelType}',
+                details: '${track.sensor.properties.manufacturer} - ${track.sensor.properties.model} ${track.sensor.properties.constructionYear}, ${track.sensor.properties.engineDisplacement} cm, ${track.sensor.properties.fuelType}',
                 iconData: Icons.directions_car
             ),
           ),
@@ -179,25 +181,35 @@ class TrackDetailsCard extends StatelessWidget {
     String day = 'Sunday';
     if (weekday == 1) {
       day = 'Monday';
-    } else if (weekday == 2) {
+    }
+    else if (weekday == 2) {
       day = 'Tuesday';
-    } else if (weekday == 3) {
+    }
+    else if (weekday == 3) {
       day = 'Wednesday';
-    } else if (weekday == 4) {
+    }
+    else if (weekday == 4) {
       day = 'Thursday';
-    } else if (weekday == 5) {
+    }
+    else if (weekday == 5) {
       day = 'Friday';
-    } else if (weekday == 6) {
+    }
+    else if (weekday == 6) {
       day = 'Saturday';
     }
     return day;
   }
 
   double determineSpeed(double distance, DateTime start, DateTime end) {
-    final int duration = end.difference(start).inMinutes;
-    final double timeInHours = duration / 60;
-    distance ??= 0.0;
-    final double speed = distance / timeInHours;
+    final Duration duration = end.difference(start);
+    final double timeInHours = duration.inHours + duration.inMinutes / 60 + duration.inSeconds / 3600;
+    double speed = 0;
+    if (distance != null) {
+      speed = distance / timeInHours;
+    }
+    if (speed.isNaN || speed.isInfinite) {
+      speed = 0;
+    }
     return speed;
   }
 }

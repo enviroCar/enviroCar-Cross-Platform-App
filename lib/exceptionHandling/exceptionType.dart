@@ -13,6 +13,9 @@ enum ExceptionType {
 }
 
 /// sends message based on the error type
+///
+/// it takes the error type and outputs a user friendly string
+/// to show on a snackbar
 extension ExceptionTypeExtension on ExceptionType {
   String message() {
     switch (this) {

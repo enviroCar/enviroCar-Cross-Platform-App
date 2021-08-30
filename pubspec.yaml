@@ -73,10 +73,7 @@ dependencies:
 
   toast: ^0.1.5
 
-  # for storing data locally
-  sqflite: ^2.0.0+3
-  hive: ^2.0.4
-  hive_flutter: ^1.1.0
+  csv: ^5.0.0
 
   # to follow good code guidelines by google
   lint: ^1.5.3
@@ -93,6 +90,15 @@ dependencies:
   # for making http calls
   dio: ^4.0.0
 
+  # for local db
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+
+  # for instructions on dashboard
+  showcaseview: ^1.1.0
+
+  # for charts
+  fl_chart: ^0.36.3
 
 
   # The following adds the Cupertino Icons font to your application.

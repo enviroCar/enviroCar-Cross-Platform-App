@@ -284,7 +284,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         'Already have an account?\nLogin here',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: kGreyColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

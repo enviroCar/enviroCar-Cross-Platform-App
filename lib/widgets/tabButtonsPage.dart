@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import '../constants.dart';
 import '../globals.dart';
 
+/// The two tabs widget on create car screen and tracks screen
+
 class TabButtonsPage extends StatefulWidget {
   final String button1Title;
   final String button2Title;
@@ -69,13 +71,13 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                     ),
                     color: selectedTab == widget.tab1
                         ? kSpringColor
-                        : Colors.white,
+                        : Theme.of(context).primaryColor,
                   ),
                   height: 40,
                   width: deviceWidth * 0.46,
                   child: Center(
                     child: Text(
-                      widget.button1Title,
+                      widget.button1Title.toUpperCase(),
                       style: TextStyle(
                         color: selectedTab == widget.tab1
                             ? Colors.white
@@ -101,13 +103,13 @@ class _TabButtonsPageState extends State<TabButtonsPage> {
                     ),
                     color: selectedTab == widget.tab2
                         ? kSpringColor
-                        : Colors.white,
+                        : Theme.of(context).primaryColor,
                   ),
                   height: 40,
                   width: deviceWidth * 0.46,
                   child: Center(
                     child: Text(
-                      widget.button2Title,
+                      widget.button2Title.toUpperCase(),
                       style: TextStyle(
                         color: selectedTab == widget.tab2
                             ? Colors.white

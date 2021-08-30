@@ -29,7 +29,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
         final List<Track> tracksList = tracksProvider.getTracks();
         if (tracksList == null) {
           TracksServices()
-              .getTracks(
+              .getTracksFromServer(
             authProvider: _authProvider,
             tracksProvider: _tracksProvider,
           )
@@ -65,6 +65,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
                 padding: const EdgeInsets.all(15.0),
                 child: UploadedTrackCard(
                   track: tracksList[i],
+                  index: i,
                 ),
               );
             },

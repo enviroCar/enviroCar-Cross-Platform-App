@@ -11,6 +11,11 @@ import './tracksScreen.dart';
 import '../constants.dart';
 import '../widgets/OBDhelpDialog.dart';
 
+/// The base widget that contains all the 4 screens on the bottom nav bar
+///
+/// it is used to navigate between the 4 screens all the while
+/// preserving the state in them so that data isn't loaded each time
+
 class Index extends StatefulWidget {
   static const routeName = '/index';
   @override

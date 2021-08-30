@@ -11,6 +11,9 @@ class FuelingCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final double totalCost =
+        (fueling.cost.value) / (fueling.volume.value) as double;
+
     return Container(
       margin: const EdgeInsets.symmetric(
         vertical: 10,
@@ -20,7 +23,7 @@ class FuelingCard extends StatelessWidget {
         horizontal: 15,
       ),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).primaryColor,
         boxShadow: [
           BoxShadow(
             color: Colors.grey[300],
@@ -59,7 +62,7 @@ class FuelingCard extends StatelessWidget {
 
               // Total Price
               Text(
-                '\$${fueling.cost}',
+                '\$${fueling.cost.value}',
                 style: const TextStyle(
                   color: kSpringColor,
                   fontSize: 20,
@@ -74,8 +77,8 @@ class FuelingCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${fueling.mileage} km - ${fueling.volume} L'),
-              Text('${fueling.cost / fueling.volume} \$/L'),
+              Text('${fueling.mileage.value} km - ${fueling.volume.value} L'),
+              Text('${totalCost.toStringAsFixed(2)} \$/L'),
             ],
           ),
           const SizedBox(
@@ -92,7 +95,8 @@ class FuelingCard extends StatelessWidget {
               ),
               Flexible(
                 child: Text(
-                    '${fueling.car.manufacturer} ${fueling.car.model} (${fueling.car.constructionYear} / ${fueling.car.engineDisplacement}ccm)'),
+                  '${fueling.car.properties.model} ${fueling.car.properties.manufacturer}',
+                ),
               ),
             ],
           ),

@@ -1,15 +1,16 @@
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../exceptionHandling/result.dart';
-import '../services/tracksServices.dart';
-import '../utils/snackBar.dart';
 import '../models/track.dart';
 import '../models/localTrackModel.dart';
-import '../database/localTracks.dart';
-import '../models/properties.dart';
-import '../models/sensor.dart';
+import '../exceptionHandling/result.dart';
 import 'authProvider.dart';
+import '../models/car.dart';
+import '../hiveDB/localTracksCollection.dart';
+import '../models/pointProperties.dart';
+import '../services/tracksServices.dart';
+import '../utils/snackBar.dart';
 
 class LocalTracksProvider extends ChangeNotifier {
   List<Track> _tracksList;
@@ -23,6 +24,7 @@ class LocalTracksProvider extends ChangeNotifier {
 
   static final LocalTracksProvider _localTracksProvider = LocalTracksProvider._();
 
+  /// function to fetch [tracks] from the database and add them in [_tracksList]
   void setLocalTracks() {
     final list = LocalTracks.getLocalTracks();
     for (var i = 0; i < list.length; i++) {
@@ -32,6 +34,7 @@ class LocalTracksProvider extends ChangeNotifier {
     }
   }
 
+  /// function to encode [LocalTrackModel] to [Track]
   Track encodeToTrack(LocalTrackModel trackData) {
     final Track track = Track();
     track.id = trackData.getTrackId;
@@ -39,24 +42,17 @@ class LocalTracksProvider extends ChangeNotifier {
     track.begin = trackData.getStartTime;
     track.end = trackData.getEndTime;
 
-    final Sensor sensor = Sensor();
+    final Car sensor = Car();
 
     sensor.type = "car";
-    // todo: change the hardcoded values
-    sensor.properties = Properties(
-        engineDisplacement: 2500,
-        model: 'V50 2004',
-        id: trackData.getCarId,
-        fuelType: 'gasoline',
-        constructionYear: 2004,
-        manufacturer: 'Volvo'
-    );
+    sensor.properties = trackData.getCarProperties;
 
     track.sensor = sensor;
 
     return track;
   }
 
+  /// function to add [localTrack] to the database and save it
   void addLocalTrack(LocalTrackModel localTrackModel) {
     LocalTracks.saveTrack(localTrackModel);
     final Track track = encodeToTrack(localTrackModel);
@@ -71,11 +67,12 @@ class LocalTracksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// function to get list of local tracks [_tracksList]
+  /// function to get [_tracksList]
   List<Track> get getLocalTracks {
     return [..._tracksList];
   }
 
+  /// function to upload local track to the server
   void uploadTrack(BuildContext context, int index) {
     final AuthProvider _authProvider = Provider.of<AuthProvider>(context, listen: false);
     final LocalTrackModel localTrackModel = LocalTracks.getTrackAtIndex(index);
@@ -94,6 +91,39 @@ class LocalTracksProvider extends ChangeNotifier {
         displaySnackBar('${localTrackModel.getTrackName} uploaded successfully!');
       }
     });
+  }
+
+  /// function to export the track data as csv
+  Future exportTrack(int index) async {
+    final LocalTrackModel localTrackModel = LocalTracks.getTrackAtIndex(index);
+    final List<PointProperties> properties = localTrackModel.getProperties.values.toList();
+
+    // final applicationDocumentsDirectory = await path_provider.getApplicationDocumentsDirectory();
+
+    final List<List<dynamic>> data = [];
+    final List<dynamic> dataRow = [];
+
+    dataRow.add("Latitude");
+    dataRow.add("Longitude");
+    dataRow.add("Altitude");
+
+    data.add(dataRow);
+
+    for (int i = 0; i < properties.length; i++) {
+      final List<dynamic> dataRow = [];
+      dataRow.add(properties[i].latitude);
+      dataRow.add(properties[i].longitude);
+      dataRow.add(properties[i].altitude);
+
+      data.add(dataRow);
+    }
+
+    // todo: export the converted file and store it in external storage
+
+    final String trackDataCsv = const ListToCsvConverter().convert(data);
+    // final File file = File("${applicationDocumentsDirectory.path}/${localTrackModel.getTrackName}.csv");
+    // file.writeAsString(trackDataCsv);
+
   }
 
 }

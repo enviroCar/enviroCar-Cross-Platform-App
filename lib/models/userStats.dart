@@ -1,3 +1,5 @@
+/// model for user's stats shown on dashboard screen
+
 class UserStats {
   double distance;
   double duration;

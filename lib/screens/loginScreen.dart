@@ -203,7 +203,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         'New to enviroCar?\nRegister here',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: kGreyColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

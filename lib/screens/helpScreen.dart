@@ -32,9 +32,6 @@ class HelpScreen extends StatelessWidget {
   Widget buildParagraph({@required String paragraph}) {
     return Text(
       paragraph,
-      style: const TextStyle(
-        color: Colors.black45,
-      ),
     );
   }
 

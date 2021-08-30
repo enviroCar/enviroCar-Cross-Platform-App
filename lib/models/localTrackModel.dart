@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 
 import '../constants.dart';
 import 'pointProperties.dart';
+import 'car.dart';
 
 part 'localTrackModel.g.dart';
 
@@ -12,7 +13,7 @@ class LocalTrackModel {
   @HiveField(1)
   final String trackName;
   @HiveField(2)
-  final DateTime modifiedTime;
+  final DateTime startTime;
   @HiveField(3)
   final DateTime endTime;
   @HiveField(4)
@@ -31,11 +32,21 @@ class LocalTrackModel {
   final String bluetoothDevice;
   @HiveField(11)
   final Map<int, PointProperties> properties;
+  @HiveField(12)
+  final String carManufacturer;
+  @HiveField(13)
+  final String carFuelType;
+  @HiveField(14)
+  final String carModel;
+  @HiveField(15)
+  final int carConstructionYear;
+  @HiveField(16)
+  final int carEngineDisplacement;
 
   LocalTrackModel({
     this.trackId,
     this.trackName,
-    this.modifiedTime,
+    this.startTime,
     this.endTime,
     this.duration,
     this.distance,
@@ -44,7 +55,12 @@ class LocalTrackModel {
     this.isTrackUploaded,
     this.stops,
     this.bluetoothDevice,
-    this.properties
+    this.properties,
+    this.carManufacturer,
+    this.carFuelType,
+    this.carModel,
+    this.carConstructionYear,
+    this.carEngineDisplacement
   });
 
   @override
@@ -55,7 +71,7 @@ class LocalTrackModel {
         runtimeType == other.runtimeType &&
         trackId == other.trackId &&
         trackName == other.trackName &&
-        modifiedTime == other.modifiedTime &&
+        startTime == other.startTime &&
         endTime == other.endTime &&
         duration == other.duration &&
         distance == other.distance &&
@@ -64,14 +80,19 @@ class LocalTrackModel {
         isTrackUploaded == other.isTrackUploaded &&
         stops == other.stops &&
         bluetoothDevice == other.bluetoothDevice &&
-        properties == other.properties;
+        properties == other.properties &&
+        carManufacturer == other.carManufacturer &&
+        carModel == other.carModel &&
+        carFuelType == other.carFuelType &&
+        carEngineDisplacement == other.carEngineDisplacement &&
+        carConstructionYear == other.carConstructionYear;
   }
 
   @override
   int get hashCode {
     return trackId.hashCode ^
     trackName.hashCode ^
-    modifiedTime.hashCode ^
+    startTime.hashCode ^
     endTime.hashCode ^
     duration.hashCode ^
     distance.hashCode ^
@@ -80,7 +101,12 @@ class LocalTrackModel {
     isTrackUploaded.hashCode ^
     stops.hashCode ^
     bluetoothDevice.hashCode ^
-    properties.hashCode;
+    properties.hashCode ^
+    carConstructionYear.hashCode ^
+    carEngineDisplacement.hashCode ^
+    carFuelType.hashCode ^
+    carManufacturer.hashCode ^
+    carModel.hashCode;
   }
 
   /// function to return [trackId] of the [track]
@@ -90,7 +116,7 @@ class LocalTrackModel {
   double get getDistance => distance;
 
   /// function to return [startTime] of the [track]
-  DateTime get getStartTime => modifiedTime;
+  DateTime get getStartTime => startTime;
 
   /// function to return [endTime] of the [track]
   DateTime get getEndTime => endTime;
@@ -103,5 +129,19 @@ class LocalTrackModel {
 
   /// function to return [properties] of the [track]
   Map<int, PointProperties> get getProperties => properties;
+
+  /// function to get [sensor properties]
+  Properties get getCarProperties {
+    final Properties properties = Properties(
+      engineDisplacement: carEngineDisplacement,
+      manufacturer: carManufacturer,
+      constructionYear: carConstructionYear,
+      model: carModel,
+      fuelType: carFuelType,
+      id: selectedCarId
+    );
+
+    return properties;
+  }
 
 }
