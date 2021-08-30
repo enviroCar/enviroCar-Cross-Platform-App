@@ -5,9 +5,11 @@ import '../../models/settingsTileModel.dart';
 // List of checkbox settings tile on settings screen
 class SettingsListWidget extends StatefulWidget {
   final List<SettingsTileModel> settings;
+  final Function onChanged;
 
   const SettingsListWidget({
     @required this.settings,
+    this.onChanged,
   });
   @override
   _SettingsListWidgetState createState() => _SettingsListWidgetState();
@@ -36,6 +38,7 @@ class _SettingsListWidgetState extends State<SettingsListWidget> {
             subtitle: Text(widget.settings[index].subtitle),
             value: widget.settings[index].isChecked,
             onChanged: (bool val) {
+              if (widget.onChanged != null) widget.onChanged();
               toggleCheckBox(index: index);
             },
           );

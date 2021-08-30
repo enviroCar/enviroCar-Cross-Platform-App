@@ -22,7 +22,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   int _currentPage = 0;
 
   List<Widget> _buildPageIndicator() {
-    List<Widget> list = [];
+    final List<Widget> list = [];
     for (int i = 0; i < _numPages; i++) {
       list.add(i == _currentPage ? _indicator(true) : _indicator(false));
     }
@@ -83,7 +83,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         height: 20,
                       ),
                       const Text(
-                          'Record you Tracks while driving by connecting with OBD. OBD connection help can be found in the dashboard.'),
+                        'Record you Tracks while driving by connecting with OBD. OBD connection help can be found in the dashboard.',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
                     ],
                   ),
                   Column(
@@ -107,7 +111,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         height: 20,
                       ),
                       const Text(
-                          'Upload your data as open data and help Research Studies and effective Traffic Planning.'),
+                        'Upload your data as open data and help Research Studies and effective Traffic Planning.',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
                     ],
                   ),
                   Column(
@@ -132,7 +140,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         height: 20,
                       ),
                       const Text(
-                          'Analyze your tracks and find the driving efficiency, car running cost and much more.'),
+                        'Analyze your tracks and find the driving efficiency, car running cost and much more.',
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
                     ],
                   ),
                 ],

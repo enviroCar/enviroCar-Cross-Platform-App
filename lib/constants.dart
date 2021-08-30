@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// Input decoration style used for all the text fields
 const InputDecoration inputDecoration = InputDecoration(
   alignLabelWithHint: true,
   labelStyle: TextStyle(

@@ -18,7 +18,7 @@ import '../exceptionHandling/errorHandler.dart';
 
 class TracksServices {
   /// function to get all the tracks uploaded by the currently signed in user
-  Future<Result> getTracks({
+  Future<Result> getTracksFromServer({
     @required AuthProvider authProvider,
     @required TracksProvider tracksProvider,
   }) async {
@@ -111,7 +111,7 @@ class TracksServices {
 
       try {
         final Map<String, String> properties = {
-          'sensor' : "51c96afce4b0fd063432096f", // todo: change this hardcoded value 'localTrackModel.getCarId'
+          'sensor' : localTrackModel.getCarId,
           'name': localTrackModel.getTrackName,
           'description': 'my track description' // todo: track description
         };
@@ -139,7 +139,7 @@ class TracksServices {
               geometry: geometry,
               time: properties.time,
               phenomenons: phenomenons,
-              sensorId: "51c96afce4b0fd063432096f" // todo: change this hardcoded value 'localTrackModel.getCarId'
+              sensorId: localTrackModel.getCarId
           );
 
           featureObject.add(feature.toJSON());

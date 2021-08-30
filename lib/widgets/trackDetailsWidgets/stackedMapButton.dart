@@ -4,12 +4,12 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 import '../../utils/enums.dart';
 import '../../providers/tracksProvider.dart';
-import '../../database/localTracks.dart';
 import '../../models/localTrackModel.dart';
 import '../../providers/localTracksProvider.dart';
 import '../../utils/mapFunctions.dart';
 import '../../constants.dart';
 import '../../globals.dart';
+import '../../hiveDB/localTracksCollection.dart';
 
 class StackedMapButton extends StatefulWidget {
   final TrackType trackType;

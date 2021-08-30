@@ -60,7 +60,9 @@ void showAlertDialog({
                 content,
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  color: kGreyColor.withOpacity(0.5)
+                  color: Theme.of(context).textTheme.caption.color,
+                  fontWeight: FontWeight.normal,
+                  fontSize: 15
                 ),
               ),
             ],

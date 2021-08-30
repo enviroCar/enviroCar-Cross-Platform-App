@@ -1,11 +1,11 @@
 import 'exceptionType.dart';
 
-// class to identify the error type and show an appropriate message
-// corresponding to that error type
+/// class to identify the error type and show an appropriate message
+/// corresponding to that error type
 class ApplicationException implements Exception {
-  final ExceptionType _type;
+  final ExceptionType type;
 
-  ApplicationException([this._type]);
+  ApplicationException([this.type]);
 
-  String getErrorMessage() => _type.message();
+  String getErrorMessage() => type.message();
 }

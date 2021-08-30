@@ -7,6 +7,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart';
 import 'package:location/location.dart';
 
+import '../models/car.dart';
 import '../obd/obdCommands.dart';
 import '../obd/string_util.dart';
 import '../constants.dart';
@@ -434,20 +435,25 @@ class GpsTrackProvider extends ChangeNotifier {
   }
 
   /// function to get [LocalTrack] object
-  LocalTrackModel getLocalTrack({@required String sensorId}) {
+  LocalTrackModel getLocalTrack({@required Car sensor}) {
     final LocalTrackModel trackModel = LocalTrackModel(
-      trackId: trackId,
-      trackName: getTrackName,
-      startTime: formatDate(trackStartTime),
-      endTime: formatDate(trackEndTime),
-      duration: getTrackDuration,
-      distance: getDistance,
-      speed: 40, // todo: change hardcoded value
-      selectedCarId: sensorId,
-      isTrackUploaded: false,
-      stops: getNoOfStops,
-      bluetoothDevice: BluetoothProvider().getConnectedDevice.name,
-      properties: pointProperties
+        trackId: trackId,
+        trackName: getTrackName,
+        startTime: formatDate(trackStartTime),
+        endTime: formatDate(trackEndTime),
+        duration: getTrackDuration,
+        distance: getDistance,
+        speed: 40, // todo: change hardcoded value
+        selectedCarId: sensor.properties.id,
+        isTrackUploaded: false,
+        stops: getNoOfStops,
+        bluetoothDevice: BluetoothProvider().getConnectedDevice.name,
+        properties: pointProperties,
+        carManufacturer: sensor.properties.manufacturer,
+        carModel: sensor.properties.model,
+        carFuelType: sensor.properties.fuelType,
+        carEngineDisplacement: sensor.properties.engineDisplacement,
+        carConstructionYear: sensor.properties.constructionYear
     );
 
     return trackModel;

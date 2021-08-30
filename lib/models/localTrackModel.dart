@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 
 import '../constants.dart';
 import 'pointProperties.dart';
+import 'car.dart';
 
 part '../hive_generated_models/localTrackModel.g.dart';
 
@@ -31,6 +32,16 @@ class LocalTrackModel {
   final String bluetoothDevice;
   @HiveField(11)
   final Map<int, PointProperties> properties;
+  @HiveField(12)
+  final String carManufacturer;
+  @HiveField(13)
+  final String carFuelType;
+  @HiveField(14)
+  final String carModel;
+  @HiveField(15)
+  final int carConstructionYear;
+  @HiveField(16)
+  final int carEngineDisplacement;
 
   LocalTrackModel({
     this.trackId,
@@ -44,7 +55,12 @@ class LocalTrackModel {
     this.isTrackUploaded,
     this.stops,
     this.bluetoothDevice,
-    this.properties
+    this.properties,
+    this.carManufacturer,
+    this.carFuelType,
+    this.carModel,
+    this.carConstructionYear,
+    this.carEngineDisplacement
   });
 
   @override
@@ -64,29 +80,33 @@ class LocalTrackModel {
         isTrackUploaded == other.isTrackUploaded &&
         stops == other.stops &&
         bluetoothDevice == other.bluetoothDevice &&
-        properties == other.properties;
+        properties == other.properties &&
+        carManufacturer == other.carManufacturer &&
+        carModel == other.carModel &&
+        carFuelType == other.carFuelType &&
+        carEngineDisplacement == other.carEngineDisplacement &&
+        carConstructionYear == other.carConstructionYear;
   }
 
   @override
   int get hashCode {
     return trackId.hashCode ^
-        trackName.hashCode ^
-        startTime.hashCode ^
-        endTime.hashCode ^
-        duration.hashCode ^
-        distance.hashCode ^
-        speed.hashCode ^
-        selectedCarId.hashCode ^
-        isTrackUploaded.hashCode ^
-        stops.hashCode ^
-        bluetoothDevice.hashCode ^
-        properties.hashCode;
-  }
-
-
-  @override
-  String toString() {
-    return 'LocalTrackModel{trackId: $trackId, trackName: $trackName, startTime: $startTime, endTime: $endTime, duration: $duration, distance: $distance, speed: $speed, selectedCarId: $selectedCarId, isTrackUploaded: $isTrackUploaded, stops: $stops, bluetoothDevice: $bluetoothDevice, properties: $properties}';
+    trackName.hashCode ^
+    startTime.hashCode ^
+    endTime.hashCode ^
+    duration.hashCode ^
+    distance.hashCode ^
+    speed.hashCode ^
+    selectedCarId.hashCode ^
+    isTrackUploaded.hashCode ^
+    stops.hashCode ^
+    bluetoothDevice.hashCode ^
+    properties.hashCode ^
+    carConstructionYear.hashCode ^
+    carEngineDisplacement.hashCode ^
+    carFuelType.hashCode ^
+    carManufacturer.hashCode ^
+    carModel.hashCode;
   }
 
   /// function to return [trackId] of the [track]
@@ -109,5 +129,19 @@ class LocalTrackModel {
 
   /// function to return [properties] of the [track]
   Map<int, PointProperties> get getProperties => properties;
+
+  /// function to get [sensor properties]
+  Properties get getCarProperties {
+    final Properties properties = Properties(
+        engineDisplacement: carEngineDisplacement,
+        manufacturer: carManufacturer,
+        constructionYear: carConstructionYear,
+        model: carModel,
+        fuelType: carFuelType,
+        id: selectedCarId
+    );
+
+    return properties;
+  }
 
 }

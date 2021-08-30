@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 
+import 'package:provider/provider.dart';
+
 import '../widgets/dividerLine.dart';
 import '../widgets/titleWidget.dart';
 import '../values/settingsValues.dart';
+import '../globals.dart';
+import '../providers/themeProvider.dart';
 import '../widgets/settingsScreenWidgets/settingsListWidget.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -37,6 +41,23 @@ class _SettingsScreenState extends State<SettingsScreen> {
             // Debugging Settings
             const TitleWidget(title: 'Debugging'),
             SettingsListWidget(settings: debuggingSettings),
+            DividerLine(),
+
+            // Theme Settings
+            const TitleWidget(title: 'Theme'),
+            SettingsListWidget(
+              settings: themeSettings,
+              onChanged: () {
+                final ThemeProvider themeProvider =
+                    Provider.of<ThemeProvider>(context, listen: false);
+                themeProvider.switchThemeData();
+
+                final ThemeData themeData = themeProvider.getTheme;
+                themeData.primaryColor == Colors.white
+                    ? preferences.setString('theme', 'light')
+                    : preferences.setString('theme', 'dark');
+              },
+            ),
           ],
         ),
       ),

@@ -1,11 +1,11 @@
-import './sensor.dart';
+import 'car.dart';
 
 class Track {
   String id;
   double length;
   DateTime begin;
   DateTime end;
-  Sensor sensor;
+  Car sensor;
 
   Track({
     this.id,
@@ -21,7 +21,7 @@ class Track {
     begin = DateTime.parse(json['begin'] as String);
     end = DateTime.parse(json['end'] as String);
     sensor = json['sensor'] != null
-        ? Sensor.fromJson(json['sensor'] as Map<String, dynamic>)
+        ? Car.fromJson(json['sensor'] as Map<String, dynamic>)
         : null;
   }
 

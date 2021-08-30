@@ -4,11 +4,10 @@ import 'package:provider/provider.dart';
 
 import '../models/track.dart';
 import '../models/localTrackModel.dart';
-import '../database/localTracks.dart';
-import '../models/properties.dart';
-import '../models/sensor.dart';
+import '../hiveDB/localTracksCollection.dart';
 import '../exceptionHandling/result.dart';
 import 'authProvider.dart';
+import '../models/car.dart';
 import '../models/pointProperties.dart';
 import '../services/tracksServices.dart';
 import '../utils/snackBar.dart';
@@ -43,18 +42,10 @@ class LocalTracksProvider extends ChangeNotifier {
     track.begin = trackData.getStartTime;
     track.end = trackData.getEndTime;
 
-    final Sensor sensor = Sensor();
+    final Car sensor = Car();
 
     sensor.type = "car";
-    // todo: change the hardcoded values
-    sensor.properties = Properties(
-      engineDisplacement: 2500,
-      model: 'V50 2004',
-      id: trackData.getCarId,
-      fuelType: 'gasoline',
-      constructionYear: 2004,
-      manufacturer: 'Volvo'
-    );
+    sensor.properties = trackData.getCarProperties;
 
     track.sensor = sensor;
 

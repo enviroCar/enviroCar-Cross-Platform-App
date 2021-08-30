@@ -44,7 +44,7 @@ class CarDetailsCard extends StatelessWidget {
             offset: const Offset(-2, 2),
           ),
         ],
-        color: Colors.white,
+        color: Theme.of(context).primaryColor,
         borderRadius: const BorderRadius.all(Radius.circular(5)),
       ),
       child: Column(
