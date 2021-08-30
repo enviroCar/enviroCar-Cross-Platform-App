@@ -8,7 +8,7 @@ import '../../exceptionHandling/result.dart';
 import '../../providers/authProvider.dart';
 import '../../providers/tracksProvider.dart';
 import '../../services/tracksServices.dart';
-import '../../widgets/tracksScrrenWidgets/trackCard.dart';
+import '../../widgets/tracksScrrenWidgets/uploadedTrackCard.dart';
 
 class UploadedTracksList extends StatefulWidget {
   @override

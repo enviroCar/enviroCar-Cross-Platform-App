@@ -46,6 +46,8 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle textStyle = Theme.of(context).textTheme.headline1;
+
     return Container(
       width: deviceWidth * 0.9,
       decoration: BoxDecoration(
@@ -114,16 +116,26 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                       }
                     },
                     itemBuilder: (_) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 0,
                         child: Text(
                           'Show Details',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: textStyle.color
+                          ),
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 1,
                         child: Text(
                           'Export Track',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: textStyle.color
+                          ),
                         ),
                       ),
                     ],
@@ -242,11 +254,12 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Duration',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
+                          color: textStyle.color
                         ),
                       ),
                     ],
@@ -262,11 +275,12 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Distance',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
+                          color: textStyle.color
                         ),
                       ),
                     ],

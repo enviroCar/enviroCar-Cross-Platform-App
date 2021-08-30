@@ -1,4 +1,3 @@
-import 'package:envirocar_app_main/hiveDB/localTracksCollection.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -12,6 +11,7 @@ import '../../utils/snackBar.dart';
 import '../../utils/mapFunctions.dart';
 import '../../models/localTrackModel.dart';
 import '../../screens/trackDetailsScreen.dart';
+import '../../hiveDB/localTracksCollection.dart';
 import '../../providers/localTracksProvider.dart';
 
 class LocalTrackCard extends StatefulWidget {
@@ -48,6 +48,8 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
 
   @override
   Widget build(BuildContext context) {
+    final TextStyle textStyle = Theme.of(context).textTheme.headline1;
+
     return Container(
       width: deviceWidth * 0.9,
       decoration: BoxDecoration(
@@ -131,28 +133,48 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                       }
                     },
                     itemBuilder: (_) => [
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 0,
                         child: Text(
                           'Show Details',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.normal,
+                            color: textStyle.color
+                          ),
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 1,
                         child: Text(
                           'Delete Track',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: textStyle.color
+                          ),
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 2,
                         child: Text(
                           'Upload Track as Open Data',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: textStyle.color
+                          ),
                         ),
                       ),
-                      const PopupMenuItem(
+                      PopupMenuItem(
                         value: 3,
                         child: Text(
                           'Export Track',
+                          style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.normal,
+                              color: textStyle.color
+                          ),
                         ),
                       ),
                     ],
@@ -254,11 +276,12 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Duration',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
+                          color: textStyle.color
                         ),
                       ),
                     ],
@@ -274,11 +297,12 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                           fontWeight: FontWeight.w800,
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Distance',
                         style: TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.normal,
+                          color: textStyle.color
                         ),
                       ),
                     ],
