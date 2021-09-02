@@ -24,7 +24,8 @@ void showAlertDialog({
             title.toUpperCase(),
             textAlign: TextAlign.center,
             style: const TextStyle(
-                color: kSpringColor
+              fontSize: 20,
+              color: kSpringColor
             ),
           ),
           content: Column(
