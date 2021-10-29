@@ -6,7 +6,7 @@ enviroCar is a citizen science community that collects, shares, and analyzes flo
 enviroCar is an android application that provides features like:
 
 - Record tracks, explore recorded tracks, and upload tracks as open data for analysis.
-- Sharing data i.e. uploading data as open data for analysis that estimates use it to estimateCO2emission, track count, average speed, relative speed, hotspot analysis.
+- Sharing data i.e. uploading data as open data for analysis that estimates use it to estimate CO2 emission, track count, average speed, relative speed, hotspot analysis.
 - Provides real-time data about the track, the distance covered, and duration.
 
 The project aims to build a cross-platform application so that the enviroCar app is available to iOS users as well since only two-thirds of people can use the application as of now.
@@ -88,7 +88,7 @@ https://github.com/enviroCar/enviroCar-server/tree/gh-pages.
 
 |Dashboard Screen|Tracks Screen|Track Details Screen|
 |---------------------------------------------------------|------------------------------------------------------------|--------------------------------------------------------|
-| <img width="300em" src="./design/dashboard.png"> | <img width="300em" src="./design/tracks.png"> | <img width="300em" src="./design/track details.png"> | 
+| <img width="300em" src="./design/dashboard.png"> | <img width="300em" src="./design/trackScreen.jpeg"> | <img width="300em" src="./design/trackDetailsScreen.jpeg"> |
 
 |Graphs Screen|Settings Screen|Profile Screen
 |---------------------------------------------------------|------------------------------------------------------------|--------------------------------------------------------|
