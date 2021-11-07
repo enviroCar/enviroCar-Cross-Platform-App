@@ -47,7 +47,7 @@ dependencies:
   url_launcher: ^6.0.6
 
   # to preview the app on different screens sizes
-  device_preview: ^0.7.3
+  device_preview: ^0.8.0
 
   # to store small persistent data
   shared_preferences: ^2.0.6
