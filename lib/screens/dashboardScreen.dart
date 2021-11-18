@@ -1,19 +1,26 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 import 'package:showcaseview/showcaseview.dart';
+import 'package:flutter_blue/flutter_blue.dart';
 
-import '../widgets/dashboardWidgets/statsWidget.dart';
-import './bluetoothDevicesScreen.dart';
-import '../widgets/dashboardWidgets/dashboardIconButton.dart';
-import '../widgets/dashboardWidgets/dashboardCard.dart';
+import '../globals.dart';
+import './mapScreen.dart';
+import './carScreen.dart';
 import '../constants.dart';
 import '../models/car.dart';
-import './mapScreen.dart';
-import '../globals.dart';
-import './carScreen.dart';
-import '../providers/carsProvider.dart';
+import '../utils/enums.dart';
+import 'gpsTrackingScreen.dart';
 import '../widgets/button.dart';
+import './bluetoothDevicesScreen.dart';
+import '../providers/carsProvider.dart';
+import '../utils/customAlertDialog.dart';
+import '../providers/bluetoothProvider.dart';
+import '../providers/locationStatusProvider.dart';
+import '../providers/bluetoothStatusProvider.dart';
+import '../widgets/dashboardWidgets/statsWidget.dart';
+import '../widgets/dashboardWidgets/dashboardCard.dart';
+import '../widgets/dashboardWidgets/dashboardIconButton.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -34,7 +41,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   // context passed to show the instructions
   BuildContext showcaseContext;
 
-  bool showWalkthrough;
+  bool showWalkThrough;
+
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
 
   // dialog to ask whether to show the instructions or not
   void _showDialog() {
@@ -67,7 +80,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   TextButton(
                     onPressed: () {
                       Navigator.of(context).pop();
-                      beginWalkthrough();
+                      beginWalkThrough();
                     },
                     child: const Text(
                       'Let\'s Go',
@@ -86,7 +99,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   // initializes the instructions
-  void beginWalkthrough() {
+  void beginWalkThrough() {
     ShowCaseWidget.of(showcaseContext).startShowCase(
       [
         _userStats,
@@ -108,8 +121,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
     /// check whether user has opened the app the first time
     /// if yes then ask whether to show the instructions or not
     /// if not then don't show any dialogs or instructions
-    showWalkthrough = preferences.getBool('showWalkthrough');
-    if (showWalkthrough == null) {
+    showWalkThrough = preferences.getBool('showWalkThrough');
+    if (showWalkThrough == null) {
       _showDialog();
     }
   }
@@ -118,7 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget build(BuildContext context) {
     return ShowCaseWidget(
       onComplete: (int index, GlobalKey<State<StatefulWidget>> key) {
-        preferences.setBool('showWalkthrough', false);
+        preferences.setBool('showWalkThrough', false);
       },
       builder: Builder(
         builder: (BuildContext showcaseCtx) {
@@ -162,7 +175,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                 ),
-
                 // Bluetooth, OBD, GPS and Car buttons
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -172,9 +184,17 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       title: 'Bluetooth',
                       description:
                           'Indicates whether Bluetooth is\nturned on or not',
-                      child: const DashboardIconButton(
-                        routeName: BluetoothDevicesScreen.routeName,
-                        assetName: 'assets/icons/bluetooth.svg',
+                      child: Consumer<BluetoothStatusProvider>(
+                        builder: (context, provider, child) {
+                          return DashboardIconButton(
+                            routeName: BluetoothDevicesScreen.routeName,
+                            assetName: 'assets/icons/bluetooth.svg',
+                            buttonColor: provider.bluetoothState ==
+                                    BluetoothConnectionStatus.ON
+                                ? kSpringColor
+                                : kErrorColor,
+                          );
+                        },
                       ),
                     ),
                     Showcase(
@@ -182,48 +202,91 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       title: 'OBD',
                       description:
                           'Indicates whether an OBD device is\nconnected or not',
-                      child: const DashboardIconButton(
-                        routeName: BluetoothDevicesScreen.routeName,
-                        assetName: 'assets/icons/smartphone.svg',
+                      child: Consumer<BluetoothProvider>(
+                        builder: (context, bluetoothProvider, child) {
+                          final bool isConnected =
+                              bluetoothProvider.isConnected();
+                          return DashboardIconButton(
+                            routeName: BluetoothDevicesScreen.routeName,
+                            assetName: 'assets/icons/smartphone.svg',
+                            buttonColor:
+                                isConnected ? kSpringColor : kErrorColor,
+                          );
+                        },
                       ),
                     ),
                     Showcase(
                       key: _car,
                       title: 'Car',
                       description: 'Indicates whether a car is selected or not',
-                      child: const DashboardIconButton(
-                        routeName: BluetoothDevicesScreen.routeName,
-                        assetName: 'assets/icons/car.svg',
+                      child: Consumer<CarsProvider>(
+                        builder: (context, provider, child) {
+                          return DashboardIconButton(
+                            routeName: CarScreen.routeName,
+                            assetName: 'assets/icons/car.svg',
+                            buttonColor: provider.getSelectedCar != null
+                                ? kSpringColor
+                                : kErrorColor,
+                          );
+                        },
                       ),
                     ),
                     Showcase(
                       key: _gps,
                       title: 'GPS',
                       description: 'Indicates whether GPS is turned on or not',
-                      child: const DashboardIconButton(
-                        routeName: MapScreen.routeName,
-                        assetName: 'assets/icons/gps.svg',
+                      child: Consumer<LocationStatusProvider>(
+                        builder: (context, provider, child) {
+                          return DashboardIconButton(
+                            routeName: MapScreen.routeName,
+                            assetName: 'assets/icons/gps.svg',
+                            buttonColor:
+                                provider.locationState == LocationStatus.enabled
+                                    ? kSpringColor
+                                    : kErrorColor,
+                          );
+                        },
                       ),
                     ),
                   ],
                 ),
+
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
 
                 // Bluetooth Card
-                Showcase(
-                  key: _selectedObd,
-                  title: 'Selected OBD',
-                  description:
-                      'Shows the OBD device currently paired with the app',
-                  child: const DashboardCard(
-                    assetName: 'assets/icons/bluetooth.svg',
-                    title: 'OBD-II V9',
-                    subtitle: 'ELM327',
-                    routeName: BluetoothDevicesScreen.routeName,
-                  ),
+                Consumer<BluetoothProvider>(
+                  builder: (context, bluetoothProvider, child) {
+                    final bool isConnected = bluetoothProvider.isConnected();
+                    BluetoothDevice connectedDevice;
+                    if (isConnected) {
+                      connectedDevice = bluetoothProvider.getConnectedDevice;
+                    }
+
+                    return Showcase(
+                      key: _selectedObd,
+                      title: 'Selected OBD',
+                      description:
+                          'Shows the OBD device currently paired with the app',
+                      child: DashboardCard(
+                        assetName: 'assets/icons/bluetooth.svg',
+                        title: isConnected
+                            ? (connectedDevice.name.isNotEmpty
+                                ? connectedDevice.name
+                                : 'Unknown Device')
+                            : 'No OBD-II adapter selected',
+                        subtitle: isConnected
+                            ? connectedDevice.id.toString()
+                            : 'Click here to select one',
+                        routeName: BluetoothDevicesScreen.routeName,
+                        iconBackgroundColor:
+                            isConnected ? kSpringColor : kErrorColor,
+                      ),
+                    );
+                  },
                 ),
+
                 SizedBox(
                   height: deviceHeight * 0.02,
                 ),
@@ -232,6 +295,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Consumer<CarsProvider>(
                   builder: (_, carsProvider, child) {
                     final Car selectedCar = carsProvider.getSelectedCar;
+
                     return Showcase(
                       key: _selectedCar,
                       title: 'Selected Car',
@@ -245,12 +309,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             ? 'Select a car'
                             : '${selectedCar.properties.constructionYear}, ${selectedCar.properties.engineDisplacement}, ${selectedCar.properties.fuelType}',
                         routeName: CarScreen.routeName,
+                        iconBackgroundColor: carsProvider.getSelectedCar != null
+                            ? kSpringColor
+                            : kErrorColor,
                       ),
                     );
                   },
                 ),
                 SizedBox(
-                  height: deviceHeight * 0.03,
+                  height: deviceHeight * 0.02,
                 ),
 
                 // Start Tracks Button
@@ -264,7 +331,88 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     child: Button(
                       title: 'Start Track',
                       color: kSpringColor,
-                      onTap: () {},
+                      onTap: () {
+                        final locationProvider =
+                            Provider.of<LocationStatusProvider>(
+                          context,
+                          listen: false,
+                        );
+                        final carsProvider =
+                            Provider.of<CarsProvider>(context, listen: false);
+                        final bluetoothProvider =
+                            Provider.of<BluetoothProvider>(
+                          context,
+                          listen: false,
+                        );
+
+                        if (locationProvider.locationState ==
+                                LocationStatus.enabled &&
+                            carsProvider.getSelectedCar != null &&
+                            bluetoothProvider.isConnected()) {
+                          _logger.i('Going to GPS tracking screen');
+                          Navigator.pushNamed(
+                            context,
+                            GpsTrackingScreen.routeName,
+                          );
+                        } else {
+                          const String title = 'Cannot start GPS tracking';
+                          String content = ' ';
+                          bool carState = true;
+                          bool locationState = true;
+                          bool bluetoothState = true;
+                          if (locationProvider.locationState ==
+                                  LocationStatus.disabled &&
+                              carsProvider.getSelectedCar == null &&
+                              !bluetoothProvider.isConnected()) {
+                            content =
+                                'Please turn on location, select a car and connect to OBD-II adapter to start recording your track.';
+                            locationState = false;
+                            carState = false;
+                            bluetoothState = false;
+                          } else if (carsProvider.getSelectedCar == null &&
+                              !bluetoothProvider.isConnected()) {
+                            content =
+                                'Please select a car and connect to OBD-II adapter to start recording your track.';
+                            carState = false;
+                            bluetoothState = false;
+                          } else if (carsProvider.getSelectedCar == null &&
+                              locationProvider.locationState ==
+                                  LocationStatus.disabled) {
+                            content =
+                                'Please turn on location and select a car to start recording your track.';
+                            locationState = false;
+                            carState = false;
+                          } else if (locationProvider.locationState ==
+                                  LocationStatus.disabled &&
+                              !bluetoothProvider.isConnected()) {
+                            content =
+                                'Please turn on location and connect to OBD-II adapter to start recording your track.';
+                            locationState = false;
+                            bluetoothState = false;
+                          } else if (!bluetoothProvider.isConnected()) {
+                            content =
+                                'Please connect to OBD-II adapter to start recording your track.';
+                            bluetoothState = false;
+                          } else if (carsProvider.getSelectedCar == null) {
+                            content =
+                                'Please select a car to start recording your track.';
+                            carState = false;
+                          } else if (locationProvider.locationState ==
+                              LocationStatus.disabled) {
+                            content =
+                                'Please turn on location services to start recording your track.';
+                            locationState = false;
+                          }
+                          showAlertDialog(
+                            context: context,
+                            title: title,
+                            content: content,
+                            carState: carState,
+                            locationState: locationState,
+                            bluetoothState: bluetoothState,
+                          );
+                        }
+                      },
                     ),
                   ),
                 ),

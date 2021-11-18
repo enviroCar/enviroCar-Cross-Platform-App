@@ -1,14 +1,13 @@
-import 'package:flutter/material.dart';
-
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/authProvider.dart';
 import '../models/userStats.dart';
-import '../providers/userStatsProvider.dart';
-import '../exceptionHandling/appException.dart';
+import '../providers/authProvider.dart';
 import '../exceptionHandling/result.dart';
+import '../providers/userStatsProvider.dart';
 import '../exceptionHandling/errorHandler.dart';
+import '../exceptionHandling/appException.dart';
 
 class StatsServices {
   final baseUri = 'https://envirocar.org/api/stable';
@@ -21,7 +20,7 @@ class StatsServices {
         Provider.of<UserStatsProvider>(context, listen: false);
 
     try {
-      final dio.Response responsee = await dio.Dio().get(
+      final dio.Response response = await dio.Dio().get(
         '$baseUri/users/${authProvider.getUser.getUsername}/userStatistic',
         options: dio.Options(
           headers: {
@@ -32,9 +31,9 @@ class StatsServices {
       );
 
       userStatsProvider.setUserStats =
-          UserStats.fromJson(responsee.data as Map<String, dynamic>);
+          UserStats.fromJson(response.data as Map<String, dynamic>);
 
-      return Result.success(responsee.data);
+      return Result.success(response.data);
     } catch (e) {
       final ApplicationException exception = handleException(e);
       return Result.failure(exception);

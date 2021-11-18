@@ -1,53 +1,74 @@
+import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-
-import 'package:hive/hive.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 import 'package:provider/provider.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:path_provider/path_provider.dart' as path_provider;
 
-import './providers/authProvider.dart';
-import './providers/tracksProvider.dart';
-import 'models/track.dart';
-import './screens/splashScreen.dart';
-import './screens/bluetoothDevicesScreen.dart';
-import './screens/index.dart';
-import './screens/loginScreen.dart';
-import './screens/mapScreen.dart';
-import './screens/registerScreen.dart';
-import 'providers/themeProvider.dart';
-import './providers/userStatsProvider.dart';
+import 'constants.dart';
 import './globals.dart';
+import './screens/index.dart';
+import 'screens/helpScreen.dart';
 import './screens/carScreen.dart';
+import './screens/mapScreen.dart';
+import './screens/loginScreen.dart';
+import '../screens/helpScreen.dart';
+import 'models/localTrackModel.dart';
+import 'models/pointProperties.dart';
+import './screens/splashScreen.dart';
+import './screens/logBookScreen.dart';
+import 'providers/themeProvider.dart';
+import './providers/authProvider.dart';
+import './screens/registerScreen.dart';
 import './providers/carsProvider.dart';
 import './screens/createCarScreen.dart';
-import './screens/trackDetailsScreen.dart';
-import './providers/fuelingsProvider.dart';
-import './screens/createFuelingScreen.dart';
-import './screens/logBookScreen.dart';
-import './screens/reportIssueScreen.dart';
-import '../screens/helpScreen.dart';
-import './hiveDB/fuelingsCollection.dart';
+import 'screens/gpsTrackingScreen.dart';
+import './providers/tracksProvider.dart';
+import 'providers/gpsTrackProvider.dart';
 import './hiveDB/sensorsCollection.dart';
+import './hiveDB/fuelingsCollection.dart';
+import './screens/reportIssueScreen.dart';
+import './providers/fuelingsProvider.dart';
+import 'services/notification_service.dart';
+import 'providers/localTracksProvider.dart';
+import './providers/userStatsProvider.dart';
+import './providers/bluetoothProvider.dart';
+import './screens/createFuelingScreen.dart';
+import './screens/bluetoothDevicesScreen.dart';
+import './providers/locationStatusProvider.dart';
+import './providers/bluetoothStatusProvider.dart';
 
 Future<void> main() async {
   // Ensures all the future functions of main() finish before launching the app
   WidgetsFlutterBinding.ensureInitialized();
 
-  // initializing Hive DB
-  await Hive.initFlutter();
+  // Instance of shared prefs
+  preferences = await SharedPreferences.getInstance();
+
+  // instance of scaffold messenger state global key
+  scaffoldMessengerState = GlobalKey<ScaffoldMessengerState>();
+
+  // initialise hive db
+  final appDocumentDirectory =
+      await path_provider.getApplicationDocumentsDirectory();
+  Hive.init(appDocumentDirectory.path);
+  Hive.registerAdapter<LocalTrackModel>(LocalTrackModelAdapter());
+  Hive.registerAdapter<PointProperties>(PointPropertiesAdapter());
 
   // open Hive boxes to fetch data from
   await CarsCollection().openCarsHive();
   await FuelingsCollection().openFuelingsHive();
+  await Hive.openBox<LocalTrackModel>(localTracksTableName);
 
-  // Instance of shared prefs
-  preferences = await SharedPreferences.getInstance();
+  // initialise the flutter local notification plugin
+  await NotificationService().initialiseNotificationPlugin();
 
   // Restricts rotation of screen
   SystemChrome.setPreferredOrientations(
-      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown],
+  );
 
   runApp(
     DevicePreview(
@@ -76,9 +97,32 @@ Future<void> main() async {
               create: (context) => TracksProvider(),
             ),
 
+            // Provides bluetooth status update to the different widgets on the tree
+            ChangeNotifierProvider(
+              create: (context) => BluetoothStatusProvider(),
+            ),
+
+            // Provides location status update to the different widgets on the tree
+            ChangeNotifierProvider(
+              create: (context) => LocationStatusProvider(),
+            ),
+
+            // Provides bluetooth functions to the different widgets on the tree
+            ChangeNotifierProvider(
+              create: (context) => BluetoothProvider(),
+            ),
+
             // Provides Fueling data to different widgets
             ChangeNotifierProvider(
               create: (context) => FuelingsProvider(),
+            ),
+
+            ChangeNotifierProvider(
+              create: (context) => GpsTrackProvider(),
+            ),
+
+            ChangeNotifierProvider(
+              create: (context) => LocalTracksProvider(),
             ),
 
             // Provides theme data to different widgets on the tree
@@ -103,22 +147,6 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
 
-      // For navigating to screens which accept arguments
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case TrackDetailsScreen.routeName:
-            return MaterialPageRoute(
-              builder: (_) {
-                final Track track = settings.arguments as Track;
-                return TrackDetailsScreen(track: track);
-              },
-            );
-
-          default:
-            return null;
-        }
-      },
-
       // Helps in navigating to different screens via route name
       routes: {
         LoginScreen.routeName: (context) => LoginScreen(),
@@ -133,6 +161,7 @@ class MyApp extends StatelessWidget {
         LogBookScreen.routeName: (context) => LogBookScreen(),
         ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
         HelpScreen.routeName: (context) => HelpScreen(),
+        GpsTrackingScreen.routeName: (context) => GpsTrackingScreen(),
       },
     );
   }

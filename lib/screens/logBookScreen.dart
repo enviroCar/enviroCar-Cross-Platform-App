@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
-
 import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../constants.dart';
 import '../globals.dart';
+import '../constants.dart';
 import '../models/fueling.dart';
-import '../providers/fuelingsProvider.dart';
 import './createFuelingScreen.dart';
-import '../widgets/logbookWidgets/fuelingCard.dart';
 import '../widgets/titleWidget.dart';
-import '../exceptionHandling/exceptionType.dart';
+import '../services/fuelingServices.dart';
 import '../exceptionHandling/result.dart';
 import '../hiveDB/fuelingsCollection.dart';
-import '../services/fuelingServices.dart';
+import '../providers/fuelingsProvider.dart';
+import '../exceptionHandling/exceptionType.dart';
+import '../widgets/logbookWidgets/fuelingCard.dart';
 
 // Screen that displays all the fueling logs
 class LogBookScreen extends StatelessWidget {

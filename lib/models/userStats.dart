@@ -6,8 +6,12 @@ class UserStats {
   Userstatistic userstatistic;
   int trackCount;
 
-  UserStats(
-      {this.distance, this.duration, this.userstatistic, this.trackCount});
+  UserStats({
+    this.distance,
+    this.duration,
+    this.userstatistic,
+    this.trackCount,
+  });
 
   UserStats.fromJson(Map<String, dynamic> json) {
     distance = json['distance'] as double;

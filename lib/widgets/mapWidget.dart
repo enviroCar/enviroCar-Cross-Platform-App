@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
+import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 class MapWidget extends StatefulWidget {
   final Function initializeLocation;
@@ -21,10 +20,11 @@ class _MapWidgetState extends State<MapWidget> {
       builder: (_, snapshot) {
         if (snapshot.hasData) {
           final Position position = snapshot.data;
+          final LatLng latLng = LatLng(position.latitude, position.longitude);
           return Center(
             child: FlutterMap(
               options: MapOptions(
-                center: LatLng(position.latitude, position.longitude),
+                center: latLng,
                 zoom: 12.0,
               ),
               layers: [
@@ -42,7 +42,7 @@ class _MapWidgetState extends State<MapWidget> {
                     Marker(
                       width: 50.0,
                       height: 50.0,
-                      point: LatLng(position.latitude, position.longitude),
+                      point: latLng,
                       builder: (ctx) => const Icon(
                         Icons.location_on,
                         color: Colors.red,

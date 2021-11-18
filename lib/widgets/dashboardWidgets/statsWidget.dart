@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
 import 'package:provider/provider.dart';
 
+import '../../globals.dart';
 import '../../constants.dart';
 import '../../models/userStats.dart';
 import '../../providers/userStatsProvider.dart';
-import '../../globals.dart';
 
 class StatsWidget extends StatelessWidget {
   @override

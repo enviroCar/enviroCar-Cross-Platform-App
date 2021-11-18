@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:fl_chart/fl_chart.dart';
 
-import '../../constants.dart';
 import '../titleWidget.dart';
+import '../../constants.dart';
 import '../../models/chartData.dart';
 
 class ChartWidget extends StatelessWidget {
@@ -11,10 +10,11 @@ class ChartWidget extends StatelessWidget {
   final double xInterval;
   final ChartData chartData;
 
-  const ChartWidget(
-      {@required this.chartTitle,
-      @required this.xInterval,
-      @required this.chartData});
+  const ChartWidget({
+    @required this.chartTitle,
+    @required this.xInterval,
+    @required this.chartData,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -56,7 +56,8 @@ class ChartWidget extends StatelessWidget {
                           return '';
                         }
                         return (chartData.dataInterval * value).toStringAsFixed(
-                            chartData.dataInterval < 1 ? 3 : 1);
+                          chartData.dataInterval < 1 ? 3 : 1,
+                        );
                       },
                     ),
                   ),

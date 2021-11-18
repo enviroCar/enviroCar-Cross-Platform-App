@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'package:url_launcher/url_launcher.dart';
 
 import '../constants.dart';
@@ -28,7 +27,8 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
         Image.asset('assets/images/findobddesgin.png'),
         const SizedBox(height: 10),
         const Text(
-            'This is somewhat triangulalr shaped 16-pin connector that is commonly located underneath the left hand side of the dash near the steering column. If you have trouble locating DLC, refer owner manual.'),
+          'This is somewhat triangular shaped 16-pin connector that is commonly located underneath the left hand side of the dash near the steering column. If you have trouble locating DLC, refer owner manual.',
+        ),
         GestureDetector(
           onTap: () async {
             if (await canLaunch('https://wikiobd.co.uk')) {
@@ -62,7 +62,8 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
         ),
         Image.asset('assets/images/obdport.png'),
         const Text(
-            'Plug OBD Bluetooth into car\'s OBD port and turn the ignition on'),
+          'Plug OBD Bluetooth into car\'s OBD port and turn the ignition on',
+        ),
       ],
     ),
     Column(
@@ -81,7 +82,8 @@ class _OBDHelpDialogState extends State<OBDHelpDialog> {
         const Text('1. Select'),
         Image.asset('assets/images/noobdselected.jpeg'),
         const Text(
-            '2. Turn on Bluetooth\n3. Connect to Bluetooth signals with names similar to: OBDII, VLink, ELM327 etc.\n4. All set! Start recording track'),
+          '2. Turn on Bluetooth\n3. Connect to Bluetooth signals with names similar to: OBDII, VLink, ELM327 etc.\n4. All set! Start recording track',
+        ),
       ],
     ),
   ];

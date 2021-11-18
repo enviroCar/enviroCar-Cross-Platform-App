@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 
 // Model for report created in Report Issue Screen
-
 class Report {
   String id;
   String estimatedTime;

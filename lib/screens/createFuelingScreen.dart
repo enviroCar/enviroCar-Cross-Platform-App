@@ -1,22 +1,21 @@
-import 'package:flutter/material.dart';
-
 import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../constants.dart';
 import '../models/car.dart';
-import '../models/fueling.dart';
-import '../providers/carsProvider.dart';
-import '../providers/fuelingsProvider.dart';
-import '../widgets/singleRowForm.dart';
 import '../widgets/button.dart';
+import '../models/fueling.dart';
 import '../widgets/dividerLine.dart';
 import '../widgets/titleWidget.dart';
-import '../constants.dart';
-import '../hiveDB/fuelingsCollection.dart';
+import '../widgets/singleRowForm.dart';
+import '../providers/carsProvider.dart';
 import '../providers/authProvider.dart';
-import '../exceptionHandling/result.dart';
 import '../hiveDB/sensorsCollection.dart';
+import '../exceptionHandling/result.dart';
 import '../services/fuelingServices.dart';
+import '../hiveDB/fuelingsCollection.dart';
+import '../providers/fuelingsProvider.dart';
 
 // Screen to create fueling logs
 class CreateFuelingScreen extends StatefulWidget {
@@ -213,7 +212,8 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                           return DropdownMenuItem<Car>(
                             value: carsList[index],
                             child: Text(
-                                '${carsList[index].properties.manufacturer} ${carsList[index].properties.model}'),
+                              '${carsList[index].properties.manufacturer} ${carsList[index].properties.model}',
+                            ),
                           );
                         },
                       ),
@@ -254,7 +254,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
               // Checkbox for partial fueling
               CheckboxListTile(
-                contentPadding: const EdgeInsets.all(0),
+                contentPadding: EdgeInsets.zero,
                 title: const Text('Partial Fueling?'),
                 value: partialFueling,
                 onChanged: (bool val) {
@@ -266,7 +266,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
               // Checkbox for missed previous fueling
               CheckboxListTile(
-                contentPadding: const EdgeInsets.all(0),
+                contentPadding: EdgeInsets.zero,
                 title: const Text('Missed Previous Fueling?'),
                 value: missedPreviousFueling,
                 onChanged: (bool val) {
