@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../dividerLine.dart';
 import '../../constants.dart';
 import '../../models/fueling.dart';
-import '../dividerLine.dart';
 
 class FuelingCard extends StatelessWidget {
   final Fueling fueling;

@@ -1,10 +1,9 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 
-import 'package:logger/logger.dart';
-
-import './loginScreen.dart';
-import '../constants.dart';
 import '../globals.dart';
+import '../constants.dart';
+import './loginScreen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override

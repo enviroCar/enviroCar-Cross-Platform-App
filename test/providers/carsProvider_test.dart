@@ -28,12 +28,15 @@ void main() {
 
       // Check the initial value provider to be null...
       expect(
-          Provider.of<CarsProvider>(childContext, listen: false).getSelectedCar,
-          null);
+        Provider.of<CarsProvider>(childContext, listen: false).getSelectedCar,
+        null,
+      );
 
       // Check the initial value provider to be null...
-      expect(Provider.of<CarsProvider>(childContext, listen: false).getCarsList,
-          null);
+      expect(
+        Provider.of<CarsProvider>(childContext, listen: false).getCarsList,
+        null,
+      );
 
       // Set data in provider
       Provider.of<CarsProvider>(childContext, listen: false).setSelectedCar =
@@ -45,15 +48,16 @@ void main() {
           engineDisplacement: 3600,
           fuelType: 'HYBRID',
           manufacturer: 'Toyota',
-          model: 'Pnetagon',
+          model: 'Pentagon',
         ),
       );
 
       // Fetch the new data and check if it matches the one stored in it
       expect(
-          Provider.of<CarsProvider>(childContext, listen: false).getSelectedCar
-            ..properties.fuelType,
-          'HYBRID');
+        Provider.of<CarsProvider>(childContext, listen: false).getSelectedCar
+          ..properties.fuelType,
+        'HYBRID',
+      );
     },
   );
 }

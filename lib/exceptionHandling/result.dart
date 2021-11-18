@@ -3,7 +3,7 @@ import 'appException.dart';
 /// object returned by http call
 ///
 /// it shows the status of the call made and has a value attribute
-/// that can be used to store the data received from the respone
+/// that can be used to store the data received from the response
 /// and later use in the UI
 
 enum ResultStatus { success, error }

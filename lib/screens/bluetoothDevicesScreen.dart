@@ -1,12 +1,13 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
-
-import 'package:flutter_blue/flutter_blue.dart' as blue;
+import 'package:provider/provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:system_shortcuts/system_shortcuts.dart';
+import 'package:flutter_blue/flutter_blue.dart' as blue;
 
 import '../constants.dart';
 import '../widgets/bleDialog.dart';
-
-// TODO: Add button to connect to devices after searching them
+import '../providers/bluetoothProvider.dart';
 
 class BluetoothDevicesScreen extends StatefulWidget {
   static const routeName = '/bluetoothDeviceScreen';
@@ -18,8 +19,17 @@ class BluetoothDevicesScreen extends StatefulWidget {
 class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   blue.BluetoothState _state;
   bool _isScanning = false;
+  int selected;
+  blue.BluetoothDevice selectedBluetoothDevice;
+  BluetoothProvider bluetoothProvider;
 
-  // Toggles bluetooth on and off
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
+  /// Toggles bluetooth on and off
   // Works only on Android
   // iOS doesn't give permission to toggle Bluetooth from inside the app
   Future<void> toggleBluetooth() async {
@@ -27,11 +37,34 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   }
 
   @override
+  void initState() {
+    selected = -1;
+    determineBluetoothStatus();
+    super.initState();
+  }
+
+  /// determining the status of bluetooth to initialize [_state] of bluetooth
+  Future determineBluetoothStatus() async {
+    final bool state =
+        await Provider.of<BluetoothProvider>(context, listen: false)
+            .bluetoothState();
+    setState(() {
+      _state = state ? blue.BluetoothState.on : blue.BluetoothState.off;
+    });
+  }
+
+  @override
+  void didChangeDependencies() {
+    bluetoothProvider = Provider.of<BluetoothProvider>(context, listen: false);
+    super.didChangeDependencies();
+  }
+
+  @override
   void dispose() {
     super.dispose();
 
     // Stops any running scan before closing the screen
-    blue.FlutterBlue.instance.stopScan();
+    bluetoothProvider.stopScan();
   }
 
   @override
@@ -51,7 +84,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                 value: _state == blue.BluetoothState.on ? true : false,
                 onChanged: (value) async {
                   if (_isScanning) {
-                    blue.FlutterBlue.instance.stopScan();
+                    bluetoothProvider.stopScan();
                     setState(() {
                       _isScanning = false;
                     });
@@ -73,7 +106,10 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               setState(() {
                 _isScanning = true;
               });
-              blue.FlutterBlue.instance.startScan();
+              bluetoothProvider.startScan();
+              _logger.i(
+                'Bluetooth Scanning started to detect nearby Bluetooth devices.',
+              );
             } else {
               showDialog(
                 context: context,
@@ -85,7 +121,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               );
             }
           } else {
-            blue.FlutterBlue.instance.stopScan();
+            bluetoothProvider.stopScan();
+            _logger.i('Bluetooth scanning stopped.');
             setState(() {
               _isScanning = false;
             });
@@ -101,31 +138,61 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                 color: Colors.white,
               ),
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            // Shows available Bluetooth devices
-            StreamBuilder<List<blue.ScanResult>>(
-              stream: blue.FlutterBlue.instance.scanResults,
-              initialData: const [],
-              builder: (_, snapshot) {
-                return Column(
-                  children: snapshot.data.map((d) {
-                    return d.device.name.isEmpty
-                        ? Container()
-                        : ListTile(
-                            leading: const Icon(
-                              Icons.bluetooth,
-                            ),
-                            title: Text(d.device.name),
-                            subtitle: Text(d.device.id.toString()),
-                          );
-                  }).toList(),
-                );
-              },
-            ),
-          ],
-        ),
+      body: Consumer<BluetoothProvider>(
+        builder: (context, bluetoothProvider, child) {
+          final List<blue.BluetoothDevice> detectedBluetoothDevices =
+              bluetoothProvider.bluetoothDevices;
+
+          return ListView.builder(
+            itemBuilder: (BuildContext context, index) {
+              return Container(
+                padding: const EdgeInsets.symmetric(horizontal: 5),
+                child: ListTile(
+                  title: Text(
+                    (detectedBluetoothDevices[index].name == null ||
+                            detectedBluetoothDevices[index].name.trim().isEmpty)
+                        ? 'Unknown Device'
+                        : detectedBluetoothDevices[index].name,
+                  ),
+                  subtitle: Text(
+                    detectedBluetoothDevices[index].id.toString(),
+                  ),
+                  trailing: Radio(
+                    activeColor: kSpringColor,
+                    value: index,
+                    groupValue: selected,
+                    onChanged: (int value) async {
+                      if (selected != -1) {
+                        _logger.i(
+                          'Disconnect from previously connected device before connecting to new one.',
+                        );
+                        bluetoothProvider.disconnectDevice();
+                      }
+                      setState(() {
+                        selected = value;
+                        selectedBluetoothDevice =
+                            detectedBluetoothDevices[value];
+                      });
+                      final bool connectionStatus = await bluetoothProvider
+                          .connectToDevice(selectedBluetoothDevice, context);
+                      debugPrint('connection status $connectionStatus');
+                      if (!connectionStatus && mounted) {
+                        setState(() {
+                          selected = -1;
+                        });
+                      } else {
+                        _logger.i(
+                          'Connected successfully to the ${detectedBluetoothDevices[index].name} ${detectedBluetoothDevices[index].id}',
+                        );
+                      }
+                    },
+                  ),
+                ),
+              );
+            },
+            itemCount: detectedBluetoothDevices.length,
+          );
+        },
       ),
     );
   }

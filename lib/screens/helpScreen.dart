@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
 import '../globals.dart';
-import '../values/helpScreenValues.dart';
+import '../constants.dart';
 import '../widgets/dividerLine.dart';
+import '../values/helpScreenValues.dart';
 
 class HelpScreen extends StatelessWidget {
   static const String routeName = '/helpScreen';
