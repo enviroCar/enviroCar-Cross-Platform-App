@@ -13,18 +13,19 @@ class Fueling {
   String time;
   Car car;
 
-  Fueling(
-      {this.id,
-      this.username,
-      this.fuelType,
-      this.comment,
-      this.cost,
-      this.mileage,
-      this.volume,
-      this.missedFuelStop,
-      this.partialFueling,
-      this.time,
-      this.car});
+  Fueling({
+    this.id,
+    this.username,
+    this.fuelType,
+    this.comment,
+    this.cost,
+    this.mileage,
+    this.volume,
+    this.missedFuelStop,
+    this.partialFueling,
+    this.time,
+    this.car,
+  });
 
   Fueling.fromJson(dynamic json) {
     id = json['id'] as String;

@@ -1,15 +1,14 @@
-import 'package:flutter/material.dart';
-
-import 'package:provider/provider.dart';
 import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import './index.dart';
-import './loginScreen.dart';
-import '../providers/authProvider.dart';
-import '../services/authenticationServices.dart';
 import '../globals.dart';
+import './loginScreen.dart';
 import './onboardingScreen.dart';
+import '../providers/authProvider.dart';
 import '../exceptionHandling/result.dart';
+import '../services/authenticationServices.dart';
 
 class SplashScreen extends StatefulWidget {
   static const routeName = '/splashScreen';
@@ -27,7 +26,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Initializes device height and width to be used throuhout the app
+    // Initializes device height and width to be used throughout the app
     deviceHeight = MediaQuery.of(context).size.height;
     deviceWidth = MediaQuery.of(context).size.width;
 

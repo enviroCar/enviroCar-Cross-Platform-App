@@ -1,18 +1,17 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
-
 import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../providers/authProvider.dart';
-import '../services/authenticationServices.dart';
-import './reportIssueScreen.dart';
-import '../providers/userStatsProvider.dart';
-import '../providers/tracksProvider.dart';
-import './logBookScreen.dart';
-import './helpScreen.dart';
 import '../constants.dart';
+import './helpScreen.dart';
+import './logBookScreen.dart';
+import './reportIssueScreen.dart';
+import '../providers/authProvider.dart';
+import '../providers/tracksProvider.dart';
+import '../providers/userStatsProvider.dart';
+import '../services/authenticationServices.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -26,11 +25,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
     ),
   );
 
-  Widget buildIconButton(
-      {@required String title,
-      @required IconData iconData,
-      @required void Function() onTap,
-      Color color}) {
+  Widget buildIconButton({
+    @required String title,
+    @required IconData iconData,
+    @required void Function() onTap,
+    Color color,
+  }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Column(

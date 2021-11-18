@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../constants.dart';
 import '../../globals.dart';
+import '../../constants.dart';
 
 class DashboardCard extends StatelessWidget {
   final String assetName;
   final String title;
   final String subtitle;
   final String routeName;
+  final Color iconBackgroundColor;
 
   const DashboardCard({
     @required this.assetName,
     @required this.title,
     @required this.subtitle,
     @required this.routeName,
+    this.iconBackgroundColor = kSpringColor,
   });
 
   @override
@@ -49,9 +50,9 @@ class DashboardCard extends StatelessWidget {
                 Container(
                   height: deviceHeight * 0.15,
                   width: deviceWidth * 0.15,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: kSpringColor,
+                    color: iconBackgroundColor,
                   ),
                   child: IconButton(
                     onPressed: () {},
@@ -74,13 +75,16 @@ class DashboardCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: deviceHeight * 0.022,
+                        fontSize: deviceHeight * 0.02,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 4,
                     ),
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: deviceHeight * 0.02,
+                        fontSize: deviceHeight * 0.018,
                       ),
                     ),
                   ],

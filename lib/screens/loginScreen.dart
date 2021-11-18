@@ -1,14 +1,13 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 
-import 'package:logger/logger.dart';
-
-import '../constants.dart';
-import '../services/authenticationServices.dart';
-import './registerScreen.dart';
-import '../models/user.dart';
 import './index.dart';
 import '../globals.dart';
+import '../constants.dart';
+import '../models/user.dart';
+import './registerScreen.dart';
 import '../exceptionHandling/result.dart';
+import '../services/authenticationServices.dart';
 
 // TODO: Add validators
 

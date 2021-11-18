@@ -1,13 +1,12 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 
-import 'package:logger/logger.dart';
-
-import '../constants.dart';
 import '../globals.dart';
+import '../constants.dart';
 import '../models/report.dart';
-import '../widgets/singleRowForm.dart';
 import '../widgets/button.dart';
 import '../widgets/titleWidget.dart';
+import '../widgets/singleRowForm.dart';
 import '../values/reportIssueValues.dart';
 
 class ReportIssueScreen extends StatefulWidget {
@@ -27,7 +26,7 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
   // Key to validate the form
   GlobalKey<FormState> _formKey;
 
-  // Controller to extract the data from textfields
+  // Controller to extract the data from text fields
   TextEditingController estimatedTimeController;
   TextEditingController problemController;
 

@@ -1,19 +1,18 @@
-import 'package:flutter/material.dart';
 import 'dart:convert';
-
 import 'package:dio/dio.dart' as dio;
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:http/http.dart' as http;
 
-import '../providers/authProvider.dart';
 import '../models/user.dart';
-import './secureStorageServices.dart';
 import './statsServices.dart';
-import '../providers/userStatsProvider.dart';
+import './secureStorageServices.dart';
+import '../providers/authProvider.dart';
+import '../exceptionHandling/result.dart';
 import '../providers/tracksProvider.dart';
+import '../providers/userStatsProvider.dart';
 import '../exceptionHandling/appException.dart';
 import '../exceptionHandling/errorHandler.dart';
-import '../exceptionHandling/result.dart';
 
 /// Authentication services include logging user in, registering new user and silent sign in
 ///
@@ -73,7 +72,9 @@ class AuthenticationServices {
       );
 
       SecureStorageServices().setUserInSecureStorage(
-          username: user.getUsername, password: user.getPassword);
+        username: user.getUsername,
+        password: user.getPassword,
+      );
 
       final decodedBody = response.data;
 
@@ -112,7 +113,7 @@ class AuthenticationServices {
 
         return result;
       } catch (e) {
-        // If any error occures then handle it and show snackbar
+        // If any error occurs then handle it and show snackbar
         final ApplicationException exception = handleException(e);
         return Result.failure(exception);
       }
