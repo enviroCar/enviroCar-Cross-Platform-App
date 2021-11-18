@@ -18,23 +18,26 @@ class BluetoothStatusChecker {
     };
   }
 
-  static final BluetoothStatusChecker _bluetoothStatusChecker = BluetoothStatusChecker._();
+  static final BluetoothStatusChecker _bluetoothStatusChecker =
+      BluetoothStatusChecker._();
 
   /// function to get [BluetoothConnectionStatus]
   Future<BluetoothConnectionStatus> get connectionStatus async {
-    FlutterReactiveBle flutterReactiveBle = FlutterReactiveBle();
-    BleStatus hasConnection = flutterReactiveBle.status;
-    return hasConnection == BleStatus.ready ? BluetoothConnectionStatus.ON : BluetoothConnectionStatus.OFF;
+    final FlutterReactiveBle flutterReactiveBle = FlutterReactiveBle();
+    final BleStatus hasConnection = flutterReactiveBle.status;
+    return hasConnection == BleStatus.ready
+        ? BluetoothConnectionStatus.ON
+        : BluetoothConnectionStatus.OFF;
   }
 
   Duration checkInterval = DEFAULT_INTERVAL;
 
   /// function to send status updates
-  void _sendStatusUpdate([Timer timer]) async {
+  Future _sendStatusUpdate([Timer timer]) async {
     _timer?.cancel();
     timer?.cancel();
 
-    var _currentStatus = await connectionStatus;
+    final _currentStatus = await connectionStatus;
 
     // if the current status is different from the last known status and stream has listeners then adding the new value to the stream
     if (_currentStatus != _lastStatus && _statusController.hasListener) {
@@ -42,8 +45,9 @@ class BluetoothStatusChecker {
     }
 
     // if the stream does not have any listeners returning from the function
-    if (!_statusController.hasListener)
+    if (!_statusController.hasListener) {
       return;
+    }
 
     // calling the function after an interval of time
     _timer = Timer(checkInterval, _sendStatusUpdate);
@@ -55,10 +59,12 @@ class BluetoothStatusChecker {
   BluetoothConnectionStatus _lastStatus;
   Timer _timer;
 
-  StreamController<BluetoothConnectionStatus> _statusController = StreamController.broadcast();
+  final StreamController<BluetoothConnectionStatus> _statusController =
+      StreamController.broadcast();
 
   /// function to return stream of [BluetoothConnectionStatus]
-  Stream<BluetoothConnectionStatus> get onStatusChange => _statusController.stream;
+  Stream<BluetoothConnectionStatus> get onStatusChange =>
+      _statusController.stream;
 
   /// function to check whether [BluetoothConnectionStatus] stream has listeners
   bool get hasListeners => _statusController.hasListener;

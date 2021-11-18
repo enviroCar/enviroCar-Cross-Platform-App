@@ -18,22 +18,23 @@ class LocationStatusChecker {
     };
   }
 
-  static final LocationStatusChecker _locationStatusChecker = LocationStatusChecker._();
+  static final LocationStatusChecker _locationStatusChecker =
+      LocationStatusChecker._();
 
   /// function to get [LocationStatus]
   Future<LocationStatus> get isLocationEnabled async {
-    bool serviceIsEnabled = await Geolocator.isLocationServiceEnabled();
+    final bool serviceIsEnabled = await Geolocator.isLocationServiceEnabled();
     return serviceIsEnabled ? LocationStatus.enabled : LocationStatus.disabled;
   }
 
   Duration checkInterval = DEFAULT_INTERVAL;
 
   /// function to send status updates
-  void _sendStatusUpdates([Timer timer]) async {
+  Future _sendStatusUpdates([Timer timer]) async {
     _timer?.cancel();
     timer?.cancel();
 
-    var _currentStatus = await isLocationEnabled;
+    final _currentStatus = await isLocationEnabled;
 
     // if the current status is different than the last known status and stream has listeners then adding the new value to the stream
     if (_currentStatus != _lastStatus && _statusController.hasListener) {
@@ -41,8 +42,9 @@ class LocationStatusChecker {
     }
 
     // if the stream does not have any listeners returning from the function
-    if (!_statusController.hasListener)
+    if (!_statusController.hasListener) {
       return;
+    }
 
     // calling the function after an interval of time
     _timer = Timer(checkInterval, _sendStatusUpdates);
@@ -55,7 +57,8 @@ class LocationStatusChecker {
   Timer _timer;
 
   /// function to send status updates
-  StreamController<LocationStatus> _statusController = StreamController.broadcast();
+  final StreamController<LocationStatus> _statusController =
+      StreamController.broadcast();
 
   /// function to return stream of [LocationStatus]
   Stream<LocationStatus> get onStatusChange => _statusController.stream;

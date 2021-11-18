@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../constants.dart';
+import '../utils/enums.dart';
 import '../models/track.dart';
-import '../widgets/trackDetailsWidgets/carDetailsCard.dart';
+import '../widgets/tracksScreenWidgets/trackDetailsCard.dart';
 import '../widgets/trackDetailsWidgets/stackedMapButton.dart';
-import '../widgets/tracksScrrenWidgets/trackCard.dart';
 
 class TrackDetailsScreen extends StatelessWidget {
   static const routeName = '/trackDetailsScreen';
 
   final Track track;
+  final TrackType trackType;
+  final int index;
 
-  TrackDetailsScreen({
+  const TrackDetailsScreen({
     @required this.track,
+    @required this.trackType,
+    @required this.index,
   });
 
   @override
@@ -31,17 +35,18 @@ class TrackDetailsScreen extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            StackedMapButton(),
-            SizedBox(
+            StackedMapButton(
+              trackType: trackType,
+              index: index,
+            ),
+            const SizedBox(
               height: 20,
             ),
-            TrackCard(track: track),
-            SizedBox(
-              height: 20,
+            TrackDetailsCard(
+              track: track,
             ),
-            CarDetailsCard(),
-            SizedBox(
-              height: 40,
+            const SizedBox(
+              height: 100,
             ),
           ],
         ),

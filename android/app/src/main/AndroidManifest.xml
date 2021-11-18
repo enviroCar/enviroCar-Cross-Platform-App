@@ -10,7 +10,7 @@
    <!-- till here -->
 
    <application
-        android:label="enviroCar Cross-Platform"
+        android:label="enviroCar 2.0"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
@@ -46,5 +46,8 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+
+       <meta-data android:name="com.google.android.geo.API_KEY"
+           android:value="AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0"/>
     </application>
 </manifest>

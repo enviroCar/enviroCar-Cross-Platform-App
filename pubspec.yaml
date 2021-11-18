@@ -24,25 +24,83 @@ dependencies:
   flutter:
     sdk: flutter
 
+  # for state management
   provider: ^6.0.1
+
+  # for making http calls
   http: ^0.13.1
+
+  # to securely store user info for silent signin
   flutter_secure_storage: ^5.0.2
+
+  # for communicating with BLE devices on Android and iOS
   flutter_reactive_ble: ^3.1.1+1
+
   system_shortcuts: ^1.0.0
+
+  # for getting user location
   geolocator: ^7.0.1
+
   latlong2: ^0.8.1
   flutter_map: ^0.14.0
   location: ^4.1.1
+
+  # to launch App store and Play store to rate the app
   url_launcher: ^6.0.6
+
+  # to preview the app on different screens sizes
   device_preview: ^1.0.0-alpha.15
+
+  # for onboarding screens
   introduction_screen: ^2.1.0
+
+  # for google maps
+  google_maps_flutter: ^2.1.0
+
+  # to display poly lines on map connecting two or more places
+  flutter_polyline_points: ^1.0.0
+
+  # to store small persistent data
   shared_preferences: ^2.0.6
+
+  # to show SVGs
   flutter_svg: ^0.23.0+1
+
+  # to use custom fonts
   google_fonts: ^2.1.0
-  toast: ^0.1.5
+
+  # to generate unique IDs
   uuid: ^3.0.4
-  sqflite: ^2.0.0+3
+
+  # to show toast messages
+  toast: ^0.1.5
+
+  csv: ^5.0.0
+
+  # to follow good code guidelines by google
+  lint: ^1.5.3
+
+  # to get path of the app on the device
   path: ^1.8.0
+
+  # to send notifications
+  awesome_notifications: ^0.0.6+9
+
+  # for logging
+  logger: ^1.0.0
+
+  # for making http calls
+  dio: ^4.0.0
+
+  # for local db
+  hive: ^2.0.4
+  hive_flutter: ^1.1.0
+
+  # for instructions on dashboard
+  showcaseview: ^1.1.0
+
+  # for charts
+  fl_chart: ^0.36.3
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -52,6 +110,11 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  hive_generator: ^1.1.0
+  build_runner: ^2.1.1
+
+  # for writing mocks for unit tests
+  mockito: any
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -68,6 +131,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/onboarding/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

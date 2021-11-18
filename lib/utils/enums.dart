@@ -1,6 +1,11 @@
-enum SelectedTab {
-  Local,
-  Uploaded,
+enum TracksTab {
+  local,
+  uploaded,
+}
+
+enum CreateCarTab {
+  hsnTsn,
+  attributes,
 }
 
 enum BluetoothConnectionStatus {
@@ -11,4 +16,9 @@ enum BluetoothConnectionStatus {
 enum LocationStatus {
   enabled,
   disabled
+}
+
+enum TrackType {
+  Local,
+  Remote
 }

@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-
+import 'package:latlong2/latlong.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
 
 class MapWidget extends StatefulWidget {
   final Function initializeLocation;
 
-  MapWidget({@required this.initializeLocation});
+  const MapWidget({@required this.initializeLocation});
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
@@ -20,7 +19,7 @@ class _MapWidgetState extends State<MapWidget> {
       stream: Geolocator.getPositionStream(),
       builder: (_, snapshot) {
         if (snapshot.hasData) {
-          Position position = snapshot.data;
+          final Position position = Position.fromMap(snapshot.data);
           return Center(
             child: FlutterMap(
               options: MapOptions(
@@ -43,11 +42,9 @@ class _MapWidgetState extends State<MapWidget> {
                       width: 50.0,
                       height: 50.0,
                       point: LatLng(position.latitude, position.longitude),
-                      builder: (ctx) => Container(
-                        child: Icon(
-                          Icons.location_on,
-                          color: Colors.red,
-                        ),
+                      builder: (ctx) => const Icon(
+                        Icons.location_on,
+                        color: Colors.red,
                       ),
                     )
                   ],
@@ -62,7 +59,7 @@ class _MapWidgetState extends State<MapWidget> {
           widget.initializeLocation();
           return Container();
         } else {
-          return Center(
+          return const Center(
             child: CircularProgressIndicator(),
           );
         }
