@@ -1,3 +1,7 @@
+/// Validator patterns for login and register screen
+///
+/// They are currently not in use and need to be added
+
 class Validator {
   // static const Pattern emailPattern =
   //     '^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})\$';

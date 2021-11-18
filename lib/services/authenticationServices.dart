@@ -1,16 +1,28 @@
-import 'package:envirocar_app_main/providers/tracksProvider.dart';
-import 'package:flutter/foundation.dart';
 import 'dart:convert';
-
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:http/http.dart' as http;
 
-import '../providers/authProvider.dart';
 import '../models/user.dart';
-import './secureStorageServices.dart';
 import './statsServices.dart';
+import './secureStorageServices.dart';
+import '../providers/authProvider.dart';
+import '../providers/tracksProvider.dart';
+import '../exceptionHandling/result.dart';
 import '../providers/userStatsProvider.dart';
+import '../exceptionHandling/appException.dart';
+import '../exceptionHandling/errorHandler.dart';
+
+/// Authentication services include logging user in, registering new user and silent sign in
+///
+/// To the base URI we send user's username and token to log them in after fetching from secure storage
+/// For new user we pass two boolean values along with them
+/// The response and request sample can be found on the link below
+/// http://envirocar.github.io/enviroCar-server/api/
 
 class AuthenticationServices {
+  // The base uri for authentication
   final baseUri = 'https://envirocar.org/api/stable/users';
 
   // Creates a new User
@@ -19,97 +31,97 @@ class AuthenticationServices {
   }) async {
     final Uri uri = Uri.parse(baseUri);
 
-    String jsonPayload = jsonEncode(user.toMap());
+    // The payload is the user object converted to a JSON object to be sent as the body
+    final String jsonPayload = jsonEncode(user.toMap());
 
-    http.Response response = await http.post(
+    final http.Response response = await http.post(
       uri,
       headers: {'Content-Type': 'application/json'},
       body: jsonPayload,
     );
 
+    /// After succesful registration the user is sent an email from where they to
+    /// confirm their email to log in
     if (response.statusCode == 201) {
       return 'Mail Sent';
     } else {
-      var decodedBody = jsonDecode(response.body);
-      return decodedBody['message'];
+      final decodedBody = jsonDecode(response.body);
+      return decodedBody['message'] as String;
     }
   }
 
   // Logs in user
-  Future<String> loginUser({
-    @required AuthProvider authProvider,
+  Future<Result> loginUser({
+    @required BuildContext context,
     @required User user,
-    @required UserStatsProvider userStatsProvider,
   }) async {
-    if (user.getUsername != null && user.getPassword != null) {
-      final Uri uri = Uri.parse(baseUri + '/' + user.getUsername);
+    final AuthProvider _authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
+    final UserStatsProvider _userStatsProvider =
+        Provider.of<UserStatsProvider>(context, listen: false);
 
-      http.Response response = await http.get(
-        uri,
-        headers: {
-          'X-User': user.getUsername,
-          'X-Token': user.getPassword,
-        },
+    try {
+      final dio.Response response = await dio.Dio().get(
+        '$baseUri/${user.getUsername}',
+        options: dio.Options(
+          headers: {
+            'X-User': user.getUsername,
+            'X-Token': user.getPassword,
+          },
+        ),
       );
 
-      // if correct username and password is used then status code returned is 200
-      if (response.statusCode == 200) {
-        SecureStorageServices().setUserInSecureStorage(
-            username: user.getUsername, password: user.getPassword);
+      SecureStorageServices().setUserInSecureStorage(
+          username: user.getUsername, password: user.getPassword);
 
-        var decodedBody = jsonDecode(response.body);
+      final decodedBody = response.data;
 
-        user.setEmail = decodedBody['mail'];
-        user.setAcceptedTerms = true;
-        user.setAcceptedPrivacy = true;
+      user.setEmail = decodedBody['mail'] as String;
+      user.setAcceptedTerms = true;
+      user.setAcceptedPrivacy = true;
 
-        authProvider.setUser = user;
-        authProvider.setAuthStatus = true;
+      _authProvider.setUser = user;
 
-        StatsServices().getUserStats(
-          authProvider: authProvider,
-          userStatsProvider: userStatsProvider,
-        );
+      StatsServices().getUserStats(
+        context: context,
+      );
 
-        return 'Logged In';
-      } else {
-        authProvider.setAuthStatus = false;
-
-        var decodedBody = jsonDecode(response.body);
-        return decodedBody['message'];
-      }
-    } else {
-      authProvider.setAuthStatus = false;
-      return 'no data in secure storage';
+      _authProvider.setAuthStatus = true;
+      return const Result.success(true);
+    } catch (e) {
+      final ApplicationException exception = handleException(e);
+      return Result.failure(exception);
     }
   }
 
   // Logs in user if they didn't logout the last time they opened the app
-  Future<bool> loginExistingUser({
-    @required AuthProvider authProvider,
-    @required UserStatsProvider userStatsProvider,
-    @required TracksProvider tracksProvider,
-  }) async {
-    final User _user = await SecureStorageServices().getUserFromSecureStorage();
+  Future<Result> silentSignIn({@required BuildContext context}) async {
+    final AuthProvider _authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
 
-    String message = await this.loginUser(
-      authProvider: authProvider,
-      user: _user,
-      userStatsProvider: userStatsProvider,
-    );
+    // We get the username and token stored in the secure storage
+    final User user = await SecureStorageServices().getUserFromSecureStorage();
 
-    // if user deletes account from website and opens app again
-    // then send to login screen and remove data from secure storage
-    if (message == 'invalid username or password') {
-      this.logoutUser(
-        authProvider: authProvider,
-        userStatsProvider: userStatsProvider,
-        tracksProvider: tracksProvider,
-      );
+    if (user.getUsername != null && user.getPassword != null) {
+      try {
+        final Result result = await loginUser(
+          context: context,
+          user: user,
+        );
+
+        return result;
+      } catch (e) {
+        // If any error occures then handle it and show snackbar
+        final ApplicationException exception = handleException(e);
+        return Result.failure(exception);
+      }
+    } else {
+      _authProvider.setAuthStatus = false;
+      return const Result.success(false);
     }
-    return authProvider.getAuthStatus;
   }
 
+  // Log user out and deletes their username and token from secure storage
   void logoutUser({
     @required AuthProvider authProvider,
     @required UserStatsProvider userStatsProvider,

@@ -1,7 +1,7 @@
 import 'package:flutter/foundation.dart';
 
-import '../services/bluetoothStatusChecker.dart';
 import '../utils/enums.dart';
+import '../services/bluetoothStatusChecker.dart';
 
 class BluetoothStatusProvider extends ChangeNotifier {
   BluetoothConnectionStatus bluetoothStatus;

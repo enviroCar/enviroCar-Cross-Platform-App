@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../constants.dart';
 import '../../globals.dart';
+import '../../constants.dart';
 
 class DashboardCard extends StatelessWidget {
   final String assetName;
@@ -17,7 +16,7 @@ class DashboardCard extends StatelessWidget {
     @required this.title,
     @required this.subtitle,
     @required this.routeName,
-    this.iconBackgroundColor: kSpringColor
+    this.iconBackgroundColor = kSpringColor,
   });
 
   @override
@@ -27,10 +26,21 @@ class DashboardCard extends StatelessWidget {
         Navigator.of(context).pushNamed(routeName);
       },
       child: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 15),
         height: deviceHeight * 0.12,
-        width: deviceWidth * 0.9,
-        padding: EdgeInsets.symmetric(
+        padding: const EdgeInsets.symmetric(
           horizontal: 15,
+        ),
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[300],
+              blurRadius: 8.0,
+              offset: const Offset(3, 4),
+            ),
+          ],
+          borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -54,7 +64,7 @@ class DashboardCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 10,
                 ),
                 Column(
@@ -65,13 +75,16 @@ class DashboardCard extends StatelessWidget {
                       title,
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: deviceHeight * 0.022,
+                        fontSize: deviceHeight * 0.02,
                       ),
+                    ),
+                    const SizedBox(
+                      height: 4,
                     ),
                     Text(
                       subtitle,
                       style: TextStyle(
-                        fontSize: deviceHeight * 0.02,
+                        fontSize: deviceHeight * 0.018,
                       ),
                     ),
                   ],
@@ -85,17 +98,6 @@ class DashboardCard extends StatelessWidget {
               ),
             ),
           ],
-        ),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300],
-              blurRadius: 8.0,
-              offset: Offset(3, 4),
-            ),
-          ],
-          borderRadius: BorderRadius.circular(10),
         ),
       ),
     );

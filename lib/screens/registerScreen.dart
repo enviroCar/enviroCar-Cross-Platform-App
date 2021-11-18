@@ -1,9 +1,10 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 
-import '../constants.dart';
-import '../services/authenticationServices.dart';
-import '../models/user.dart';
 import '../globals.dart';
+import '../constants.dart';
+import '../models/user.dart';
+import '../services/authenticationServices.dart';
 
 // TODO: Add validators
 
@@ -15,7 +16,13 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final GlobalKey<FormState> _formKey = new GlobalKey<FormState>();
+  final Logger _logger = Logger(
+    printer: PrettyPrinter(
+      printTime: true,
+    ),
+  );
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _username;
   String _password;
@@ -25,7 +32,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
   bool _acceptedPrivacy = false;
   bool _showError = false;
 
-  void _showDialogbox(String message) async {
+  Future<void> _showDialogbox(String message) async {
+    _logger.i('Showing dialog');
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
@@ -58,7 +66,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
               child: SingleChildScrollView(
                 padding: EdgeInsets.only(top: deviceHeight * 0.03),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // enviroCar logo
                     Image.asset(
@@ -107,7 +114,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Password
                     TextFormField(
                       obscureText: true,
-                      autofocus: false,
                       decoration: inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
@@ -126,7 +132,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Confirm Password
                     TextFormField(
                       obscureText: true,
-                      autofocus: false,
                       decoration: inputDecoration.copyWith(
                         labelText: 'Password',
                       ),
@@ -158,7 +163,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                           },
                         ),
-                        Flexible(
+                        const Flexible(
                           child: Text(
                               'I acknowledge I have read and agree to enviroCar\'s Terms and Conditions'),
                         ),
@@ -182,7 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             );
                           },
                         ),
-                        Flexible(
+                        const Flexible(
                           child: Text(
                               'I have taken note of the Privacy Statement'),
                         ),
@@ -190,14 +195,15 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     ),
 
                     // Error if both boxes aren't checked
-                    _showError
-                        ? Text(
-                            'Please check both boxes',
-                            style: TextStyle(
-                              color: Colors.red,
-                            ),
-                          )
-                        : Container(),
+                    if (_showError)
+                      const Text(
+                        'Please check both boxes',
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      )
+                    else
+                      Container(),
 
                     SizedBox(
                       height: deviceHeight * 0.03,
@@ -205,24 +211,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
                     // Register button
                     GestureDetector(
-                      child: Container(
-                        width: double.infinity,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          color: kSpringColor,
-                          borderRadius: BorderRadius.all(Radius.circular(5)),
-                        ),
-                        child: Center(
-                          child: Text(
-                            'Register',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 17,
-                              fontWeight: FontWeight.w500,
-                            ),
-                          ),
-                        ),
-                      ),
                       onTap: () async {
                         if (_acceptedTerms && _acceptedPrivacy) {
                           setState(() {
@@ -235,7 +223,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         }
 
                         if (_formKey.currentState.validate() && !_showError) {
-                          User _newUser = new User(
+                          _logger.i('Registering user');
+                          final User _newUser = User(
                             username: _username,
                             email: _email,
                             password: _password,
@@ -243,21 +232,41 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             acceptedPrivacy: _acceptedPrivacy,
                           );
 
-                          String _status =
+                          final String _status =
                               await AuthenticationServices().registerUser(
                             user: _newUser,
                           );
 
-                          print(_status);
                           if (_status == 'Mail Sent') {
+                            _logger.i('Registration mail sent');
                             _showDialogbox('Mail Sent');
                           } else if (_status == 'name already exists') {
+                            _logger.w('Mail already in use');
                             _showDialogbox('Email already in use');
                           } else {
+                            _logger.w('Unknown error while registering');
                             _showDialogbox('Some other error');
                           }
                         }
                       },
+                      child: Container(
+                        width: double.infinity,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          color: kSpringColor,
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'Register',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 17,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                      ),
                     ),
 
                     SizedBox(
@@ -267,13 +276,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     // Go to Login Screen button
                     TextButton(
                       onPressed: () {
+                        _logger.i('Going to login screen');
                         Navigator.of(context).pop();
                       },
-                      child: Text(
+                      child: const Text(
                         'Already have an account?\nLogin here',
                         textAlign: TextAlign.center,
                         style: TextStyle(
-                          color: kGreyColor,
                           fontSize: 15,
                           fontWeight: FontWeight.w500,
                         ),

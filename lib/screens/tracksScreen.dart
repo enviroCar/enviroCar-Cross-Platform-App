@@ -1,9 +1,9 @@
-import 'Package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
-import '../widgets/tracksScrrenWidgets/localTracksList.dart';
-import '../widgets/tracksScrrenWidgets/uploadedTracksList.dart';
-import '../widgets/tracksScrrenWidgets/tabButtons.dart';
 import '../utils/enums.dart';
+import '../widgets/tabButtonsPage.dart';
+import '../widgets/tracksScreenWidgets/localTracksList.dart';
+import '../widgets/tracksScreenWidgets/uploadedTracksList.dart';
 
 class TracksScreen extends StatefulWidget {
   @override
@@ -11,14 +11,14 @@ class TracksScreen extends StatefulWidget {
 }
 
 class _TracksScreenState extends State<TracksScreen> {
-  SelectedTab selectedTab = SelectedTab.Local;
+  TracksTab selectedTab = TracksTab.local;
 
   void changeTab() {
     setState(() {
-      if (selectedTab == SelectedTab.Local) {
-        selectedTab = SelectedTab.Uploaded;
+      if (selectedTab == TracksTab.local) {
+        selectedTab = TracksTab.uploaded;
       } else {
-        selectedTab = SelectedTab.Local;
+        selectedTab = TracksTab.local;
       }
     });
   }
@@ -26,16 +26,13 @@ class _TracksScreenState extends State<TracksScreen> {
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
-      child: Column(
-        children: [
-          TabButtons(
-            changeTab: changeTab,
-            selectedTab: selectedTab,
-          ),
-          selectedTab == SelectedTab.Uploaded
-              ? UploadedTracksList()
-              : LocalTracksList(),
-        ],
+      child: TabButtonsPage(
+        button1Title: 'Local',
+        button2Title: 'Uploaded',
+        tab1: TracksTab.local,
+        tab2: TracksTab.uploaded,
+        page1: LocalTracksList(),
+        page2: UploadedTracksList(),
       ),
     );
   }

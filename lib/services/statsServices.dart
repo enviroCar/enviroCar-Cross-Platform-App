@@ -1,57 +1,42 @@
-import 'package:flutter/foundation.dart';
-import 'dart:convert';
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-import 'package:http/http.dart' as http;
-
-import '../providers/authProvider.dart';
 import '../models/userStats.dart';
+import '../providers/authProvider.dart';
+import '../exceptionHandling/result.dart';
 import '../providers/userStatsProvider.dart';
-import '../models/envirocarStats.dart';
+import '../exceptionHandling/errorHandler.dart';
+import '../exceptionHandling/appException.dart';
 
 class StatsServices {
   final baseUri = 'https://envirocar.org/api/stable';
 
   // Fetches user stats
-  Future<void> getUserStats({
-    @required AuthProvider authProvider,
-    @required UserStatsProvider userStatsProvider,
-  }) async {
-    final Uri uri = Uri.parse(baseUri +
-        '/users' +
-        '/' +
-        authProvider.getUser.getUsername +
-        '/userStatistic');
+  Future<Result> getUserStats({@required BuildContext context}) async {
+    final AuthProvider authProvider =
+        Provider.of<AuthProvider>(context, listen: false);
+    final UserStatsProvider userStatsProvider =
+        Provider.of<UserStatsProvider>(context, listen: false);
 
-    http.Response response = await http.get(
-      uri,
-      headers: {
-        'X-User': authProvider.getUser.getUsername,
-        'X-Token': authProvider.getUser.getPassword,
-      },
-    );
+    try {
+      final dio.Response response = await dio.Dio().get(
+        '$baseUri/users/${authProvider.getUser.getUsername}/userStatistic',
+        options: dio.Options(
+          headers: {
+            'X-User': authProvider.getUser.getUsername,
+            'X-Token': authProvider.getUser.getPassword,
+          },
+        ),
+      );
 
-    userStatsProvider.setUserStats =
-        UserStats.fromJson(jsonDecode(response.body));
-  }
+      userStatsProvider.setUserStats =
+          UserStats.fromJson(response.data as Map<String, dynamic>);
 
-  // Fetches general enviroCar stats
-  Future<EnvirocarStats> getEnvirocarStats() async {
-    final Uri uri = Uri.parse(baseUri);
-
-    http.Response response = await http.get(
-      uri,
-    );
-
-    dynamic responseBody = jsonDecode(response.body)['counts'];
-
-    int users = responseBody['users'];
-    int tracks = responseBody['tracks'];
-    int measurements = responseBody['measurements'];
-
-    return EnvirocarStats(
-      users: users,
-      tracks: tracks,
-      measurements: measurements,
-    );
+      return Result.success(response.data);
+    } catch (e) {
+      final ApplicationException exception = handleException(e);
+      return Result.failure(exception);
+    }
   }
 }

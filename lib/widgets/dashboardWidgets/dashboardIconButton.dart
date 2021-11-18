@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-
 import 'package:flutter_svg/flutter_svg.dart';
 
-import '../../constants.dart';
 import '../../globals.dart';
+import '../../constants.dart';
 
 class DashboardIconButton extends StatelessWidget {
   final String routeName;
@@ -12,7 +11,7 @@ class DashboardIconButton extends StatelessWidget {
   const DashboardIconButton({
     @required this.routeName,
     @required this.assetName,
-    this.buttonColor: kSpringColor
+    this.buttonColor = kSpringColor,
   });
 
   @override
