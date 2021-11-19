@@ -146,7 +146,9 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                         );
                         localTracksProvider.uploadTrack(context, widget.index);
                       } else if (menuIndex == 3) {
-                        _logger.i('Call function to convert track data to csv');
+                        _logger.i(
+                          'Call function to export track data as an excel file',
+                        );
                         final localTracksProvider =
                             Provider.of<LocalTracksProvider>(
                           context,

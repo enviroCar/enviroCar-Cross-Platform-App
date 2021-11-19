@@ -98,11 +98,14 @@ dependencies:
   # to send notifications
   flutter_local_notifications: ^9.1.2
 
-  # to export data as csv
-  csv: ^5.0.0
+  # to export data as an excel file
+  syncfusion_flutter_xlsio: ^19.3.54-beta
 
   # for OS specific directory paths
   path_provider: ^2.0.2
+
+  # to open files
+  open_file: ^3.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

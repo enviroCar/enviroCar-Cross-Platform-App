@@ -1,6 +1,8 @@
 name: CI
 # Run the workflow when pull request is created to any branch
-on: pull_request
+on:
+  pull_request:
+    types: [opened, reopened]
 
 jobs:
   flutter_test:
