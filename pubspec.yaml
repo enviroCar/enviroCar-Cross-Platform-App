@@ -99,6 +99,12 @@ dependencies:
   # for instructions on dashboard
   showcaseview: ^1.1.0
 
+  # to export data as an excel file
+  syncfusion_flutter_xlsio: ^19.3.54-beta
+
+  # to open files
+  open_file: ^3.2.1
+
   # for charts
   fl_chart: ^0.36.3
 
