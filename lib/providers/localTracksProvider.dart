@@ -106,29 +106,6 @@ class LocalTracksProvider extends ChangeNotifier {
     final List<PointProperties> properties =
         localTrackModel.getProperties.values.toList();
 
-    // final applicationDocumentsDirectory = await path_provider.getApplicationDocumentsDirectory();
-
-    final List<List<dynamic>> data = [];
-    final List<dynamic> dataRow = [];
-
-    dataRow.add("Latitude");
-    dataRow.add("Longitude");
-    dataRow.add("Altitude");
-
-    data.add(dataRow);
-
-    for (int i = 0; i < properties.length; i++) {
-      final List<dynamic> dataRow = [];
-      dataRow.add(properties[i].latitude);
-      dataRow.add(properties[i].longitude);
-      dataRow.add(properties[i].altitude);
-
-      data.add(dataRow);
-    }
-
-    // todo: export the converted file and store it in external storage
-    // final String trackDataCsv = const ListToCsvConverter().convert(data);
-    // final File file = File("${applicationDocumentsDirectory.path}/${localTrackModel.getTrackName}.csv");
-    // file.writeAsString(trackDataCsv);
+    await TracksServices().createExcel(trackName: localTrackModel.getTrackId, properties: properties);
   }
 }

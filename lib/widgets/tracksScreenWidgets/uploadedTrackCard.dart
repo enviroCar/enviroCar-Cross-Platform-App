@@ -100,54 +100,64 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                 ),
                 Container(
                   padding: const EdgeInsets.all(15),
-                  child: PopupMenuButton(
-                    enabled: true,
-                    onSelected: (int index) {
-                      if (index == 0) {
-                        _logger.i('Going to track details screen');
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => TrackDetailsScreen(
-                              track: widget.track,
-                              trackType: TrackType.Remote,
-                              index: widget.index,
+                  child: Consumer<TracksProvider>(
+                    builder: (context, tracksProvider, child) {
+                      final bool isListFetched =
+                          tracksProvider.getListSetStatus;
+
+                      return PopupMenuButton(
+                        enabled: true,
+                        onSelected: (int index) {
+                          if (index == 0) {
+                            _logger.i('Going to track details screen');
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => TrackDetailsScreen(
+                                  track: widget.track,
+                                  trackType: TrackType.Remote,
+                                  index: widget.index,
+                                ),
+                              ),
+                            );
+                          } else if (index == 1) {
+                            _logger.i(
+                              'Call function to export track data as an excel file',
+                            );
+                            tracksProvider.exportTrack(widget.index, false);
+                          }
+                        },
+                        itemBuilder: (_) => [
+                          PopupMenuItem(
+                            value: 0,
+                            child: Text(
+                              'Show Details',
+                              style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.normal,
+                                color: textStyle.color,
+                              ),
                             ),
                           ),
-                        );
-                      } else if (index == 1) {
-                        // TODO: function to export track
-                        debugPrint('export track tapped');
-                      }
+                          if (isListFetched)
+                            PopupMenuItem(
+                              value: 1,
+                              child: Text(
+                                'Export Track',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.normal,
+                                  color: textStyle.color,
+                                ),
+                              ),
+                            ),
+                        ],
+                        child: const Icon(
+                          Icons.more_vert_outlined,
+                          color: kWhiteColor,
+                        ),
+                      );
                     },
-                    itemBuilder: (_) => [
-                      PopupMenuItem(
-                        value: 0,
-                        child: Text(
-                          'Show Details',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                            color: textStyle.color,
-                          ),
-                        ),
-                      ),
-                      PopupMenuItem(
-                        value: 1,
-                        child: Text(
-                          'Export Track',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.normal,
-                            color: textStyle.color,
-                          ),
-                        ),
-                      ),
-                    ],
-                    child: const Icon(
-                      Icons.more_vert_outlined,
-                      color: kWhiteColor,
-                    ),
                   ),
                 ),
               ],

@@ -1,6 +1,10 @@
+import 'dart:io';
 import 'dart:convert';
-import 'package:flutter/foundation.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:flutter/foundation.dart';
+import 'package:open_file/open_file.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:syncfusion_flutter_xlsio/xlsio.dart';
 
 import '../models/user.dart';
 import '../models/feature.dart';
@@ -179,5 +183,61 @@ class TracksServices {
       final ApplicationException exception = handleException(e);
       return Result.failure(exception);
     }
+  }
+
+  /// function to create an excel file and export the track data
+  Future createExcel({
+    @required String trackName,
+    @required List<PointProperties> properties,
+    bool altitudeData = true,
+  }) async {
+    // create a workbook with one sheet
+    final Workbook workbook = Workbook();
+    // use workbook to get one worksheet
+    final Worksheet worksheet = workbook.worksheets[0];
+
+    // label the columns for latitude, longitude and altitude
+    const String latitudeColumn = 'A';
+    const String longitudeColumn = 'B';
+    const String altitudeColumn = 'C';
+
+    // from uploaded tracks the altitude value is not fetched (neither uploaded)
+    if (altitudeData) {
+      worksheet.getRangeByName('${altitudeColumn}1').setText('Altitude');
+    }
+
+    worksheet.getRangeByName('${latitudeColumn}1').setText('Latitude');
+    worksheet.getRangeByName('${longitudeColumn}1').setText('Longitude');
+
+    // write the data to the worksheet
+    int index = 2;
+    for (int i = 0; i < properties.length; i++) {
+      worksheet
+          .getRangeByName('$latitudeColumn$index')
+          .setNumber(properties[i].latitude);
+      worksheet
+          .getRangeByName('$longitudeColumn$index')
+          .setNumber(properties[i].longitude);
+      if (altitudeData) {
+        worksheet
+            .getRangeByName('$altitudeColumn$index')
+            .setNumber(properties[i].altitude);
+      }
+      index++;
+    }
+
+    // save the workbook
+    final List<int> bytes = workbook.saveAsStream();
+    // dispose the workbook to release the resources used by it
+    workbook.dispose();
+
+    // save the path where excel file is stored
+    final String path = (await getApplicationDocumentsDirectory()).path;
+    final String fileName = '$path/$trackName.xlsx';
+    final File file = File(fileName);
+    // write data to the file
+    await file.writeAsBytes(bytes, flush: true);
+    // open the file
+    OpenFile.open(fileName);
   }
 }
