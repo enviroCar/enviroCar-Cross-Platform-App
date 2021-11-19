@@ -47,6 +47,8 @@ $ flutter run
 4. Switch between Dark and Light themes
 5. See your uploaded tracks and analyze their data graphically
 
+For communicating with the Bluetooth device, [```flutter_reactive_ble```](https://pub.dev/packages/flutter_reactive_ble) package is used. 
+
 <br>
 
 ## API Reference

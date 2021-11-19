@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import '../models/track.dart';
 import '../models/localTrackModel.dart';
+import '../models/pointProperties.dart';
 import '../services/tracksServices.dart';
 
 class TracksProvider with ChangeNotifier {
@@ -37,6 +38,20 @@ class TracksProvider with ChangeNotifier {
     uploadedTracksList = list;
     uploadedTrackListSet = true;
     notifyListeners();
+  }
+
+  /// function to export the track data as csv
+  // ignore: avoid_positional_boolean_parameters
+  Future exportTrack(int index, bool altitudeData) async {
+    final LocalTrackModel localTrackModel = uploadedTracksList[index];
+    final List<PointProperties> properties =
+        localTrackModel.getProperties.values.toList();
+
+    await TracksServices().createExcel(
+      trackName: localTrackModel.getTrackId,
+      properties: properties,
+      altitudeData: altitudeData,
+    );
   }
 
   // Provides tracks data to widgets
