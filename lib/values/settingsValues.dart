@@ -48,7 +48,7 @@ List<SettingsTileModel> OBDModeSettings = [
   SettingsTileModel(
     title: 'Diesel Consumption Estimation',
     subtitle:
-        'Enables the estimation of consumption values for diesel. NOTE: This feature is just a beta feature.',
+        'Enables the estimation of consumption values for diesel. NOTE: This is a beta feature.',
     isChecked: false,
   ),
 ];
@@ -58,13 +58,13 @@ List<SettingsTileModel> GPSModeSettings = [
   SettingsTileModel(
     title: 'Enable GPS based track recording',
     subtitle:
-        "Activates an additional recording mode that enables the recording of plain GPS based tracks that does not require an OBD-II adapter.\n\nNOTE: This feature is just a beta feature.",
+        "Activates an additional recording mode that enables the recording of plain GPS based tracks that does not require an OBD-II adapter.\n\nNOTE: This is a beta feature.",
     isChecked: false,
   ),
   SettingsTileModel(
     title: 'Automatic Recording (GPS)',
     subtitle:
-        'Activates automatic recording of GPS-based trips based on activity detection mechanisms.\n\nNote: This Android function does not work reliably on some smartphone models.',
+        'Activates automatic recording of GPS-based trips based on activity detection mechanisms.\n\nNOTE: This Android function does not work reliably on some smartphone models.',
     isChecked: false,
   ),
 ];
