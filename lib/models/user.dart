@@ -6,12 +6,13 @@ class User {
   bool _acceptedTerms;
   bool _acceptedPrivacy;
 
-  User(
-      {String username,
-      String email,
-      String password,
-      bool acceptedTerms,
-      bool acceptedPrivacy}) {
+  User({
+    String username,
+    String email,
+    String password,
+    bool acceptedTerms,
+    bool acceptedPrivacy,
+  }) {
     setUsername = username;
     setEmail = email;
     setPassword = password;
@@ -51,11 +52,11 @@ class User {
     return _email;
   }
 
-  bool get getAccpetedTerms {
+  bool get getAcceptedTerms {
     return _acceptedTerms;
   }
 
-  bool get getAccpetedPrivacy {
+  bool get getAcceptedPrivacy {
     return _acceptedPrivacy;
   }
 
@@ -64,8 +65,8 @@ class User {
       'name': getUsername,
       'mail': getEmail,
       'token': getPassword,
-      'acceptedTerms': getAccpetedTerms,
-      'acceptedPrivacy': getAccpetedPrivacy,
+      'acceptedTerms': getAcceptedTerms,
+      'acceptedPrivacy': getAcceptedPrivacy,
     };
   }
 }

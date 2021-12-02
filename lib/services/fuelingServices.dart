@@ -1,16 +1,15 @@
+import 'package:dio/dio.dart' as dio;
+import 'package:provider/provider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:dio/dio.dart' as dio;
-import 'package:provider/provider.dart';
-
-import '../providers/fuelingsProvider.dart';
-import '../providers/authProvider.dart';
-import '../exceptionHandling/appException.dart';
-import '../exceptionHandling/result.dart';
-import '../exceptionHandling/errorHandler.dart';
-import '../hiveDB/fuelingsCollection.dart';
 import '../models/fueling.dart';
+import '../providers/authProvider.dart';
+import '../exceptionHandling/result.dart';
+import '../hiveDB/fuelingsCollection.dart';
+import '../providers/fuelingsProvider.dart';
+import '../exceptionHandling/errorHandler.dart';
+import '../exceptionHandling/appException.dart';
 
 class FuelingServices {
   Future<Result> getFuelingsFromServer({@required BuildContext context}) async {
@@ -54,8 +53,10 @@ class FuelingServices {
     }
   }
 
-  Future<Result> uploadFuelingToServer(
-      {@required BuildContext context, @required Fueling fueling}) async {
+  Future<Result> uploadFuelingToServer({
+    @required BuildContext context,
+    @required Fueling fueling,
+  }) async {
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
 

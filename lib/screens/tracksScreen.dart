@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../widgets/tracksScrrenWidgets/localTracksList.dart';
-import '../../widgets/tracksScrrenWidgets/uploadedTracksList.dart';
-import '../widgets/tabButtonsPage.dart';
 import '../utils/enums.dart';
+import '../widgets/tabButtonsPage.dart';
+import '../widgets/tracksScreenWidgets/localTracksList.dart';
+import '../widgets/tracksScreenWidgets/uploadedTracksList.dart';
 
 class TracksScreen extends StatefulWidget {
   @override

@@ -1,11 +1,10 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 
-import 'package:logger/logger.dart';
-
-import '../constants.dart';
-import '../services/authenticationServices.dart';
-import '../models/user.dart';
 import '../globals.dart';
+import '../constants.dart';
+import '../models/user.dart';
+import '../services/authenticationServices.dart';
 
 // TODO: Add validators
 
@@ -165,7 +164,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const Flexible(
                           child: Text(
+
                               'I acknowledge that I have read and agree to enviroCar\'s Terms and Conditions'),
+
                         ),
                       ],
                     ),
@@ -189,7 +190,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const Flexible(
                           child: Text(
-                              'I have taken note of the Privacy Statement'),
+                            'I have taken note of the Privacy Statement',
+                          ),
                         ),
                       ],
                     ),

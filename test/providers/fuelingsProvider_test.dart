@@ -29,9 +29,10 @@ void main() {
 
       // Check the initial value provider to be null...
       expect(
-          Provider.of<FuelingsProvider>(childContext, listen: false)
-              .getFuelingsList,
-          null);
+        Provider.of<FuelingsProvider>(childContext, listen: false)
+            .getFuelingsList,
+        null,
+      );
 
       // Set data in provider
       Provider.of<FuelingsProvider>(childContext, listen: false)
@@ -39,10 +40,11 @@ void main() {
 
       // Fetch the new data and check if it matches the one stored in it
       expect(
-          Provider.of<FuelingsProvider>(childContext, listen: false)
-              .getFuelingsList
-              .length,
-          1);
+        Provider.of<FuelingsProvider>(childContext, listen: false)
+            .getFuelingsList
+            .length,
+        1,
+      );
     },
   );
 }

@@ -1,10 +1,9 @@
-import 'package:flutter/material.dart';
-
 import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/fuelingsProvider.dart';
 import '../providers/authProvider.dart';
+import '../providers/fuelingsProvider.dart';
 
 // Local Hive DB Collection for fueling logs
 

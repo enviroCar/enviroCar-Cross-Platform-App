@@ -1,5 +1,5 @@
-import '../models/settingsTileModel.dart';
 import '../globals.dart';
+import '../models/settingsTileModel.dart';
 
 /// Contains values of settings on Settings Screen
 
@@ -32,7 +32,7 @@ List<SettingsTileModel> generalSettings = [
 ];
 
 // OBD Mode Settings List
-List<SettingsTileModel> OBDModeSettings = [
+List<SettingsTileModel> obdModeSettings = [
   SettingsTileModel(
     title: 'Auto Connect',
     subtitle:
@@ -54,7 +54,7 @@ List<SettingsTileModel> OBDModeSettings = [
 ];
 
 // GPS Mode Settings List
-List<SettingsTileModel> GPSModeSettings = [
+List<SettingsTileModel> gpsModeSettings = [
   SettingsTileModel(
     title: 'Enable GPS based track recording',
     subtitle:

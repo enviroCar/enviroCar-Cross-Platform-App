@@ -25,35 +25,45 @@ dependencies:
     sdk: flutter
 
   # for state management
-  provider: ^5.0.0
+  provider: ^6.0.1
 
   # for making http calls
   http: ^0.13.1
 
   # to securely store user info for silent signin
-  flutter_secure_storage: ^4.1.0
+  flutter_secure_storage: ^5.0.2
 
-
+  # for connecting and communicating with BLE devices on Android and iOS
   flutter_blue: ^0.8.0
   system_shortcuts: ^1.0.0
 
   # for getting user location
   geolocator: ^7.0.1
-  latlong: ^0.6.1
-  flutter_map: ^0.12.0
+
+  latlong2: ^0.8.1
+  flutter_map: ^0.14.0
   location: ^4.1.1
 
   # to launch App store and Play store to rate the app
   url_launcher: ^6.0.6
 
   # to preview the app on different screens sizes
-  device_preview: ^0.7.3
+  device_preview: ^1.0.0-alpha.15
+
+  # for onboarding screens
+  introduction_screen: ^2.1.0
+
+  # for google maps
+  google_maps_flutter: ^2.1.0
+
+  # to display poly lines on map connecting two or more places
+  flutter_polyline_points: ^1.0.0
 
   # to store small persistent data
   shared_preferences: ^2.0.6
 
   # to show SVGs
-  flutter_svg: ^0.22.0
+  flutter_svg: ^0.23.0+1
 
   # to use custom fonts
   google_fonts: ^2.1.0
@@ -61,10 +71,9 @@ dependencies:
   # to generate unique IDs
   uuid: ^3.0.4
 
-  # for storing data locally
-  sqflite: ^2.0.0+3
+  toast: ^0.1.5
 
-  # to follow good code guildeines by google
+  # to follow good code guidelines by google
   lint: ^1.5.3
 
   # to get path of the app on the device
@@ -84,9 +93,19 @@ dependencies:
   showcaseview: ^1.1.0
 
   # for charts
-  fl_chart: ^0.36.3
-  
+  fl_chart: ^0.40.2
 
+  # to send notifications
+  flutter_local_notifications: ^9.1.2
+
+  # to export data as an excel file
+  syncfusion_flutter_xlsio: ^19.3.54-beta
+
+  # for OS specific directory paths
+  path_provider: ^2.0.2
+
+  # to open files
+  open_file: ^3.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
@@ -95,6 +114,9 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  build_runner: ^2.0.6
+  hive_generator: ^1.0.1
 
   # for writing mocks for unit tests
   mockito: any

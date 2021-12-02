@@ -1,12 +1,11 @@
-import 'package:flutter/material.dart';
-
 import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../providers/carsProvider.dart';
-import '../../hiveDB/sensorsCollection.dart';
 import '../../constants.dart';
 import '../../models/car.dart';
+import '../../providers/carsProvider.dart';
+import '../../hiveDB/sensorsCollection.dart';
 
 class CarsListWidget extends StatefulWidget {
   @override
@@ -33,7 +32,7 @@ class _CarsListWidgetState extends State<CarsListWidget> {
 
           // delaying to avoid rebuilding before the widget is built
           Future.delayed(
-            const Duration(),
+            Duration.zero,
             () => CarsCollection().getCarsFromHive(context: context),
           );
 
@@ -56,7 +55,7 @@ class _CarsListWidgetState extends State<CarsListWidget> {
         // Cars have been fetched from Hive and it's not empty
         else {
           return ListView.builder(
-            padding: const EdgeInsets.all(0),
+            padding: EdgeInsets.zero,
             itemCount: carsList.length,
             itemBuilder: (_, index) {
               return GestureDetector(
@@ -64,12 +63,14 @@ class _CarsListWidgetState extends State<CarsListWidget> {
                   carsProvider.setSelectedCar = carsList[index];
                 },
                 child: ListTile(
-                  contentPadding: const EdgeInsets.all(0),
+                  contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.drive_eta_sharp),
                   title: Text(
-                      '${carsList[index].properties.manufacturer} - ${carsList[index].properties.model}'),
+                    '${carsList[index].properties.manufacturer} - ${carsList[index].properties.model}',
+                  ),
                   subtitle: Text(
-                      '${carsList[index].properties.constructionYear}, ${carsList[index].properties.engineDisplacement}, ${carsList[index].properties.fuelType}'),
+                    '${carsList[index].properties.constructionYear}, ${carsList[index].properties.engineDisplacement}, ${carsList[index].properties.fuelType}',
+                  ),
                   trailing: Radio(
                     onChanged: (bool value) {},
                     groupValue: true,

@@ -28,9 +28,10 @@ void main() {
 
       // Check the initial value provider to be null...
       expect(
-          Provider.of<UserStatsProvider>(childContext, listen: false)
-              .getUserStats,
-          null);
+        Provider.of<UserStatsProvider>(childContext, listen: false)
+            .getUserStats,
+        null,
+      );
 
       // Set data in provider
       Provider.of<UserStatsProvider>(childContext, listen: false).setUserStats =
@@ -38,10 +39,11 @@ void main() {
 
       // Fetch the new data and check if it matches the one stored in it
       expect(
-          Provider.of<UserStatsProvider>(childContext, listen: false)
-              .getUserStats
-              .trackCount,
-          2);
+        Provider.of<UserStatsProvider>(childContext, listen: false)
+            .getUserStats
+            .trackCount,
+        2,
+      );
     },
   );
 }

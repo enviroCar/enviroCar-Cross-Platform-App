@@ -1,16 +1,15 @@
-import 'package:flutter/material.dart';
-
 import 'package:logger/logger.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../constants.dart';
-import '../../providers/carsProvider.dart';
 import '../button.dart';
+import '../../constants.dart';
+import '../../models/car.dart';
+import '../../services/carServices.dart';
+import '../../providers/carsProvider.dart';
+import '../../providers/authProvider.dart';
 import '../../exceptionHandling/result.dart';
 import '../../hiveDB/sensorsCollection.dart';
-import '../../models/car.dart';
-import '../../providers/authProvider.dart';
-import '../../services/carServices.dart';
 
 class AttributesOption extends StatefulWidget {
   static const routeName = '/createCarScreen';

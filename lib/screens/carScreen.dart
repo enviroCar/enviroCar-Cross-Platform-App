@@ -1,9 +1,8 @@
+import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 
-import 'package:logger/logger.dart';
-
-import './createCarScreen.dart';
 import '../constants.dart';
+import './createCarScreen.dart';
 import '../widgets/carScreenWidgets/carsListWidget.dart';
 
 class CarScreen extends StatefulWidget {
