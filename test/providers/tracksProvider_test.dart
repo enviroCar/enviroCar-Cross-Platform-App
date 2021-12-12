@@ -27,8 +27,9 @@ void main() {
 
       // Check the initial value provider to be null...
       expect(
-          Provider.of<TracksProvider>(childContext, listen: false).getTracks(),
-          null);
+        Provider.of<TracksProvider>(childContext, listen: false).getTracks(),
+        null,
+      );
 
       // Set data in provider
       Provider.of<TracksProvider>(childContext, listen: false)
@@ -36,20 +37,22 @@ void main() {
 
       // Fetch the new data and check if it matches the one stored in it
       expect(
-          Provider.of<TracksProvider>(childContext, listen: false)
-              .getTracks()
-              .length,
-          2);
+        Provider.of<TracksProvider>(childContext, listen: false)
+            .getTracks()
+            .length,
+        2,
+      );
 
       // Remove data in provider
       Provider.of<TracksProvider>(childContext, listen: false).removeTracks();
 
       // Fetch the new data and check if it matches the one stored in it
       expect(
-          Provider.of<TracksProvider>(childContext, listen: false)
-              .getTracks()
-              .length,
-          0);
+        Provider.of<TracksProvider>(childContext, listen: false)
+            .getTracks()
+            .length,
+        0,
+      );
     },
   );
 }

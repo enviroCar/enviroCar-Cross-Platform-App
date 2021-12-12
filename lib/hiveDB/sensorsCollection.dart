@@ -1,6 +1,5 @@
-import 'package:flutter/material.dart';
-
 import 'package:hive/hive.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/carsProvider.dart';
@@ -38,7 +37,7 @@ class CarsCollection {
     }
 
     Future.delayed(
-      const Duration(),
+      Duration.zero,
       () {
         carsProvider.setCarsList = carsList;
       },

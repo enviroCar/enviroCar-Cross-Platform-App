@@ -1,5 +1,4 @@
 import 'package:flutter/foundation.dart';
-
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 import '../models/user.dart';
@@ -21,8 +20,10 @@ class SecureStorageServices {
   }
 
   // Sets data in secure storage on the device
-  Future<void> setUserInSecureStorage(
-      {@required String username, @required String password}) async {
+  Future<void> setUserInSecureStorage({
+    @required String username,
+    @required String password,
+  }) async {
     _secureStorage.write(key: 'username', value: username);
     _secureStorage.write(key: 'password', value: password);
   }

@@ -13,7 +13,7 @@ const String forceCrash = 'Force Crash';
 
 const String suddenLags = 'Sudden Lags';
 
-const String appWasUnresponsive = 'App was unrsponsive';
+const String appWasUnresponsive = 'App was unresponsive';
 
 const String componentDoesNotWorkAsExpected =
     'Component does not work as expected';

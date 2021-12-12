@@ -10,7 +10,8 @@ class Validator {
   // static const Pattern usernamePattern = r'^[a-z0-9_-]{6,}\$';
 
   final RegExp emailRegExp = RegExp(
-      r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$');
+    r'^[a-zA-Z0-9.!#$%&*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$',
+  );
   final RegExp passwordRegExp =
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}\$');
   final RegExp usernameRegExp = RegExp(r'[_A-Za-z0-9-]{4,}$');

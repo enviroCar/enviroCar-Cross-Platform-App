@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
-import '../services/mapServices.dart';
-import '../widgets/mapWidget.dart';
 import '../constants.dart';
+import '../widgets/mapWidget.dart';
+import '../services/mapServices.dart';
 
 class MapScreen extends StatefulWidget {
   static const routeName = '/mapScreen';
@@ -16,7 +16,7 @@ class _MapScreenState extends State<MapScreen> {
   Future _startLocationService;
 
   // checks if location service in enabled
-  // promts permission dialogbox if service is disabled
+  // prompts permission dialog box if service is disabled
   Future<void> initializeLocation() async {
     final bool permissionStatus =
         await MapServices().initializeLocationService();

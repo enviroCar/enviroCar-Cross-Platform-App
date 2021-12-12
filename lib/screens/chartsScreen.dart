@@ -1,13 +1,11 @@
 import 'dart:math';
-
 import 'package:flutter/material.dart';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:geolocator/geolocator.dart';
 
 import '../constants.dart';
-import '../widgets/trackDetailsWidgets/chartWidget.dart';
 import '../models/chartData.dart';
+import '../widgets/trackDetailsWidgets/chartWidget.dart';
 
 /// Screen to show graphs for Speed, CO2, Consumption and Altitude
 ///
@@ -34,8 +32,10 @@ class _ChartScreenState extends State<ChartScreen> {
   double totalDist = 0;
   double distanceInterval;
 
-  void pullDataFromTrack(
-      {@required String dataName, @required ChartData chartData}) {
+  void pullDataFromTrack({
+    @required String dataName,
+    @required ChartData chartData,
+  }) {
     double data;
     double maxData = 0;
 
@@ -65,7 +65,9 @@ class _ChartScreenState extends State<ChartScreen> {
 
     for (int i = 0; i < min(dists.length, dataList.length); i++) {
       final FlSpot newSpot = FlSpot(
-          dists[i] / distanceInterval, dataList[i] / chartData.dataInterval);
+        dists[i] / distanceInterval,
+        dataList[i] / chartData.dataInterval,
+      );
       chartData.dataPoints.add(newSpot);
     }
   }

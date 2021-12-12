@@ -1,11 +1,10 @@
-import 'Package:flutter/material.dart';
-
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../widgets/dividerLine.dart';
-import '../widgets/titleWidget.dart';
-import '../values/settingsValues.dart';
 import '../globals.dart';
+import '../widgets/titleWidget.dart';
+import '../widgets/dividerLine.dart';
+import '../values/settingsValues.dart';
 import '../providers/themeProvider.dart';
 import '../widgets/settingsScreenWidgets/settingsListWidget.dart';
 
@@ -30,12 +29,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             // OBD Mode Settings
             const TitleWidget(title: 'OBD Mode'),
-            SettingsListWidget(settings: OBDModeSettings),
+            SettingsListWidget(settings: obdModeSettings),
             DividerLine(),
 
             // GPS Mode Settings
             const TitleWidget(title: 'GPS Mode'),
-            SettingsListWidget(settings: GPSModeSettings),
+            SettingsListWidget(settings: gpsModeSettings),
             DividerLine(),
 
             // Debugging Settings

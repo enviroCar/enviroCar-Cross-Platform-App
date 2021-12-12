@@ -1,15 +1,14 @@
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:flutter/foundation.dart';
 
-import 'package:dio/dio.dart' as dio;
-import 'package:provider/provider.dart';
-
+import '../models/car.dart';
 import '../providers/authProvider.dart';
-import '../exceptionHandling/appException.dart';
+import '../providers/carsProvider.dart';
 import '../exceptionHandling/result.dart';
 import '../exceptionHandling/errorHandler.dart';
-import '../models/car.dart';
-import '../providers/carsProvider.dart';
+import '../exceptionHandling/appException.dart';
 
 class CarServices {
   // Not used anywhere because the cars don't get stored in the user's account
@@ -48,8 +47,10 @@ class CarServices {
     }
   }
 
-  Future<Result> uploadCarToServer(
-      {@required BuildContext context, @required Car car}) async {
+  Future<Result> uploadCarToServer({
+    @required BuildContext context,
+    @required Car car,
+  }) async {
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
 

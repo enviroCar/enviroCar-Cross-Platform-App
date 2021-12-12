@@ -1,10 +1,9 @@
 import 'Package:flutter/material.dart';
 
-import '../widgets/createCarWidgets/attributesOption.dart';
-import '../widgets/createCarWidgets/tsnHsnOption.dart';
-
-import '../widgets/tabButtonsPage.dart';
 import '../utils/enums.dart';
+import '../widgets/tabButtonsPage.dart';
+import '../widgets/createCarWidgets/tsnHsnOption.dart';
+import '../widgets/createCarWidgets/attributesOption.dart';
 
 class CreateCarScreen extends StatefulWidget {
   static const String routeName = '/createCarScreen';

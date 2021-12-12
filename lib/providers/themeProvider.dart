@@ -23,8 +23,9 @@ class ThemeProvider with ChangeNotifier {
 }
 
 ThemeData darkThemeData = ThemeData(
-  accentColor: kSpringColor,
   primaryColor: Colors.black,
+  secondaryHeaderColor: kSpringColor,
+  selectedRowColor: kSpringColor,
   dialogBackgroundColor: Colors.black,
   scaffoldBackgroundColor: Colors.black,
   dividerColor: Colors.white,
@@ -42,40 +43,46 @@ ThemeData darkThemeData = ThemeData(
   ),
   canvasColor: Colors.black,
   unselectedWidgetColor: Colors.white,
-  textTheme: const TextTheme(
-    bodyText1: TextStyle(
+  textTheme: TextTheme(
+    bodyText1: const TextStyle(
       color: Colors.white,
     ),
-    bodyText2: TextStyle(
+    bodyText2: const TextStyle(
       color: Colors.white,
     ),
-    button: TextStyle(
+    button: const TextStyle(
       color: Colors.white,
     ),
-    caption: TextStyle(
+    caption: const TextStyle(
       color: Colors.white,
     ),
-    subtitle1: TextStyle(
+    subtitle1: const TextStyle(
       color: Colors.white,
     ),
-    subtitle2: TextStyle(
+    subtitle2: const TextStyle(
       color: Colors.white,
+    ),
+    headline1: TextStyle(
+      color: kGreyColor.withOpacity(0.5),
     ),
   ),
 );
 
 ThemeData lightThemeData = ThemeData(
   primaryColor: Colors.white,
-  appBarTheme: const AppBarTheme(
-    actionsIconTheme: IconThemeData(
+  appBarTheme: AppBarTheme(
+    actionsIconTheme: const IconThemeData(
       color: Colors.white,
     ),
-    iconTheme: IconThemeData(
+    iconTheme: const IconThemeData(
       color: Colors.white,
     ),
     color: Colors.red,
-    titleTextStyle: TextStyle(
+    titleTextStyle: const TextStyle(
       color: Colors.white,
+    ),
+    toolbarTextStyle: TextStyle(
+      color: kGreyColor.withOpacity(0.5),
     ),
   ),
 );
