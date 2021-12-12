@@ -59,6 +59,7 @@ dependencies:
   # to display poly lines on map connecting two or more places
   flutter_polyline_points: ^1.0.0
 
+
   # to store small persistent data
   shared_preferences: ^2.0.6
 
