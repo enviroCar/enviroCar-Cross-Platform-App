@@ -37,7 +37,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
     await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: Text(message),
         content: Text(message),
       ),
     ).then(
@@ -133,7 +132,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                     TextFormField(
                       obscureText: true,
                       decoration: inputDecoration.copyWith(
-                        labelText: 'Password',
+                        labelText: 'Confirm Password',
                       ),
                       validator: (value) {
                         if (_confirmPassword.compareTo(_password) != 0) {
@@ -165,8 +164,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                         const Flexible(
                           child: Text(
-                            'I acknowledge I have read and agree to enviroCar\'s Terms and Conditions',
-                          ),
+
+                              'I acknowledge that I have read and agree to enviroCar\'s Terms and Conditions'),
+
                         ),
                       ],
                     ),
@@ -247,7 +247,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             _showDialogbox('Email already in use');
                           } else {
                             _logger.w('Unknown error while registering');
-                            _showDialogbox('Some other error');
+                            _showDialogbox('An error was encountered.Please try again.');
                           }
                         }
                       },
