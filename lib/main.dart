@@ -1,3 +1,4 @@
+import 'package:adaptive_theme/adaptive_theme.dart';
 import 'package:hive/hive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -124,11 +125,6 @@ Future<void> main() async {
             ChangeNotifierProvider(
               create: (context) => LocalTracksProvider(),
             ),
-
-            // Provides theme data to different widgets on the tree
-            ChangeNotifierProvider(
-              create: (context) => ThemeProvider(),
-            ),
           ],
           child: MyApp(),
         );
@@ -140,29 +136,47 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: DevicePreview.locale(context),
-      builder: DevicePreview.appBuilder,
-      theme: Provider.of<ThemeProvider>(context).getTheme,
-      debugShowCheckedModeBanner: false,
-      home: SplashScreen(),
+    return AdaptiveTheme(
+        light: ThemeData(
+          brightness: Brightness.light,
+          primarySwatch: Colors.red,
+          accentColor: Colors.amber,
+        ),
+        dark: ThemeData(
+          brightness: Brightness.dark,
+          primarySwatch: Colors.red,
+          accentColor: Colors.amber,
+        ),
+        initial: AdaptiveThemeMode.light,
+        builder: (theme, darkTheme) {
+          return MaterialApp(
+            locale: DevicePreview.locale(context),
+            theme: theme,
+            darkTheme: darkTheme,
+            builder: DevicePreview.appBuilder,
+            //theme: Provider.of<ThemeProvider>(context).getTheme,
 
-      // Helps in navigating to different screens via route name
-      routes: {
-        LoginScreen.routeName: (context) => LoginScreen(),
-        RegisterScreen.routeName: (context) => RegisterScreen(),
-        SplashScreen.routeName: (context) => SplashScreen(),
-        Index.routeName: (context) => Index(),
-        BluetoothDevicesScreen.routeName: (context) => BluetoothDevicesScreen(),
-        MapScreen.routeName: (context) => MapScreen(),
-        CarScreen.routeName: (context) => CarScreen(),
-        CreateCarScreen.routeName: (context) => CreateCarScreen(),
-        CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
-        LogBookScreen.routeName: (context) => LogBookScreen(),
-        ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
-        HelpScreen.routeName: (context) => HelpScreen(),
-        GpsTrackingScreen.routeName: (context) => GpsTrackingScreen(),
-      },
-    );
+            debugShowCheckedModeBanner: false,
+            home: SplashScreen(),
+
+            // Helps in navigating to different screens via route name
+            routes: {
+              LoginScreen.routeName: (context) => LoginScreen(),
+              RegisterScreen.routeName: (context) => RegisterScreen(),
+              SplashScreen.routeName: (context) => SplashScreen(),
+              Index.routeName: (context) => Index(),
+              BluetoothDevicesScreen.routeName: (context) =>
+                  BluetoothDevicesScreen(),
+              MapScreen.routeName: (context) => MapScreen(),
+              CarScreen.routeName: (context) => CarScreen(),
+              CreateCarScreen.routeName: (context) => CreateCarScreen(),
+              CreateFuelingScreen.routeName: (context) => CreateFuelingScreen(),
+              LogBookScreen.routeName: (context) => LogBookScreen(),
+              ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
+              HelpScreen.routeName: (context) => HelpScreen(),
+              GpsTrackingScreen.routeName: (context) => GpsTrackingScreen(),
+            },
+          );
+        });
   }
 }

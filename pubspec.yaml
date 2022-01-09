@@ -36,7 +36,7 @@ dependencies:
   # for connecting and communicating with BLE devices on Android and iOS
   flutter_blue: ^0.8.0
   system_shortcuts: ^1.0.0
-
+  adaptive_theme:
   # for getting user location
   geolocator: ^7.0.1
 

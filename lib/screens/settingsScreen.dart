@@ -1,3 +1,4 @@
+import 'package:envirocar_app_main/widgets/settingsScreenWidgets/settingDropdown.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -44,7 +45,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
             // Theme Settings
             const TitleWidget(title: 'Theme'),
-            SettingsListWidget(
+            /*SettingsListWidget(
               settings: themeSettings,
               onChanged: () {
                 final ThemeProvider themeProvider =
@@ -56,7 +57,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     ? preferences.setString('theme', 'light')
                     : preferences.setString('theme', 'dark');
               },
-            ),
+            ),*/
+            SettingsDropDownWidget(settings: themeSettings),
           ],
         ),
       ),
