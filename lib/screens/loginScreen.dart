@@ -30,6 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   String _username;
   String _password;
   bool _wrongCredentials = false;
+  bool _isObscure = true;
 
   Future<void> _showDialogbox(String message) async {
     _logger.i('Showing dialog');
@@ -95,9 +96,22 @@ class _LoginScreenState extends State<LoginScreen> {
 
                     // Password
                     TextFormField(
-                      obscureText: true,
+                      obscureText: _isObscure,
                       decoration: inputDecoration.copyWith(
                         labelText: 'Password',
+                        suffixIcon: IconButton(
+                          icon: Icon(
+                            _isObscure
+                                ? Icons.visibility_off_outlined
+                                : Icons.visibility_outlined,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              _isObscure = !_isObscure;
+                            });
+                          },
+                        ),
                       ),
                       // validator: (value) {
                       //   return validator.validatePassword(value);
