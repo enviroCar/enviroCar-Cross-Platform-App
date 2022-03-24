@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../globals.dart';
 import '../../models/settingsTileModel.dart';
 
 // List of checkbox settings tile on settings screen
@@ -23,10 +22,6 @@ class _SettingsListWidgetState extends State<SettingsListWidget> {
       final bool currentVal = widget.settings[index].isChecked;
       widget.settings[index].isChecked = !currentVal;
     });
-    preferences.setString(
-      widget.settings[index].title,
-      '${widget.settings[index].isChecked}',
-    );
   }
 
   @override
