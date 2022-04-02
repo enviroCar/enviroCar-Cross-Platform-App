@@ -58,7 +58,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
               EdgeInsets.fromLTRB(deviceWidth * 0.05, 0, deviceWidth * 0.05, 0),
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (OverscrollIndicatorNotification overscroll) {
-              overscroll.disallowGlow();
+              overscroll.disallowIndicator();
               return;
             },
             child: Form(
