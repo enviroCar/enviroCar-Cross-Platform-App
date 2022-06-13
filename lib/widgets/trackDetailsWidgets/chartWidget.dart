@@ -1,8 +1,8 @@
+import 'package:envirocar_app_main/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 import '../titleWidget.dart';
-import '../../constants.dart';
 import '../../models/chartData.dart';
 
 class ChartWidget extends StatelessWidget {
@@ -35,30 +35,41 @@ class ChartWidget extends StatelessWidget {
                   maxY: 10,
                   titlesData: FlTitlesData(
                     // x-axis titles
-                    bottomTitles: SideTitles(
-                      showTitles: true,
-                      getTitles: (value) {
-                        if (value == 0.0) {
-                          return '';
-                        }
-                        if (value == 20) {
-                          return '';
-                        }
-                        return (xInterval * value).toStringAsFixed(1);
-                      },
+                    bottomTitles: AxisTitles(
+                      drawBehindEverything: true,
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, x) {
+                          if (value == 0.0) {
+                            return const Text('');
+                          }
+                          if (value == 20) {
+                            return const Text('');
+                          }
+                          return Text((xInterval * value).toStringAsFixed(1));
+                        },
+                      ),
                     ),
 
                     // y-axis titles
-                    leftTitles: SideTitles(
-                      showTitles: true,
-                      getTitles: (value) {
-                        if (value == 10) {
-                          return '';
-                        }
-                        return (chartData.dataInterval * value).toStringAsFixed(
-                          chartData.dataInterval < 1 ? 3 : 1,
-                        );
-                      },
+                    leftTitles: AxisTitles(
+                      drawBehindEverything: true,
+                      sideTitles: SideTitles(
+                        showTitles: true,
+                        getTitlesWidget: (value, x) {
+                          if (value == 0.0) {
+                            return const Text('');
+                          }
+                          if (value == 20) {
+                            return const Text('');
+                          }
+                          return Text(
+                            (chartData.dataInterval * value).toStringAsFixed(
+                              chartData.dataInterval < 1 ? 3 : 1,
+                            ),
+                          );
+                        },
+                      ),
                     ),
                   ),
                   lineBarsData: [
@@ -68,10 +79,10 @@ class ChartWidget extends StatelessWidget {
                       ),
                       show: true,
                       spots: chartData.dataPoints,
-                      colors: [kSpringColor],
+                      color: kSpringColor,
                       belowBarData: BarAreaData(
                         show: true,
-                        colors: [kSpringColor.withOpacity(0.2)],
+                        color: kSpringColor.withOpacity(0.2),
                       ),
                     ),
                   ],

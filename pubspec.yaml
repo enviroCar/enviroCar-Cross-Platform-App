@@ -25,101 +25,111 @@ dependencies:
     sdk: flutter
 
   # for state management
-  provider: ^6.0.1
+  provider: ^6.0.3
 
   # for making http calls
-  http: ^0.13.1
+  http: ^0.13.4
 
   # to securely store user info for silent signin
   flutter_secure_storage: ^5.0.2
 
   # for connecting and communicating with BLE devices on Android and iOS
   flutter_blue: ^0.8.0
+
+  # for using system shortcuts
   system_shortcuts: ^1.0.0
 
   # for getting user location
-  geolocator: ^7.0.1
+  geolocator: ^8.2.1
 
+  # for latitude longitude calculation
   latlong2: ^0.8.1
-  flutter_map: ^0.14.0
-  location: ^4.1.1
+
+  # for map widget
+  flutter_map: ^1.0.0
+
+  # for handling realtime location
+  location: ^4.4.0
 
   # to launch App store and Play store to rate the app
-  url_launcher: ^6.0.6
+  url_launcher: ^6.1.3
 
   # to preview the app on different screens sizes
-  device_preview: ^1.0.0-alpha.15
+  device_preview: ^1.1.0
 
-  # for onboarding screens
-  introduction_screen: ^2.1.0
+  # for on boarding screens
+  introduction_screen: ^3.0.2
 
   # for google maps
-  google_maps_flutter: ^2.1.0
+  google_maps_flutter: ^2.1.7
 
   # to display poly lines on map connecting two or more places
   flutter_polyline_points: ^1.0.0
 
   # to store small persistent data
-  shared_preferences: ^2.0.6
+  shared_preferences: ^2.0.15
 
   # to show SVGs
-  flutter_svg: ^0.23.0+1
+  flutter_svg: ^1.1.0
 
   # to use custom fonts
-  google_fonts: ^2.1.0
+  google_fonts: ^3.0.1
 
   # to generate unique IDs
-  uuid: ^3.0.4
+  uuid: ^3.0.6
 
-  toast: ^0.1.5
+  # for displaying toast messages
+  toast: ^0.3.0
 
   # to follow good code guidelines by google
-  lint: ^1.5.3
+  lint: ^1.8.2
 
   # to get path of the app on the device
-  path: ^1.8.0
+  path: ^1.8.1
 
   # for logging
-  logger: ^1.0.0
+  logger: ^1.1.0
 
   # for making http calls
-  dio: ^4.0.0
+  dio: ^4.0.6
 
   # for local db
-  hive: ^2.0.4
+  hive: ^2.2.2
+
+  # extension for hive, to make hive easier to use
   hive_flutter: ^1.1.0
 
   # for instructions on dashboard
-  showcaseview: ^1.1.0
+  showcaseview: ^1.1.5
 
   # for charts
-  fl_chart: ^0.40.2
+  fl_chart: ^0.51.0
 
   # to send notifications
-  flutter_local_notifications: ^9.1.2
+  flutter_local_notifications: ^9.6.0
 
   # to export data as an excel file
-  syncfusion_flutter_xlsio: ^19.3.54-beta
+  syncfusion_flutter_xlsio: ^20.1.59-beta
 
   # for OS specific directory paths
-  path_provider: ^2.0.2
+  path_provider: ^2.0.11
 
   # to open files
   open_file: ^3.2.1
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
+  cupertino_icons: ^1.0.5
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  build_runner: ^2.0.6
-  hive_generator: ^1.0.1
+  build_runner: ^2.1.11
+  hive_generator: ^1.1.3
 
   # for writing mocks for unit tests
-  mockito: any
+  mockito: ^5.2.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
