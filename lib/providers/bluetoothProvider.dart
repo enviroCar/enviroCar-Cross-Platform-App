@@ -118,9 +118,8 @@ class BluetoothProvider extends ChangeNotifier {
           debugPrint('connection successful');
           Toast.show(
             'Connected to $deviceDisplayName',
-            context,
-            gravity: Toast.BOTTOM,
-            duration: Toast.LENGTH_LONG,
+            gravity: Toast.bottom,
+            duration: Toast.lengthLong,
             backgroundColor: kTertiaryColor,
           );
           connectedBluetoothDevice = selectedBluetoothDevice;
@@ -134,9 +133,8 @@ class BluetoothProvider extends ChangeNotifier {
         debugPrint('already connected to $deviceDisplayName');
         Toast.show(
           'Already connected to $deviceDisplayName',
-          context,
-          gravity: Toast.BOTTOM,
-          duration: Toast.LENGTH_LONG,
+          gravity: Toast.bottom,
+          duration: Toast.lengthLong,
           backgroundColor: kTertiaryColor,
         );
         connectedBluetoothDevice = selectedBluetoothDevice;
@@ -148,9 +146,8 @@ class BluetoothProvider extends ChangeNotifier {
       debugPrint(e.toString());
       Toast.show(
         'Cannot connected to $deviceDisplayName',
-        context,
-        gravity: Toast.BOTTOM,
-        duration: Toast.LENGTH_LONG,
+        gravity: Toast.bottom,
+        duration: Toast.lengthLong,
         backgroundColor: kTertiaryColor,
       );
       connectedBluetoothDevice = null;
