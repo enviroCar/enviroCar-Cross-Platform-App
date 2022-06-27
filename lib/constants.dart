@@ -37,6 +37,7 @@ const Color kErrorColor = Color.fromARGB(250, 255, 50, 64);
 const Color kWhiteColor = Color(0xffffffff);
 const Color kTertiaryColor = Color.fromARGB(200, 0, 0, 0);
 const Color kBlueColor = Color.fromARGB(255, 40, 122, 198);
+const Color kLightGrayColor = Color.fromARGB(255, 181, 181, 181);
 
 // PlayStore URL for 'Rate Us' feature
 const String playstoreUrl =
