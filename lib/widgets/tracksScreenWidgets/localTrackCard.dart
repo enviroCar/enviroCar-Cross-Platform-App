@@ -87,22 +87,11 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                     vertical: 20,
                     horizontal: 20,
                   ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Track ',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: kWhiteColor,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: widget.track.begin
-                              .toUtc()
-                              .toString()
-                              .replaceFirst('.000Z', ''),
-                        ),
-                      ],
+                  child: Text(
+                    widget.track.name,
+                    style: const TextStyle(
+                      color: kWhiteColor,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -144,8 +133,7 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                           context: context,
                           builder: (context) {
                             return UploadTrackDialogBox(
-                              trackName:
-                                  'Track ${widget.track.begin.toUtc().toString().replaceFirst('.000Z', '')}',
+                              trackName: widget.track.name,
                               uploadTrack: () async {
                                 _logger.i(
                                     'Call function to upload track to the server.');

@@ -41,6 +41,7 @@ class LocalTracksProvider extends ChangeNotifier {
     track.length = trackData.getDistance;
     track.begin = trackData.getStartTime;
     track.end = trackData.getEndTime;
+    track.name = trackData.trackName;
 
     final Car sensor = Car();
 

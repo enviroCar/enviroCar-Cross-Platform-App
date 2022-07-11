@@ -2,6 +2,7 @@ import 'car.dart';
 
 class Track {
   String id;
+  String name;
   double length;
   DateTime begin;
   DateTime end;
@@ -9,6 +10,7 @@ class Track {
 
   Track({
     this.id,
+    this.name,
     this.length,
     this.begin,
     this.end,
@@ -17,6 +19,7 @@ class Track {
 
   Track.fromJson(Map<String, dynamic> json) {
     id = json['id'] as String;
+    name = json['name'] as String;
     length = json['length'] as double;
     begin = DateTime.parse(json['begin'] as String);
     end = DateTime.parse(json['end'] as String);
@@ -28,6 +31,7 @@ class Track {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['id'] = id;
+    data['name'] = name;
     data['length'] = length;
     data['begin'] = begin;
     data['end'] = end;
@@ -35,5 +39,10 @@ class Track {
       data['sensor'] = sensor.toJson();
     }
     return data;
+  }
+
+  @override
+  String toString() {
+    return 'Track{id: $id, name: $name, length: $length, begin: $begin, end: $end, sensor: $sensor}';
   }
 }
