@@ -12,6 +12,7 @@ import '../providers/authProvider.dart';
 import '../providers/tracksProvider.dart';
 import '../providers/userStatsProvider.dart';
 import '../services/authenticationServices.dart';
+import 'dataPrivacyControlScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -90,6 +91,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () {
                 _logger.i('Going to logbook screen');
                 Navigator.of(context).pushNamed(LogBookScreen.routeName);
+              },
+            ),
+
+            // Data privacy and control settings button
+            buildIconButton(
+              title: 'Data Privacy/Control',
+              iconData: Icons.security,
+              onTap: () {
+                _logger.i('Going to data privacy/control screen');
+                Navigator.of(context)
+                    .pushNamed(DataPrivacyControlScreen.routeName);
               },
             ),
 
