@@ -23,13 +23,18 @@ void showAlertDialog({
         title: Text(
           title.toUpperCase(),
           textAlign: TextAlign.center,
-          style: const TextStyle(fontSize: 20, color: kSpringColor),
+          style: const TextStyle(
+            fontSize: 20,
+            color: kSpringColor,
+          ),
         ),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Padding(
-              padding: const EdgeInsets.only(bottom: 15),
+              padding: const EdgeInsets.only(
+                bottom: 15,
+              ),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
@@ -76,8 +81,15 @@ void showAlertDialog({
                 borderRadius: BorderRadius.circular(7),
                 color: kSpringColor,
               ),
-              margin: const EdgeInsets.only(left: 5, right: 5, bottom: 10),
-              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+              margin: const EdgeInsets.only(
+                left: 5,
+                right: 5,
+                bottom: 10,
+              ),
+              padding: const EdgeInsets.symmetric(
+                vertical: 10,
+                horizontal: 16,
+              ),
               child: Text(
                 'close'.toUpperCase(),
                 style: const TextStyle(

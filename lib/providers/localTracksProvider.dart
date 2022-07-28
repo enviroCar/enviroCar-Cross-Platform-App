@@ -73,11 +73,11 @@ class LocalTracksProvider extends ChangeNotifier {
   }
 
   /// function to upload local track to the server
-  void uploadTrack(BuildContext context, int index) {
+  Future uploadTrack(BuildContext context, int index) async {
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
     final LocalTrackModel localTrackModel = LocalTracks.getTrackAtIndex(index);
-    TracksServices()
+    await TracksServices()
         .postTrack(
       authProvider: _authProvider,
       localTrackModel: localTrackModel,
