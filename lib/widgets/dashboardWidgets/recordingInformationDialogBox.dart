@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../../constants.dart';
+import '../../screens/dataPrivacyControlScreen.dart';
 
 class RecordingInformationDialogBox extends StatelessWidget {
   final VoidCallback onButtonTap;
@@ -90,7 +91,7 @@ class RecordingInformationDialogBox extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  // TODO: Navigate to Data Privacy and Control Settings
+                  Navigator.pushNamed(context, DataPrivacyControlScreen.routeName);
                 },
                 child: Container(
                   padding: const EdgeInsets.only(
