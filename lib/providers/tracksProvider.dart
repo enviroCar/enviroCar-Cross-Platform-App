@@ -30,11 +30,17 @@ class TracksProvider with ChangeNotifier {
   /// function to fetch [track] with [track.id] from the server and add them to [uploadedTracksList]
   Future setTrackData() async {
     final List<LocalTrackModel> list = [];
+    List<Track> validTracks = [];
     for (final Track track in _tracks) {
       final LocalTrackModel trackModel =
           await TracksServices().getTrackWithId(track.id);
-      list.add(trackModel);
+      if (trackModel != null && trackModel.properties != null) {
+        list.add(trackModel);
+        validTracks.add(track);
+      }
     }
+
+    _tracks = validTracks;
     uploadedTracksList = list;
     uploadedTrackListSet = true;
     notifyListeners();

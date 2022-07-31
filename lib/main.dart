@@ -10,6 +10,7 @@ import 'package:path_provider/path_provider.dart' as path_provider;
 import 'constants.dart';
 import './globals.dart';
 import './screens/index.dart';
+import 'screens/dataPrivacyControlScreen.dart';
 import 'screens/helpScreen.dart';
 import './screens/carScreen.dart';
 import './screens/mapScreen.dart';
@@ -162,6 +163,7 @@ class MyApp extends StatelessWidget {
         ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
         HelpScreen.routeName: (context) => HelpScreen(),
         GpsTrackingScreen.routeName: (context) => GpsTrackingScreen(),
+        DataPrivacyControlScreen.routeName: (context) => DataPrivacyControlScreen(),
       },
     );
   }

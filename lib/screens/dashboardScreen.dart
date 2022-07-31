@@ -193,7 +193,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             buttonColor: provider.bluetoothState ==
                                     BluetoothConnectionStatus.ON
                                 ? kSpringColor
-                                : kErrorColor,
+                                : kSecondaryColor,
                           );
                         },
                       ),
@@ -211,7 +211,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             routeName: BluetoothDevicesScreen.routeName,
                             assetName: 'assets/icons/smartphone.svg',
                             buttonColor:
-                                isConnected ? kSpringColor : kErrorColor,
+                                isConnected ? kSpringColor : kSecondaryColor,
                           );
                         },
                       ),
@@ -227,7 +227,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             assetName: 'assets/icons/car.svg',
                             buttonColor: provider.getSelectedCar != null
                                 ? kSpringColor
-                                : kErrorColor,
+                                : kSecondaryColor,
                           );
                         },
                       ),
@@ -244,7 +244,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             buttonColor:
                                 provider.locationState == LocationStatus.enabled
                                     ? kSpringColor
-                                    : kErrorColor,
+                                    : kSecondaryColor,
                           );
                         },
                       ),
@@ -282,7 +282,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                             : 'Click here to select one',
                         routeName: BluetoothDevicesScreen.routeName,
                         iconBackgroundColor:
-                            isConnected ? kSpringColor : kErrorColor,
+                            isConnected ? kSpringColor : kSecondaryColor,
                       ),
                     );
                   },
@@ -312,7 +312,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         routeName: CarScreen.routeName,
                         iconBackgroundColor: carsProvider.getSelectedCar != null
                             ? kSpringColor
-                            : kErrorColor,
+                            : kSecondaryColor,
                       ),
                     );
                   },
