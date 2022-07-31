@@ -56,7 +56,7 @@ void showTrackDialogBox(BuildContext context) {
                 top: 10,
               ),
               child: Text(
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.',
+                'The local and non-uploaded tracks do not share the personal location information of the user. The tracks uploaded to the server share the user\'s personal location information alongside the calculated or parsed parameters. This data is analyzed to extrapolate CO2 hotspots, crowded regions, etc',
                 textAlign: TextAlign.left,
                 style: TextStyle(
                   color: Theme.of(context).textTheme.caption.color,

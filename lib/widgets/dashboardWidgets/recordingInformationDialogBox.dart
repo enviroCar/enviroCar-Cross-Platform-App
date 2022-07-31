@@ -47,7 +47,7 @@ class RecordingInformationDialogBox extends StatelessWidget {
               top: 10,
             ),
             child: Text(
-              'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.',
+              'You can start your track recording by tapping the "Start Recording" button below. Personal Location information and data collected from the OBD-II device get recorded. You can also edit your location data sharing preferences by toggling the parameters you do not want to record from the data privacy and control settings.',
               textAlign: TextAlign.left,
               style: TextStyle(
                 color: Theme.of(context).textTheme.caption.color,
