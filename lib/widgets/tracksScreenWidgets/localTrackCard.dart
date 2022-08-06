@@ -13,6 +13,7 @@ import '../../models/localTrackModel.dart';
 import '../../screens/trackDetailsScreen.dart';
 import '../../hiveDB/localTracksCollection.dart';
 import '../../providers/localTracksProvider.dart';
+import 'uploadTrackDialogBox.dart';
 
 class LocalTrackCard extends StatefulWidget {
   final Track track;
@@ -86,22 +87,11 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                     vertical: 20,
                     horizontal: 20,
                   ),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Track ',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: kWhiteColor,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: widget.track.begin
-                              .toUtc()
-                              .toString()
-                              .replaceFirst('.000Z', ''),
-                        ),
-                      ],
+                  child: Text(
+                    widget.track.name,
+                    style: const TextStyle(
+                      color: kWhiteColor,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
@@ -139,14 +129,27 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                           'Track ${widget.track.id} deleted successfully!',
                         );
                       } else if (menuIndex == 2) {
-                        _logger
-                            .i('Call function to upload track to the server.');
-                        final localTracksProvider =
-                            Provider.of<LocalTracksProvider>(
-                          context,
-                          listen: false,
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return UploadTrackDialogBox(
+                              trackName: widget.track.name,
+                              uploadTrack: () async {
+                                _logger.i(
+                                    'Call function to upload track to the server.');
+                                final localTracksProvider =
+                                    Provider.of<LocalTracksProvider>(
+                                  context,
+                                  listen: false,
+                                );
+                                await localTracksProvider.uploadTrack(
+                                  context,
+                                  widget.index,
+                                );
+                              },
+                            );
+                          },
                         );
-                        localTracksProvider.uploadTrack(context, widget.index);
                       } else if (menuIndex == 3) {
                         _logger.i(
                           'Call function to export track data as an excel file',

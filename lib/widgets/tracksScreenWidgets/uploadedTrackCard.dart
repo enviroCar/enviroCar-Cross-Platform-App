@@ -79,22 +79,11 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
               children: [
                 Container(
                   padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      text: 'Track ',
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w800,
-                        color: kWhiteColor,
-                      ),
-                      children: [
-                        TextSpan(
-                          text: widget.track.begin
-                              .toUtc()
-                              .toString()
-                              .replaceFirst('.000Z', ''),
-                        ),
-                      ],
+                  child: Text(
+                    widget.track.name,
+                    style: const TextStyle(
+                      color: kWhiteColor,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
