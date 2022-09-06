@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/foundation.dart';
 
 import '../models/car.dart';
 import '../providers/authProvider.dart';
