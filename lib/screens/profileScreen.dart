@@ -13,6 +13,7 @@ import '../providers/tracksProvider.dart';
 import '../providers/userStatsProvider.dart';
 import '../services/authenticationServices.dart';
 import 'dataPrivacyControlScreen.dart';
+import 'faqsScreen.dart';
 
 class ProfileScreen extends StatefulWidget {
   @override
@@ -155,7 +156,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
               },
             ),
 
-            // Button to navigate to close the app
+            // Button to navigate to FAQs Screen
+            buildIconButton(
+              title: 'FAQs',
+              iconData: Icons.question_answer,
+              onTap: () {
+                _logger.i('Navigate to FAQs screen');
+                Navigator.of(context).pushNamed(FAQsScreen.routeName);
+              },
+            ),
+
+            // Button to close the app
             buildIconButton(
               title: 'Close enviroCar',
               iconData: Icons.highlight_off_rounded,
@@ -163,7 +174,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               onTap: () {
                 _logger.i('closeEnvirocar called');
                 // Closes the app programatically
-                // Apple may SUSPEND THE APP as it is again Apple's Human Interface Guidelines
+                // Apple may SUSPEND THE APP as it is against Apple's Human Interface Guidelines
                 exit(0);
               },
             ),

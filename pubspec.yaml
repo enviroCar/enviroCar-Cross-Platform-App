@@ -31,7 +31,7 @@ dependencies:
   http: ^0.13.4
 
   # to securely store user info for silent signin
-  flutter_secure_storage: ^5.0.2
+  flutter_secure_storage: ^6.0.0
 
   # for connecting and communicating with BLE devices on Android and iOS
   flutter_blue: ^0.8.0
@@ -40,13 +40,13 @@ dependencies:
   system_shortcuts: ^1.0.0
 
   # for getting user location
-  geolocator: ^8.2.1
+  geolocator: ^9.0.1
 
   # for latitude longitude calculation
   latlong2: ^0.8.1
 
   # for map widget
-  flutter_map: ^1.0.0
+  flutter_map: ^2.2.0
 
   # for handling realtime location
   location: ^4.4.0
@@ -82,7 +82,7 @@ dependencies:
   toast: ^0.3.0
 
   # to follow good code guidelines by google
-  lint: ^1.8.2
+  flutter_lints: ^2.0.1
 
   # to get path of the app on the device
   path: ^1.8.1
@@ -103,7 +103,7 @@ dependencies:
   showcaseview: ^1.1.5
 
   # for charts
-  fl_chart: ^0.51.0
+  fl_chart: ^0.55.1
 
   # to send notifications
   flutter_local_notifications: ^9.6.0
