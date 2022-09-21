@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import '../globals.dart';
 import '../constants.dart';
 import '../widgets/dashboardWidgets/notification_badge.dart';
+import '../widgets/tracksScreenWidgets/trackDialogBox.dart';
 import './tracksScreen.dart';
 import './profileScreen.dart';
 import './settingsScreen.dart';
@@ -100,7 +101,19 @@ class _IndexState extends State<Index> {
                     },
                   ),
                 ]
-              : [],
+              : (_currentIndex == 1)
+                  ? [
+                      IconButton(
+                        onPressed: () {
+                          showTrackDialogBox(context);
+                        },
+                        icon: const Icon(
+                          Icons.info_outline_rounded,
+                          color: kWhiteColor,
+                        ),
+                      )
+                    ]
+                  : [],
         ),
         body: IndexedStack(
           index: _currentIndex,

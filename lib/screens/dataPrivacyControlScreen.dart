@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../widgets/titleWidget.dart';
 import '../values/preferencesValues.dart';
-import 'package:envirocar_app_main/constants.dart';
-import 'package:envirocar_app_main/widgets/dividerLine.dart';
+import '../constants.dart';
+import '../widgets/dividerLine.dart';
 import '../widgets/dataPrivacyControlWidgets/preferencesWidget.dart';
 
 class DataPrivacyControlScreen extends StatelessWidget {

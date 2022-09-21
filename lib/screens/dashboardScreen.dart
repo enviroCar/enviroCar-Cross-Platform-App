@@ -21,6 +21,7 @@ import '../providers/bluetoothStatusProvider.dart';
 import '../widgets/dashboardWidgets/statsWidget.dart';
 import '../widgets/dashboardWidgets/dashboardCard.dart';
 import '../widgets/dashboardWidgets/dashboardIconButton.dart';
+import '../widgets/dashboardWidgets/recordingInformationDialogBox.dart';
 
 class DashboardScreen extends StatefulWidget {
   @override
@@ -349,11 +350,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 LocationStatus.enabled &&
                             carsProvider.getSelectedCar != null &&
                             bluetoothProvider.isConnected()) {
-                          _logger.i('Going to GPS tracking screen');
-                          Navigator.pushNamed(
-                            context,
-                            GpsTrackingScreen.routeName,
+
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return RecordingInformationDialogBox(
+                                onButtonTap: () {
+                                  _logger.i('Going to GPS tracking screen');
+                                  Navigator.pushNamed(
+                                    context,
+                                    GpsTrackingScreen.routeName,
+                                  );
+                                },
+                              );
+                            },
                           );
+
                         } else {
                           const String title = 'Cannot start GPS tracking';
                           String content = ' ';

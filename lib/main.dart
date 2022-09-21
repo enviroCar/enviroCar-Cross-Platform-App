@@ -11,6 +11,7 @@ import 'constants.dart';
 import './globals.dart';
 import './screens/index.dart';
 import 'screens/dataPrivacyControlScreen.dart';
+import 'screens/faqsScreen.dart';
 import 'screens/helpScreen.dart';
 import './screens/carScreen.dart';
 import './screens/mapScreen.dart';
@@ -43,7 +44,7 @@ import './providers/bluetoothStatusProvider.dart';
 
 Future<void> main() async {
   // Ensures all the future functions of main() finish before launching the app
-  WidgetsFlutterBinding.ensureInitialized();
+  await WidgetsFlutterBinding.ensureInitialized();
 
   // Instance of shared prefs
   preferences = await SharedPreferences.getInstance();
@@ -153,6 +154,7 @@ class MyApp extends StatelessWidget {
         LoginScreen.routeName: (context) => LoginScreen(),
         RegisterScreen.routeName: (context) => RegisterScreen(),
         SplashScreen.routeName: (context) => SplashScreen(),
+        FAQsScreen.routeName: (context) => FAQsScreen(),
         Index.routeName: (context) => Index(),
         BluetoothDevicesScreen.routeName: (context) => BluetoothDevicesScreen(),
         MapScreen.routeName: (context) => MapScreen(),
