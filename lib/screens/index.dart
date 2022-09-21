@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import '../globals.dart';
 import '../constants.dart';
+import '../widgets/dashboardWidgets/notification_badge.dart';
 import './tracksScreen.dart';
 import './profileScreen.dart';
 import './settingsScreen.dart';
@@ -32,6 +33,8 @@ class _IndexState extends State<Index> {
 
   List<Widget> _screensList;
 
+  bool expandNotifications;
+
   @override
   void initState() {
     super.initState();
@@ -42,6 +45,8 @@ class _IndexState extends State<Index> {
       SettingsScreen(),
       ProfileScreen(),
     ];
+
+    expandNotifications = false;
   }
 
   void changeScreen(int i) {
@@ -83,6 +88,19 @@ class _IndexState extends State<Index> {
             scale: 10,
           ),
           centerTitle: true,
+          actions: (_currentIndex == 0)
+              ? [
+                  InkWell(
+                    splashColor: Colors.transparent,
+                    child: const NotificationBadge(
+                      notifications: 5,
+                    ),
+                    onTap: () {
+                      // TODO: navigate to notifications screen
+                    },
+                  ),
+                ]
+              : [],
         ),
         body: IndexedStack(
           index: _currentIndex,
