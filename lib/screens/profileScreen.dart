@@ -131,9 +131,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
               title: 'Rate Us',
               iconData: Icons.star,
               onTap: () async {
-                if (await canLaunch(playstoreUrl)) {
+                if (await canLaunchUrl(playStoreUrl)) {
                   _logger.i('Launching playstore');
-                  launch(playstoreUrl);
+                  launchUrl(playStoreUrl);
                   return;
                 } else {
                   _logger.w('Tried opening playstore but failed');
