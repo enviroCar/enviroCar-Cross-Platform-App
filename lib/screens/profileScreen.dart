@@ -35,32 +35,46 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
-      child: Column(
-        children: [
-          GestureDetector(
-            onTap: onTap,
-            child: Row(
-              children: [
-                Icon(
+      child: GestureDetector(
+        onTap: onTap,
+        child: Container(
+          child: Row(
+            children: [
+              CircleAvatar(
+                radius: 18,
+                backgroundColor: kSecondaryColor,
+                child: Icon(
                   iconData,
-                  size: 35,
+                  size: 20,
+                  color: color ?? kGreyColor,
+                ),
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Text(
+                title,
+                style: TextStyle(
                   color: color ?? Theme.of(context).iconTheme.color,
+                  fontSize: 16,
+                  fontWeight: FontWeight.normal,
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  title,
-                  style: TextStyle(
-                    color: color ?? Theme.of(context).iconTheme.color,
-                    fontSize: 18,
-                    fontWeight: FontWeight.normal,
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildDivider() {
+    return Container(
+      height: 1,
+      color: kLightGrayColor.withOpacity(0.5),
+      width: double.infinity,
+      margin: EdgeInsets.symmetric(
+        horizontal: 16,
+        vertical: 0.5,
       ),
     );
   }
