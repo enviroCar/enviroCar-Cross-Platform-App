@@ -41,8 +41,8 @@ const Color kBlueColor = Color.fromARGB(255, 40, 122, 198);
 const Color kLightGrayColor = Color.fromARGB(255, 181, 181, 181);
 
 // PlayStore URL for 'Rate Us' feature
-const String playstoreUrl =
-    'https://play.google.com/store/apps/details?id=org.envirocar.app';
+Uri playStoreUrl =
+    Uri(scheme: 'https', host: 'play.google.com', path: '/store/apps/details', queryParameters: {'id': 'org.envirocar.app'});
 
 // Google API key for map services
 String googleAPIKey = "AIzaSyDDTeCTv3rjbgtP4YQB_zlLGeMOvYcLAO0";

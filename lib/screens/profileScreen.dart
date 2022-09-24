@@ -97,123 +97,102 @@ class _ProfileScreenState extends State<ProfileScreen> {
       width: double.infinity,
       child: SingleChildScrollView(
         padding: const EdgeInsets.all(15),
-        child: Container(
-          decoration: BoxDecoration(
-            color: kOffWhiteColor.withOpacity(0.4),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              // Log book button
-              buildIconButton(
-                title: 'Log Book',
-                iconData: Icons.menu_book,
-                onTap: () {
-                  _logger.i('Going to logbook screen');
-                  Navigator.of(context).pushNamed(LogBookScreen.routeName);
-                },
-              ),
+        child: Column(
+          children: [
+            // Log book button
+            buildIconButton(
+              title: 'Log Book',
+              iconData: Icons.menu_book,
+              onTap: () {
+                _logger.i('Going to logbook screen');
+                Navigator.of(context).pushNamed(LogBookScreen.routeName);
+              },
+            ),
 
-              buildDivider(),
+            // Data privacy and control settings button
+            buildIconButton(
+              title: 'Data Privacy/Control',
+              iconData: Icons.security,
+              onTap: () {
+                _logger.i('Going to data privacy/control screen');
+                Navigator.of(context)
+                    .pushNamed(DataPrivacyControlScreen.routeName);
+              },
+            ),
 
-              // Data privacy and control settings button
-              buildIconButton(
-                title: 'Data Privacy/Control',
-                iconData: Icons.security,
-                onTap: () {
-                  _logger.i('Going to data privacy/control screen');
-                  Navigator.of(context)
-                      .pushNamed(DataPrivacyControlScreen.routeName);
-                },
-              ),
+            // Help button
+            buildIconButton(
+              title: 'Help',
+              iconData: Icons.help_outline,
+              onTap: () {
+                _logger.i('Going to help screen');
+                Navigator.of(context).pushNamed(HelpScreen.routeName);
+              },
+            ),
 
-              buildDivider(),
+            // Report Issue button
+            buildIconButton(
+              title: 'Report Issue',
+              iconData: Icons.bug_report,
+              onTap: () {
+                _logger.i('Going to report issue screen');
+                Navigator.of(context).pushNamed(ReportIssueScreen.routeName);
+              },
+            ),
 
-              // Help button
-              buildIconButton(
-                title: 'Help',
-                iconData: Icons.help_outline,
-                onTap: () {
-                  _logger.i('Going to help screen');
-                  Navigator.of(context).pushNamed(HelpScreen.routeName);
-                },
-              ),
+            // Rate us button
+            buildIconButton(
+              title: 'Rate Us',
+              iconData: Icons.star,
+              onTap: () async {
+                if (await canLaunchUrl(playStoreUrl)) {
+                  _logger.i('Launching playstore');
+                  launchUrl(playStoreUrl);
+                  return;
+                } else {
+                  _logger.w('Tried opening playstore but failed');
+                  throw 'Cannot Launch';
+                }
+              },
+            ),
 
-              buildDivider(),
+            // Logout button
+            buildIconButton(
+              title: 'Logout',
+              iconData: Icons.logout,
+              onTap: () {
+                _logger.i('logoutUser called');
+                AuthenticationServices().logoutUser(
+                  authProvider: _authProvider,
+                  userStatsProvider: _userStatsProvider,
+                  tracksProvider: _tracksProvider,
+                );
+              },
+            ),
 
-              // Report Issue button
-              buildIconButton(
-                title: 'Report Issue',
-                iconData: Icons.bug_report,
-                onTap: () {
-                  _logger.i('Going to report issue screen');
-                  Navigator.of(context).pushNamed(ReportIssueScreen.routeName);
-                },
-              ),
+            // Button to navigate to FAQs Screen
+            buildIconButton(
+              title: 'FAQs',
+              iconData: Icons.question_answer,
+              onTap: () {
+                _logger.i('Navigate to FAQs screen');
+                Navigator.of(context).pushNamed(FAQsScreen.routeName);
+              },
+            ),
 
-              buildDivider(),
-
-              // Rate us button
-              buildIconButton(
-                title: 'Rate Us',
-                iconData: Icons.star,
-                onTap: () async {
-                  if (await canLaunch(playstoreUrl)) {
-                    _logger.i('Launching playstore');
-                    launch(playstoreUrl);
-                    return;
-                  } else {
-                    _logger.w('Tried opening playstore but failed');
-                    throw 'Cannot Launch';
-                  }
-                },
-              ),
-
-              buildDivider(),
-
-              // Logout button
-              buildIconButton(
-                title: 'Logout',
-                iconData: Icons.logout,
-                onTap: () {
-                  _logger.i('logoutUser called');
-                  AuthenticationServices().logoutUser(
-                    authProvider: _authProvider,
-                    userStatsProvider: _userStatsProvider,
-                    tracksProvider: _tracksProvider,
-                  );
-                },
-              ),
-
-              buildDivider(),
-
-              // Button to navigate to FAQs Screen
-              buildIconButton(
-                title: 'FAQs',
-                iconData: Icons.question_answer,
-                onTap: () {
-                  _logger.i('Navigate to FAQs screen');
-                  Navigator.of(context).pushNamed(FAQsScreen.routeName);
-                },
-              ),
-
-              buildDivider(),
-
-              // Button to close the app
-              buildIconButton(
-                title: 'Close enviroCar',
-                iconData: Icons.highlight_off_rounded,
-                color: Colors.red,
-                onTap: () {
-                  _logger.i('closeEnvirocar called');
-                  // Closes the app programatically
-                  // Apple may SUSPEND THE APP as it is against Apple's Human Interface Guidelines
-                  exit(0);
-                },
-              ),
-            ],
-          ),
+            // Button to close the app
+            buildIconButton(
+              title: 'Close enviroCar',
+              iconData: Icons.highlight_off_rounded,
+              color: Colors.red,
+              onTap: () {
+                _logger.i('closeEnvirocar called');
+                // Closes the app programatically
+                // Apple may SUSPEND THE APP as it is against Apple's Human Interface Guidelines
+                exit(0);
+              },
+            ),
+          ],
         ),
       ),
     );
