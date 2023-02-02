@@ -85,7 +85,7 @@ dependencies:
   flutter_lints: ^2.0.1
 
   # to get path of the app on the device
-  path: ^1.8.1
+  path: ^1.8.0
 
   # for logging
   logger: ^1.1.0
