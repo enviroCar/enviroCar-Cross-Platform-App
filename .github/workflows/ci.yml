@@ -21,6 +21,7 @@ jobs:
       - uses: subosito/flutter-action@v2.4.0
         with:
           channel: "stable"
+          flutter-version: "2.10.5"
 
       # Get flutter dependencies
       - run: flutter pub get
@@ -37,6 +38,7 @@ jobs:
       - uses: subosito/flutter-action@v2.4.0
         with:
           channel: "stable"
+          flutter-version: "2.10.5"
       - run: flutter pub get
       - run: flutter clean
 
@@ -63,6 +65,7 @@ jobs:
       - uses: subosito/flutter-action@v2.4.0
         with:
           channel: "stable"
+          flutter-version: "2.10.5"
       - run: flutter pub get
 
       # Clean any previous builds
