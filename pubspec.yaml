@@ -37,7 +37,8 @@ dependencies:
   flutter_blue: ^0.8.0
 
   # for using system shortcuts
-  system_shortcuts: ^1.0.0
+  # NOT Supported any longer
+  #system_shortcuts: ^1.0.0
 
   # for getting user location
   geolocator: ^9.0.1

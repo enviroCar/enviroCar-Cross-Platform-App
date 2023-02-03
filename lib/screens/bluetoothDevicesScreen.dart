@@ -1,7 +1,6 @@
 import 'package:logger/logger.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:system_shortcuts/system_shortcuts.dart';
 import 'package:flutter_blue/flutter_blue.dart' as blue;
 
 import '../constants.dart';
@@ -32,7 +31,8 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
   // Works only on Android
   // iOS doesn't give permission to toggle Bluetooth from inside the app
   Future<void> toggleBluetooth() async {
-    await SystemShortcuts.bluetooth();
+    // TODO: find alternative way or get rid of the button
+    // await SystemShortcuts.bluetooth();
   }
 
   @override
