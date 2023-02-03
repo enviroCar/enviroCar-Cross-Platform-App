@@ -82,7 +82,7 @@ dependencies:
   toast: ^0.3.0
 
   # to follow good code guidelines by google
-  flutter_lints: ^2.0.1
+  flutter_lints: ^1.0.4
 
   # to get path of the app on the device
   path: ^1.8.0
