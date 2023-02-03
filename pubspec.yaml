@@ -56,7 +56,7 @@ dependencies:
   url_launcher: ^6.1.3
 
   # to preview the app on different screens sizes
-  device_preview: ^1.1.0
+  device_preview: '1.0.0'
 
   # for on boarding screens
   introduction_screen: ^3.0.2

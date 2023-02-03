@@ -222,7 +222,7 @@ class GpsTrackProvider extends ChangeNotifier {
   /// function to update the camera position as current location is determined
   void setCameraPosition() {
     cameraPosition = CameraPosition(
-      target: LatLng(
+      target: createLatLng(
         currentLocation!.latitude,
         currentLocation!.longitude,
       ),
@@ -237,7 +237,7 @@ class GpsTrackProvider extends ChangeNotifier {
   /// function to update pin points on map
   void updatePins() {
     final newPinLocation =
-        LatLng(currentLocation!.latitude, currentLocation!.longitude);
+        createLatLng(currentLocation!.latitude, currentLocation!.longitude);
 
     cameraPosition = CameraPosition(
       target: newPinLocation,
@@ -288,14 +288,42 @@ class GpsTrackProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  LatLng createLatLng(double? lat, double? lng) {
+    double latNew = 0;
+    double lngNew = 0;
+
+    if (lat != null) {
+      latNew = lat;
+    }
+    if (lng != null) {
+      lngNew = lng;
+    }
+
+    return LatLng(latNew, lngNew);
+  }
+
+  PointLatLng createPointLatLng(double? lat, double? lng) {
+    double latNew = 0;
+    double lngNew = 0;
+
+    if (lat != null) {
+      latNew = lat;
+    }
+    if (lng != null) {
+      lngNew = lng;
+    }
+
+    return PointLatLng(latNew, lngNew);
+  }
+
   /// function to add markers and circles to [_markers] and [_circles]
   void addMarkersAndCircles() {
-    final startPosition = LatLng(
+    final startPosition = createLatLng(
       startLocation!.latitude,
       startLocation!.longitude,
     );
 
-    final currentPosition = LatLng(
+    final currentPosition = createLatLng(
       currentLocation!.latitude,
       currentLocation!.longitude,
     );
@@ -350,8 +378,8 @@ class GpsTrackProvider extends ChangeNotifier {
     final PolylineResult polylineResult =
         await _polylinePoints!.getRouteBetweenCoordinates(
       googleAPIKey,
-      PointLatLng(startLocation!.latitude, startLocation!.longitude),
-      PointLatLng(currentLocation!.latitude, currentLocation!.longitude),
+      createPointLatLng(startLocation!.latitude, startLocation!.longitude),
+      createPointLatLng(currentLocation!.latitude, currentLocation!.longitude),
       travelMode: TravelMode.driving,
     );
 
@@ -362,7 +390,7 @@ class GpsTrackProvider extends ChangeNotifier {
     if (polylineResult.points.isNotEmpty) {
       for (final PointLatLng pointLatLng in polylineResult.points) {
         final LatLng latLng =
-            LatLng(pointLatLng.latitude, pointLatLng.longitude);
+            createLatLng(pointLatLng.latitude, pointLatLng.longitude);
         _polyLineCoordinates.add(latLng);
       }
 
