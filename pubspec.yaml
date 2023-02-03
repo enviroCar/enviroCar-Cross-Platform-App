@@ -70,7 +70,7 @@ dependencies:
   shared_preferences: ^2.0.15
 
   # to show SVGs
-  flutter_svg: ^1.1.0
+  flutter_svg: ^1.0.3
 
   # to use custom fonts
   google_fonts: ^3.0.1
