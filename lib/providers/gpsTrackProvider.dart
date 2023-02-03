@@ -276,11 +276,12 @@ class GpsTrackProvider extends ChangeNotifier {
     _circles.add(currentLocationCircle);
 
     // determine the distance between start position and current position
+
     distance = GeolocatorPlatform.instance.distanceBetween(
-      startLocation!.latitude,
-      startLocation!.longitude,
-      currentLocation!.latitude,
-      currentLocation!.longitude,
+      startLocation!.latitude!,
+      startLocation!.longitude!,
+      currentLocation!.latitude!,
+      currentLocation!.longitude!,
     );
 
     distance = distance! / 1000; // distance in km

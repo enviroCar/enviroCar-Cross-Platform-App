@@ -52,7 +52,11 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // dialog to ask whether to show the instructions or not
   void _showDialog() {
-    WidgetsBinding.instance.addPostFrameCallback(
+    var widgetInstance = WidgetsBinding.instance;
+    if (widgetInstance == null) {
+      return;
+    }
+    widgetInstance.addPostFrameCallback(
       (_) => Future.delayed(
         const Duration(milliseconds: 200),
         () {
