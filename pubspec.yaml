@@ -62,7 +62,7 @@ dependencies:
   introduction_screen: ^3.0.2
 
   # for google maps
-  google_maps_flutter: ^2.1.7
+  google_maps_flutter: '<=2.0.9'
 
   # to display poly lines on map connecting two or more places
   flutter_polyline_points: ^1.0.0
