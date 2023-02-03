@@ -12,14 +12,14 @@ import '../exceptionHandling/appException.dart';
 class CarServices {
   // Not used anywhere because the cars don't get stored in the user's account
   // unless a track is created with that car
-  Future<Result> getCars({@required BuildContext context}) async {
+  Future<Result> getCars({required BuildContext context}) async {
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
     final CarsProvider carsProvider =
         Provider.of<CarsProvider>(context, listen: false);
 
-    final String username = authProvider.getUser.getUsername;
-    final String token = authProvider.getUser.getPassword;
+    final String? username = authProvider.getUser?.getUsername;
+    final String? token = authProvider.getUser?.getPassword;
 
     final String uri =
         'https://envirocar.org/api/stable/users/$username/sensors';
@@ -47,14 +47,14 @@ class CarServices {
   }
 
   Future<Result> uploadCarToServer({
-    @required BuildContext context,
-    @required Car car,
+    required BuildContext context,
+    required Car car,
   }) async {
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
 
-    final String username = authProvider.getUser.getUsername;
-    final String token = authProvider.getUser.getPassword;
+    final String? username = authProvider.getUser?.getUsername;
+    final String? token = authProvider.getUser?.getPassword;
 
     final String uri =
         'https://envirocar.org/api/stable/users/$username/sensors';
@@ -72,7 +72,7 @@ class CarServices {
       );
 
       // Get the uploaded car's ID from headers and store it as the result's value
-      final String locationLink = response.headers['location'][0];
+      final String locationLink = response.headers['location']![0];
       final List<String> locationList = locationLink.split('/');
       final String carID = locationList.last;
 

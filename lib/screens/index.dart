@@ -32,9 +32,9 @@ class _IndexState extends State<Index> {
 
   int _currentIndex = 0;
 
-  List<Widget> _screensList;
+  late List<Widget> _screensList;
 
-  bool expandNotifications;
+  bool expandNotifications = false;
 
   @override
   void initState() {
@@ -46,8 +46,6 @@ class _IndexState extends State<Index> {
       SettingsScreen(),
       ProfileScreen(),
     ];
-
-    expandNotifications = false;
   }
 
   void changeScreen(int i) {

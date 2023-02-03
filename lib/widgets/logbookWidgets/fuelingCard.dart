@@ -7,12 +7,12 @@ import '../../models/fueling.dart';
 class FuelingCard extends StatelessWidget {
   final Fueling fueling;
 
-  const FuelingCard({@required this.fueling});
+  const FuelingCard({required this.fueling});
 
   @override
   Widget build(BuildContext context) {
     final double totalCost =
-        (fueling.cost.value) / (fueling.volume.value) as double;
+        (fueling.cost?.value) / (fueling.volume?.value) as double;
 
     return Container(
       margin: const EdgeInsets.symmetric(
@@ -26,7 +26,7 @@ class FuelingCard extends StatelessWidget {
         color: Theme.of(context).primaryColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey[300],
+            color: Colors.grey[300]!,
             blurRadius: 8.0,
             offset: const Offset(3, 4),
           ),
@@ -62,7 +62,7 @@ class FuelingCard extends StatelessWidget {
 
               // Total Price
               Text(
-                '\$${fueling.cost.value}',
+                '\$${fueling.cost?.value}',
                 style: const TextStyle(
                   color: kSpringColor,
                   fontSize: 20,
@@ -77,7 +77,7 @@ class FuelingCard extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text('${fueling.mileage.value} km - ${fueling.volume.value} L'),
+              Text('${fueling.mileage?.value} km - ${fueling.volume?.value} L'),
               Text('${totalCost.toStringAsFixed(2)} \$/L'),
             ],
           ),
@@ -95,7 +95,7 @@ class FuelingCard extends StatelessWidget {
               ),
               Flexible(
                 child: Text(
-                  '${fueling.car.properties.model} ${fueling.car.properties.manufacturer}',
+                  '${fueling.car?.properties?.model} ${fueling.car?.properties?.manufacturer}',
                 ),
               ),
             ],
@@ -113,14 +113,14 @@ class FuelingCard extends StatelessWidget {
                 width: 10,
               ),
               Flexible(
-                child: Text(fueling.comment),
+                child: Text(fueling.comment!),
               ),
             ],
           ),
           DividerLine(),
 
           // Partial Fill-Up and Missed Previous Fill-Up
-          if (fueling.partialFueling)
+          if (fueling.partialFueling != null && fueling.partialFueling!)
             Row(
               children: const [
                 Icon(Icons.check),
@@ -132,7 +132,7 @@ class FuelingCard extends StatelessWidget {
             )
           else
             Container(),
-          if (fueling.missedFuelStop)
+          if (fueling.missedFuelStop != null && fueling.missedFuelStop!)
             Row(
               children: const [
                 Icon(Icons.check),

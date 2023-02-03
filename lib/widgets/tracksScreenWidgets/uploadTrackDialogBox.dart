@@ -8,8 +8,8 @@ class UploadTrackDialogBox extends StatefulWidget {
   final Function uploadTrack;
 
   const UploadTrackDialogBox({
-    @required this.trackName,
-    @required this.uploadTrack,
+    required this.trackName,
+    required this.uploadTrack,
   });
 
   @override
@@ -17,7 +17,7 @@ class UploadTrackDialogBox extends StatefulWidget {
 }
 
 class _UploadTrackDialogBoxState extends State<UploadTrackDialogBox> {
-  bool uploaded;
+  bool? uploaded;
 
   @override
   void initState() {
@@ -57,7 +57,7 @@ class _UploadTrackDialogBoxState extends State<UploadTrackDialogBox> {
       ),
       content: Column(
         mainAxisSize: MainAxisSize.min,
-        children: uploaded
+        children: uploaded != null && uploaded!
             ? [
                 const SizedBox(
                   height: 5,
@@ -95,7 +95,7 @@ class _UploadTrackDialogBoxState extends State<UploadTrackDialogBox> {
                     text: TextSpan(
                       text: 'Your track',
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.caption.color,
+                        color: Theme.of(context).textTheme.bodySmall!.color,
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -103,7 +103,7 @@ class _UploadTrackDialogBoxState extends State<UploadTrackDialogBox> {
                         TextSpan(
                           text: ' ${widget.trackName} ',
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.caption.color,
+                            color: Theme.of(context).textTheme.bodySmall!.color,
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
@@ -141,7 +141,7 @@ class _UploadTrackDialogBoxState extends State<UploadTrackDialogBox> {
                     text: TextSpan(
                       text: 'Are you sure you want to upload the track',
                       style: TextStyle(
-                        color: Theme.of(context).textTheme.caption.color,
+                        color: Theme.of(context).textTheme.bodySmall!.color,
                         fontWeight: FontWeight.normal,
                         fontSize: 14,
                       ),
@@ -149,7 +149,7 @@ class _UploadTrackDialogBoxState extends State<UploadTrackDialogBox> {
                         TextSpan(
                           text: ' ${widget.trackName} ',
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.caption.color,
+                            color: Theme.of(context).textTheme.bodySmall!.color,
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
@@ -167,7 +167,7 @@ class _UploadTrackDialogBoxState extends State<UploadTrackDialogBox> {
       actions: [
         Column(
           children: [
-            if (uploaded)
+            if (uploaded != null && uploaded!)
               InkWell(
                 onTap: () {
                   Navigator.of(context).pop();
@@ -250,9 +250,9 @@ class DialogBoxButton extends StatelessWidget {
   final Color buttonColor;
 
   const DialogBoxButton({
-    @required this.title,
-    @required this.callback,
-    @required this.buttonColor,
+    required this.title,
+    required this.callback,
+    required this.buttonColor,
   });
 
   @override

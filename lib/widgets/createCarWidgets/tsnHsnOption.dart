@@ -35,7 +35,7 @@ class _TsnHsnOptionState extends State<TsnHsnOption> {
               ),
               onChanged: (value) {},
               validator: (value) {
-                if (value.isEmpty || value == null) {
+                if (value == null || value.isEmpty) {
                   return 'Required';
                 }
                 return null;
@@ -54,7 +54,7 @@ class _TsnHsnOptionState extends State<TsnHsnOption> {
               ),
               onChanged: (value) {},
               validator: (value) {
-                if (value.isEmpty || value == null) {
+                if (value == null || value.isEmpty) {
                   return 'Required';
                 }
                 return null;

@@ -22,16 +22,16 @@ class GpsTrackProvider extends ChangeNotifier {
   final Set<Polyline> _polyLines = <Polyline>{};
   final Set<Circle> _circles = <Circle>{};
   final List<LatLng> _polyLineCoordinates = [];
-  PolylinePoints _polylinePoints;
-  bool isUserLocationDetermined;
-  GoogleMapController _googleMapController;
-  CameraPosition cameraPosition;
-  bool isMounted;
-  bool reloadMap;
-  StreamSubscription<LocationData> streamSubscription;
-  Timer _timer;
-  Timer _timeCounter;
-  Map<int, PointProperties> pointProperties;
+  PolylinePoints? _polylinePoints;
+  bool isUserLocationDetermined = false;
+  GoogleMapController? _googleMapController;
+  CameraPosition? cameraPosition;
+  bool isMounted = false;
+  bool reloadMap = false;
+  StreamSubscription<LocationData>? streamSubscription;
+  Timer? _timer;
+  Timer? _timeCounter;
+  Map<int, PointProperties> pointProperties = {};
 
   String trackStartTime = ' ';
   String trackEndTime = ' ';
@@ -39,24 +39,24 @@ class GpsTrackProvider extends ChangeNotifier {
   bool startTrack = true;
   bool endTrack = false;
   String durationOfTrack = '0:00:00';
-  int time;
-  int stopsCount;
-  double distance;
-  Duration duration;
-  double altitude;
-  double consumption;
-  double co2;
-  double speed;
-  double maf;
-  int count;
+  int time = 0;
+  int stopsCount = 0;
+  double? distance;
+  Duration? duration;
+  double? altitude;
+  double? consumption;
+  double? co2;
+  double? speed;
+  double? maf;
+  int count = 0;
 
-  LocationData startLocation;
-  LocationData currentLocation;
+  LocationData? startLocation;
+  LocationData? currentLocation;
 
-  Location _location;
+  Location? _location;
 
-  BitmapDescriptor trackIcon;
-  BitmapDescriptor startIcon;
+  BitmapDescriptor? trackIcon;
+  BitmapDescriptor? startIcon;
 
   double cameraZoom =
       15; // the magnification level of the camera position on the map
@@ -129,7 +129,7 @@ class GpsTrackProvider extends ChangeNotifier {
 
     if (_location != null) {
       streamSubscription =
-          _location.onLocationChanged.listen(listenToLocationUpdates);
+          _location!.onLocationChanged.listen(listenToLocationUpdates);
     }
 
     NotificationService().showNotifications(
@@ -142,15 +142,15 @@ class GpsTrackProvider extends ChangeNotifier {
     trackDuration();
   }
 
-  Future collectFeatureData([Timer timer]) async {
+  Future collectFeatureData([Timer? timer]) async {
     _timer?.cancel();
     timer?.cancel();
 
     if (currentLocation != null && !isTrackingPaused && _location != null) {
-      altitude = currentLocation.altitude;
+      altitude = currentLocation!.altitude;
       // todo: update and set speed, consumption, co2, maf from parsed data
       BluetoothProvider().interactWithDevice(
-        stringToIntList(obdRequestSymbol['SPD'] + returnSymbol),
+        stringToIntList(obdRequestSymbol['SPD']! + returnSymbol),
       );
       String time = DateTime.now()
           .toUtc()
@@ -160,9 +160,9 @@ class GpsTrackProvider extends ChangeNotifier {
       time = '${time}Z';
 
       final PointProperties properties = PointProperties(
-        latitude: currentLocation.latitude,
-        longitude: currentLocation.longitude,
-        altitude: currentLocation.altitude,
+        latitude: currentLocation!.latitude,
+        longitude: currentLocation!.longitude,
+        altitude: currentLocation!.altitude,
         consumption: consumption,
         co2: co2,
         speed: speed,
@@ -212,7 +212,7 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to get current location of the user
   Future setInitialLocation() async {
-    currentLocation = await _location.getLocation();
+    currentLocation = await _location!.getLocation();
     startLocation = currentLocation;
     isUserLocationDetermined = true;
     setCameraPosition();
@@ -223,8 +223,8 @@ class GpsTrackProvider extends ChangeNotifier {
   void setCameraPosition() {
     cameraPosition = CameraPosition(
       target: LatLng(
-        currentLocation.latitude,
-        currentLocation.longitude,
+        currentLocation!.latitude,
+        currentLocation!.longitude,
       ),
       zoom: cameraZoom,
       tilt: cameraTilt,
@@ -237,7 +237,7 @@ class GpsTrackProvider extends ChangeNotifier {
   /// function to update pin points on map
   void updatePins() {
     final newPinLocation =
-        LatLng(currentLocation.latitude, currentLocation.longitude);
+        LatLng(currentLocation!.latitude, currentLocation!.longitude);
 
     cameraPosition = CameraPosition(
       target: newPinLocation,
@@ -247,8 +247,8 @@ class GpsTrackProvider extends ChangeNotifier {
     );
 
     if (isMounted && _googleMapController != null) {
-      _googleMapController.animateCamera(
-        CameraUpdate.newCameraPosition(cameraPosition),
+      _googleMapController!.animateCamera(
+        CameraUpdate.newCameraPosition(cameraPosition!),
       );
     }
 
@@ -259,7 +259,7 @@ class GpsTrackProvider extends ChangeNotifier {
     final Marker currentLocationMarker = Marker(
       markerId: const MarkerId('current'),
       position: newPinLocation,
-      icon: trackIcon,
+      icon: trackIcon!,
     );
 
     _markers.add(currentLocationMarker);
@@ -277,13 +277,13 @@ class GpsTrackProvider extends ChangeNotifier {
 
     // determine the distance between start position and current position
     distance = GeolocatorPlatform.instance.distanceBetween(
-      startLocation.latitude,
-      startLocation.longitude,
-      currentLocation.latitude,
-      currentLocation.longitude,
+      startLocation!.latitude,
+      startLocation!.longitude,
+      currentLocation!.latitude,
+      currentLocation!.longitude,
     );
 
-    distance /= 1000; // distance in km
+    distance = distance! / 1000; // distance in km
 
     notifyListeners();
   }
@@ -291,19 +291,19 @@ class GpsTrackProvider extends ChangeNotifier {
   /// function to add markers and circles to [_markers] and [_circles]
   void addMarkersAndCircles() {
     final startPosition = LatLng(
-      startLocation.latitude,
-      startLocation.longitude,
+      startLocation!.latitude,
+      startLocation!.longitude,
     );
 
     final currentPosition = LatLng(
-      currentLocation.latitude,
-      currentLocation.longitude,
+      currentLocation!.latitude,
+      currentLocation!.longitude,
     );
 
     final Marker sourceMarker = Marker(
       markerId: const MarkerId('source'),
       position: startPosition,
-      icon: startIcon,
+      icon: startIcon!,
       zIndex: 2,
     );
 
@@ -312,7 +312,7 @@ class GpsTrackProvider extends ChangeNotifier {
     final Marker currentMarker = Marker(
       markerId: const MarkerId('current'),
       position: currentPosition,
-      icon: trackIcon,
+      icon: trackIcon!,
       zIndex: 2,
     );
 
@@ -348,10 +348,10 @@ class GpsTrackProvider extends ChangeNotifier {
   /// function to add poly lines on map
   Future setPolyLines() async {
     final PolylineResult polylineResult =
-        await _polylinePoints.getRouteBetweenCoordinates(
+        await _polylinePoints!.getRouteBetweenCoordinates(
       googleAPIKey,
-      PointLatLng(startLocation.latitude, startLocation.longitude),
-      PointLatLng(currentLocation.latitude, currentLocation.longitude),
+      PointLatLng(startLocation!.latitude, startLocation!.longitude),
+      PointLatLng(currentLocation!.latitude, currentLocation!.longitude),
       travelMode: TravelMode.driving,
     );
 
@@ -388,7 +388,7 @@ class GpsTrackProvider extends ChangeNotifier {
   }
 
   /// function to calculate track duration
-  void trackDuration([Timer timer]) {
+  void trackDuration([Timer? timer]) {
     _timeCounter?.cancel();
     timer?.cancel();
 
@@ -418,7 +418,7 @@ class GpsTrackProvider extends ChangeNotifier {
   void stopTrack() {
     endTrack = true;
     trackEndTime = DateTime.now().toUtc().toString().substring(0, 19);
-    streamSubscription.cancel();
+    streamSubscription!.cancel();
     isUserLocationDetermined = false;
     _location = null;
 
@@ -427,9 +427,9 @@ class GpsTrackProvider extends ChangeNotifier {
     time = '${time}Z';
 
     final PointProperties properties = PointProperties(
-      latitude: currentLocation.latitude,
-      longitude: currentLocation.longitude,
-      altitude: currentLocation.altitude,
+      latitude: currentLocation!.latitude,
+      longitude: currentLocation!.longitude,
+      altitude: currentLocation!.altitude,
       consumption: consumption,
       co2: co2,
       speed: speed,
@@ -445,13 +445,13 @@ class GpsTrackProvider extends ChangeNotifier {
 
   /// function to pause the tracking by pausing the [streamSubscription]
   void pauseTracking() {
-    streamSubscription.pause();
+    streamSubscription!.pause();
     stopsCount++;
   }
 
   /// function to resume the tracking by subscribing again or resuming the [streamSubscription]
   void resumeTracking() {
-    streamSubscription.resume();
+    streamSubscription!.resume();
 
     collectFeatureData();
     trackDuration();
@@ -464,7 +464,7 @@ class GpsTrackProvider extends ChangeNotifier {
   }
 
   /// function to get [LocalTrack] object
-  LocalTrackModel getLocalTrack({@required Car sensor}) {
+  LocalTrackModel getLocalTrack({required Car sensor}) {
     final LocalTrackModel trackModel = LocalTrackModel(
       trackId: trackId,
       trackName: getTrackName,
@@ -473,16 +473,16 @@ class GpsTrackProvider extends ChangeNotifier {
       duration: getTrackDuration,
       distance: getDistance,
       speed: 40, // todo: change hardcoded value
-      selectedCarId: sensor.properties.id,
+      selectedCarId: sensor.properties!.id,
       isTrackUploaded: false,
       stops: getNoOfStops,
-      bluetoothDevice: BluetoothProvider().getConnectedDevice.name,
+      bluetoothDevice: BluetoothProvider().getConnectedDevice!.name,
       properties: pointProperties,
-      carManufacturer: sensor.properties.manufacturer,
-      carModel: sensor.properties.model,
-      carFuelType: sensor.properties.fuelType,
-      carEngineDisplacement: sensor.properties.engineDisplacement,
-      carConstructionYear: sensor.properties.constructionYear,
+      carManufacturer: sensor.properties!.manufacturer,
+      carModel: sensor.properties!.model,
+      carFuelType: sensor.properties!.fuelType,
+      carEngineDisplacement: sensor.properties!.engineDisplacement,
+      carConstructionYear: sensor.properties!.constructionYear,
     );
 
     return trackModel;
@@ -532,7 +532,7 @@ class GpsTrackProvider extends ChangeNotifier {
   Set<Circle> get getCircles => {..._circles};
 
   /// function to get [cameraPosition}
-  CameraPosition get getCameraPosition => cameraPosition;
+  CameraPosition? get getCameraPosition => cameraPosition;
 
   /// function to get [trackId]
   String get trackId => trackStartTime;
@@ -553,13 +553,13 @@ class GpsTrackProvider extends ChangeNotifier {
   int get getNoOfStops => stopsCount;
 
   /// function to get [distance] between [startLocation] and [currentLocation]
-  double get getDistance => distance;
+  double? get getDistance => distance;
 
   /// function to get [duration] of the [track]
-  Duration get getDuration => duration;
+  Duration? get getDuration => duration;
 
   /// function to determine whether tracking is stopped
-  bool get isTrackingPaused => streamSubscription.isPaused;
+  bool get isTrackingPaused => streamSubscription!.isPaused;
 
   /// function to determine whether the map needs to be rebuilt
   bool get needsRebuild => reloadMap;

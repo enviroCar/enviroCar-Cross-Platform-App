@@ -10,20 +10,20 @@ import '../obd/ascii_util.dart';
 // import '../obd/response/obdResponseParser.dart';
 
 class BluetoothProvider extends ChangeNotifier {
-  FlutterBlue _flutterBlue;
-  BluetoothDevice connectedBluetoothDevice;
+  late FlutterBlue _flutterBlue;
+  BluetoothDevice? connectedBluetoothDevice;
 
-  List<BluetoothDevice> _detectedBluetoothDevices;
+  late List<BluetoothDevice> _detectedBluetoothDevices;
 
   // list of the services advertised by the connected bluetooth device
-  List<BluetoothService> _services;
+  late List<BluetoothService> _services;
 
   // service id mapped to characteristics of the connected bluetooth device
-  Map<Guid, List<BluetoothCharacteristic>> _servicesCharacteristics;
+  late Map<Guid, List<BluetoothCharacteristic>> _servicesCharacteristics;
 
-  List<BluetoothCharacteristic> readCharacteristicsQueue;
-  List<BluetoothCharacteristic> writeCharacteristicsQueue;
-  List<BluetoothCharacteristic> notifyCharacteristicsQueue;
+  late List<BluetoothCharacteristic> readCharacteristicsQueue;
+  late List<BluetoothCharacteristic> writeCharacteristicsQueue;
+  late List<BluetoothCharacteristic> notifyCharacteristicsQueue;
 
   factory BluetoothProvider() => _bluetoothProvider;
 
@@ -92,7 +92,7 @@ class BluetoothProvider extends ChangeNotifier {
     BluetoothDevice selectedBluetoothDevice,
     BuildContext context,
   ) async {
-    Future<bool> returnValue;
+    Future<bool>? returnValue;
     String deviceDisplayName;
     if (selectedBluetoothDevice.name.trim().isNotEmpty) {
       deviceDisplayName = selectedBluetoothDevice.name;
@@ -158,7 +158,7 @@ class BluetoothProvider extends ChangeNotifier {
 
   /// function to discover services
   Future discoverServices() async {
-    _services = await connectedBluetoothDevice.discoverServices();
+    _services = await connectedBluetoothDevice!.discoverServices();
     mapCharacteristicsToService();
   }
 
@@ -205,8 +205,7 @@ class BluetoothProvider extends ChangeNotifier {
     //   for (final BluetoothCharacteristic readCh in readCharacteristicsQueue) {
     //     final List<int> value = await readCharacteristics(readCh);
     //     if (value.isNotEmpty) {
-    //       dataCallback(value);
-    //     }
+    //       dataCallback(value);returnValue
     //   }
     // }
     //
@@ -256,13 +255,13 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   /// function to read data of a particular [characteristic]
-  Future<List<int>> readCharacteristics(
+  Future<List<int>?> readCharacteristics(
     BluetoothCharacteristic characteristic,
   ) async {
-    final List<int> readValue =
+    final List<int>? readValue =
         await characteristic.read().onError((error, stackTrace) {
       debugPrint('error is ${error.toString()}');
-      return null;
+      return [];
     });
 
     if (readValue != null) {
@@ -281,7 +280,7 @@ class BluetoothProvider extends ChangeNotifier {
     List<int> value,
   ) async {
     // write characteristics is a way to send data to the bluetooth device
-    final String response =
+    final String? response =
         await characteristic.write(value).onError((error, stackTrace) {
       debugPrint('error is ${error.toString()}');
     });
@@ -331,7 +330,7 @@ class BluetoothProvider extends ChangeNotifier {
 
     // disconnecting from the connected bluetooth device
     if (connectedBluetoothDevice != null) {
-      connectedBluetoothDevice.disconnect();
+      connectedBluetoothDevice!.disconnect();
       connectedBluetoothDevice = null;
     }
     notifyListeners();
@@ -348,7 +347,7 @@ class BluetoothProvider extends ChangeNotifier {
   }
 
   /// function to return [connectedBluetoothDevice]
-  BluetoothDevice get getConnectedDevice => connectedBluetoothDevice;
+  BluetoothDevice? get getConnectedDevice => connectedBluetoothDevice;
 
   /// function to check whether the device is connected
   bool isConnected() {

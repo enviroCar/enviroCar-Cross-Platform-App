@@ -9,7 +9,7 @@ class TimeWidget extends StatelessWidget {
   final String duration;
   final Function function;
 
-  const TimeWidget({this.duration, this.function});
+  const TimeWidget({required this.duration, required this.function});
 
   @override
   Widget build(BuildContext context) {

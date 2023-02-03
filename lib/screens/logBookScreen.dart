@@ -61,7 +61,7 @@ class LogBookScreen extends StatelessWidget {
                 (Result result) {
                   if (result.status == ResultStatus.error) {
                     // if the error type is no internet then fetch fuelings from Hive
-                    if (result.exception.type ==
+                    if (result.exception!.type ==
                         ExceptionType.noInternetConnection) {
                       FuelingsCollection()
                           .getFuelingsFromHive(context: context);
@@ -71,7 +71,7 @@ class LogBookScreen extends StatelessWidget {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           backgroundColor: Colors.red,
-                          content: Text(result.exception.getErrorMessage()),
+                          content: Text(result.exception!.getErrorMessage()!),
                         ),
                       );
                     }

@@ -7,7 +7,7 @@ class IconBadge extends StatelessWidget {
   final bool checked;
 
   // ignore: avoid_positional_boolean_parameters
-  const IconBadge({this.iconData, this.checked});
+  const IconBadge({required this.iconData, required this.checked});
 
   @override
   Widget build(BuildContext context) {

@@ -28,7 +28,7 @@ class LocalTrackModelAdapter extends TypeAdapter<LocalTrackModel> {
       isTrackUploaded: fields[8] as bool,
       stops: fields[9] as int,
       bluetoothDevice: fields[10] as String,
-      properties: (fields[11] as Map)?.cast<int, PointProperties>(),
+      properties: (fields[11] as Map).cast<int, PointProperties>(),
       carManufacturer: fields[12] as String,
       carFuelType: fields[13] as String,
       carModel: fields[14] as String,

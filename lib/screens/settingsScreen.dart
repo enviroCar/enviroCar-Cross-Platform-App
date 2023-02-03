@@ -24,22 +24,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
           children: [
             // General Settings
             const TitleWidget(title: 'General Settings'),
-            SettingsListWidget(settings: generalSettings),
+            SettingsListWidget(settings: generalSettings, onChanged: null),
             DividerLine(),
 
             // OBD Mode Settings
             const TitleWidget(title: 'OBD Mode'),
-            SettingsListWidget(settings: obdModeSettings),
+            SettingsListWidget(settings: obdModeSettings, onChanged: null),
             DividerLine(),
 
             // GPS Mode Settings
             const TitleWidget(title: 'GPS Mode'),
-            SettingsListWidget(settings: gpsModeSettings),
+            SettingsListWidget(settings: gpsModeSettings, onChanged: null),
             DividerLine(),
 
             // Debugging Settings
             const TitleWidget(title: 'Debugging'),
-            SettingsListWidget(settings: debuggingSettings),
+            SettingsListWidget(settings: debuggingSettings, onChanged: null),
             DividerLine(),
 
             // Theme Settings

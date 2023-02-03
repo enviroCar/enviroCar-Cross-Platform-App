@@ -7,8 +7,8 @@ import '../models/pointProperties.dart';
 import '../services/tracksServices.dart';
 
 class TracksProvider with ChangeNotifier {
-  List<Track> _tracks;
-  List<LocalTrackModel> uploadedTracksList;
+  List<Track> _tracks = [];
+  List<LocalTrackModel> uploadedTracksList = [];
   bool uploadedTrackListSet = false;
 
   // Converts JSON tracks data from server to list
@@ -32,7 +32,7 @@ class TracksProvider with ChangeNotifier {
     final List<LocalTrackModel> list = [];
     List<Track> validTracks = [];
     for (final Track track in _tracks) {
-      final LocalTrackModel trackModel =
+      final LocalTrackModel? trackModel =
           await TracksServices().getTrackWithId(track.id);
       if (trackModel != null && trackModel.properties != null) {
         list.add(trackModel);
@@ -51,7 +51,7 @@ class TracksProvider with ChangeNotifier {
   Future exportTrack(int index, bool altitudeData) async {
     final LocalTrackModel localTrackModel = uploadedTracksList[index];
     final List<PointProperties> properties =
-        localTrackModel.getProperties.values.toList();
+        localTrackModel.getProperties!.values.toList();
 
     await TracksServices().createExcel(
       trackName: localTrackModel.getTrackId,

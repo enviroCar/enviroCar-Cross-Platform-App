@@ -8,8 +8,8 @@ class StatusIndicatorWidget extends StatelessWidget {
   final Color backgroundColor;
 
   const StatusIndicatorWidget({
-    @required this.title,
-    @required this.icon,
+    required this.title,
+    required this.icon,
     this.backgroundColor = kWhiteColor,
   });
 

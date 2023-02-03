@@ -130,9 +130,9 @@ Future<Set<Polyline>> setPolyLines(List<PointProperties> properties) async {
   if (len > 1) {
     for (final int i = 0; i < len - 1; len++) {
       final PointLatLng origin =
-          PointLatLng(properties[i].latitude, properties[i].longitude);
-      final PointLatLng destination =
-          PointLatLng(properties[i + 1].latitude, properties[i + 1].longitude);
+          PointLatLng(properties[i].latitude!, properties[i].longitude!);
+      final PointLatLng destination = PointLatLng(
+          properties[i + 1].latitude!, properties[i + 1].longitude!);
       final PolylineResult polylineResult =
           await polylinePoints.getRouteBetweenCoordinates(
         googleAPIKey,

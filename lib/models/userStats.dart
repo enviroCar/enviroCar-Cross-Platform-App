@@ -1,10 +1,10 @@
 /// model for user's stats shown on dashboard screen
 
 class UserStats {
-  double distance;
-  double duration;
-  Userstatistic userstatistic;
-  int trackCount;
+  double? distance;
+  double? duration;
+  Userstatistic? userstatistic;
+  int? trackCount;
 
   UserStats({
     this.distance,
@@ -27,7 +27,7 @@ class UserStats {
     data['distance'] = distance;
     data['duration'] = duration;
     if (userstatistic != null) {
-      data['userstatistic'] = userstatistic.toJson();
+      data['userstatistic'] = userstatistic!.toJson();
     }
     data['trackCount'] = trackCount;
     return data;
@@ -35,9 +35,9 @@ class UserStats {
 }
 
 class Userstatistic {
-  Below60kmh below60kmh;
-  Below60kmh above130kmh;
-  Below60kmh naN;
+  Below60kmh? below60kmh;
+  Below60kmh? above130kmh;
+  Below60kmh? naN;
 
   Userstatistic({this.below60kmh, this.above130kmh, this.naN});
 
@@ -56,21 +56,21 @@ class Userstatistic {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     if (below60kmh != null) {
-      data['below60kmh'] = below60kmh.toJson();
+      data['below60kmh'] = below60kmh!.toJson();
     }
     if (above130kmh != null) {
-      data['above130kmh'] = above130kmh.toJson();
+      data['above130kmh'] = above130kmh!.toJson();
     }
     if (naN != null) {
-      data['NaN'] = naN.toJson();
+      data['NaN'] = naN!.toJson();
     }
     return data;
   }
 }
 
 class Below60kmh {
-  double distance;
-  double duration;
+  double? distance;
+  double? duration;
 
   Below60kmh({this.distance, this.duration});
 

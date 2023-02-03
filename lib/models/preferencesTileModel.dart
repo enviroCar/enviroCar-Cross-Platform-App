@@ -6,7 +6,7 @@ class PreferencesTileModel {
   bool isChecked;
 
   PreferencesTileModel({
-    @required this.title,
-    @required this.isChecked,
+    required this.title,
+    required this.isChecked,
   });
 }

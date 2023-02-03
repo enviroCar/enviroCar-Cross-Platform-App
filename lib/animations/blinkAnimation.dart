@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class BlinkAnimation extends StatefulWidget {
   final Widget child;
 
-  const BlinkAnimation({@required this.child});
+  const BlinkAnimation({required this.child});
 
   @override
   _BlinkAnimationState createState() => _BlinkAnimationState();
@@ -11,7 +11,7 @@ class BlinkAnimation extends StatefulWidget {
 
 class _BlinkAnimationState extends State<BlinkAnimation>
     with SingleTickerProviderStateMixin {
-  AnimationController _animationController;
+  late AnimationController _animationController;
 
   @override
   void initState() {

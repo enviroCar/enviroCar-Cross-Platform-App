@@ -9,9 +9,9 @@ class SingleRowForm extends StatelessWidget {
   final TextEditingController textEditingController;
 
   const SingleRowForm({
-    @required this.title,
-    @required this.hint,
-    @required this.textEditingController,
+    required this.title,
+    required this.hint,
+    required this.textEditingController,
   });
 
   @override
@@ -32,7 +32,7 @@ class SingleRowForm extends StatelessWidget {
               ),
               keyboardType: TextInputType.number,
               validator: (value) {
-                if (value.isEmpty || value == null) {
+                if (value == null || value.isEmpty) {
                   return 'Required';
                 }
                 return null;

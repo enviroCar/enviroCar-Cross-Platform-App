@@ -4,18 +4,18 @@ import 'lambdaProbeCurrent.dart';
 import 'lambdaProbeVoltage.dart';
 
 class Properties {
-  double engineLoad;
-  int fuelPressure;
-  int intakeManifoldAbsolutePressure;
-  int engineRPM;
-  int speed;
-  int intakeAirTemperature;
-  double maf;
-  int throttlePosition;
-  LongTermFuelTrim longTermFuelTrim;
-  ShortTermFuelTrim shortTermFuelTrim;
-  LambdaProbeCurrent lambdaProbeCurrent;
-  LambdaProbeVoltage lambdaProbeVoltage;
+  double? engineLoad;
+  int? fuelPressure;
+  int? intakeManifoldAbsolutePressure;
+  int? engineRPM;
+  int? speed;
+  int? intakeAirTemperature;
+  double? maf;
+  int? throttlePosition;
+  LongTermFuelTrim? longTermFuelTrim;
+  ShortTermFuelTrim? shortTermFuelTrim;
+  LambdaProbeCurrent? lambdaProbeCurrent;
+  LambdaProbeVoltage? lambdaProbeVoltage;
 
   /// function to set [engineLoad]
   set engineLoadResponse(double value) {
@@ -58,26 +58,26 @@ class Properties {
   }
 
   /// function to get [engineLoad]
-  double get getEngineLoad => engineLoad;
+  double? get getEngineLoad => engineLoad;
 
   /// function to get [fuelPressure]
-  int get getFuelPressure => fuelPressure;
+  int? get getFuelPressure => fuelPressure;
 
   /// function to get [intakeManifoldAbsolutePressure]
-  int get getIntakeMap => intakeManifoldAbsolutePressure;
+  int? get getIntakeMap => intakeManifoldAbsolutePressure;
 
   /// function to get [engineRPM]
-  int get getEngineRpm => engineRPM;
+  int? get getEngineRpm => engineRPM;
 
   /// function to get [speed]
-  int get getSpeed => speed;
+  int? get getSpeed => speed;
 
   /// function to get [intakeAirTemperature]
-  int get getIntakeAirTemperature => intakeAirTemperature;
+  int? get getIntakeAirTemperature => intakeAirTemperature;
 
   /// function to get [maf]
-  double get getMaf => maf;
+  double? get getMaf => maf;
 
   /// function to get [throttlePosition]
-  int get getThrottlePosition => throttlePosition;
+  int? get getThrottlePosition => throttlePosition;
 }

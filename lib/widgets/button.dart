@@ -7,9 +7,9 @@ class Button extends StatelessWidget {
   final void Function() onTap;
 
   const Button({
-    @required this.title,
-    @required this.color,
-    @required this.onTap,
+    required this.title,
+    required this.color,
+    required this.onTap,
   });
 
   @override

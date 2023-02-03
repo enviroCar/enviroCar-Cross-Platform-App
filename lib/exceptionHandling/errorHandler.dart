@@ -26,7 +26,7 @@ ApplicationException handleException(dynamic error) {
             exception = ApplicationException(ExceptionType.timeout);
             break;
           case dio.DioErrorType.response:
-            switch (error.response.statusCode) {
+            switch (error.response?.statusCode) {
               case 400:
                 exception = ApplicationException(ExceptionType.badRequest);
                 break;

@@ -19,15 +19,15 @@ class LocalTrackCard extends StatefulWidget {
   final Track track;
   final int index;
 
-  const LocalTrackCard({@required this.track, @required this.index});
+  const LocalTrackCard({required this.track, required this.index});
 
   @override
   _LocalTrackCardState createState() => _LocalTrackCardState();
 }
 
 class _LocalTrackCardState extends State<LocalTrackCard> {
-  GoogleMapController _googleMapController;
-  Set<Polyline> polyLines;
+  late GoogleMapController _googleMapController;
+  late Set<Polyline> polyLines;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -51,14 +51,14 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.headline1;
+    final TextStyle textStyle = Theme.of(context).textTheme.displayLarge!;
 
     return Container(
       width: deviceWidth * 0.9,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey[350],
+            color: Colors.grey[350]!,
             blurRadius: 3.0,
             spreadRadius: 1.0,
             offset: const Offset(-2, 2),
@@ -88,7 +88,7 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                     horizontal: 20,
                   ),
                   child: Text(
-                    widget.track.name,
+                    widget.track.name!,
                     style: const TextStyle(
                       color: kWhiteColor,
                       fontWeight: FontWeight.bold,
@@ -133,7 +133,7 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                           context: context,
                           builder: (context) {
                             return UploadTrackDialogBox(
-                              trackName: widget.track.name,
+                              trackName: widget.track.name!,
                               uploadTrack: () async {
                                 _logger.i(
                                     'Call function to upload track to the server.');
@@ -236,19 +236,19 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
               width: double.infinity,
               child: Consumer<LocalTracksProvider>(
                 builder: (context, tracksProvider, child) {
-                  final LocalTrackModel trackModel =
+                  final LocalTrackModel? trackModel =
                       LocalTracks.getTrackAtIndex(widget.index);
                   LatLng startPosition;
                   LatLng destinationPosition;
 
                   startPosition = LatLng(
-                    trackModel.getProperties.values.first.latitude,
-                    trackModel.getProperties.values.first.longitude,
+                    trackModel!.getProperties!.values.first.latitude!,
+                    trackModel.getProperties!.values.first.longitude!,
                   );
 
                   destinationPosition = LatLng(
-                    trackModel.getProperties.values.last.latitude,
-                    trackModel.getProperties.values.last.longitude,
+                    trackModel.getProperties!.values.last.latitude!,
+                    trackModel.getProperties!.values.last.longitude!,
                   );
 
                   return GoogleMap(
@@ -266,7 +266,7 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                         (GoogleMapController googleMapController) async {
                       _googleMapController = googleMapController;
                       polyLines = await setPolyLines(
-                        trackModel.properties.values.toList(),
+                        trackModel.properties!.values.toList(),
                       );
                       animateCamera(startPosition, destinationPosition);
                     },
@@ -301,8 +301,8 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.track.end
-                            .difference(widget.track.begin)
+                        widget.track.end!
+                            .difference(widget.track.begin!)
                             .toString()
                             .replaceFirst('.000000', ''),
                         style: const TextStyle(
@@ -325,7 +325,7 @@ class _LocalTrackCardState extends State<LocalTrackCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        '${widget.track.length.toStringAsFixed(2)}km',
+                        '${widget.track.length?.toStringAsFixed(2)}km',
                         style: const TextStyle(
                           color: kSpringColor,
                           fontSize: 25,

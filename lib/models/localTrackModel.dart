@@ -19,11 +19,11 @@ class LocalTrackModel {
   @HiveField(4)
   final String duration;
   @HiveField(5)
-  final double distance;
+  final double? distance;
   @HiveField(6)
   final double speed;
   @HiveField(7)
-  final String selectedCarId;
+  final String? selectedCarId;
   @HiveField(8)
   final bool isTrackUploaded;
   @HiveField(9)
@@ -31,31 +31,31 @@ class LocalTrackModel {
   @HiveField(10)
   final String bluetoothDevice;
   @HiveField(11)
-  final Map<int, PointProperties> properties;
+  final Map<int, PointProperties>? properties;
   @HiveField(12)
-  final String carManufacturer;
+  final String? carManufacturer;
   @HiveField(13)
-  final String carFuelType;
+  final String? carFuelType;
   @HiveField(14)
-  final String carModel;
+  final String? carModel;
   @HiveField(15)
-  final int carConstructionYear;
+  final int? carConstructionYear;
   @HiveField(16)
-  final int carEngineDisplacement;
+  final int? carEngineDisplacement;
 
   LocalTrackModel({
-    this.trackId,
-    this.trackName,
-    this.startTime,
-    this.endTime,
-    this.duration,
-    this.distance,
-    this.speed,
-    this.selectedCarId,
-    this.isTrackUploaded,
-    this.stops,
-    this.bluetoothDevice,
-    this.properties,
+    required this.trackId,
+    required this.trackName,
+    required this.startTime,
+    required this.endTime,
+    required this.duration,
+    required this.distance,
+    required this.speed,
+    required this.selectedCarId,
+    required this.isTrackUploaded,
+    required this.stops,
+    required this.bluetoothDevice,
+    required this.properties,
     this.carManufacturer,
     this.carFuelType,
     this.carModel,
@@ -113,7 +113,7 @@ class LocalTrackModel {
   String get getTrackId => trackId;
 
   /// function to return [distance] covered during the [track]
-  double get getDistance => distance;
+  double? get getDistance => distance;
 
   /// function to return [startTime] of the [track]
   DateTime get getStartTime => startTime;
@@ -122,13 +122,13 @@ class LocalTrackModel {
   DateTime get getEndTime => endTime;
 
   /// function to return selected [carId]
-  String get getCarId => selectedCarId;
+  String? get getCarId => selectedCarId;
 
   /// function to get [trackName] of the [track]
   String get getTrackName => trackName;
 
   /// function to return [properties] of the [track]
-  Map<int, PointProperties> get getProperties => properties;
+  Map<int, PointProperties>? get getProperties => properties;
 
   /// function to get [sensor properties]
   Properties get getCarProperties {

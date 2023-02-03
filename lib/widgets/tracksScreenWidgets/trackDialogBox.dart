@@ -59,7 +59,7 @@ void showTrackDialogBox(BuildContext context) {
                 'The local and non-uploaded tracks do not share the personal location information of the user. The tracks uploaded to the server share the user\'s personal location information alongside the calculated or parsed parameters. This data is analyzed to extrapolate CO2 hotspots, crowded regions, etc',
                 textAlign: TextAlign.left,
                 style: TextStyle(
-                  color: Theme.of(context).textTheme.caption.color,
+                  color: Theme.of(context).textTheme.bodySmall!.color,
                   fontWeight: FontWeight.normal,
                   fontSize: 15,
                 ),

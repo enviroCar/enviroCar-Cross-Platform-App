@@ -51,7 +51,7 @@ void main() {
 
 final Fueling _fueling = Fueling(
   id: '1234',
-  car: Car(),
+  car: Car(properties: null, type: null, username: null),
   mileage: UnitValue(
     value: 32,
     unit: 'KILOMETRES',

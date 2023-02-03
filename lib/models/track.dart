@@ -1,12 +1,12 @@
 import 'car.dart';
 
 class Track {
-  String id;
-  String name;
-  double length;
-  DateTime begin;
-  DateTime end;
-  Car sensor;
+  String? id;
+  String? name;
+  double? length;
+  DateTime? begin;
+  DateTime? end;
+  Car? sensor;
 
   Track({
     this.id,
@@ -36,7 +36,7 @@ class Track {
     data['begin'] = begin;
     data['end'] = end;
     if (sensor != null) {
-      data['sensor'] = sensor.toJson();
+      data['sensor'] = sensor!.toJson();
     }
     return data;
   }

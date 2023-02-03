@@ -8,7 +8,7 @@ import '../trackDetailsWidgets/trackDetailsTile.dart';
 class TrackDetailsCard extends StatelessWidget {
   final Track track;
 
-  const TrackDetailsCard({@required this.track});
+  const TrackDetailsCard({required this.track});
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +17,7 @@ class TrackDetailsCard extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey[350],
+            color: Colors.grey[350]!,
             blurRadius: 3.0,
             spreadRadius: 1.0,
             offset: const Offset(-2, 2),
@@ -50,7 +50,7 @@ class TrackDetailsCard extends StatelessWidget {
                 ),
                 children: [
                   TextSpan(
-                    text: track.begin
+                    text: track.begin!
                         .toUtc()
                         .toString()
                         .replaceFirst('.000Z', ''),
@@ -63,7 +63,7 @@ class TrackDetailsCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             child: Text(
-              'Your track with ${track.sensor.properties.manufacturer} ${track.sensor.properties.model} on ${trackDay(track.begin.weekday)}',
+              'Your track with ${track.sensor!.properties!.manufacturer} ${track.sensor!.properties!.model} on ${trackDay(track.begin!.weekday)}',
               style: TextStyle(
                 color: kGreyColor.withOpacity(0.8),
               ),
@@ -81,8 +81,8 @@ class TrackDetailsCard extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      track.end
-                          .difference(track.begin)
+                      track.end!
+                          .difference(track.begin!)
                           .toString()
                           .replaceFirst('.000000', ''),
                       style: const TextStyle(
@@ -106,7 +106,7 @@ class TrackDetailsCard extends StatelessWidget {
                   children: [
                     Text(
                       track.length != null
-                          ? '${track.length.toStringAsFixed(2)} km'
+                          ? '${track.length?.toStringAsFixed(2)} km'
                           : '0 km',
                       style: const TextStyle(
                         color: kSpringColor,
@@ -142,7 +142,7 @@ class TrackDetailsCard extends StatelessWidget {
             child: TrackDetailsTile(
               title: 'Car',
               details:
-                  '${track.sensor.properties.manufacturer} - ${track.sensor.properties.model} ${track.sensor.properties.constructionYear}, ${track.sensor.properties.engineDisplacement} cm, ${track.sensor.properties.fuelType}',
+                  '${track.sensor!.properties!.manufacturer} - ${track.sensor!.properties!.model} ${track.sensor!.properties!.constructionYear}, ${track.sensor!.properties!.engineDisplacement} cm, ${track.sensor!.properties!.fuelType}',
               iconData: Icons.directions_car,
             ),
           ),
@@ -150,7 +150,8 @@ class TrackDetailsCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
               title: 'Start',
-              details: track.begin.toUtc().toString().replaceFirst('.000Z', ''),
+              details:
+                  track.begin!.toUtc().toString().replaceFirst('.000Z', ''),
               iconData: Icons.timer_outlined,
             ),
           ),
@@ -158,7 +159,7 @@ class TrackDetailsCard extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 6),
             child: TrackDetailsTile(
               title: 'End',
-              details: track.end.toUtc().toString().replaceFirst('.000Z', ''),
+              details: track.end!.toUtc().toString().replaceFirst('.000Z', ''),
               iconData: Icons.timelapse,
             ),
           ),
@@ -167,7 +168,7 @@ class TrackDetailsCard extends StatelessWidget {
             child: TrackDetailsTile(
               title: 'Speed',
               details:
-                  '${determineSpeed(track.length, track.begin, track.end).toStringAsFixed(2)} km/hr',
+                  '${determineSpeed(track.length!, track.begin!, track.end!).toStringAsFixed(2)} km/hr',
               iconData: Icons.speed_rounded,
             ),
           ),

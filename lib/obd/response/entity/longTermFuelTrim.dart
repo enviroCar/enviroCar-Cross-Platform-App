@@ -1,6 +1,6 @@
 class LongTermFuelTrim {
-  double value;
-  int bank;
+  double? value;
+  int? bank;
 
   LongTermFuelTrim({
     this.value,
@@ -8,10 +8,10 @@ class LongTermFuelTrim {
   });
 
   /// function to get [value]
-  double get getLongTermFuelTrimValue => value;
+  double? get getLongTermFuelTrimValue => value;
 
   /// function to get [bank]
-  int get getLongTermFuelTrimBank => bank;
+  int? get getLongTermFuelTrimBank => bank;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};

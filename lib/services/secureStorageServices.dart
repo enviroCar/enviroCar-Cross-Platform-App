@@ -7,22 +7,26 @@ class SecureStorageServices {
   final FlutterSecureStorage _secureStorage = const FlutterSecureStorage();
 
   // Fetches data stored locally on a secure storage
-  Future<User> getUserFromSecureStorage() async {
-    final String username = await _secureStorage.read(key: 'username');
-    final String password = await _secureStorage.read(key: 'password');
+  Future<User?> getUserFromSecureStorage() async {
+    final String? username = await _secureStorage.read(key: 'username');
+    final String? password = await _secureStorage.read(key: 'password');
 
-    final User user = User(
-      username: username,
-      password: password,
-    );
+    if (username == null || password == null) {
+      return null;
+    }
+    final User? user = User(
+        username: username,
+        password: password,
+        acceptedPrivacy: false,
+        acceptedTerms: false);
 
     return user;
   }
 
   // Sets data in secure storage on the device
   Future<void> setUserInSecureStorage({
-    @required String username,
-    @required String password,
+    required String username,
+    required String password,
   }) async {
     _secureStorage.write(key: 'username', value: username);
     _secureStorage.write(key: 'password', value: password);

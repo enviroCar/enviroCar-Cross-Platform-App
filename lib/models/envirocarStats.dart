@@ -11,8 +11,8 @@ class EnvirocarStats {
   int measurements;
 
   EnvirocarStats({
-    @required this.users,
-    @required this.tracks,
-    @required this.measurements,
+    required this.users,
+    required this.tracks,
+    required this.measurements,
   });
 }

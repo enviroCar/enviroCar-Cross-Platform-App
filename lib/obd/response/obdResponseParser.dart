@@ -7,11 +7,11 @@ import 'entity/lambdaProbeCurrent.dart';
 import 'entity/lambdaProbeVoltage.dart';
 
 class ObdResponseParseService {
-  List<int> buffer;
-  List<String> stringList;
+  late List<int> buffer;
+  List<String> stringList = [];
 
   ObdResponseParseService({
-    this.buffer,
+    required this.buffer,
   });
 
   double parseEngineLoad() {

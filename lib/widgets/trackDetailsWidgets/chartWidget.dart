@@ -11,9 +11,9 @@ class ChartWidget extends StatelessWidget {
   final ChartData chartData;
 
   const ChartWidget({
-    @required this.chartTitle,
-    @required this.xInterval,
-    @required this.chartData,
+    required this.chartTitle,
+    required this.xInterval,
+    required this.chartData,
   });
 
   @override
@@ -64,8 +64,8 @@ class ChartWidget extends StatelessWidget {
                             return const Text('');
                           }
                           return Text(
-                            (chartData.dataInterval * value).toStringAsFixed(
-                              chartData.dataInterval < 1 ? 3 : 1,
+                            (chartData.dataInterval! * value).toStringAsFixed(
+                              chartData.dataInterval! < 1 ? 3 : 1,
                             ),
                           );
                         },

@@ -2,11 +2,11 @@ import 'geometry.dart';
 import 'phenomenons.dart';
 
 class Feature {
-  String type;
-  Geometry geometry;
-  String time;
-  Phenomenons phenomenons;
-  String sensorId;
+  String? type;
+  Geometry? geometry;
+  String? time;
+  Phenomenons? phenomenons;
+  String? sensorId;
 
   Feature({
     this.type,
@@ -27,10 +27,10 @@ class Feature {
   Map<String, dynamic> toJSON() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['type'] = 'Feature';
-    data['geometry'] = geometry.toJSON();
+    data['geometry'] = geometry!.toJSON();
     data['properties'] = {
       'time': time,
-      'phenomenons': phenomenons.toJSON(),
+      'phenomenons': phenomenons!.toJSON(),
       'sensor': sensorId
     };
     return data;

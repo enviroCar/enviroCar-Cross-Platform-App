@@ -12,14 +12,14 @@ class Report {
   bool requestForAFeature;
 
   Report({
-    @required this.id,
-    @required this.estimatedTime,
-    @required this.problem,
-    @required this.forceCrash,
-    @required this.suddenLags,
-    @required this.appWasUnresponsive,
-    @required this.componentDoesNotWorkAsExpected,
-    @required this.requestForAFeature,
+    required this.id,
+    required this.estimatedTime,
+    required this.problem,
+    required this.forceCrash,
+    required this.suddenLags,
+    required this.appWasUnresponsive,
+    required this.componentDoesNotWorkAsExpected,
+    required this.requestForAFeature,
   });
 
   Map<String, dynamic> toJson() {

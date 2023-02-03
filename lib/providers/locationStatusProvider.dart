@@ -4,7 +4,7 @@ import '../utils/enums.dart';
 import '../services/locationStatusChecker.dart';
 
 class LocationStatusProvider extends ChangeNotifier {
-  LocationStatus locationStatus;
+  late LocationStatus locationStatus;
 
   factory LocationStatusProvider() => _locationStatusProvider;
 

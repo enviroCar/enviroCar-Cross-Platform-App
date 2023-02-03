@@ -12,7 +12,7 @@ import '../exceptionHandling/result.dart';
 import '../hiveDB/localTracksCollection.dart';
 
 class LocalTracksProvider extends ChangeNotifier {
-  List<Track> _tracksList;
+  late List<Track> _tracksList;
 
   factory LocalTracksProvider() => _localTracksProvider;
 
@@ -35,18 +35,18 @@ class LocalTracksProvider extends ChangeNotifier {
   }
 
   /// function to encode [LocalTrackModel] to [Track]
-  Track encodeToTrack(LocalTrackModel trackData) {
+  Track encodeToTrack(LocalTrackModel? trackData) {
     final Track track = Track();
-    track.id = trackData.getTrackId;
-    track.length = trackData.getDistance;
-    track.begin = trackData.getStartTime;
-    track.end = trackData.getEndTime;
-    track.name = trackData.trackName;
+    track.id = trackData?.getTrackId;
+    track.length = trackData?.getDistance;
+    track.begin = trackData?.getStartTime;
+    track.end = trackData?.getEndTime;
+    track.name = trackData?.trackName;
 
-    final Car sensor = Car();
+    final Car sensor = Car(username: null, type: null, properties: null);
 
     sensor.type = "car";
-    sensor.properties = trackData.getCarProperties;
+    sensor.properties = trackData!.getCarProperties;
 
     track.sensor = sensor;
 
@@ -68,7 +68,7 @@ class LocalTracksProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// function to get [_tracksList]
+  /// function to get [_tracksList]?
   List<Track> get getLocalTracks {
     return [..._tracksList];
   }
@@ -77,11 +77,11 @@ class LocalTracksProvider extends ChangeNotifier {
   Future uploadTrack(BuildContext context, int index) async {
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
-    final LocalTrackModel localTrackModel = LocalTracks.getTrackAtIndex(index);
+    final LocalTrackModel? localTrackModel = LocalTracks.getTrackAtIndex(index);
     await TracksServices()
         .postTrack(
       authProvider: _authProvider,
-      localTrackModel: localTrackModel,
+      localTrackModel: localTrackModel!,
     )
         .then((Result result) {
       if (result.status == ResultStatus.error) {
@@ -89,7 +89,7 @@ class LocalTracksProvider extends ChangeNotifier {
           SnackBar(
             backgroundColor: Colors.red,
             content: Text(
-              result.exception.getErrorMessage(),
+              result.exception!.getErrorMessage()!,
             ),
           ),
         );
@@ -103,10 +103,11 @@ class LocalTracksProvider extends ChangeNotifier {
 
   /// function to export the track data as csv
   Future exportTrack(int index) async {
-    final LocalTrackModel localTrackModel = LocalTracks.getTrackAtIndex(index);
+    final LocalTrackModel? localTrackModel = LocalTracks.getTrackAtIndex(index);
     final List<PointProperties> properties =
-        localTrackModel.getProperties.values.toList();
+        localTrackModel!.getProperties!.values.toList();
 
-    await TracksServices().createExcel(trackName: localTrackModel.getTrackId, properties: properties);
+    await TracksServices().createExcel(
+        trackName: localTrackModel.getTrackId, properties: properties);
   }
 }

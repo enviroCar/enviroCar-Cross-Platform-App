@@ -7,7 +7,7 @@ class CirclePainter extends CustomPainter {
 
   CirclePainter(
     this._animation, {
-    @required this.color,
+    required this.color,
   }) : super(repaint: _animation);
 
   void paintCircle(Canvas canvas, Rect rect, double value) {

@@ -4,9 +4,9 @@ import '../../globals.dart';
 
 class CarDetailsCard extends StatelessWidget {
   Widget buildWidget({
-    @required String title,
-    @required IconData iconData,
-    @required String information,
+    required String title,
+    required IconData iconData,
+    required String information,
   }) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -38,7 +38,7 @@ class CarDetailsCard extends StatelessWidget {
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey[350],
+            color: Colors.grey[350]!,
             blurRadius: 3.0,
             spreadRadius: 1.0,
             offset: const Offset(-2, 2),

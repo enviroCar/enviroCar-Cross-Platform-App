@@ -6,12 +6,12 @@ import '../widgets/iconBadge.dart';
 /// function to show alert dialog
 // ignore: avoid_positional_boolean_parameters
 void showAlertDialog({
-  @required BuildContext context,
-  @required String title,
-  @required String content,
-  @required bool carState,
-  @required bool bluetoothState,
-  @required bool locationState,
+  required BuildContext context,
+  required String title,
+  required String content,
+  required bool carState,
+  required bool bluetoothState,
+  required bool locationState,
 }) {
   showDialog(
     context: context,
@@ -63,7 +63,7 @@ void showAlertDialog({
               content,
               textAlign: TextAlign.center,
               style: TextStyle(
-                color: Theme.of(context).textTheme.caption.color,
+                color: Theme.of(context).textTheme.bodySmall?.color,
                 fontWeight: FontWeight.normal,
                 fontSize: 15,
               ),

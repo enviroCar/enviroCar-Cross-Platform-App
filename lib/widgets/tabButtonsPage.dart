@@ -14,12 +14,12 @@ class TabButtonsPage extends StatefulWidget {
   final Widget page2;
 
   const TabButtonsPage({
-    @required this.button1Title,
-    @required this.button2Title,
-    @required this.tab1,
-    @required this.tab2,
-    @required this.page1,
-    @required this.page2,
+    required this.button1Title,
+    required this.button2Title,
+    required this.tab1,
+    required this.tab2,
+    required this.page1,
+    required this.page2,
   });
 
   @override

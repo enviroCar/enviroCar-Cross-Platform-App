@@ -5,7 +5,7 @@ import '../constants.dart';
 class BLEDialog extends StatelessWidget {
   final Function toggleBluetooth;
 
-  const BLEDialog({@required this.toggleBluetooth});
+  const BLEDialog({required this.toggleBluetooth});
 
   @override
   Widget build(BuildContext context) {

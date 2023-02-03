@@ -7,7 +7,8 @@ class DetailsIcon extends StatelessWidget {
   final String data;
   final IconData iconData;
 
-  const DetailsIcon({this.title, this.data, this.iconData});
+  const DetailsIcon(
+      {required this.title, required this.data, required this.iconData});
 
   @override
   Widget build(BuildContext context) {

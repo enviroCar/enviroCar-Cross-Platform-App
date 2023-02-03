@@ -9,8 +9,8 @@ import '../models/user.dart';
 /// login screen and dashboard screen are drawn
 
 class AuthProvider with ChangeNotifier {
-  User _user;
-  bool _authStatus;
+  User? _user;
+  bool _authStatus = false;
 
   /// function to set [User]
   set setUser(User user) {
@@ -18,7 +18,7 @@ class AuthProvider with ChangeNotifier {
   }
 
   /// function to get currently signed in [User]
-  User get getUser {
+  User? get getUser {
     return _user;
   }
 
@@ -36,7 +36,7 @@ class AuthProvider with ChangeNotifier {
 
   /// function to remove user (sign out)
   void removeUser() {
-    setUser = null;
+    _user = null;
     setAuthStatus = false;
   }
 }

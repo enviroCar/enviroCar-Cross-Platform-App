@@ -14,19 +14,19 @@ class CarsCollection {
   }
 
   // adds cars to the box
-  Future<void> addCarToHive({@required Map<String, dynamic> car}) async {
+  Future<void> addCarToHive({required Map<String, dynamic> car}) async {
     await Hive.box('carsBox').add(
       car,
     );
   }
 
   // fetches all the cars from the box
-  void getCarsFromHive({@required BuildContext context}) {
+  void getCarsFromHive({required BuildContext context}) {
     final CarsProvider carsProvider =
         Provider.of<CarsProvider>(context, listen: false);
 
-    final String username =
-        Provider.of<AuthProvider>(context, listen: false).getUser.getUsername;
+    final String? username =
+        Provider.of<AuthProvider>(context, listen: false).getUser?.getUsername;
 
     final List<dynamic> carsList = [];
 

@@ -6,7 +6,7 @@ import 'package:flutter_map/flutter_map.dart';
 class MapWidget extends StatefulWidget {
   final Function initializeLocation;
 
-  const MapWidget({@required this.initializeLocation});
+  const MapWidget({required this.initializeLocation});
 
   @override
   _MapWidgetState createState() => _MapWidgetState();
@@ -18,8 +18,8 @@ class _MapWidgetState extends State<MapWidget> {
     return StreamBuilder<Position>(
       stream: Geolocator.getPositionStream(),
       builder: (_, snapshot) {
-        if (snapshot.hasData) {
-          final Position position = snapshot.data;
+        if (snapshot.hasData && snapshot.data != null) {
+          final Position position = snapshot.data!;
           final LatLng latLng = LatLng(position.latitude, position.longitude);
           return Center(
             child: FlutterMap(

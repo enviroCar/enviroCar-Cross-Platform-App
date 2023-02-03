@@ -15,7 +15,7 @@ class StackedMapButton extends StatefulWidget {
   final TrackType trackType;
   final int index;
 
-  const StackedMapButton({@required this.trackType, @required this.index});
+  const StackedMapButton({required this.trackType, required this.index});
 
   @override
   _StackedMapButtonState createState() => _StackedMapButtonState();
@@ -23,8 +23,8 @@ class StackedMapButton extends StatefulWidget {
 
 class _StackedMapButtonState extends State<StackedMapButton> {
   double buttonDiameter = 55;
-  GoogleMapController _googleMapController;
-  Set<Polyline> polyLines;
+  late GoogleMapController _googleMapController;
+  late Set<Polyline> polyLines;
 
   @override
   void initState() {
@@ -51,19 +51,19 @@ class _StackedMapButtonState extends State<StackedMapButton> {
             child: widget.trackType == TrackType.Local
                 ? Consumer<LocalTracksProvider>(
                     builder: (context, tracksProvider, child) {
-                      final LocalTrackModel trackModel =
+                      final LocalTrackModel? trackModel =
                           LocalTracks.getTrackAtIndex(widget.index);
                       LatLng startPosition;
                       LatLng destinationPosition;
 
                       startPosition = LatLng(
-                        trackModel.getProperties.values.first.latitude,
-                        trackModel.getProperties.values.first.longitude,
+                        trackModel!.getProperties!.values.first.latitude!,
+                        trackModel.getProperties!.values.first.longitude!,
                       );
 
                       destinationPosition = LatLng(
-                        trackModel.getProperties.values.last.latitude,
-                        trackModel.getProperties.values.last.longitude,
+                        trackModel.getProperties!.values.last.latitude!,
+                        trackModel.getProperties!.values.last.longitude!,
                       );
 
                       return GoogleMap(
@@ -81,7 +81,7 @@ class _StackedMapButtonState extends State<StackedMapButton> {
                             (GoogleMapController googleMapController) async {
                           _googleMapController = googleMapController;
                           polyLines = await setPolyLines(
-                            trackModel.properties.values.toList(),
+                            trackModel.properties!.values.toList(),
                           );
                           animateCamera(startPosition, destinationPosition);
                         },
@@ -90,9 +90,9 @@ class _StackedMapButtonState extends State<StackedMapButton> {
                   )
                 : Consumer<TracksProvider>(
                     builder: (context, tracksProvider, child) {
-                      LocalTrackModel trackModel;
-                      LatLng startPosition;
-                      LatLng destinationPosition;
+                      LocalTrackModel? trackModel;
+                      LatLng? startPosition;
+                      LatLng? destinationPosition;
 
                       final bool isListFetched =
                           tracksProvider.getListSetStatus;
@@ -102,17 +102,20 @@ class _StackedMapButtonState extends State<StackedMapButton> {
                             tracksProvider.getTracksWithId()[widget.index];
 
                         startPosition = LatLng(
-                          trackModel.getProperties.values.first.latitude,
-                          trackModel.getProperties.values.first.longitude,
+                          trackModel.getProperties!.values.first.latitude!,
+                          trackModel.getProperties!.values.first.longitude!,
                         );
 
                         destinationPosition = LatLng(
-                          trackModel.getProperties.values.last.latitude,
-                          trackModel.getProperties.values.last.longitude,
+                          trackModel.getProperties!.values.last.latitude!,
+                          trackModel.getProperties!.values.last.longitude!,
                         );
                       }
 
-                      if (isListFetched) {
+                      if (isListFetched &&
+                          startPosition != null &&
+                          destinationPosition != null &&
+                          trackModel != null) {
                         return GoogleMap(
                           myLocationButtonEnabled: false,
                           zoomControlsEnabled: false,
@@ -129,9 +132,9 @@ class _StackedMapButtonState extends State<StackedMapButton> {
                               (GoogleMapController googleMapController) async {
                             _googleMapController = googleMapController;
                             polyLines = await setPolyLines(
-                              trackModel.properties.values.toList(),
+                              trackModel!.properties!.values.toList(),
                             );
-                            animateCamera(startPosition, destinationPosition);
+                            animateCamera(startPosition!, destinationPosition!);
                           },
                         );
                       } else {

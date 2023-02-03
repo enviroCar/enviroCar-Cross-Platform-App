@@ -16,11 +16,11 @@ class BluetoothDevicesScreen extends StatefulWidget {
 }
 
 class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
-  blue.BluetoothState _state;
+  blue.BluetoothState? _state;
   bool _isScanning = false;
-  int selected;
-  blue.BluetoothDevice selectedBluetoothDevice;
-  BluetoothProvider bluetoothProvider;
+  int? selected;
+  blue.BluetoothDevice? selectedBluetoothDevice;
+  BluetoothProvider? bluetoothProvider;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -63,7 +63,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
     super.dispose();
 
     // Stops any running scan before closing the screen
-    bluetoothProvider.stopScan();
+    bluetoothProvider!.stopScan();
   }
 
   @override
@@ -83,7 +83,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                 value: _state == blue.BluetoothState.on ? true : false,
                 onChanged: (value) async {
                   if (_isScanning) {
-                    bluetoothProvider.stopScan();
+                    bluetoothProvider!.stopScan();
                     setState(() {
                       _isScanning = false;
                     });
@@ -105,7 +105,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               setState(() {
                 _isScanning = true;
               });
-              bluetoothProvider.startScan();
+              bluetoothProvider!.startScan();
               _logger.i(
                 'Bluetooth Scanning started to detect nearby Bluetooth devices.',
               );
@@ -120,7 +120,7 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
               );
             }
           } else {
-            bluetoothProvider.stopScan();
+            bluetoothProvider!.stopScan();
             _logger.i('Bluetooth scanning stopped.');
             setState(() {
               _isScanning = false;
@@ -160,20 +160,20 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                     activeColor: kSpringColor,
                     value: index,
                     groupValue: selected,
-                    onChanged: (int value) async {
+                    onChanged: (int? value) async {
                       if (selected != -1) {
                         _logger.i(
                           'Disconnect from previously connected device before connecting to new one.',
                         );
-                        bluetoothProvider.disconnectDevice();
+                        bluetoothProvider!.disconnectDevice();
                       }
                       setState(() {
                         selected = value;
                         selectedBluetoothDevice =
-                            detectedBluetoothDevices[value];
+                            detectedBluetoothDevices[value!];
                       });
-                      final bool connectionStatus = await bluetoothProvider
-                          .connectToDevice(selectedBluetoothDevice, context);
+                      final bool connectionStatus = await bluetoothProvider!
+                          .connectToDevice(selectedBluetoothDevice!, context);
                       debugPrint('connection status $connectionStatus');
                       if (!connectionStatus && mounted) {
                         setState(() {

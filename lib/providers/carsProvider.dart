@@ -3,8 +3,8 @@ import 'package:flutter/foundation.dart';
 import '../models/car.dart';
 
 class CarsProvider with ChangeNotifier {
-  Car _selectedCar;
-  List<Car> _carsList;
+  Car? _selectedCar;
+  List<Car> _carsList = [];
 
   // sets the cars list fetched into the provider and notifies listeners
   set setCarsList(List<dynamic> carsList) {
@@ -19,7 +19,7 @@ class CarsProvider with ChangeNotifier {
   }
 
   // gets the car that is currently selected
-  Car get getSelectedCar {
+  Car? get getSelectedCar {
     return _selectedCar;
   }
 
@@ -47,7 +47,7 @@ class CarsProvider with ChangeNotifier {
   void deleteCar(Car car) {
     _carsList.removeWhere(
       (Car carItem) {
-        return carItem.properties.id == car.properties.id;
+        return carItem.properties!.id == car.properties!.id;
       },
     );
 

@@ -40,7 +40,7 @@ void main() {
       // Fetch the new data and check if it matches the one stored in it
       expect(
         Provider.of<UserStatsProvider>(childContext, listen: false)
-            .getUserStats
+            .getUserStats!
             .trackCount,
         2,
       );

@@ -13,7 +13,7 @@ class TabBarViewWidget extends StatefulWidget {
 
 class _TabBarViewWidgetState extends State<TabBarViewWidget>
     with TickerProviderStateMixin {
-  TabController _tabController;
+  late TabController _tabController;
   int currentIndex = 0;
 
   @override

@@ -3,9 +3,9 @@ import 'package:flutter/foundation.dart';
 import '../models/userStats.dart';
 
 class UserStatsProvider with ChangeNotifier {
-  UserStats _userStats;
+  UserStats? _userStats;
 
-  UserStats get getUserStats {
+  UserStats? get getUserStats {
     return _userStats;
   }
 

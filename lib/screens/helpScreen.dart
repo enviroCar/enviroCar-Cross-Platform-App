@@ -9,7 +9,7 @@ class HelpScreen extends StatelessWidget {
   static const String routeName = '/helpScreen';
 
   // For heading 1
-  Widget buildH1({@required String headline1}) {
+  Widget buildH1({required String headline1}) {
     return Text(
       headline1,
       style: const TextStyle(
@@ -19,7 +19,7 @@ class HelpScreen extends StatelessWidget {
   }
 
   // For heading 2
-  Widget buildH2({@required String headline2}) {
+  Widget buildH2({required String headline2}) {
     return Text(
       headline2,
       style: const TextStyle(
@@ -29,7 +29,7 @@ class HelpScreen extends StatelessWidget {
   }
 
   // For paragraphs
-  Widget buildParagraph({@required String paragraph}) {
+  Widget buildParagraph({required String paragraph}) {
     return Text(
       paragraph,
     );

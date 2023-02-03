@@ -40,9 +40,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   final GlobalKey _startTrack = GlobalKey();
 
   // context passed to show the instructions
-  BuildContext showcaseContext;
+  late BuildContext showcaseContext;
 
-  bool showWalkThrough;
+  bool? showWalkThrough = false;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -101,7 +101,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   // initializes the instructions
   void beginWalkThrough() {
-    ShowCaseWidget.of(showcaseContext).startShowCase(
+    ShowCaseWidget.of(showcaseContext)!.startShowCase(
       [
         _userStats,
         _bluetooth,
@@ -131,7 +131,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return ShowCaseWidget(
-      onComplete: (int index, GlobalKey<State<StatefulWidget>> key) {
+      onComplete: (int? index, GlobalKey<State<StatefulWidget>> key) {
         preferences.setBool('showWalkThrough', false);
       },
       builder: Builder(
@@ -260,9 +260,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 Consumer<BluetoothProvider>(
                   builder: (context, bluetoothProvider, child) {
                     final bool isConnected = bluetoothProvider.isConnected();
-                    BluetoothDevice connectedDevice;
+                    BluetoothDevice? connectedDevice;
                     if (isConnected) {
-                      connectedDevice = bluetoothProvider.getConnectedDevice;
+                      connectedDevice = bluetoothProvider.getConnectedDevice!;
                     }
 
                     return Showcase(
@@ -273,12 +273,12 @@ class _DashboardScreenState extends State<DashboardScreen> {
                       child: DashboardCard(
                         assetName: 'assets/icons/bluetooth.svg',
                         title: isConnected
-                            ? (connectedDevice.name.isNotEmpty
-                                ? connectedDevice.name
+                            ? (connectedDevice!.name.isNotEmpty
+                                ? connectedDevice!.name
                                 : 'Unknown Device')
                             : 'No OBD-II adapter selected',
                         subtitle: isConnected
-                            ? connectedDevice.id.toString()
+                            ? connectedDevice!.id.toString()
                             : 'Click here to select one',
                         routeName: BluetoothDevicesScreen.routeName,
                         iconBackgroundColor:
@@ -295,7 +295,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 // Car Card
                 Consumer<CarsProvider>(
                   builder: (_, carsProvider, child) {
-                    final Car selectedCar = carsProvider.getSelectedCar;
+                    final Car? selectedCar = carsProvider.getSelectedCar;
 
                     return Showcase(
                       key: _selectedCar,
@@ -305,10 +305,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         assetName: 'assets/icons/car.svg',
                         title: selectedCar == null
                             ? 'No car selected'
-                            : '${selectedCar.properties.manufacturer}, ${selectedCar.properties.model}',
+                            : '${selectedCar.properties!.manufacturer}, ${selectedCar.properties!.model}',
                         subtitle: selectedCar == null
                             ? 'Select a car'
-                            : '${selectedCar.properties.constructionYear}, ${selectedCar.properties.engineDisplacement}, ${selectedCar.properties.fuelType}',
+                            : '${selectedCar.properties!.constructionYear}, ${selectedCar.properties!.engineDisplacement}, ${selectedCar.properties!.fuelType}',
                         routeName: CarScreen.routeName,
                         iconBackgroundColor: carsProvider.getSelectedCar != null
                             ? kSpringColor
@@ -350,7 +350,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                                 LocationStatus.enabled &&
                             carsProvider.getSelectedCar != null &&
                             bluetoothProvider.isConnected()) {
-
                           showDialog(
                             context: context,
                             builder: (context) {
@@ -365,7 +364,6 @@ class _DashboardScreenState extends State<DashboardScreen> {
                               );
                             },
                           );
-
                         } else {
                           const String title = 'Cannot start GPS tracking';
                           String content = ' ';

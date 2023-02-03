@@ -1,8 +1,8 @@
 class Phenomenons {
-  double consumption;
-  double co2;
-  double speed;
-  double maf;
+  double? consumption;
+  double? co2;
+  double? speed;
+  double? maf;
 
   Phenomenons({
     this.consumption,

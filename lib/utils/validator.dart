@@ -16,7 +16,7 @@ class Validator {
       RegExp(r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9]).{6,}\$');
   final RegExp usernameRegExp = RegExp(r'[_A-Za-z0-9-]{4,}$');
 
-  String validateEmail(String email) {
+  String? validateEmail(String email) {
     if (!emailRegExp.hasMatch(email)) {
       return 'Enter a valid Email';
     } else {
@@ -24,7 +24,7 @@ class Validator {
     }
   }
 
-  String validatePassword(String password) {
+  String? validatePassword(String password) {
     if (password == '' || password.isEmpty || password == null) {
       return 'Password cannot be empty';
     }
@@ -36,7 +36,7 @@ class Validator {
     return null;
   }
 
-  String validateUsername(String username) {
+  String? validateUsername(String username) {
     if (username == "" || username.isEmpty || username == null) {
       return "Username cannot be blank";
     }

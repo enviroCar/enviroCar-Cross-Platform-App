@@ -5,7 +5,7 @@ import '../constants.dart';
 class TitleWidget extends StatelessWidget {
   final String title;
 
-  const TitleWidget({@required this.title});
+  const TitleWidget({required this.title});
 
   @override
   Widget build(BuildContext context) {

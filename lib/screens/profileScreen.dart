@@ -28,10 +28,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   );
 
   Widget buildIconButton({
-    @required String title,
-    @required IconData iconData,
-    @required void Function() onTap,
-    Color color,
+    required String title,
+    required IconData iconData,
+    required void Function() onTap,
+    Color? color,
   }) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),

@@ -1,17 +1,17 @@
 import './car.dart';
 
 class Fueling {
-  String id;
-  String username;
-  String fuelType;
-  String comment;
-  UnitValue cost;
-  UnitValue mileage;
-  UnitValue volume;
-  bool missedFuelStop;
-  bool partialFueling;
-  String time;
-  Car car;
+  String? id;
+  String? username;
+  String? fuelType;
+  String? comment;
+  UnitValue? cost;
+  UnitValue? mileage;
+  UnitValue? volume;
+  bool? missedFuelStop;
+  bool? partialFueling;
+  String? time;
+  Car? car;
 
   Fueling({
     this.id,
@@ -49,25 +49,25 @@ class Fueling {
     data['fuelType'] = fuelType;
     data['comment'] = comment;
     if (cost != null) {
-      data['cost'] = cost.toJson();
+      data['cost'] = cost!.toJson();
     }
     if (mileage != null) {
-      data['mileage'] = mileage.toJson();
+      data['mileage'] = mileage!.toJson();
     }
     if (volume != null) {
-      data['volume'] = volume.toJson();
+      data['volume'] = volume!.toJson();
     }
     data['missedFuelStop'] = missedFuelStop;
     data['partialFueling'] = partialFueling;
     data['time'] = time;
-    data['car'] = car.properties.id;
+    data['car'] = car!.properties!.id;
     return data;
   }
 }
 
 class UnitValue {
-  String unit;
-  dynamic value;
+  String? unit;
+  dynamic? value;
 
   UnitValue({this.unit, this.value});
 

@@ -20,7 +20,7 @@ class StatsWidget extends StatelessWidget {
         ),
         child: Consumer<UserStatsProvider>(
           builder: (context, userStatsProvider, child) {
-            final UserStats userStats = userStatsProvider.getUserStats;
+            final UserStats? userStats = userStatsProvider.getUserStats;
             return Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -67,9 +67,9 @@ class StatsWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        userStats == null
+                        userStats == null || userStats.distance == null
                             ? '...'
-                            : userStats.distance.toStringAsFixed(1),
+                            : userStats.distance!.toStringAsFixed(1),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: deviceHeight * 0.035,
@@ -100,9 +100,9 @@ class StatsWidget extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        userStats == null
+                        userStats == null || userStats.duration == null
                             ? '...'
-                            : userStats.duration.toStringAsFixed(1),
+                            : userStats.duration!.toStringAsFixed(1),
                         style: TextStyle(
                           color: Colors.white,
                           fontSize: deviceHeight * 0.035,

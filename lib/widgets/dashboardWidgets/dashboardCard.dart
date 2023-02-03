@@ -12,10 +12,10 @@ class DashboardCard extends StatelessWidget {
   final Color iconBackgroundColor;
 
   const DashboardCard({
-    @required this.assetName,
-    @required this.title,
-    @required this.subtitle,
-    @required this.routeName,
+    required this.assetName,
+    required this.title,
+    required this.subtitle,
+    required this.routeName,
     this.iconBackgroundColor = kSpringColor,
   });
 
@@ -35,7 +35,7 @@ class DashboardCard extends StatelessWidget {
           color: Theme.of(context).primaryColor,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey[300],
+              color: Colors.grey[300]!,
               blurRadius: 8.0,
               offset: const Offset(3, 4),
             ),

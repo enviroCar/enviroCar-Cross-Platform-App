@@ -9,7 +9,7 @@ import 'appException.dart';
 enum ResultStatus { success, error }
 
 class Result {
-  final ApplicationException exception;
+  final ApplicationException? exception;
   final dynamic value;
   final ResultStatus status;
 

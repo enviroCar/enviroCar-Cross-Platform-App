@@ -13,7 +13,7 @@ class MapScreen extends StatefulWidget {
 
 class _MapScreenState extends State<MapScreen> {
   bool _locationServiceEnabled = false;
-  Future _startLocationService;
+  late Future _startLocationService;
 
   // checks if location service in enabled
   // prompts permission dialog box if service is disabled

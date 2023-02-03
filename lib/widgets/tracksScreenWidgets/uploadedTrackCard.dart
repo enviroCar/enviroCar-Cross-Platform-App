@@ -16,15 +16,15 @@ class UploadedTrackCard extends StatefulWidget {
   final Track track;
   final int index;
 
-  const UploadedTrackCard({@required this.track, @required this.index});
+  const UploadedTrackCard({required this.track, required this.index});
 
   @override
   _UploadedTrackCardState createState() => _UploadedTrackCardState();
 }
 
 class _UploadedTrackCardState extends State<UploadedTrackCard> {
-  GoogleMapController _googleMapController;
-  Set<Polyline> polyLines;
+  late GoogleMapController _googleMapController;
+  late Set<Polyline> polyLines;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -46,14 +46,14 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
 
   @override
   Widget build(BuildContext context) {
-    final TextStyle textStyle = Theme.of(context).textTheme.headline1;
+    final TextStyle textStyle = Theme.of(context).textTheme.displayLarge!;
 
     return Container(
       width: deviceWidth * 0.9,
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.grey[350],
+            color: Colors.grey[350]!,
             blurRadius: 3.0,
             spreadRadius: 1.0,
             offset: const Offset(-2, 2),
@@ -80,7 +80,7 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                 Container(
                   padding: const EdgeInsets.only(top: 20, bottom: 20, left: 20),
                   child: Text(
-                    widget.track.name,
+                    widget.track.name!,
                     style: const TextStyle(
                       color: kWhiteColor,
                       fontWeight: FontWeight.bold,
@@ -171,9 +171,9 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
               width: double.infinity,
               child: Consumer<TracksProvider>(
                 builder: (context, tracksProvider, child) {
-                  LocalTrackModel trackModel;
-                  LatLng startPosition;
-                  LatLng destinationPosition;
+                  LocalTrackModel? trackModel;
+                  LatLng? startPosition;
+                  LatLng? destinationPosition;
 
                   final bool isListFetched = tracksProvider.getListSetStatus;
 
@@ -181,17 +181,20 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                     trackModel = tracksProvider.getTracksWithId()[widget.index];
 
                     startPosition = LatLng(
-                      trackModel.getProperties.values.first.latitude,
-                      trackModel.getProperties.values.first.longitude,
+                      trackModel!.getProperties!.values.first.latitude!,
+                      trackModel.getProperties!.values.first.longitude!,
                     );
 
                     destinationPosition = LatLng(
-                      trackModel.getProperties.values.last.latitude,
-                      trackModel.getProperties.values.last.longitude,
+                      trackModel.getProperties!.values.last.latitude!,
+                      trackModel.getProperties!.values.last.longitude!,
                     );
                   }
 
-                  if (isListFetched) {
+                  if (isListFetched &&
+                      trackModel != null &&
+                      startPosition != null &&
+                      destinationPosition != null) {
                     return GoogleMap(
                       myLocationButtonEnabled: false,
                       zoomControlsEnabled: false,
@@ -207,9 +210,9 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                           (GoogleMapController googleMapController) async {
                         _googleMapController = googleMapController;
                         polyLines = await setPolyLines(
-                          trackModel.properties.values.toList(),
+                          trackModel!.properties!.values.toList(),
                         );
-                        animateCamera(startPosition, destinationPosition);
+                        animateCamera(startPosition!, destinationPosition!);
                       },
                     );
                   } else {
@@ -252,8 +255,8 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        widget.track.end
-                            .difference(widget.track.begin)
+                        widget.track.end!
+                            .difference(widget.track.begin!)
                             .toString()
                             .replaceFirst('.000000', ''),
                         style: const TextStyle(
@@ -277,7 +280,7 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                     children: [
                       Text(
                         widget.track.length != null
-                            ? '${widget.track.length.toStringAsFixed(2)}km'
+                            ? '${widget.track.length?.toStringAsFixed(2)}km'
                             : '0km',
                         style: const TextStyle(
                           color: kSpringColor,

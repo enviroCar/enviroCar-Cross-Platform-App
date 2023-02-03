@@ -25,10 +25,16 @@ class _AttributesOptionState extends State<AttributesOption> {
   );
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  Properties newProperties = Properties();
+  Properties newProperties = Properties(
+      constructionYear: null,
+      engineDisplacement: null,
+      fuelType: null,
+      id: null,
+      manufacturer: null,
+      model: null);
 
   Future<void> createCar() async {
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       _logger.i('createCar called');
       final AuthProvider authProvider =
           Provider.of<AuthProvider>(context, listen: false);
@@ -37,7 +43,7 @@ class _AttributesOptionState extends State<AttributesOption> {
           Provider.of<CarsProvider>(context, listen: false);
 
       final Car newCar = Car(
-        username: authProvider.getUser.getUsername,
+        username: authProvider.getUser?.getUsername,
         type: 'car',
         properties: newProperties,
       );
@@ -49,7 +55,7 @@ class _AttributesOptionState extends State<AttributesOption> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Colors.red,
-                content: Text(result.exception.getErrorMessage()),
+                content: Text(result.exception!.getErrorMessage()!),
               ),
             );
           }
@@ -60,13 +66,13 @@ class _AttributesOptionState extends State<AttributesOption> {
             final String carID = result.value as String;
 
             // set the ID fetched to the car object
-            newCar.properties.id = carID;
+            newCar.properties!.id = carID;
 
             // set username in fueling object to identify the creator when
             // fetching from Hive
             final AuthProvider authProvider =
                 Provider.of<AuthProvider>(context, listen: false);
-            newCar.username = authProvider.getUser.getUsername;
+            newCar.username = authProvider.getUser?.getUsername;
 
             // store the data in local db
             CarsCollection().addCarToHive(car: newCar.toJson());
@@ -115,7 +121,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   newProperties.manufacturer = value;
                 },
                 validator: (value) {
-                  if (value.isEmpty || value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Required';
                   }
                   return null;
@@ -135,7 +141,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   newProperties.model = value;
                 },
                 validator: (value) {
-                  if (value.isEmpty || value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Required';
                   }
                   return null;
@@ -156,7 +162,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   newProperties.constructionYear = int.parse(value);
                 },
                 validator: (value) {
-                  if (value.isEmpty || value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Required';
                   }
                   return null;
@@ -176,7 +182,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   newProperties.fuelType = value;
                 },
                 validator: (value) {
-                  if (value.isEmpty || value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Required';
                   }
                   return null;
@@ -197,7 +203,7 @@ class _AttributesOptionState extends State<AttributesOption> {
                   newProperties.engineDisplacement = int.parse(value);
                 },
                 validator: (value) {
-                  if (value.isEmpty || value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Required';
                   }
                   return null;

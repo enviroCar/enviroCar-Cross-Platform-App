@@ -7,7 +7,7 @@ class RippleAnimation extends StatefulWidget {
   final double size;
   final Widget child;
 
-  const RippleAnimation({this.size, this.child});
+  const RippleAnimation({required this.size, required this.child});
 
   @override
   _RippleAnimationState createState() => _RippleAnimationState();
@@ -15,7 +15,7 @@ class RippleAnimation extends StatefulWidget {
 
 class _RippleAnimationState extends State<RippleAnimation>
     with TickerProviderStateMixin {
-  AnimationController animationController;
+  late AnimationController animationController;
 
   @override
   void initState() {

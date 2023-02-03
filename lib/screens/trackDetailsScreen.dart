@@ -14,9 +14,9 @@ class TrackDetailsScreen extends StatelessWidget {
   final int index;
 
   const TrackDetailsScreen({
-    @required this.track,
-    @required this.trackType,
-    @required this.index,
+    required this.track,
+    required this.trackType,
+    required this.index,
   });
 
   @override

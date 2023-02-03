@@ -18,5 +18,5 @@ void displaySnackBar(String message) {
       borderRadius: BorderRadius.circular(15),
     ),
   );
-  scaffoldMessengerState.currentState.showSnackBar(snackBar);
+  scaffoldMessengerState.currentState?.showSnackBar(snackBar);
 }

@@ -13,11 +13,11 @@ class StatusIndicatorCard extends StatelessWidget {
   final VoidCallback function;
 
   const StatusIndicatorCard({
-    @required this.heading,
-    @required this.subHeading,
-    @required this.buttonTitle,
-    @required this.icon,
-    @required this.function,
+    required this.heading,
+    required this.subHeading,
+    required this.buttonTitle,
+    required this.icon,
+    required this.function,
   });
 
   @override

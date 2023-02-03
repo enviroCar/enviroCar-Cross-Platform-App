@@ -35,24 +35,24 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
   // Form key to validate the fueling form
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  bool partialFueling;
-  bool missedPreviousFueling;
+  late bool partialFueling;
+  late bool missedPreviousFueling;
 
-  Car selectedCar;
+  late Car selectedCar;
 
   // Controllers for textfields to fetch the input data
-  TextEditingController mileageController;
-  TextEditingController fueledVolumeController;
-  TextEditingController pricePerLitreController;
-  TextEditingController totalPriceController;
-  TextEditingController commentController;
+  late TextEditingController mileageController;
+  late TextEditingController fueledVolumeController;
+  late TextEditingController pricePerLitreController;
+  late TextEditingController totalPriceController;
+  late TextEditingController commentController;
 
   // Triggered when 'Add' button is pressed after filling the form
   // Creates the fueling object and stores it in Provider
   Future<void> createFueling() async {
     _logger.i('addFueling called');
 
-    if (_formKey.currentState.validate()) {
+    if (_formKey.currentState != null && _formKey.currentState!.validate()) {
       final UnitValue mileage = UnitValue(
         value: double.parse(mileageController.text),
         unit: 'KILOMETRES',
@@ -70,7 +70,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
 
       final Fueling fueling = Fueling(
         car: selectedCar,
-        fuelType: selectedCar.properties.fuelType,
+        fuelType: selectedCar.properties!.fuelType,
         time: '${DateTime.now().toIso8601String().substring(0, 19)}Z',
         mileage: mileage,
         volume: volume,
@@ -89,7 +89,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 backgroundColor: Colors.red,
-                content: Text(result.exception.getErrorMessage()),
+                content: Text(result.exception!.getErrorMessage()!),
               ),
             );
           }
@@ -106,7 +106,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
             // fetching from Hive
             final AuthProvider authProvider =
                 Provider.of<AuthProvider>(context, listen: false);
-            fueling.username = authProvider.getUser.getUsername;
+            fueling.username = authProvider.getUser?.getUsername;
 
             // set Car object in the fueling for Hive
             final Map<String, dynamic> fuelingMap = fueling.toJson();
@@ -200,10 +200,10 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                       elevation: 24,
                       icon: const Icon(Icons.arrow_drop_down_rounded),
                       value: selectedCar,
-                      onChanged: (Car newValue) {
+                      onChanged: (Car? newValue) {
                         FocusScope.of(context).requestFocus(FocusNode());
                         setState(() {
-                          selectedCar = newValue;
+                          selectedCar = newValue!;
                         });
                       },
                       items: List.generate(
@@ -212,7 +212,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                           return DropdownMenuItem<Car>(
                             value: carsList[index],
                             child: Text(
-                              '${carsList[index].properties.manufacturer} ${carsList[index].properties.model}',
+                              '${carsList[index].properties!.manufacturer} ${carsList[index].properties!.model}',
                             ),
                           );
                         },
@@ -257,9 +257,9 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Partial Fueling?'),
                 value: partialFueling,
-                onChanged: (bool val) {
+                onChanged: (bool? val) {
                   setState(() {
-                    partialFueling = val;
+                    partialFueling = val!;
                   });
                 },
               ),
@@ -269,9 +269,9 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                 contentPadding: EdgeInsets.zero,
                 title: const Text('Missed Previous Fueling?'),
                 value: missedPreviousFueling,
-                onChanged: (bool val) {
+                onChanged: (bool? val) {
                   setState(() {
-                    missedPreviousFueling = val;
+                    missedPreviousFueling = val!;
                   });
                 },
               ),
@@ -285,7 +285,7 @@ class _CreateFuelingScreenState extends State<CreateFuelingScreen> {
                 maxLines: 5,
                 controller: commentController,
                 validator: (value) {
-                  if (value.isEmpty || value == null) {
+                  if (value == null || value.isEmpty) {
                     return 'Required';
                   }
                   return null;

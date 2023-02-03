@@ -24,7 +24,7 @@ class _CarsListWidgetState extends State<CarsListWidget> {
     return Consumer<CarsProvider>(
       builder: (_, carsProvider, child) {
         final List<Car> carsList = carsProvider.getCarsList;
-        final Car selectedCar = carsProvider.getSelectedCar;
+        final Car? selectedCar = carsProvider.getSelectedCar;
 
         // Cars haven't been fetched from Hive yet so fetch them
         if (carsList == null) {
@@ -66,18 +66,18 @@ class _CarsListWidgetState extends State<CarsListWidget> {
                   contentPadding: EdgeInsets.zero,
                   leading: const Icon(Icons.drive_eta_sharp),
                   title: Text(
-                    '${carsList[index].properties.manufacturer} - ${carsList[index].properties.model}',
+                    '${carsList[index].properties!.manufacturer} - ${carsList[index].properties!.model}',
                   ),
                   subtitle: Text(
-                    '${carsList[index].properties.constructionYear}, ${carsList[index].properties.engineDisplacement}, ${carsList[index].properties.fuelType}',
+                    '${carsList[index].properties!.constructionYear}, ${carsList[index].properties!.engineDisplacement}, ${carsList[index].properties!.fuelType}',
                   ),
                   trailing: Radio(
-                    onChanged: (bool value) {},
+                    onChanged: (bool? value) {},
                     groupValue: true,
                     value: selectedCar == null
                         ? false
-                        : (carsList[index].properties.id ==
-                                selectedCar.properties.id
+                        : (carsList[index].properties!.id ==
+                                selectedCar.properties!.id
                             ? true
                             : false),
                   ),

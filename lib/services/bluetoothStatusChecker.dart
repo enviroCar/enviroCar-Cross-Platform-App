@@ -33,7 +33,7 @@ class BluetoothStatusChecker {
   Duration checkInterval = DEFAULT_INTERVAL;
 
   /// function to send status updates
-  Future _sendStatusUpdate([Timer timer]) async {
+  Future _sendStatusUpdate([Timer? timer]) async {
     _timer?.cancel();
     timer?.cancel();
 
@@ -56,8 +56,8 @@ class BluetoothStatusChecker {
     _lastStatus = _currentStatus;
   }
 
-  BluetoothConnectionStatus _lastStatus;
-  Timer _timer;
+  BluetoothConnectionStatus? _lastStatus;
+  Timer? _timer;
 
   final StreamController<BluetoothConnectionStatus> _statusController =
       StreamController.broadcast();

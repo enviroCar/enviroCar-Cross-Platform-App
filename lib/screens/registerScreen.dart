@@ -24,10 +24,10 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _username;
-  String _password;
-  String _confirmPassword;
-  String _email;
+  late String _username;
+  late String _password;
+  late String _confirmPassword;
+  late String _email;
   bool _acceptedTerms = false;
   bool _acceptedPrivacy = false;
   bool _showError = false;
@@ -63,7 +63,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (OverscrollIndicatorNotification overscroll) {
               overscroll.disallowIndicator();
-              return;
+              return false;
             },
             child: Form(
               key: _formKey,
@@ -162,7 +162,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onChanged: (value) {
                             setState(
                               () {
-                                _acceptedTerms = value;
+                                _acceptedTerms = value!;
                               },
                             );
                           },
@@ -187,7 +187,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           onChanged: (value) {
                             setState(
                               () {
-                                _acceptedPrivacy = value;
+                                _acceptedPrivacy = value!;
                               },
                             );
                           },
@@ -228,7 +228,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           });
                         }
 
-                        if (_formKey.currentState.validate() && !_showError) {
+                        if (_formKey.currentState != null &&
+                            _formKey.currentState!.validate() &&
+                            !_showError) {
                           _logger.i('Registering user');
                           final User _newUser = User(
                             username: _username,

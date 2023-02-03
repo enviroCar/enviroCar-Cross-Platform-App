@@ -7,5 +7,5 @@ import 'package:fl_chart/fl_chart.dart';
 /// points on the y-axis
 class ChartData {
   List<FlSpot> dataPoints = [];
-  double dataInterval;
+  double? dataInterval;
 }

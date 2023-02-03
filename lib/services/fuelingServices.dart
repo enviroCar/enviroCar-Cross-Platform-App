@@ -11,15 +11,15 @@ import '../exceptionHandling/errorHandler.dart';
 import '../exceptionHandling/appException.dart';
 
 class FuelingServices {
-  Future<Result> getFuelingsFromServer({@required BuildContext context}) async {
+  Future<Result> getFuelingsFromServer({required BuildContext context}) async {
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
 
     final FuelingsProvider fuelingsProvider =
         Provider.of<FuelingsProvider>(context, listen: false);
 
-    final String username = authProvider.getUser.getUsername;
-    final String token = authProvider.getUser.getPassword;
+    final String? username = authProvider.getUser?.getUsername;
+    final String? token = authProvider.getUser?.getPassword;
 
     final String uri =
         'https://envirocar.org/api/stable/users/$username/fuelings';
@@ -53,14 +53,14 @@ class FuelingServices {
   }
 
   Future<Result> uploadFuelingToServer({
-    @required BuildContext context,
-    @required Fueling fueling,
+    required BuildContext context,
+    required Fueling fueling,
   }) async {
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
 
-    final String username = authProvider.getUser.getUsername;
-    final String token = authProvider.getUser.getPassword;
+    final String? username = authProvider.getUser?.getUsername;
+    final String? token = authProvider.getUser?.getPassword;
 
     final String uri =
         'https://envirocar.org/api/stable/users/$username/fuelings';
@@ -77,9 +77,9 @@ class FuelingServices {
         data: fueling.toJson(),
       );
 
-      final String locationLink = response.headers['location'][0];
-      final List<String> locationList = locationLink.split('/');
-      final String fuelingID = locationList.last;
+      final String? locationLink = response.headers['location']?[0];
+      final List<String>? locationList = locationLink?.split('/');
+      final String fuelingID = locationList!.last;
 
       return Result.success(fuelingID);
     } catch (e) {

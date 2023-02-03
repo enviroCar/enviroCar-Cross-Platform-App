@@ -15,7 +15,7 @@ import '../widgets/trackDetailsWidgets/chartWidget.dart';
 class ChartScreen extends StatefulWidget {
   final Map<String, dynamic> track;
 
-  const ChartScreen({@required this.track});
+  const ChartScreen({required this.track});
 
   @override
   _ChartScreenState createState() => _ChartScreenState();
@@ -30,11 +30,11 @@ class _ChartScreenState extends State<ChartScreen> {
 
   List<double> dists = [];
   double totalDist = 0;
-  double distanceInterval;
+  double? distanceInterval;
 
   void pullDataFromTrack({
-    @required String dataName,
-    @required ChartData chartData,
+    required String dataName,
+    required ChartData chartData,
   }) {
     double data;
     double maxData = 0;
@@ -65,15 +65,15 @@ class _ChartScreenState extends State<ChartScreen> {
 
     for (int i = 0; i < min(dists.length, dataList.length); i++) {
       final FlSpot newSpot = FlSpot(
-        dists[i] / distanceInterval,
-        dataList[i] / chartData.dataInterval,
+        dists[i] / distanceInterval!,
+        dataList[i] / chartData.dataInterval!,
       );
       chartData.dataPoints.add(newSpot);
     }
   }
 
   void pullDistanceData() {
-    List<dynamic> prevCoord;
+    List<dynamic>? prevCoord;
 
     final List<dynamic> featuresList =
         widget.track['features'] as List<dynamic>;
@@ -147,31 +147,31 @@ class _ChartScreenState extends State<ChartScreen> {
             if (speedChartData.dataPoints.isNotEmpty)
               ChartWidget(
                 chartTitle: 'Speed',
-                xInterval: distanceInterval,
+                xInterval: distanceInterval!,
                 chartData: speedChartData,
               ),
             if (consumptionChartData.dataPoints.isNotEmpty)
               ChartWidget(
                 chartTitle: 'Consumption',
-                xInterval: distanceInterval,
+                xInterval: distanceInterval!,
                 chartData: consumptionChartData,
               ),
             if (co2ChartData.dataPoints.isNotEmpty)
               ChartWidget(
                 chartTitle: 'CO2',
-                xInterval: distanceInterval,
+                xInterval: distanceInterval!,
                 chartData: co2ChartData,
               ),
             if (altitudeChartData.dataPoints.isNotEmpty)
               ChartWidget(
                 chartTitle: 'Altitude',
-                xInterval: distanceInterval,
+                xInterval: distanceInterval!,
                 chartData: altitudeChartData,
               ),
             if (gpsAltitudeChartData.dataPoints.isNotEmpty)
               ChartWidget(
                 chartTitle: 'GPS Altitude',
-                xInterval: distanceInterval,
+                xInterval: distanceInterval!,
                 chartData: gpsAltitudeChartData,
               ),
           ],

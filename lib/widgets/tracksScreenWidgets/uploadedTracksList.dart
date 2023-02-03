@@ -40,7 +40,7 @@ class _UploadedTracksListState extends State<UploadedTracksList> {
                   SnackBar(
                     backgroundColor: kErrorColor,
                     content: Text(
-                      result.exception.getErrorMessage(),
+                      result.exception!.getErrorMessage()!,
                     ),
                   ),
                 );

@@ -27,8 +27,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
   static final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
-  String _username;
-  String _password;
+  String? _username;
+  String? _password;
   bool _wrongCredentials = false;
 
   Future<void> _showDialogbox(String message) async {
@@ -54,7 +54,7 @@ class _LoginScreenState extends State<LoginScreen> {
           child: NotificationListener<OverscrollIndicatorNotification>(
             onNotification: (OverscrollIndicatorNotification overscroll) {
               overscroll.disallowIndicator();
-              return;
+              return false;
             },
             child: Form(
               key: _formKey,
@@ -138,9 +138,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
                         // if (_formKey.currentState.validate()) {
                         final User _user = User(
-                          username: _username,
-                          password: _password,
-                        );
+                            username: _username!,
+                            password: _password!,
+                            acceptedPrivacy: false,
+                            acceptedTerms: false);
 
                         await AuthenticationServices()
                             .loginUser(
@@ -152,8 +153,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             if (result.status == ResultStatus.error) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(
-                                  content:
-                                      Text(result.exception.getErrorMessage()),
+                                  content: Text(
+                                      result.exception!.getErrorMessage()!),
                                 ),
                               );
                             } else {

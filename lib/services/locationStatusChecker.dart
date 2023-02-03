@@ -30,7 +30,7 @@ class LocationStatusChecker {
   Duration checkInterval = DEFAULT_INTERVAL;
 
   /// function to send status updates
-  Future _sendStatusUpdates([Timer timer]) async {
+  Future _sendStatusUpdates([Timer? timer]) async {
     _timer?.cancel();
     timer?.cancel();
 
@@ -53,8 +53,8 @@ class LocationStatusChecker {
     _lastStatus = _currentStatus;
   }
 
-  LocationStatus _lastStatus;
-  Timer _timer;
+  LocationStatus? _lastStatus;
+  Timer? _timer;
 
   final StreamController<LocationStatus> _statusController =
       StreamController.broadcast();

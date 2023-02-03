@@ -4,7 +4,7 @@ import '../models/fueling.dart';
 
 // Provides data of the Log Book
 class FuelingsProvider with ChangeNotifier {
-  List<Fueling> _fuelingsList;
+  List<Fueling> _fuelingsList = [];
 
   // Adds newly created fueling data and notifies log book screen
   void addFueling(Fueling fueling) {
@@ -16,7 +16,7 @@ class FuelingsProvider with ChangeNotifier {
   }
 
   // delete fueling log from ID
-  void deleteFueling({@required String id}) {
+  void deleteFueling({required String id}) {
     _fuelingsList.removeWhere((Fueling fueling) => fueling.id == id);
   }
 

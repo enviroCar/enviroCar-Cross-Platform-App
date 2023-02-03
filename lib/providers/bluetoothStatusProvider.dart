@@ -4,7 +4,7 @@ import '../utils/enums.dart';
 import '../services/bluetoothStatusChecker.dart';
 
 class BluetoothStatusProvider extends ChangeNotifier {
-  BluetoothConnectionStatus bluetoothStatus;
+  late BluetoothConnectionStatus bluetoothStatus;
 
   factory BluetoothStatusProvider() => _bluetoothStatusProvider;
 

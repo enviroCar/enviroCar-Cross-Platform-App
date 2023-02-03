@@ -21,14 +21,14 @@ class FuelingsCollection {
   }
 
   // fetches all the fueling logs from the box if there's no internet
-  void getFuelingsFromHive({@required BuildContext context}) {
+  void getFuelingsFromHive({required BuildContext context}) {
     final FuelingsProvider fuelingsProvider =
         Provider.of<FuelingsProvider>(context, listen: false);
 
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
 
-    final String username = authProvider.getUser.getUsername;
+    final String? username = authProvider.getUser?.getUsername;
 
     final List<dynamic> fuelingsList = [];
 

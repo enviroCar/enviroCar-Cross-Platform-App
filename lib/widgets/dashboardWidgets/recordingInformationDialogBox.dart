@@ -7,8 +7,8 @@ class RecordingInformationDialogBox extends StatelessWidget {
   final VoidCallback onButtonTap;
 
   const RecordingInformationDialogBox({
-    @required this.onButtonTap,
-});
+    required this.onButtonTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +51,7 @@ class RecordingInformationDialogBox extends StatelessWidget {
               'You can start your track recording by tapping the "Start Recording" button below. Personal Location information and data collected from the OBD-II device get recorded. You can also edit your location data sharing preferences by toggling the parameters you do not want to record from the data privacy and control settings.',
               textAlign: TextAlign.left,
               style: TextStyle(
-                color: Theme.of(context).textTheme.caption.color,
+                color: Theme.of(context).textTheme.bodySmall!.color,
                 fontWeight: FontWeight.normal,
                 fontSize: 15,
               ),
@@ -91,7 +91,8 @@ class RecordingInformationDialogBox extends StatelessWidget {
               ),
               InkWell(
                 onTap: () {
-                  Navigator.pushNamed(context, DataPrivacyControlScreen.routeName);
+                  Navigator.pushNamed(
+                      context, DataPrivacyControlScreen.routeName);
                 },
                 child: Container(
                   padding: const EdgeInsets.only(

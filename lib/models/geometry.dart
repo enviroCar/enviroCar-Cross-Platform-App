@@ -1,9 +1,9 @@
 import 'dart:core';
 
 class Geometry {
-  String type;
-  double latitude;
-  double longitude;
+  String? type;
+  double? latitude;
+  double? longitude;
 
   Geometry({
     this.type,

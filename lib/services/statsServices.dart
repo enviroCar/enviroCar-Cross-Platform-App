@@ -13,7 +13,7 @@ class StatsServices {
   final baseUri = 'https://envirocar.org/api/stable';
 
   // Fetches user stats
-  Future<Result> getUserStats({@required BuildContext context}) async {
+  Future<Result> getUserStats({required BuildContext context}) async {
     final AuthProvider authProvider =
         Provider.of<AuthProvider>(context, listen: false);
     final UserStatsProvider userStatsProvider =
@@ -21,11 +21,11 @@ class StatsServices {
 
     try {
       final dio.Response response = await dio.Dio().get(
-        '$baseUri/users/${authProvider.getUser.getUsername}/userStatistic',
+        '$baseUri/users/${authProvider.getUser?.getUsername}/userStatistic',
         options: dio.Options(
           headers: {
-            'X-User': authProvider.getUser.getUsername,
-            'X-Token': authProvider.getUser.getPassword,
+            'X-User': authProvider.getUser?.getUsername,
+            'X-Token': authProvider.getUser?.getPassword,
           },
         ),
       );

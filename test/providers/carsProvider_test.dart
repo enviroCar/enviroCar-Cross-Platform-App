@@ -42,6 +42,7 @@ void main() {
       Provider.of<CarsProvider>(childContext, listen: false).setSelectedCar =
           Car(
         type: "car",
+        username: null,
         properties: Properties(
           id: 'dummyID',
           constructionYear: 2020,
@@ -54,8 +55,8 @@ void main() {
 
       // Fetch the new data and check if it matches the one stored in it
       expect(
-        Provider.of<CarsProvider>(childContext, listen: false).getSelectedCar
-          ..properties.fuelType,
+        Provider.of<CarsProvider>(childContext, listen: false).getSelectedCar!
+          ..properties!.fuelType,
         'HYBRID',
       );
     },

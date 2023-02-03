@@ -60,8 +60,8 @@ class CustomExpansionTile extends StatefulWidget {
   final String answer;
 
   CustomExpansionTile({
-    @required this.question,
-    @required this.answer,
+    required this.question,
+    required this.answer,
   });
 
   @override
@@ -69,11 +69,10 @@ class CustomExpansionTile extends StatefulWidget {
 }
 
 class _CustomExpansionTileState extends State<CustomExpansionTile> {
-  bool isExpanded;
+  bool isExpanded = false;
 
   @override
   void initState() {
-    isExpanded = false;
     super.initState();
   }
 
@@ -93,7 +92,7 @@ class _CustomExpansionTileState extends State<CustomExpansionTile> {
           ),
           child: Icon(
             Icons.question_answer_rounded,
-            color: isExpanded ? kErrorColor: kGreyColor,
+            color: isExpanded ? kErrorColor : kGreyColor,
             size: 16,
           ),
         ),

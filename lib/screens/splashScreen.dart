@@ -47,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     backgroundColor: Colors.red,
-                    content: Text(result.exception.getErrorMessage()),
+                    content: Text(result.exception!.getErrorMessage()!),
                   ),
                 );
               }

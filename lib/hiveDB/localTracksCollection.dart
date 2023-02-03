@@ -11,9 +11,9 @@ mixin LocalTracks {
   }
 
   /// function to return list of local tracks
-  static List<LocalTrackModel> getLocalTracks() {
+  static List<LocalTrackModel?> getLocalTracks() {
     final tracksBox = Hive.box<LocalTrackModel>(localTracksTableName);
-    final List<LocalTrackModel> list = [];
+    final List<LocalTrackModel?> list = [];
     final int size = tracksBox.length;
     for (var i = 0; i < size; i++) {
       list.add(tracksBox.getAt(i));
@@ -28,7 +28,7 @@ mixin LocalTracks {
   }
 
   /// function to get [track] at index [index]
-  static LocalTrackModel getTrackAtIndex(int index) {
+  static LocalTrackModel? getTrackAtIndex(int index) {
     final tracksBox = Hive.box<LocalTrackModel>(localTracksTableName);
     return tracksBox.getAt(index);
   }

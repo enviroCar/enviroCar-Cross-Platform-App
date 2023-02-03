@@ -7,8 +7,8 @@ class SettingsTileModel {
   bool isChecked;
 
   SettingsTileModel({
-    @required this.title,
-    @required this.subtitle,
-    @required this.isChecked,
+    required this.title,
+    required this.subtitle,
+    required this.isChecked,
   });
 }

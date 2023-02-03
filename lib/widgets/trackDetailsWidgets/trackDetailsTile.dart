@@ -8,9 +8,9 @@ class TrackDetailsTile extends StatelessWidget {
   final IconData iconData;
 
   const TrackDetailsTile({
-    @required this.title,
-    @required this.details,
-    @required this.iconData,
+    required this.title,
+    required this.details,
+    required this.iconData,
   });
 
   @override

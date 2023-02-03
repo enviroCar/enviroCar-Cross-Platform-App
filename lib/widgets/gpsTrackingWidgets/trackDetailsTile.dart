@@ -6,7 +6,7 @@ class TrackDetailsTile extends StatelessWidget {
   final String title;
   final String subTitle;
 
-  const TrackDetailsTile({@required this.title, @required this.subTitle});
+  const TrackDetailsTile({required this.title, required this.subTitle});
 
   @override
   Widget build(BuildContext context) {

@@ -39,12 +39,12 @@ class NotificationService {
 
   Future onDidReceiveLocalNotification(
     int id,
-    String title,
-    String body,
-    String payload,
+    String? title,
+    String? body,
+    String? payload,
   ) async {}
 
-  Future onSelectNotification(String payload) async {
+  Future onSelectNotification(String? payload) async {
     // handle notification tapped logic
     if (payload != null) {
       debugPrint('notification $payload');
@@ -72,11 +72,15 @@ class NotificationService {
 
   // iOS platform channel specifics
   static IOSNotificationDetails iosNotificationDetails = IOSNotificationDetails(
-    presentAlert: false, // presents an alert when the notification is displayed and the app is in foreground (from iOS 10 onwards)
-    presentBadge: false, // presents the badge number when the notification is displayed and the app is in foreground (from iOS 10 onwards)
-    presentSound: false, // play a sound when the notification is displayed and the app is in foreground (from iOS 10 onwards)
+    presentAlert:
+        false, // presents an alert when the notification is displayed and the app is in foreground (from iOS 10 onwards)
+    presentBadge:
+        false, // presents the badge number when the notification is displayed and the app is in foreground (from iOS 10 onwards)
+    presentSound:
+        false, // play a sound when the notification is displayed and the app is in foreground (from iOS 10 onwards)
     attachments: iosNotificationAttachment, // only from iOS 10 onwards
-    subtitle: channelDescription, // secondary description (only from iOS 10 onwards)
+    subtitle:
+        channelDescription, // secondary description (only from iOS 10 onwards)
     threadIdentifier: channelId, // only from iOS 10 onwards
   );
 

@@ -1,12 +1,12 @@
 class Car {
-  String username;
-  String type;
-  Properties properties;
+  String? username;
+  String? type;
+  Properties? properties;
 
   Car({
-    this.username,
-    this.type,
-    this.properties,
+    required this.username,
+    required this.type,
+    required this.properties,
   });
 
   Car.fromJson(dynamic json) {
@@ -21,28 +21,28 @@ class Car {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['username'] = username;
     data['type'] = type;
-    if (properties != null) {
-      data['properties'] = properties.toJson();
-    }
+
+    data['properties'] = properties!.toJson();
+
     return data;
   }
 }
 
 class Properties {
-  int engineDisplacement;
-  String model;
-  String id;
-  String fuelType;
-  int constructionYear;
-  String manufacturer;
+  int? engineDisplacement;
+  String? model;
+  String? id;
+  String? fuelType;
+  int? constructionYear;
+  String? manufacturer;
 
   Properties({
-    this.engineDisplacement,
-    this.model,
-    this.id,
-    this.fuelType,
-    this.constructionYear,
-    this.manufacturer,
+    required this.engineDisplacement,
+    required this.model,
+    required this.id,
+    required this.fuelType,
+    required this.constructionYear,
+    required this.manufacturer,
   });
 
   Properties.fromJson(dynamic json) {

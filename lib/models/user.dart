@@ -1,20 +1,20 @@
 // TODO: Add missing attributes
 class User {
-  String _username;
-  String _password;
-  String _email;
-  bool _acceptedTerms;
-  bool _acceptedPrivacy;
+  late String _username;
+  late String _password;
+  String? _email;
+  late bool _acceptedTerms;
+  late bool _acceptedPrivacy;
 
   User({
-    String username,
-    String email,
-    String password,
-    bool acceptedTerms,
-    bool acceptedPrivacy,
+    required String username,
+    String? email,
+    required String password,
+    required bool acceptedTerms,
+    required bool acceptedPrivacy,
   }) {
     setUsername = username;
-    setEmail = email;
+    setEmail = email!;
     setPassword = password;
     setAcceptedTerms = acceptedTerms;
     setAcceptedPrivacy = acceptedPrivacy;
@@ -48,7 +48,7 @@ class User {
     return _password;
   }
 
-  String get getEmail {
+  String? get getEmail {
     return _email;
   }
 

@@ -26,8 +26,8 @@ class GpsTrackingScreen extends StatefulWidget {
 
 class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
   final Completer<GoogleMapController> _googleMapController = Completer();
-  GpsTrackProvider gpsTrackProvider;
-  bool showPauseIcon;
+  late GpsTrackProvider gpsTrackProvider;
+  bool showPauseIcon = false;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -83,7 +83,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                     polylines: gpsTrackProvider.getPolyLines,
                     circles: gpsTrackProvider.getCircles,
                     zoomControlsEnabled: false,
-                    initialCameraPosition: gpsTrackProvider.getCameraPosition,
+                    initialCameraPosition: gpsTrackProvider.getCameraPosition!,
                     onMapCreated:
                         (GoogleMapController googleMapController) async {
                       _googleMapController.complete(googleMapController);
@@ -311,7 +311,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
                                 DetailsIcon(
                                   title: 'Distance',
                                   data:
-                                      '${gpsTrackProvider.getDistance.toStringAsFixed(2)} km',
+                                      '${gpsTrackProvider.getDistance!.toStringAsFixed(2)} km',
                                   iconData: Icons.trending_up_rounded,
                                 ),
                               ],
@@ -353,7 +353,7 @@ class _GpsTrackingScreenState extends State<GpsTrackingScreen> {
 
   Future myLocation() async {
     final GoogleMapController mapController = await _googleMapController.future;
-    final CameraPosition cameraPosition = gpsTrackProvider.getCameraPosition;
+    final CameraPosition cameraPosition = gpsTrackProvider.getCameraPosition!;
     mapController.animateCamera(CameraUpdate.newCameraPosition(cameraPosition));
   }
 }

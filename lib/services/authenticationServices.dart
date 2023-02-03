@@ -27,7 +27,7 @@ class AuthenticationServices {
 
   // Creates a new User
   Future<String> registerUser({
-    @required User user,
+    required User user,
   }) async {
     final Uri uri = Uri.parse(baseUri);
 
@@ -52,8 +52,8 @@ class AuthenticationServices {
 
   // Logs in user
   Future<Result> loginUser({
-    @required BuildContext context,
-    @required User user,
+    required BuildContext context,
+    required User user,
   }) async {
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
@@ -97,14 +97,14 @@ class AuthenticationServices {
   }
 
   // Logs in user if they didn't logout the last time they opened the app
-  Future<Result> silentSignIn({@required BuildContext context}) async {
+  Future<Result> silentSignIn({required BuildContext context}) async {
     final AuthProvider _authProvider =
         Provider.of<AuthProvider>(context, listen: false);
 
     // We get the username and token stored in the secure storage
-    final User user = await SecureStorageServices().getUserFromSecureStorage();
+    final User? user = await SecureStorageServices().getUserFromSecureStorage();
 
-    if (user.getUsername != null && user.getPassword != null) {
+    if (user != null) {
       try {
         final Result result = await loginUser(
           context: context,
@@ -125,9 +125,9 @@ class AuthenticationServices {
 
   // Log user out and deletes their username and token from secure storage
   void logoutUser({
-    @required AuthProvider authProvider,
-    @required UserStatsProvider userStatsProvider,
-    @required TracksProvider tracksProvider,
+    required AuthProvider authProvider,
+    required UserStatsProvider userStatsProvider,
+    required TracksProvider tracksProvider,
   }) {
     SecureStorageServices().deleteUserFromSecureStorage();
     userStatsProvider.removeStats();

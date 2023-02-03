@@ -23,19 +23,19 @@ import '../exceptionHandling/appException.dart';
 class TracksServices {
   /// function to get all the tracks uploaded by the currently signed in user
   Future<Result> getTracksFromServer({
-    @required AuthProvider authProvider,
-    @required TracksProvider tracksProvider,
+    required AuthProvider authProvider,
+    required TracksProvider tracksProvider,
   }) async {
     final String uri =
-        'https://envirocar.org/api/stable/users/${authProvider.getUser.getUsername}/tracks';
+        'https://envirocar.org/api/stable/users/${authProvider.getUser?.getUsername}/tracks';
 
     try {
       final dio.Response response = await dio.Dio().get(
         uri,
         options: dio.Options(
           headers: {
-            'X-User': authProvider.getUser.getUsername,
-            'X-Token': authProvider.getUser.getPassword,
+            'X-User': authProvider.getUser?.getUsername,
+            'X-Token': authProvider.getUser?.getPassword,
           },
         ),
       );
@@ -50,18 +50,18 @@ class TracksServices {
   }
 
   /// function to get track with specific id from the server
-  Future<LocalTrackModel> getTrackWithId(String id) async {
-    final User user = await SecureStorageServices().getUserFromSecureStorage();
+  Future<LocalTrackModel?> getTrackWithId(String? id) async {
+    final User? user = await SecureStorageServices().getUserFromSecureStorage();
     final String uri =
-        'https://envirocar.org/api/stable/users/${user.getUsername}/tracks/$id';
+        'https://envirocar.org/api/stable/users/${user?.getUsername}/tracks/$id';
 
     try {
       final dio.Response response = await dio.Dio().get(
         uri,
         options: dio.Options(
           headers: {
-            'X-User': user.getUsername,
-            'X-Token': user.getPassword,
+            'X-User': user?.getUsername,
+            'X-Token': user?.getPassword,
           },
         ),
       );
@@ -96,18 +96,19 @@ class TracksServices {
       }
 
       final LocalTrackModel localTrackModel = LocalTrackModel(
-        trackId: response.data['properties']['id'] as String,
-        trackName: response.data['properties']['name'] as String,
-        startTime: formatDate(response.data['properties']['begin'] as String),
-        endTime: formatDate(response.data['properties']['end'] as String),
-        duration: duration.toString().replaceFirst('.000000', ''),
-        distance: response.data['properties']['length'] as double,
-        speed: response.data['properties']['length'] / time as double,
-        selectedCarId:
-            response.data['properties']['sensor']['properties']['id'] as String,
-        isTrackUploaded: true,
-        properties: properties,
-      );
+          trackId: response.data['properties']['id'] as String,
+          trackName: response.data['properties']['name'] as String,
+          startTime: formatDate(response.data['properties']['begin'] as String),
+          endTime: formatDate(response.data['properties']['end'] as String),
+          duration: duration.toString().replaceFirst('.000000', ''),
+          distance: response.data['properties']['length'] as double,
+          speed: response.data['properties']['length'] / time as double,
+          selectedCarId: response.data['properties']['sensor']['properties']
+              ['id'] as String?,
+          isTrackUploaded: true,
+          properties: properties,
+          stops: 0,
+          bluetoothDevice: "");
 
       return localTrackModel;
     } catch (e) {
@@ -118,21 +119,21 @@ class TracksServices {
 
   /// function to send a post request with track data to the server
   Future<Result> postTrack({
-    @required AuthProvider authProvider,
-    @required LocalTrackModel localTrackModel,
+    required AuthProvider authProvider,
+    required LocalTrackModel localTrackModel,
   }) async {
     final String uri =
-        'https://envirocar.org/api/stable/users/${authProvider.getUser.getUsername}/tracks';
+        'https://envirocar.org/api/stable/users/${authProvider.getUser?.getUsername}/tracks';
 
     try {
       final Map<String, String> properties = {
-        'sensor': localTrackModel.getCarId,
+        'sensor': localTrackModel.getCarId!,
         'name': localTrackModel.getTrackName,
         'description': 'my track description' // todo: track description
       };
 
       final Map<int, PointProperties> pointProperties =
-          localTrackModel.getProperties;
+          localTrackModel.getProperties!;
 
       final List<Map<String, dynamic>> featureObject = [];
 
@@ -172,8 +173,8 @@ class TracksServices {
         data: json.encode(track),
         options: dio.Options(
           headers: {
-            'X-User': authProvider.getUser.getUsername,
-            'X-Token': authProvider.getUser.getPassword,
+            'X-User': authProvider.getUser?.getUsername,
+            'X-Token': authProvider.getUser?.getPassword,
           },
         ),
       );
@@ -187,8 +188,8 @@ class TracksServices {
 
   /// function to create an excel file and export the track data
   Future createExcel({
-    @required String trackName,
-    @required List<PointProperties> properties,
+    required String trackName,
+    required List<PointProperties> properties,
     bool altitudeData = true,
   }) async {
     // create a workbook with one sheet

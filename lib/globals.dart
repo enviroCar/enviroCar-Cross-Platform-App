@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-SharedPreferences preferences;
+late SharedPreferences preferences;
 
-double deviceHeight;
-double deviceWidth;
+late double deviceHeight;
+late double deviceWidth;
 
-GlobalKey<ScaffoldMessengerState> scaffoldMessengerState;
+late GlobalKey<ScaffoldMessengerState> scaffoldMessengerState;

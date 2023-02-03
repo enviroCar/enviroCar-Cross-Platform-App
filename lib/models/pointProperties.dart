@@ -7,21 +7,21 @@ part '../hive_generated_models/pointProperties.g.dart';
 @HiveType(typeId: kPointPropertiesId)
 class PointProperties extends HiveObject {
   @HiveField(0)
-  double latitude;
+  double? latitude;
   @HiveField(1)
-  double longitude;
+  double? longitude;
   @HiveField(2)
-  double altitude;
+  double? altitude;
   @HiveField(3)
-  double consumption;
+  double? consumption;
   @HiveField(4)
-  double co2;
+  double? co2;
   @HiveField(5)
-  double speed;
+  double? speed;
   @HiveField(6)
-  double maf;
+  double? maf;
   @HiveField(7)
-  String time;
+  String? time;
 
   PointProperties({
     this.latitude,

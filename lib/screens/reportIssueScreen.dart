@@ -24,18 +24,18 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
   );
 
   // Key to validate the form
-  GlobalKey<FormState> _formKey;
+  late GlobalKey<FormState> _formKey;
 
   // Controller to extract the data from text fields
-  TextEditingController estimatedTimeController;
-  TextEditingController problemController;
+  late TextEditingController estimatedTimeController;
+  late TextEditingController problemController;
 
   // bool variables for checkboxes
-  bool forceCrashBool;
-  bool suddenLagsBool;
-  bool unresponsiveAppBool;
-  bool componentNotWorkingBool;
-  bool featureRequestBool;
+  late bool forceCrashBool;
+  late bool suddenLagsBool;
+  late bool unresponsiveAppBool;
+  late bool componentNotWorkingBool;
+  late bool featureRequestBool;
 
   // triggered when 'Create Report' button is pressed
   void createReport() {
@@ -126,9 +126,9 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                 CheckboxListTile(
                   title: const Text(forceCrash),
                   value: forceCrashBool,
-                  onChanged: (bool val) {
+                  onChanged: (bool? val) {
                     setState(() {
-                      forceCrashBool = val;
+                      forceCrashBool = val!;
                     });
                   },
                 ),
@@ -137,9 +137,9 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                 CheckboxListTile(
                   title: const Text(suddenLags),
                   value: suddenLagsBool,
-                  onChanged: (bool val) {
+                  onChanged: (bool? val) {
                     setState(() {
-                      suddenLagsBool = val;
+                      suddenLagsBool = val!;
                     });
                   },
                 ),
@@ -148,9 +148,9 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                 CheckboxListTile(
                   title: const Text(appWasUnresponsive),
                   value: unresponsiveAppBool,
-                  onChanged: (bool val) {
+                  onChanged: (bool? val) {
                     setState(() {
-                      unresponsiveAppBool = val;
+                      unresponsiveAppBool = val!;
                     });
                   },
                 ),
@@ -159,9 +159,9 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                 CheckboxListTile(
                   title: const Text(componentDoesNotWorkAsExpected),
                   value: componentNotWorkingBool,
-                  onChanged: (bool val) {
+                  onChanged: (bool? val) {
                     setState(() {
-                      componentNotWorkingBool = val;
+                      componentNotWorkingBool = val!;
                     });
                   },
                 ),
@@ -170,9 +170,9 @@ class _ReportIssueScreenState extends State<ReportIssueScreen> {
                 CheckboxListTile(
                   title: const Text(requestForAFeature),
                   value: featureRequestBool,
-                  onChanged: (bool val) {
+                  onChanged: (bool? val) {
                     setState(() {
-                      featureRequestBool = val;
+                      featureRequestBool = val!;
                     });
                   },
                 ),

@@ -14,7 +14,7 @@ import '../../providers/localTracksProvider.dart';
 class EditTrackName extends StatefulWidget {
   final GpsTrackProvider gpsTrackProvider;
 
-  const EditTrackName({this.gpsTrackProvider});
+  const EditTrackName({required this.gpsTrackProvider});
 
   @override
   _EditTrackNameState createState() => _EditTrackNameState();
@@ -32,7 +32,7 @@ class _EditTrackNameState extends State<EditTrackName> {
   );
 
   bool useDefaultTrackName = true;
-  String customTrackName;
+  String? customTrackName;
 
   final Logger _logger = Logger(
     printer: PrettyPrinter(
@@ -102,8 +102,8 @@ class _EditTrackNameState extends State<EditTrackName> {
                         cursorHeight: 24,
                         cursorColor: kGreyColor.withOpacity(0.3),
                         textAlignVertical: TextAlignVertical.center,
-                        validator: (String text) {
-                          if (text.trim().isEmpty) {
+                        validator: (String? text) {
+                          if (text == null || text.trim().isEmpty) {
                             return "This field is required";
                           }
                           return null;
@@ -118,7 +118,7 @@ class _EditTrackNameState extends State<EditTrackName> {
                             customTrackName = text;
                           });
                         },
-                        onSaved: (String text) {
+                        onSaved: (String? text) {
                           setState(() {
                             customTrackName = text;
                           });
@@ -135,9 +135,10 @@ class _EditTrackNameState extends State<EditTrackName> {
                         children: [
                           Checkbox(
                             value: useDefaultTrackName,
-                            onChanged: (bool checked) {
+                            onChanged: (bool? checked) {
                               setState(() {
-                                useDefaultTrackName = checked;
+                                useDefaultTrackName =
+                                    checked == null ? false : checked;
                                 if (useDefaultTrackName) {
                                   setState(() {
                                     _textEditingController.text =
@@ -206,7 +207,7 @@ class _EditTrackNameState extends State<EditTrackName> {
                           TrackDetailsTile(
                             title: 'distance',
                             subTitle:
-                                '${widget.gpsTrackProvider.getDistance.toStringAsFixed(2)} km',
+                                '${widget.gpsTrackProvider.getDistance?.toStringAsFixed(2)} km',
                           ),
                           TrackDetailsTile(
                             title: 'Duration',
@@ -229,12 +230,13 @@ class _EditTrackNameState extends State<EditTrackName> {
                         title: 'save'.toUpperCase(),
                         color: kSpringColor,
                         onTap: () {
-                          if (_key.currentState.validate()) {
+                          if (_key.currentState != null &&
+                              _key.currentState!.validate()) {
                             _logger.i(
                               'Call function to save recording data and set track name.',
                             );
                             widget.gpsTrackProvider
-                                .setTrackName(customTrackName);
+                                .setTrackName(customTrackName!);
                             final CarsProvider carsProvider =
                                 Provider.of<CarsProvider>(
                               context,
@@ -242,7 +244,7 @@ class _EditTrackNameState extends State<EditTrackName> {
                             );
                             final LocalTrackModel track =
                                 widget.gpsTrackProvider.getLocalTrack(
-                              sensor: carsProvider.getSelectedCar,
+                              sensor: carsProvider.getSelectedCar!,
                             );
                             final LocalTracksProvider localTracksProvider =
                                 Provider.of<LocalTracksProvider>(
@@ -276,10 +278,10 @@ class CustomContainer extends StatelessWidget {
   final Widget child;
 
   const CustomContainer({
-    @required this.progressColor,
-    @required this.height,
-    @required this.progress,
-    @required this.child,
+    required this.progressColor,
+    required this.height,
+    required this.progress,
+    required this.child,
   });
 
   @override

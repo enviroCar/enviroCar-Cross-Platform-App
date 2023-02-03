@@ -9,9 +9,9 @@ class NoTracksWidget extends StatelessWidget {
   final IconData iconData;
 
   const NoTracksWidget({
-    @required this.title,
-    @required this.subTitle,
-    @required this.iconData,
+    required this.title,
+    required this.subTitle,
+    required this.iconData,
   });
 
   @override
