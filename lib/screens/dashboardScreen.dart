@@ -274,7 +274,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                         assetName: 'assets/icons/bluetooth.svg',
                         title: isConnected
                             ? (connectedDevice!.name.isNotEmpty
-                                ? connectedDevice!.name
+                                ? connectedDevice.name
                                 : 'Unknown Device')
                             : 'No OBD-II adapter selected',
                         subtitle: isConnected

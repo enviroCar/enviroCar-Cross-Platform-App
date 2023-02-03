@@ -165,14 +165,14 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
                         _logger.i(
                           'Disconnect from previously connected device before connecting to new one.',
                         );
-                        bluetoothProvider!.disconnectDevice();
+                        bluetoothProvider.disconnectDevice();
                       }
                       setState(() {
                         selected = value;
                         selectedBluetoothDevice =
                             detectedBluetoothDevices[value!];
                       });
-                      final bool connectionStatus = await bluetoothProvider!
+                      final bool connectionStatus = await bluetoothProvider
                           .connectToDevice(selectedBluetoothDevice!, context);
                       debugPrint('connection status $connectionStatus');
                       if (!connectionStatus && mounted) {

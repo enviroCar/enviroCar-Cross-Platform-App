@@ -9,7 +9,6 @@ class FuelingsProvider with ChangeNotifier {
   // Adds newly created fueling data and notifies log book screen
   void addFueling(Fueling fueling) {
     // if list is null then create an empty list to add to
-    _fuelingsList ??= [];
     _fuelingsList.add(fueling);
 
     notifyListeners();

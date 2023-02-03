@@ -37,7 +37,7 @@ class CarsProvider with ChangeNotifier {
 
   // When new car is created
   void addCar(Car newCar) {
-    _carsList ??= [];
+    _carsList = [];
     _carsList.add(newCar);
 
     notifyListeners();
