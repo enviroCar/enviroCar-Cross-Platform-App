@@ -24,7 +24,7 @@ class StackedMapButton extends StatefulWidget {
 class _StackedMapButtonState extends State<StackedMapButton> {
   double buttonDiameter = 55;
   GoogleMapController _googleMapController;
-  Set<Polyline> polyLines;
+  Set<Polyline> polyLines = {};
 
   @override
   void initState() {
