@@ -165,7 +165,8 @@ class MyApp extends StatelessWidget {
         ReportIssueScreen.routeName: (context) => ReportIssueScreen(),
         HelpScreen.routeName: (context) => HelpScreen(),
         GpsTrackingScreen.routeName: (context) => GpsTrackingScreen(),
-        DataPrivacyControlScreen.routeName: (context) => DataPrivacyControlScreen(),
+        DataPrivacyControlScreen.routeName: (context) =>
+            DataPrivacyControlScreen(),
       },
     );
   }

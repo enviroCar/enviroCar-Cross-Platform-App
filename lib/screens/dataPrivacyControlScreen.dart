@@ -26,12 +26,14 @@ class DataPrivacyControlScreen extends StatelessWidget {
             children: [
               // Location data preferences
               const TitleWidget(title: 'Location Data Preferences'),
-              PreferencesWidget(preferences: locationPreferencesSettings),
+              PreferencesWidget(
+                  preferences: locationPreferencesSettings, onChanged: null),
               DividerLine(),
 
               // Parameters preferences
               const TitleWidget(title: 'Calculated Parameters Preferences'),
-              PreferencesWidget(preferences: parametersPreferencesSettings),
+              PreferencesWidget(
+                  preferences: parametersPreferencesSettings, onChanged: null),
               DividerLine(),
             ],
           ),

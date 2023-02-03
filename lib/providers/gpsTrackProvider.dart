@@ -237,7 +237,7 @@ class GpsTrackProvider extends ChangeNotifier {
   /// function to update pin points on map
   void updatePins() {
     final newPinLocation =
-        LatLng(currentLocation!.latitude, currentLocation!.longitude);
+        LatLng(currentLocation!.latitude!, currentLocation!.longitude!);
 
     cameraPosition = CameraPosition(
       target: newPinLocation,

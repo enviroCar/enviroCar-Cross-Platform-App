@@ -181,7 +181,7 @@ class _UploadedTrackCardState extends State<UploadedTrackCard> {
                     trackModel = tracksProvider.getTracksWithId()[widget.index];
 
                     startPosition = LatLng(
-                      trackModel!.getProperties!.values.first.latitude!,
+                      trackModel.getProperties!.values.first.latitude!,
                       trackModel.getProperties!.values.first.longitude!,
                     );
 
