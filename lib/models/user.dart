@@ -14,7 +14,9 @@ class User {
     required bool acceptedPrivacy,
   }) {
     setUsername = username;
-    setEmail = email!;
+    if (email != null) {
+      setEmail = email;
+    }
     setPassword = password;
     setAcceptedTerms = acceptedTerms;
     setAcceptedPrivacy = acceptedPrivacy;
