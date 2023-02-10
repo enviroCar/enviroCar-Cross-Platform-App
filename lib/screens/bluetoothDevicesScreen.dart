@@ -44,9 +44,11 @@ class _BluetoothDevicesScreenState extends State<BluetoothDevicesScreen> {
 
   /// determining the status of bluetooth to initialize [_state] of bluetooth
   Future determineBluetoothStatus() async {
+    _logger.i("determineBluetoothStatus()");
     final bool state =
         await Provider.of<BluetoothProvider>(context, listen: false)
             .bluetoothState();
+    _logger.i("determineBluetoothStatus status: ${state}");
     setState(() {
       _state = state ? blue.BluetoothState.on : blue.BluetoothState.off;
     });
